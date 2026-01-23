@@ -3,58 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aniversariantes - Família</title>
+    <title>Aniversariantes - 2026</title>
     <style>
         :root {
-            --azul: #0000FF;
-            --verde: #008000;
+            --azul-negrito: #0000FF;
+            --verde-negrito: #008000;
             --cinza-chumbo: #2F4F4F;
+            --moldura-dourada: #D4AF37;
         }
-        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        
-        /* Busca Fixa */
-        .busca-container { position: sticky; top: 0; background: white; padding: 10px 0; z-index: 100; border-bottom: 2px solid #ddd; }
-        #inputBusca { width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
 
-        h1 { text-align: center; color: #333; }
-        .mes-secao { margin-top: 30px; }
-        .mes-titulo { background: #eee; padding: 5px 15px; border-radius: 4px; color: #555; }
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        
+        h1 { text-align: center; color: #333; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        
+        .busca-container { margin-bottom: 20px; text-align: center; }
+        #campoBusca { width: 80%; padding: 10px; border: 2px solid #ccc; border-radius: 5px; font-size: 16px; }
 
-        .cartao { display: flex; align-items: center; border-bottom: 1px solid #eee; padding: 15px 0; }
-        .foto { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-right: 20px; background: #ddd; }
+        .mes-bloco { margin-bottom: 30px; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; }
+        .mes-titulo { background: #333; color: white; padding: 10px; text-transform: uppercase; font-weight: bold; }
+
+        .lista-pessoas { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px; }
         
-        .info { flex-grow: 1; }
-        .nome { color: var(--azul); font-weight: bold; font-size: 1.1em; text-transform: uppercase; }
-        .data-nasc { color: var(--verde); font-weight: bold; }
-        .falec { color: var(--cinza-chumbo); font-weight: normal; }
-        .niver-hoje { background: #ffff00; padding: 2px 5px; font-weight: bold; display: inline-block; margin-top: 5px; border-radius: 3px; }
-        .detalhes { font-size: 0.9em; color: #666; margin-top: 3px; }
+        .card { border: 1px solid #eee; padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px; background: #fff; }
         
-        footer { margin-top: 40px; text-align: center; font-size: 0.8em; color: #777; border-top: 1px solid #ddd; padding-top: 20px; }
+        .foto-container { position: relative; }
+        .foto-container img { 
+            width: 80px; height: 80px; object-fit: cover; border-radius: 5px;
+            border: 4px solid var(--moldura-dourada);
+        }
+
+        .info { flex: 1; }
+        .nome { color: var(--azul-negrito); font-weight: bold; font-size: 1.1em; display: block; margin-bottom: 5px; }
+        .data-nasc { color: var(--verde-negrito); font-weight: bold; }
+        .data-falec { color: var(--cinza-chumbo); font-weight: normal; }
+        .idade, .signo { font-size: 0.9em; color: #555; display: block; }
+        .aniversario-hoje { background: #ffffcc; border: 1px dashed orange; padding: 2px; font-size: 0.85em; margin-top: 5px; display: inline-block; font-weight: bold; color: #d35400; }
+
+        footer { text-align: center; margin-top: 40px; font-size: 0.9em; color: #666; }
+
+        @media (max-width: 600px) {
+            .card { flex-direction: column; text-align: center; }
+            #campoBusca { width: 100%; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h3>ANIVERSARIANTES</h3>
+    <h1>ANIVERSARIANTES</h1>
 
     <div class="busca-container">
-        <input type="text" id="inputBusca" placeholder="Buscar por nome ou mês..." onkeyup="filtrar()">
+        <input type="text" id="campoBusca" placeholder="Pesquisar por nome ou mês (ex: Janeiro)..." onkeyup="filtrar()">
     </div>
 
-    <div id="lista-aniversariantes"></div>
+    <div id="conteudo"></div>
 
-    <footer id="rodape">
-        <p>©Amarildo 2018-2026<br>Atualizado: 22/01/2026</p>
-        <p>Total de Registros: <span id="total-registros">0</span></p>
+    <footer>
+        <p id="totalRegistros"></p>
+        <p>©Amarildo 2018-2026<br>Atualizado: 23/01/2026</p>
     </footer>
 </div>
 
 <script>
-    const hoje = new Date(2026, 0, 23); // Data base do sistema: 23/01/2026
+    const dataAtual = new Date(2026, 0, 23); // 23 de Janeiro de 2026
 
-    const dados = [
+    const pessoas = [
         { nome: "INGRID GRAZIELA FERNANDES ANERÃO", nasc: "06/01/1997", falec: "", foto: "ingrid.jpg" },
         { nome: "SANDRA REGINA MULLER DE CAMPOS", nasc: "22/01/1964", falec: "20/07/2020", foto: "sandra.jpg" },
         { nome: "MARIA AMARILZA ANERÃO", nasc: "14/01/1969", falec: "", foto: "amarilza.jpg" },
@@ -104,94 +118,106 @@
         { nome: "NATAL DO MENINO JESUS", nasc: "25/12/0000", falec: "", foto: "jesus.jpg" }
     ];
 
-    const mesesExtenso = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
+    const mesesNomes = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
-    function parseData(str) {
-        if (!str) return null;
-        const [d, m, y] = str.split('/').map(Number);
-        return { dia: d, mes: m - 1, ano: y };
+    function obterSigno(dia, mes) {
+        const signos = [
+            { nome: "Capricórnio", d: 20, m: 0 }, { nome: "Aquário", d: 18, m: 1 }, { nome: "Peixes", d: 20, m: 2 },
+            { nome: "Áries", d: 20, m: 3 }, { nome: "Touro", d: 20, m: 4 }, { nome: "Gêmeos", d: 20, m: 5 },
+            { nome: "Câncer", d: 22, m: 6 }, { nome: "Leão", d: 22, m: 7 }, { nome: "Virgem", d: 22, m: 8 },
+            { nome: "Libra", d: 22, m: 9 }, { nome: "Escorpião", d: 21, m: 10 }, { nome: "Sagitário", d: 21, m: 11 }
+        ];
+        const i = signos.findIndex(s => (mes === s.m && dia > s.d) || (mes === (s.m + 1) % 12 && dia <= signos[(s.m + 1) % 12].d));
+        return i === -1 ? "Capricórnio" : signos[i].nome;
+    }
+
+    function converterData(stringData) {
+        if (!stringData) return null;
+        const [d, m, y] = stringData.split('/').map(Number);
+        const date = new Date(y, m - 1, d);
+        // Ajuste manual para anos < 100
+        if (y < 100) date.setFullYear(y);
+        return date;
     }
 
     function calcularIdade(nasc, falec) {
-        if (nasc.ano === 0) return "";
-        const dataFim = falec ? new Date(falec.ano, falec.mes, falec.dia) : hoje;
-        let idade = dataFim.getFullYear() - nasc.ano;
-        const m = dataFim.getMonth() - nasc.mes;
-        if (m < 0 || (m === 0 && dataFim.getDate() < nasc.dia)) idade--;
+        const d1 = converterData(nasc);
+        const d2 = falec ? converterData(falec) : dataAtual;
+        if (!d1) return "?";
+        
+        let idade = d2.getFullYear() - d1.getFullYear();
+        const m = d2.getMonth() - d1.getMonth();
+        if (m < 0 || (m === 0 && d2.getDate() < d1.getDate())) {
+            idade--;
+        }
         return idade;
     }
 
-    function getSigno(dia, mes) {
-        const signos = [
-            { n: "Capricórnio", d: 20, m: 0 }, { n: "Aquário", d: 18, m: 1 },
-            { n: "Peixes", d: 20, m: 2 }, { n: "Áries", d: 20, m: 3 },
-            { n: "Touro", d: 20, m: 4 }, { n: "Gêmeos", d: 20, m: 5 },
-            { n: "Câncer", d: 22, m: 6 }, { n: "Leão", d: 22, m: 7 },
-            { n: "Virgem", d: 22, m: 8 }, { n: "Libra", d: 22, m: 9 },
-            { n: "Escorpião", d: 21, m: 10 }, { n: "Sagitário", d: 21, m: 11 },
-            { n: "Capricórnio", d: 31, m: 11 }
-        ];
-        return signos.find(s => (mes < s.m) || (mes === s.m && dia <= s.d)).n;
-    }
+    function renderizar(filtro = "") {
+        const container = document.getElementById('conteudo');
+        container.innerHTML = "";
+        let count = 0;
 
-    function renderizar() {
-        const container = document.getElementById('lista-aniversariantes');
-        container.innerHTML = '';
-        let total = 0;
-
-        mesesExtenso.forEach((mesNome, index) => {
-            const pessoasDoMes = dados.filter(p => parseData(p.nasc).mes === index)
-                                     .sort((a, b) => parseData(a.nasc).dia - parseData(b.nasc).dia);
-
-            if (pessoasDoMes.length > 0) {
-                const secao = document.createElement('div');
-                secao.className = 'mes-secao';
-                secao.dataset.mes = mesNome;
-                secao.innerHTML = `<h2 class="mes-titulo">${mesNome}</h2>`;
-
-                pessoasDoMes.forEach(p => {
-                    total++;
-                    const dNasc = parseData(p.nasc);
-                    const dFalec = parseData(p.falec);
-                    const idade = calcularIdade(dNasc, dFalec);
-                    const signo = dNasc.ano !== 0 ? getSigno(dNasc.dia, dNasc.mes) : "";
-                    const ehAniversario = dNasc.dia === hoje.getDate() && dNasc.mes === hoje.getMonth();
-
-                    secao.innerHTML += `
-                        <div class="cartao" data-nome="${p.nome.toLowerCase()}">
-                            <img src="fotos/${p.foto}" class="foto" alt="Foto" onerror="this.src='https://via.placeholder.com'">
-                            <div class="info">
-                                <div class="nome">${p.nome}</div>
-                                ${ehAniversario ? `<div class="niver-hoje">🎂 Aniversário Hoje!</div>` : ''}
-                                <div><span class="data-nasc">*${p.nasc}</span></div>
-                                ${p.falec ? `<div class="falec">✝ ${p.falec}</div>` : ''}
-                                <div class="detalhes">
-                                    ${idade !== "" ? `Idade: ${idade} anos | ` : ""}
-                                    ${signo ? `Signo: ${signo}` : ""}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-                container.appendChild(secao);
+        const grupos = Array.from({length: 12}, () => []);
+        
+        pessoas.forEach(p => {
+            const dataNasc = converterData(p.nasc);
+            const mesIdx = dataNasc ? dataNasc.getMonth() : 11; // Natal 0000 cai em Dezembro
+            if (p.nome.toLowerCase().includes(filtro.toLowerCase()) || mesesNomes[mesIdx].toLowerCase().includes(filtro.toLowerCase())) {
+                grupos[mesIdx].push(p);
+                count++;
             }
         });
-        document.getElementById('total-registros').innerText = total;
+
+        document.getElementById('totalRegistros').innerText = "Total de Registros: " + count;
+
+        grupos.forEach((mesPessoas, idx) => {
+            if (mesPessoas.length === 0) return;
+
+            mesPessoas.sort((a, b) => {
+                const da = converterData(a.nasc).getDate();
+                const db = converterData(b.nasc).getDate();
+                return da - db;
+            });
+
+            const divMes = document.createElement('div');
+            divMes.className = 'mes-bloco';
+            divMes.innerHTML = `<div class="mes-titulo">${mesesNomes[idx]}</div>`;
+            
+            const divLista = document.createElement('div');
+            divLista.className = 'lista-pessoas';
+
+            mesPessoas.forEach(p => {
+                const dNasc = converterData(p.nasc);
+                const idade = calcularIdade(p.nasc, p.falec);
+                const signo = dNasc ? obterSigno(dNasc.getDate(), dNasc.getMonth()) : "---";
+                const isAniversario = dNasc && dNasc.getDate() === dataAtual.getDate() && dNasc.getMonth() === dataAtual.getMonth();
+
+                divLista.innerHTML += `
+                    <div class="card">
+                        <div class="foto-container">
+                            <img src="fotos/${p.foto}" onerror="this.src='https://via.placeholder.com'">
+                        </div>
+                        <div class="info">
+                            <span class="nome">${p.nome}</span>
+                            ${isAniversario ? `<span class="aniversario-hoje">🎂 Aniversário Hoje!</span><br>` : ''}
+                            <span class="data-nasc">${p.nasc}</span>
+                            ${p.falec ? `<br><span class="data-falec">✞ ${p.falec}</span>` : ''}
+                            <span class="idade">Idade: ${idade}*</span>
+                            <span class="signo">Signo: ${signo}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            divMes.appendChild(divLista);
+            container.appendChild(divMes);
+        });
     }
 
     function filtrar() {
-        const termo = document.getElementById('inputBusca').value.toLowerCase();
-        document.querySelectorAll('.cartao').forEach(cartao => {
-            const nome = cartao.dataset.nome;
-            const mes = cartao.closest('.mes-secao').dataset.mes.toLowerCase();
-            cartao.style.display = (nome.includes(termo) || mes.includes(termo)) ? 'flex' : 'none';
-        });
-        
-        // Esconde o título do mês se não houver ninguém visível
-        document.querySelectorAll('.mes-secao').forEach(secao => {
-            const visiveis = Array.from(secao.querySelectorAll('.cartao')).some(c => c.style.display === 'flex');
-            secao.style.display = visiveis ? 'block' : 'none';
-        });
+        const termo = document.getElementById('campoBusca').value;
+        renderizar(termo);
     }
 
     renderizar();
