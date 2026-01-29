@@ -60,7 +60,7 @@
     <div id="contador">Total de Registros: 0</div>
 
     <div id="alerta-aniversarios" class="proximos-niver" style="display:none;">
-        <h3>Próximos Aniversariantes (15 dias)</h3>
+        <h3>Próximos Aniversariantes (30 dias)</h3>
         <div id="lista-proximos"></div>
     </div>
 
@@ -68,7 +68,7 @@
 
     <footer>
         ©Amarildo, 2018-2026<br>
-        Atualizado: 28/01/2026
+        Atualizado: 29/01/2026
     </footer>
 </div>
 
@@ -186,13 +186,13 @@ function renderizar(filtro = "") {
             total++;
         }
 
-        // Lógica de 15 dias
+        // Lógica de 30 dias
         const dataNiverEsteAno = new Date(hoje.getFullYear(), m - 1, d);
         const diffDias = Math.ceil((dataNiverEsteAno - hoje) / (1000 * 60 * 60 * 24));
         
-        if (diffDias >= 0 && diffDias <= 15 && !p.especial) {
+        if (diffDias >= 0 && diffDias <= 30 && !p.especial) {
             const span = document.createElement('div');
-            span.innerHTML = `<span style="color:var(--azul)">${p.nome}</span> <span class="piscante">(${p.falec ? 'Faria' : 'Faz'} aniversário dia ${d}/${m})</span>`;
+            span.innerHTML = `<span style="color:var(--azul)">${p.nome}</span> <span class="piscante">(${p.falec ? 'Faria' : 'Faz'} dia ${d}/${m})</span>`;
             listaProx.appendChild(span);
         }
     });
