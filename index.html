@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aniversariantes</title>
+    <title>Aniversariantes - Família Anerão</title>
     <style>
         * {
             margin: 0;
@@ -21,368 +21,447 @@
             margin: 0 auto;
         }
         
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: linear-gradient(to right, #1a3a6c, #2c5282, #1a3a6c);
-            color: white;
+        .container {
+            background-color: white;
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 25px;
+            margin: 0 auto;
         }
         
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        h2 {
+            text-align: center;
+            color: #8b0000;
+            margin-bottom: 25px;
+            font-size: 2.5rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
             letter-spacing: 1px;
+            border-bottom: 3px solid #d4af37;
+            padding-bottom: 15px;
         }
         
         .search-container {
-            margin: 25px 0;
-            text-align: center;
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 100;
+            padding: 15px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
         
         #search {
-            width: 90%;
-            max-width: 600px;
-            padding: 15px 20px;
-            border: 3px solid #gold;
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid #d4af37;
             border-radius: 50px;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            margin-bottom: 15px;
         }
         
         #search:focus {
             outline: none;
-            border-color: #e6b400;
-            box-shadow: 0 0 0 3px rgba(230, 180, 0, 0.3);
+            border-color: #8b0000;
+            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.2);
         }
         
-        .panels-container {
+        .filter-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            border: 1px solid #eaeaea;
+        }
+        
+        .filter-btn, .filter-select {
+            padding: 10px 18px;
+            background: linear-gradient(to bottom, #d4af37, #b89e2b);
+            color: #8b0000;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            font-size: 0.95rem;
+            min-width: 100px;
+            text-align: center;
+        }
+        
+        .filter-btn:hover, .filter-select:hover {
+            background: linear-gradient(to bottom, #b89e2b, #9c8424);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.25);
+        }
+        
+        .filter-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(to bottom, #8b0000, #6d0000);
+            color: white;
+            box-shadow: 0 3px 10px rgba(139, 0, 0, 0.4);
+        }
+        
+        #clear-filters {
+            background: linear-gradient(to bottom, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        #clear-filters:hover {
+            background: linear-gradient(to bottom, #c0392b, #a93226);
+        }
+        
+        #count {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 20px 0;
+            padding: 12px;
+            background-color: #f9f4e9;
+            border-radius: 10px;
+            border: 1px solid #d4af37;
+            color: #8b0000;
+        }
+        
+        .panels {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            margin: 25px 0 35px;
+            margin: 30px 0;
             gap: 20px;
         }
         
         .panel {
             flex: 1;
-            min-width: 250px;
+            min-width: 300px;
             background: white;
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid #eaeaea;
         }
         
         .panel h3 {
             text-align: center;
             margin-bottom: 15px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #eee;
+            border-bottom: 2px solid #d4af37;
             font-size: 1.4rem;
+            color: #8b0000;
         }
         
-        .last15 h3 {
-            color: #c00;
+        .last30 h3 {
+            color: #c0392b;
         }
         
         .next30 h3 {
-            color: #0a0;
+            color: #27ae60;
         }
         
-        .panel-item {
-            padding: 5px 0;
-            border-bottom: 1px dashed #eee;
+        .last30-list, .next30-list {
+            font-size: 0.9rem;
+            line-height: 1.8;
         }
         
-        .last15 .panel-item {
-            font-size: 0.85rem;
-            color: #c00;
-        }
-        
-        .next30 .panel-item {
-            font-size: 0.85rem;
-            color: #0a0;
-        }
-        
-        .stats {
-            text-align: center;
-            margin: 25px 0;
+        .last30-list span {
+            color: #c0392b;
             font-weight: bold;
-            font-size: 1.2rem;
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
         }
         
-        .month-group {
-            margin-bottom: 40px;
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease;
+        .next30-list span {
+            color: #27ae60;
+            font-weight: bold;
         }
         
-        .month-group:hover {
-            transform: translateY(-5px);
+        .month-section {
+            margin: 35px 0;
+            page-break-inside: avoid;
         }
         
         .month-title {
             text-align: center;
-            color: #c00;
-            font-size: 2.2rem;
+            color: #8b0000;
+            font-size: 1.8rem;
             font-weight: bold;
-            margin-bottom: 25px;
+            margin: 25px 0 20px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .month-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%;
-            height: 3px;
-            background: linear-gradient(to right, transparent, #e6b400, transparent);
-            border-radius: 3px;
-        }
-        
-        .persons-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            padding: 10px;
+            letter-spacing: 1.5px;
+            border-top: 2px solid #d4af37;
+            border-bottom: 2px solid #d4af37;
+            padding: 12px 0;
+            background-color: #fff8e1;
+            border-radius: 8px;
         }
         
         .person-card {
-            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: white;
             border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            padding: 25px;
+            margin: 15px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #f0e6d2;
         }
         
         .person-card:hover {
-            transform: scale(1.03);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            z-index: 10;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-color: #d4af37;
         }
         
-        .person-card.highlight {
-            background-color: #fff9e6 !important;
-            border: 2px solid #ffd700;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        .photo-frame {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 8px solid #d4af37;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f5f5;
         }
         
         .person-photo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 4px solid #e6b400;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            margin: 0 auto 15px;
             display: block;
-            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
         
         .person-name {
-            color: #0066cc;
+            color: #1e3a8a;
             font-weight: bold;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             margin: 10px 0;
-            min-height: 28px;
+            text-align: center;
+            line-height: 1.3;
         }
         
-        .person-birth {
-            color: #008000;
+        .birth-date, .age {
+            color: #228b22;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+        
+        .death-info {
+            color: #8b4513;
             font-weight: bold;
             margin: 8px 0;
-            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         
-        .person-age {
-            color: #008000;
-            font-weight: bold;
-            background: #e8f5e9;
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 20px;
-            margin-top: 5px;
-            font-size: 1.15rem;
-        }
-        
-        .person-death {
-            color: #8B4513;
-            margin: 10px 0;
-            font-weight: 500;
-        }
-        
-        .person-sign {
+        .zodiac-info {
             margin-top: 8px;
-            font-size: 1.15rem;
-            font-weight: 500;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .zodiac-symbol {
             font-size: 1.8rem;
-            margin-right: 5px;
-            vertical-align: middle;
+            line-height: 1;
         }
         
         .birthday-message {
+            background-color: #ff4757;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 30px;
             margin-top: 10px;
             font-weight: bold;
-            animation: blink 1s step-end infinite;
-            font-size: 1.15rem;
-            padding: 5px;
-            border-radius: 8px;
+            animation: blink 1s infinite;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.7);
+            letter-spacing: 0.5px;
         }
         
         @keyframes blink {
-            50% { opacity: 0; }
+            50% { opacity: 0.5; }
         }
         
-        .birthday-today {
-            color: #ff0000;
-            background: #fff0f0;
+        .highlight {
+            background-color: #fff9a8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
         }
         
-        .would-be-birthday {
-            color: #ff0000;
-            background: #f0e6ff;
+        .christmas-entry .birth-date, 
+        .christmas-entry .age, 
+        .christmas-entry .death-info, 
+        .christmas-entry .zodiac-info {
+            display: none;
+        }
+        
+        .christmas-entry .person-name {
+            font-size: 1.8rem;
+            color: #8b0000;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .christmas-entry .photo-frame {
+            width: 180px;
+            height: 180px;
+            border-width: 10px;
         }
         
         footer {
             text-align: center;
-            margin-top: 40px;
-            padding: 25px;
-            color: #1a3a6c;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #d4af37;
+            color: #8b0000;
             font-weight: bold;
-            border-top: 2px solid #e6b400;
             font-size: 1.1rem;
         }
         
-        .special-card {
-            background: linear-gradient(135deg, #e60000 0%, #990000 100%);
-            color: white;
-            box-shadow: 0 8px 25px rgba(153, 0, 0, 0.3);
-        }
-        
-        .special-card .person-name {
-            color: #fffacd;
-            font-size: 1.6rem;
-        }
-        
-        .special-card .person-birth,
-        .special-card .person-age,
-        .special-card .person-death,
-        .special-card .person-sign {
-            display: none;
-        }
-        
         @media (max-width: 768px) {
-            .panels-container {
-                flex-direction: column;
-            }
-            
-            .persons-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            }
-            
-            h1 {
-                font-size: 2.3rem;
-            }
-            
-            .month-title {
-                font-size: 1.9rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
             body {
                 padding: 10px;
             }
             
-            .persons-grid {
-                grid-template-columns: 1fr;
+            .container {
+                padding: 15px;
             }
             
-            .person-photo {
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .filter-menu {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .filter-btn, .filter-select {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .panels {
+                flex-direction: column;
+            }
+            
+            .panel {
+                min-width: 100%;
+            }
+            
+            .person-card {
+                padding: 20px 15px;
+            }
+            
+            .photo-frame {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .person-name {
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .photo-frame {
                 width: 100px;
                 height: 100px;
             }
             
-            h1 {
-                font-size: 2rem;
+            .person-name {
+                font-size: 1.2rem;
             }
             
-            .month-title {
-                font-size: 1.7rem;
-            }
-            
-            .search-container {
-                margin: 15px 0;
-            }
-            
-            #search {
-                width: 95%;
-                padding: 12px 15px;
+            .birth-date, .age, .death-info {
                 font-size: 1rem;
             }
-        }
-        
-        .highlight-text {
-            background-color: #fff9a8;
-            font-weight: bold;
-            padding: 0 2px;
-            border-radius: 3px;
+            
+            h2 {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
+    <div class="container">
         <h2>ANIVERSARIANTES</h2>
-    </header>
-    
-    <div class="search-container">
-        <input type="text" id="search" placeholder="Buscar por nome, mês ou signo...">
-    </div>
-    
-    <div class="panels-container">
-        <div class="panel last15">
-            <h3>Aniversariantes há 30 dias atrás:</h3>
-            <div id="last15-list"></div>
+        
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Buscar por nome, mês, signo...">
         </div>
-        <div class="panel next30">
-            <h3>Aniversariantes daqui 30 dias:</h3>
-            <div id="next30-list"></div>
+        
+        <div class="filter-menu">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <select class="filter-select" id="month-filter">
+                <option value="">Mês</option>
+                <option value="1">Janeiro</option>
+                <option value="2">Fevereiro</option>
+                <option value="3">Março</option>
+                <option value="4">Abril</option>
+                <option value="5">Maio</option>
+                <option value="6">Junho</option>
+                <option value="7">Julho</option>
+                <option value="8">Agosto</option>
+                <option value="9">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option>
+            </select>
+            <select class="filter-select" id="sign-filter">
+                <option value="">Signo</option>
+                <option value="capricorn">Capricórnio</option>
+                <option value="aquarius">Aquário</option>
+                <option value="pisces">Peixes</option>
+                <option value="aries">Áries</option>
+                <option value="taurus">Touro</option>
+                <option value="gemini">Gêmeos</option>
+                <option value="cancer">Câncer</option>
+                <option value="leo">Leão</option>
+                <option value="virgo">Virgem</option>
+                <option value="libra">Libra</option>
+                <option value="scorpio">Escorpião</option>
+                <option value="sagittarius">Sagitário</option>
+            </select>
+            <button class="filter-btn" data-filter="alive">Vivos</button>
+            <button class="filter-btn" data-filter="deceased">Falecidos</button>
+            <button class="filter-btn" id="clear-filters">Limpar filtros</button>
         </div>
+        
+        <div id="count">Total registros: <span id="total">0</span> - Filtrados: <span id="filtered">0</span></div>
+        
+        <div class="panels">
+            <div class="panel last30">
+                <h3>Aniversariantes há 30 dias atrás:</h3>
+                <div class="last30-list" id="last30-list"></div>
+            </div>
+            <div class="panel next30">
+                <h3>Aniversariantes daqui 30 dias:</h3>
+                <div class="next30-list" id="next30-list"></div>
+            </div>
+        </div>
+        
+        <div id="people-list"></div>
+        
+        <footer>
+            <p>©Amarildo, 2016-2026</p>
+            <p>Atualizado: 02/02/2026</p>
+        </footer>
     </div>
-    
-    <div class="stats">
-        Total registros: <span id="total">0</span> | Filtrado: <span id="filtered">0</span>
-    </div>
-    
-    <div id="persons-container"></div>
-    
-    <footer>
-        ©Amarildo, 2016-2026<br>
-        Atualizado: 01/02/2026
-    </footer>
 
     <script>
         // Dados das pessoas
@@ -444,13 +523,23 @@ REGINA APARECIDA RIBEIRO,*21/12/1971,regina.jpg
         }
         
         // Função para calcular idade
-        function calculateAge(birthDate, deathDate = null) {
-            const today = deathDate ? new Date(deathDate) : new Date();
-            let age = today.getFullYear() - birthDate.getFullYear();
-            const monthDiff = today.getMonth() - birthDate.getMonth();
-            const dayDiff = today.getDate() - birthDate.getDate();
+        function calculateAge(birthDateStr, deathDateStr = null) {
+            const [birthDay, birthMonth, birthYear] = birthDateStr.split('/').map(Number);
+            let today;
             
-            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            if (deathDateStr) {
+                const [deathDay, deathMonth, deathYear] = deathDateStr.split('/').map(Number);
+                today = new Date(deathYear, deathMonth - 1, deathDay);
+            } else {
+                today = new Date();
+            }
+            
+            const currentYear = today.getFullYear();
+            const currentMonth = today.getMonth() + 1;
+            const currentDay = today.getDate();
+            
+            let age = currentYear - birthYear;
+            if (currentMonth < birthMonth || (currentMonth === birthMonth && currentDay < birthDay)) {
                 age--;
             }
             
@@ -458,13 +547,12 @@ REGINA APARECIDA RIBEIRO,*21/12/1971,regina.jpg
         }
         
         // Função para calcular anos desde o falecimento
-        function yearsSinceDeath(deathDate) {
+        function yearsSinceDeath(deathDateStr) {
+            const [deathDay, deathMonth, deathYear] = deathDateStr.split('/').map(Number);
             const today = new Date();
-            let years = today.getFullYear() - deathDate.getFullYear();
-            const monthDiff = today.getMonth() - deathDate.getMonth();
-            const dayDiff = today.getDate() - deathDate.getDate();
             
-            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            let years = today.getFullYear() - deathYear;
+            if (today.getMonth() + 1 < deathMonth || (today.getMonth() + 1 === deathMonth && today.getDate() < deathDay)) {
                 years--;
             }
             
@@ -473,384 +561,357 @@ REGINA APARECIDA RIBEIRO,*21/12/1971,regina.jpg
         
         // Função para obter signo do zodíaco
         function getZodiacSign(day, month) {
-            const zodiacSigns = [
-                { sign: "Capricórnio", symbol: "♑", start: [22, 12], end: [19, 1] },
-                { sign: "Aquário", symbol: "♒", start: [20, 1], end: [18, 2] },
-                { sign: "Peixes", symbol: "♓", start: [19, 2], end: [20, 3] },
-                { sign: "Áries", symbol: "♈", start: [21, 3], end: [19, 4] },
-                { sign: "Touro", symbol: "♉", start: [20, 4], end: [20, 5] },
-                { sign: "Gêmeos", symbol: "♊", start: [21, 5], end: [20, 6] },
-                { sign: "Câncer", symbol: "♋", start: [21, 6], end: [22, 7] },
-                { sign: "Leão", symbol: "♌", start: [23, 7], end: [22, 8] },
-                { sign: "Virgem", symbol: "♍", start: [23, 8], end: [22, 9] },
-                { sign: "Libra", symbol: "♎", start: [23, 9], end: [22, 10] },
-                { sign: "Escorpião", symbol: "♏", start: [23, 10], end: [21, 11] },
-                { sign: "Sagitário", symbol: "♐", start: [22, 11], end: [21, 12] },
-                { sign: "Capricórnio", symbol: "♑", start: [22, 12], end: [31, 12] }
-            ];
-            
-            for (const sign of zodiacSigns) {
-                const startMonth = sign.start[1];
-                const startDay = sign.start[0];
-                const endMonth = sign.end[1];
-                const endDay = sign.end[0];
-                
-                if ((month === startMonth && day >= startDay) || 
-                    (month === endMonth && day <= endDay) ||
-                    (startMonth < endMonth && month > startMonth && month < endMonth)) {
-                    return { sign: sign.sign, symbol: sign.symbol };
-                }
-            }
-            
-            return { sign: "Desconhecido", symbol: "?" };
+            if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return { sign: 'capricorn', symbol: '♑', name: 'Capricórnio' };
+            if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return { sign: 'aquarius', symbol: '♒', name: 'Aquário' };
+            if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) return { sign: 'pisces', symbol: '♓', name: 'Peixes' };
+            if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return { sign: 'aries', symbol: '♈', name: 'Áries' };
+            if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return { sign: 'taurus', symbol: '♉', name: 'Touro' };
+            if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return { sign: 'gemini', symbol: '♊', name: 'Gêmeos' };
+            if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return { sign: 'cancer', symbol: '♋', name: 'Câncer' };
+            if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return { sign: 'leo', symbol: '♌', name: 'Leão' };
+            if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return { sign: 'virgo', symbol: '♍', name: 'Virgem' };
+            if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return { sign: 'libra', symbol: '♎', name: 'Libra' };
+            if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return { sign: 'scorpio', symbol: '♏', name: 'Escorpião' };
+            if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return { sign: 'sagittarius', symbol: '♐', name: 'Sagitário' };
+            return { sign: 'unknown', symbol: '', name: '' };
         }
         
         // Função para formatar data para dd/mm
-        function formatDateDM(date) {
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            return `${day}/${month}`;
+        function formatDateDM(dateStr) {
+            if (!dateStr) return '';
+            return dateStr.split('/').slice(0, 2).join('/');
         }
         
-        // Função para formatar data completa para dd/mm/yyyy
-        function formatDate(date) {
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            return `${day}/${month}/${year}`;
-        }
-        
-        // Processar dados
-        const persons = [];
-        const photoBaseUrl = "https://amarildo1963.github.io/jaa/fotos/";
-        
-        data.forEach(line => {
-            line = line.trim();
-            if (!line) return;
+        // Processar os dados
+        const people = data.map(line => {
+            const parts = line.split(',');
+            let name = '';
+            let birthDate = '';
+            let deathDate = '';
+            let photo = '';
             
-            // Caso especial: Natal
-            if (line.includes("25/12 NATAL DO MENINO JESUS")) {
-                persons.push({
-                    name: "NATAL DO MENINO JESUS",
-                    isSpecial: true,
-                    birthDate: new Date(2000, 11, 25), // 25 de dezembro
-                    photo: "jesus.jpg",
-                    day: 25,
-                    month: 12
-                });
-                return;
-            }
-            
-            // Dividir a linha em partes
-            const parts = line.split(',').map(part => part.trim());
-            if (parts.length < 2) return;
-            
-            // Extrair nome (primeira parte)
-            let name = parts[0];
-            
-            // Identificar datas e foto
-            let birthDateStr = null;
-            let deathDateStr = null;
-            let photo = null;
-            
-            for (let i = 1; i < parts.length; i++) {
-                if (parts[i].startsWith('*')) {
-                    birthDateStr = parts[i].substring(1).trim();
-                } else if (parts[i].startsWith('+')) {
-                    deathDateStr = parts[i].substring(1).trim();
-                } else if (parts[i].includes('.')) {
-                    photo = parts[i];
+            // Identificar as partes
+            parts.forEach(part => {
+                part = part.trim();
+                if (part.startsWith('*')) {
+                    birthDate = part.substring(1).trim();
+                } else if (part.startsWith('+')) {
+                    deathDate = part.substring(1).trim();
+                } else if (part.includes('.jpg') || part.includes('.png') || part.includes('.JPG')) {
+                    photo = part;
+                } else {
+                    if (name) name += ', ';
+                    name += part;
                 }
-            }
+            });
             
-            // Parse das datas
-            let birthDate = null;
-            let deathDate = null;
-            
-            if (birthDateStr) {
-                const [day, month, year] = birthDateStr.split('/').map(Number);
-                birthDate = new Date(year, month - 1, day);
-            }
-            
-            if (deathDateStr) {
-                const [day, month, year] = deathDateStr.split('/').map(Number);
-                deathDate = new Date(year, month - 1, day);
+            // Tratamento especial para o Natal
+            if (name.startsWith('25/12')) {
+                name = 'NATAL DO MENINO JESUS';
+                birthDate = '25/12/0001';
+                photo = 'jesus.jpg';
             }
             
             // Calcular idade
-            let age = null;
-            let yearsSinceDeathValue = null;
+            const age = calculateAge(birthDate, deathDate);
             
-            if (birthDate) {
-                if (deathDate) {
-                    age = calculateAge(birthDate, deathDate);
-                    yearsSinceDeathValue = yearsSinceDeath(deathDate);
-                } else {
-                    age = calculateAge(birthDate);
-                }
+            // Calcular anos desde o falecimento
+            let yearsDead = null;
+            if (deathDate) {
+                yearsDead = yearsSinceDeath(deathDate);
             }
             
             // Obter signo
-            let zodiac = null;
-            if (birthDate) {
-                zodiac = getZodiacSign(birthDate.getDate(), birthDate.getMonth() + 1);
-            }
+            const [day, month] = birthDate.split('/').map(Number);
+            const zodiac = getZodiacSign(day, month);
             
-            // Adicionar pessoa ao array
-            persons.push({
+            // Verificar se é aniversário hoje
+            const today = new Date();
+            const todayDay = today.getDate();
+            const todayMonth = today.getMonth() + 1;
+            const isBirthday = (day === todayDay && month === todayMonth);
+            
+            return {
                 name,
                 birthDate,
                 deathDate,
                 photo,
                 age,
-                yearsSinceDeath: yearsSinceDeathValue,
+                yearsDead,
                 zodiac,
-                day: birthDate ? birthDate.getDate() : null,
-                month: birthDate ? birthDate.getMonth() + 1 : null,
-                isSpecial: false
-            });
+                isBirthday,
+                isAlive: !deathDate,
+                birthDay: day,
+                birthMonth: month,
+                isChristmas: name === 'NATAL DO MENINO JESUS'
+            };
         });
         
-        // Obter elementos DOM
-        const personsContainer = document.getElementById('persons-container');
+        // Obter elementos do DOM
         const searchInput = document.getElementById('search');
+        const peopleList = document.getElementById('people-list');
         const totalElement = document.getElementById('total');
         const filteredElement = document.getElementById('filtered');
-        const last15List = document.getElementById('last15-list');
+        const last30List = document.getElementById('last30-list');
         const next30List = document.getElementById('next30-list');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const monthFilter = document.getElementById('month-filter');
+        const signFilter = document.getElementById('sign-filter');
+        const clearFiltersBtn = document.getElementById('clear-filters');
         
-        // Atualizar contagem total
-        totalElement.textContent = persons.length;
+        // Estado dos filtros
+        let currentFilters = {
+            search: '',
+            month: '',
+            sign: '',
+            status: 'all' // all, alive, deceased
+        };
         
-        // Gerar listas de aniversariantes recentes e futuros
-        function generateBirthdayLists() {
+        // Função para renderizar a lista de pessoas
+        function renderPeople() {
+            // Limpar lista
+            peopleList.innerHTML = '';
+            
+            // Aplicar filtros
+            let filteredPeople = [...people];
+            
+            // Filtro de busca
+            if (currentFilters.search) {
+                const searchTerm = removeAccents(currentFilters.search.toLowerCase());
+                filteredPeople = filteredPeople.filter(person => {
+                    const nameMatch = removeAccents(person.name.toLowerCase()).includes(searchTerm);
+                    const monthMatch = removeAccents(getMonthName(person.birthMonth).toLowerCase()).includes(searchTerm);
+                    const signMatch = removeAccents(person.zodiac.name.toLowerCase()).includes(searchTerm);
+                    return nameMatch || monthMatch || signMatch;
+                });
+            }
+            
+            // Filtro de mês
+            if (currentFilters.month) {
+                filteredPeople = filteredPeople.filter(person => 
+                    person.birthMonth.toString() === currentFilters.month
+                );
+            }
+            
+            // Filtro de signo
+            if (currentFilters.sign) {
+                filteredPeople = filteredPeople.filter(person => 
+                    person.zodiac.sign === currentFilters.sign
+                );
+            }
+            
+            // Filtro de status
+            if (currentFilters.status === 'alive') {
+                filteredPeople = filteredPeople.filter(person => person.isAlive);
+            } else if (currentFilters.status === 'deceased') {
+                filteredPeople = filteredPeople.filter(person => !person.isAlive);
+            }
+            
+            // Atualizar contadores
+            totalElement.textContent = people.length;
+            filteredElement.textContent = filteredPeople.length;
+            
+            // Agrupar por mês
+            const peopleByMonth = {};
+            filteredPeople.forEach(person => {
+                if (!peopleByMonth[person.birthMonth]) {
+                    peopleByMonth[person.birthMonth] = [];
+                }
+                peopleByMonth[person.birthMonth].push(person);
+            });
+            
+            // Ordenar meses
+            const sortedMonths = Object.keys(peopleByMonth).sort((a, b) => a - b);
+            
+            // Renderizar cada mês
+            sortedMonths.forEach(monthNum => {
+                const monthName = getMonthName(parseInt(monthNum));
+                const monthSection = document.createElement('div');
+                monthSection.className = 'month-section';
+                
+                const monthTitle = document.createElement('div');
+                monthTitle.className = 'month-title';
+                monthTitle.textContent = monthName;
+                monthSection.appendChild(monthTitle);
+                
+                // Ordenar pessoas por dia do mês
+                const sortedPeople = peopleByMonth[monthNum].sort((a, b) => a.birthDay - b.birthDay);
+                
+                // Renderizar cada pessoa
+                sortedPeople.forEach(person => {
+                    const personCard = document.createElement('div');
+                    personCard.className = `person-card ${person.isChristmas ? 'christmas-entry' : ''}`;
+                    
+                    // URL da foto
+                    const photoUrl = `https://amarildo1963.github.io/jaa/fotos/${person.photo}`;
+                    
+                    // Destaque para busca
+                    let displayName = person.name;
+                    if (currentFilters.search && currentFilters.search.trim() !== '') {
+                        const searchTerm = currentFilters.search.trim();
+                        const regex = new RegExp(`(${searchTerm})`, 'gi');
+                        displayName = person.name.replace(regex, match => 
+                            `<span class="highlight">${match}</span>`
+                        );
+                    }
+                    
+                    personCard.innerHTML = `
+                        <div class="photo-frame">
+                            <img src="${photoUrl}" alt="${person.name}" class="person-photo" onerror="this.src='https://via.placeholder.com/150/9c8424/ffffff?text=Sem+Foto'">
+                        </div>
+                        <div class="person-name">${displayName}</div>
+                        ${person.isChristmas ? '' : `
+                        <div class="birth-date"> ${person.birthDate}</div>
+                        <div class="age"> ${person.age} anos</div>
+                        ${person.deathDate ? `
+                        <div class="death-info">✝ ${person.deathDate} (há ${person.yearsDead} ${person.yearsDead === 1 ? 'ano' : 'anos'})</div>
+                        ` : ''}
+                        <div class="zodiac-info">
+                            <span class="zodiac-symbol">${person.zodiac.symbol}</span>
+                            <span>${person.zodiac.name}</span>
+                        </div>
+                        `}
+                        ${person.isBirthday && !person.isChristmas ? `
+                        <div class="birthday-message">
+                            ${person.isAlive ? 'Parabéns, Feliz Aniversário!' : 'Faria aniversário hoje!'}
+                        </div>
+                        ` : ''}
+                    `;
+                    
+                    monthSection.appendChild(personCard);
+                });
+                
+                peopleList.appendChild(monthSection);
+            });
+            
+            // Destacar texto na busca
+            if (currentFilters.search) {
+                highlightSearchResults(currentFilters.search);
+            }
+        }
+        
+        // Função para obter nome do mês
+        function getMonthName(monthNum) {
+            const months = [
+                'JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO',
+                'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO'
+            ];
+            return months[monthNum - 1] || '';
+        }
+        
+        // Função para destacar resultados da busca
+        function highlightSearchResults(searchTerm) {
+            if (!searchTerm.trim()) return;
+            
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            document.querySelectorAll('.person-name').forEach(element => {
+                element.innerHTML = element.textContent.replace(regex, match => 
+                    `<span class="highlight">${match}</span>`
+                );
+            });
+        }
+        
+        // Função para atualizar os painéis de aniversariantes
+        function updateAnniversaryPanels() {
             const today = new Date();
-            const last15Days = [];
-            const next30Days = [];
+            const last30Dates = [];
+            const next30Dates = [];
             
             // Gerar datas dos últimos 30 dias
             for (let i = 30; i >= 1; i--) {
                 const date = new Date();
                 date.setDate(today.getDate() - i);
-                last15Days.push(formatDateDM(date));
+                last30Dates.push(formatDateDM(`${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}`));
             }
             
             // Gerar datas dos próximos 30 dias (incluindo hoje)
             for (let i = 0; i <= 30; i++) {
                 const date = new Date();
                 date.setDate(today.getDate() + i);
-                next30Days.push(formatDateDM(date));
+                next30Dates.push(formatDateDM(`${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}`));
             }
             
-            // Filtrar pessoas para os últimos 30 dias
-            const last15Persons = persons.filter(person => {
-                if (person.isSpecial) return false;
-                if (!person.birthDate) return false;
-                const birthDM = formatDateDM(person.birthDate);
-                return last15Days.includes(birthDM);
-            }).map(person => ({
-                dm: formatDateDM(person.birthDate),
+            // Filtrar pessoas para os painéis
+            const last30People = people.filter(person => 
+                !person.isChristmas && last30Dates.includes(formatDateDM(person.birthDate))
+            ).map(person => ({
+                date: formatDateDM(person.birthDate),
                 name: person.name
             }));
             
-            // Filtrar pessoas para os próximos 30 dias
-            const next30Persons = persons.filter(person => {
-                if (person.isSpecial) return false;
-                if (!person.birthDate) return false;
-                const birthDM = formatDateDM(person.birthDate);
-                return next30Days.includes(birthDM);
-            }).map(person => ({
-                dm: formatDateDM(person.birthDate),
+            const next30People = people.filter(person => 
+                !person.isChristmas && next30Dates.includes(formatDateDM(person.birthDate))
+            ).map(person => ({
+                date: formatDateDM(person.birthDate),
                 name: person.name
             }));
             
-            // Renderizar listas
-            renderBirthdayList(last15List, last15Persons);
-            renderBirthdayList(next30List, next30Persons);
+            // Renderizar painel dos últimos 30 dias
+            last30List.innerHTML = last30People.map(p => 
+                `<div><span>${p.date}</span> - ${p.name}</div>`
+            ).join('');
+            
+            // Renderizar painel dos próximos 30 dias
+            next30List.innerHTML = next30People.map(p => 
+                `<div><span>${p.date}</span> - ${p.name}</div>`
+            ).join('');
         }
         
-        function renderBirthdayList(container, persons) {
-            container.innerHTML = '';
-            
-            if (persons.length === 0) {
-                container.innerHTML = '<div style="text-align:center;padding:10px;color:#777">Nenhum aniversariante neste período</div>';
-                return;
-            }
-            
-            // Ordenar por data
-            persons.sort((a, b) => {
-                const [dayA, monthA] = a.dm.split('/');
-                const [dayB, monthB] = b.dm.split('/');
-                const dateA = new Date(2000, parseInt(monthA) - 1, parseInt(dayA));
-                const dateB = new Date(2000, parseInt(monthB) - 1, parseInt(dayB));
-                return dateA - dateB;
-            });
-            
-            persons.forEach(person => {
-                const div = document.createElement('div');
-                div.className = 'panel-item';
-                div.textContent = `${person.dm} - ${person.name}`;
-                container.appendChild(div);
-            });
-        }
+        // Event listeners
+        searchInput.addEventListener('input', (e) => {
+            currentFilters.search = e.target.value;
+            renderPeople();
+        });
         
-        // Renderizar todas as pessoas
-        function renderPersons(filteredPersons = null) {
-            personsContainer.innerHTML = '';
-            
-            // Usar pessoas filtradas ou todas
-            const personsToShow = filteredPersons || persons;
-            filteredElement.textContent = personsToShow.length;
-            
-            // Agrupar por mês
-            const months = Array.from({ length: 12 }, (_, i) => i + 1);
-            const monthNames = [
-                "JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO",
-                "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"
-            ];
-            
-            months.forEach(month => {
-                const monthPersons = personsToShow.filter(p => 
-                    !p.isSpecial && p.month === month
-                ).sort((a, b) => a.day - b.day);
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remover classe active de todos os botões
+                filterButtons.forEach(btn => btn.classList.remove('active'));
                 
-                // Adicionar pessoas especiais (Natal) em dezembro
-                if (month === 12) {
-                    const specialPersons = personsToShow.filter(p => p.isSpecial && p.month === month);
-                    monthPersons.push(...specialPersons);
-                }
+                // Adicionar classe active ao botão clicado
+                button.classList.add('active');
                 
-                if (monthPersons.length > 0) {
-                    const monthGroup = document.createElement('div');
-                    monthGroup.className = 'month-group';
-                    
-                    const monthTitle = document.createElement('div');
-                    monthTitle.className = 'month-title';
-                    monthTitle.textContent = monthNames[month - 1];
-                    monthGroup.appendChild(monthTitle);
-                    
-                    const personsGrid = document.createElement('div');
-                    personsGrid.className = 'persons-grid';
-                    
-                    monthPersons.forEach(person => {
-                        const personCard = createPersonCard(person);
-                        personsGrid.appendChild(personCard);
-                    });
-                    
-                    monthGroup.appendChild(personsGrid);
-                    personsContainer.appendChild(monthGroup);
-                }
+                // Atualizar filtro de status
+                currentFilters.status = button.dataset.filter;
+                renderPeople();
             });
-        }
+        });
         
-        // Criar card de pessoa
-        function createPersonCard(person) {
-            const card = document.createElement('div');
-            card.className = `person-card ${person.isSpecial ? 'special-card' : ''}`;
-            
-            // URL da foto
-            const photoUrl = photoBaseUrl + (person.photo || 'default.jpg');
-            
-            // Verificar se é aniversário hoje
-            const today = new Date();
-            const isBirthdayToday = person.birthDate && 
-                person.birthDate.getDate() === today.getDate() && 
-                person.birthDate.getMonth() === today.getMonth();
-            
-            // Montar conteúdo do card
-            let cardContent = `
-                <img src="${photoUrl}" alt="${person.name}" class="person-photo" onerror="this.src='https://via.placeholder.com/120?text=Foto+Indispon%C3%ADvel'">
-                <div class="person-name">${highlightSearch(person.name)}</div>
-            `;
-            
-            // Para casos especiais (Natal)
-            if (person.isSpecial) {
-                card.innerHTML = cardContent;
-                return card;
-            }
-            
-            // Data de nascimento
-            cardContent += `<div class="person-birth">* ${formatDate(person.birthDate)}${person.zodiac ? ` <span class="person-sign"><span class="zodiac-symbol">${person.zodiac.symbol}</span> ${person.zodiac.sign}</span>` : ''}</div>`;
-            
-            // Idade
-            if (person.age !== null) {
-                cardContent += `<div class="person-age">${person.age} anos</div>`;
-            }
-            
-            // Data de falecimento
-            if (person.deathDate) {
-                cardContent += `<div class="person-death">✝ ${formatDate(person.deathDate)} (${person.yearsSinceDeath} anos)</div>`;
-            }
-            
-            // Mensagem de aniversário
-            if (isBirthdayToday) {
-                if (person.deathDate) {
-                    cardContent += `<div class="birthday-message would-be-birthday">Faria aniversário hoje!</div>`;
-                } else {
-                    cardContent += `<div class="birthday-message birthday-today">Parabéns, Feliz Aniversário!</div>`;
-                }
-            }
-            
-            card.innerHTML = cardContent;
-            return card;
-        }
+        monthFilter.addEventListener('change', (e) => {
+            currentFilters.month = e.target.value;
+            renderPeople();
+        });
         
-        // Destacar texto da busca
-        function highlightSearch(text) {
-            const searchTerm = removeAccents(searchInput.value).toLowerCase();
-            if (!searchTerm) return text;
-            
-            const normalizedText = removeAccents(text).toLowerCase();
-            const index = normalizedText.indexOf(searchTerm);
-            
-            if (index === -1) return text;
-            
-            const before = text.substring(0, index);
-            const match = text.substring(index, index + searchTerm.length);
-            const after = text.substring(index + searchTerm.length);
-            
-            return `${before}<span class="highlight-text">${match}</span>${after}`;
-        }
+        signFilter.addEventListener('change', (e) => {
+            currentFilters.sign = e.target.value;
+            renderPeople();
+        });
         
-        // Filtrar pessoas com base na busca
-        function filterPersons() {
-            const searchTerm = removeAccents(searchInput.value).toLowerCase();
+        clearFiltersBtn.addEventListener('click', () => {
+            // Resetar filtros
+            currentFilters = {
+                search: '',
+                month: '',
+                sign: '',
+                status: 'all'
+            };
             
-            if (!searchTerm) {
-                renderPersons();
-                return;
-            }
+            // Resetar UI
+            searchInput.value = '';
+            monthFilter.value = '';
+            signFilter.value = '';
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
             
-            const filtered = persons.filter(person => {
-                // Normalizar dados para busca
-                const normalizedName = removeAccents(person.name).toLowerCase();
-                const normalMonth = person.birthDate ? 
-                    removeAccents([
-                        "janeiro", "fevereiro", "marco", "abril", "maio", "junho",
-                        "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
-                    ][person.birthDate.getMonth()]).toLowerCase() : '';
-                const normalSign = person.zodiac ? removeAccents(person.zodiac.sign).toLowerCase() : '';
-                const birthDM = person.birthDate ? formatDateDM(person.birthDate).replace('/', '') : '';
-                
-                // Verificar se corresponde a algum critério
-                return (
-                    normalizedName.includes(searchTerm) ||
-                    normalMonth.includes(searchTerm) ||
-                    normalSign.includes(searchTerm) ||
-                    birthDM.includes(searchTerm.replace('/', ''))
-                );
-            });
-            
-            renderPersons(filtered);
-        }
+            renderPeople();
+        });
         
         // Inicializar
-        searchInput.addEventListener('input', filterPersons);
-        generateBirthdayLists();
-        renderPersons();
+        updateAnniversaryPanels();
+        renderPeople();
         
-        // Atualizar listas de aniversariantes a cada minuto (para atualização em tempo real)
-        setInterval(generateBirthdayLists, 60000);
+        // Atualizar painéis de aniversariantes a cada hora (para atualizar conforme a data muda)
+        setInterval(updateAnniversaryPanels, 3600000);
     </script>
 </body>
 </html>
