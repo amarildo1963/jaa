@@ -3,86 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aniversariantes - J.A. Anerão</title>
+    <title>Aniversariantes - Família Anerão</title>
     <style>
         :root {
-            --ouro: #d4af37;
             --azul: #0000FF;
             --verde: #008000;
             --marrom: #8B4513;
             --vermelho: #FF0000;
+            --dourado: #FFD700;
         }
 
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px; }
+        body { font-family: sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px; }
+        
+        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+
         h2 { color: var(--vermelho); }
 
-        /* Busca e Filtros */
-        .controles { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        input[type="text"] { padding: 10px; width: 80%; max-width: 400px; border: 2px solid var(--ouro); border-radius: 5px; }
-        .btn-group { margin-top: 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        /* Filtros e Busca */
+        .controles { margin-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        input[type="text"] { padding: 10px; width: 80%; max-width: 400px; border-radius: 5px; border: 1px solid #ccc; }
         
-        button {
-            padding: 10px 20px; font-weight: bold; cursor: pointer;
-            border: none; border-radius: 5px; color: white;
-            background: linear-gradient(to bottom, #7d7d7d, #333);
-            box-shadow: 0 4px #1a1a1a; transition: 0.2s;
+        /* Botões 3D */
+        .btn {
+            padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;
+            font-weight: bold; color: white; text-transform: uppercase;
+            box-shadow: 0 5px #999; transition: 0.2s; margin: 5px;
         }
-        button:active { box-shadow: 0 2px #1a1a1a; transform: translateY(2px); }
-        .btn-todos { background: linear-gradient(to bottom, #5bc0de, #2e6da4); }
+        .btn:active { box-shadow: 0 2px #666; transform: translateY(3px); }
+        .btn-blue { background-color: #3498db; }
+        .btn-red { background-color: #e74c3c; }
+        .btn-green { background-color: #2ecc71; }
+        .btn-orange { background-color: #f39c12; }
 
-        /* Layout */
-        .mes-container { margin-top: 30px; }
-        .mes-titulo { color: var(--vermelho); font-weight: bold; font-size: 1.5rem; text-transform: uppercase; margin: 20px 0; border-bottom: 2px solid var(--vermelho); }
+        .estatisticas { font-weight: bold; margin: 15px 0; }
+        .highlight { background-color: yellow; }
+
+        /* Grade de Pessoas */
+        .mes-secao { margin-top: 30px; border-top: 2px solid #eee; }
+        .mes-titulo { color: var(--vermelho); font-weight: bold; font-size: 1.5em; margin: 20px 0; }
         
-        .grid-aniversariantes {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px; padding: 10px;
-        }
-
-        .card {
-            background: white; padding: 15px; border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+        .grid-pessoas { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .card { width: 220px; padding: 15px; border: 1px solid #ddd; border-radius: 10px; background: #fff; }
 
         .moldura {
-            width: 120px; height: 120px; margin: 0 auto 10px;
-            border: 5px solid var(--ouro); border-radius: 50%;
-            overflow: hidden; box-shadow: 0 0 10px var(--ouro);
+            width: 120px; height: 120px; border: 5px solid var(--dourado);
+            border-radius: 50%; overflow: hidden; margin: 0 auto 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
         }
         .moldura img { width: 100%; height: 100%; object-fit: cover; }
 
-        .nome { color: var(--azul); font-weight: bold; font-size: 1.1rem; }
-        .nascimento, .idade { color: var(--verde); font-weight: bold; margin: 5px 0; }
-        .falecimento { color: var(--marrom); margin: 5px 0; }
-        .signo { font-size: 1.2rem; margin-top: 5px; }
-        
+        .nome { color: var(--azul); font-weight: bold; font-size: 1.1em; display: block; }
+        .data-nasc { color: var(--verde); font-weight: bold; }
+        .idade { color: var(--verde); font-weight: bold; }
+        .falecimento { color: var(--marrom); font-size: 0.9em; }
+        .signo { font-size: 0.9em; color: #555; }
+
         .piscante {
             color: var(--vermelho); font-weight: bold;
-            animation: pisca 1s infinite;
+            animation: pisca 0.8s infinite alternate;
         }
-        @keyframes pisca { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+        @keyframes pisca { from { opacity: 1; } to { opacity: 0; } }
 
-        mark { background-color: yellow; color: black; }
-        
-        footer { margin-top: 50px; font-size: 0.8rem; border-top: 1px solid #ccc; padding-top: 10px; }
+        footer { margin-top: 50px; font-size: 0.8em; color: #666; }
     </style>
 </head>
 <body>
 
+<div class="container">
     <h2>ANIVERSARIANTES</h2>
 
     <div class="controles">
         <input type="text" id="busca" placeholder="Busque por nome, mês ou signo..." onkeyup="filtrar()">
-        <div class="btn-group">
-            <button class="btn-todos" onclick="setFiltro('todos')">Todos</button>
-            <button onclick="setFiltro('mes_atual')">Mês Atual</button>
-            <button onclick="setFiltro('mes_anterior')">Mês Anterior</button>
-            <button onclick="setFiltro('vivos')">Vivos</button>
-            <button onclick="setFiltro('falecidos')">Falecidos</button>
-            <button onclick="limparFiltros()" style="background: #a94442;">Limpar Filtros</button>
-        </div>
-        <p>Total registros: <span id="total">0</span> | Filtrados: <span id="filtrados">0</span></p>
+        <br>
+        <button class="btn btn-blue" onclick="resetarFiltros()">Todos</button>
+        <button class="btn btn-red" onclick="limparInput()">Limpar Filtros</button>
+        <button class="btn btn-orange" onclick="filtrarMes(-1)">Mês Anterior</button>
+        <button class="btn btn-orange" onclick="filtrarMes(0)">Mês Atual</button>
+        <button class="btn btn-orange" onclick="filtrarMes(1)">Próx. Mês</button>
+        <button class="btn btn-green" onclick="filtrarStatus('vivos')">Vivos</button>
+        <button class="btn btn-red" onclick="filtrarStatus('falecidos')">Falecidos</button>
+    </div>
+
+    <div class="estatisticas">
+        Total registros: <span id="totalReg">0</span> | Filtrados: <span id="totalFilt">0</span>
     </div>
 
     <div id="lista-aniversariantes"></div>
@@ -91,9 +94,13 @@
         ©J.A.Anerão, 2016-2026<br>
         Atualizado: 03/02/2026
     </footer>
+</div>
 
 <script>
-    const server = "https://amarildo1963.github.io/jaa/fotos/";
+    const servidor = "https://amarildo1963.github.io/jaa/fotos/";
+    const hoje = new Date();
+    
+    // Dados brutos (processados no init)
     const rawData = [
         "INGRID GRAZIELA FERNANDES ANERÃO,*06/01/1997,ingrid.jpg",
         "MARIA AMARILZA ANERÃO,*14/01/1969,amarilza.jpg",
@@ -146,161 +153,178 @@
         "25/12 NATAL DO MENINO JESUS,jesus.jpg"
     ];
 
+    let pessoas = [];
     const mesesNomes = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
 
     function parseData(str) {
-        if (!str) return null;
+        if(!str) return null;
         const [d, m, y] = str.split('/').map(Number);
-        return { d, m, y, date: new Date(y, m - 1, d) };
+        return new Date(y, m - 1, d);
     }
 
-    function getSigno(dia, mes) {
-        const signos = [
-            { n: "Capricórnio", s: "♑", d: 20, m: 1 }, { n: "Aquário", s: "♒", d: 18, m: 2 },
-            { n: "Peixes", s: "♓", d: 20, m: 3 }, { n: "Áries", s: "♈", d: 19, m: 4 },
-            { n: "Touro", s: "♉", d: 20, m: 5 }, { n: "Gêmeos", s: "♊", d: 20, m: 6 },
-            { n: "Câncer", s: "♋", d: 22, m: 7 }, { n: "Leão", s: "♌", d: 22, m: 8 },
-            { n: "Virgem", s: "♍", d: 22, m: 9 }, { n: "Libra", s: "♎", d: 22, m: 10 },
-            { n: "Escorpião", s: "♏", d: 21, m: 11 }, { n: "Sagitário", s: "♐", d: 21, m: 12 }
-        ];
-        const res = signos.find(s => (mes === s.m && dia <= s.d) || (mes === s.m - 1 && dia > s.d));
-        return res || { n: "Capricórnio", s: "♑" };
+    function getSigno(data) {
+        if (!data) return { nome: "Divino", sym: "✨" };
+        const dia = data.getDate();
+        const mes = data.getMonth() + 1;
+        if ((mes == 3 && dia >= 21) || (mes == 4 && dia <= 19)) return {nome: "Áries", sym: "♈"};
+        if ((mes == 4 && dia >= 20) || (mes == 5 && dia <= 20)) return {nome: "Touro", sym: "♉"};
+        if ((mes == 5 && dia >= 21) || (mes == 6 && dia <= 20)) return {nome: "Gêmeos", sym: "♊"};
+        if ((mes == 6 && dia >= 21) || (mes == 7 && dia <= 22)) return {nome: "Câncer", sym: "♋"};
+        if ((mes == 7 && dia >= 23) || (mes == 8 && dia <= 22)) return {nome: "Leão", sym: "♌"};
+        if ((mes == 8 && dia >= 23) || (mes == 9 && dia <= 22)) return {nome: "Virgem", sym: "♍"};
+        if ((mes == 9 && dia >= 23) || (mes == 10 && dia <= 22)) return {nome: "Libra", sym: "♎"};
+        if ((mes == 10 && dia >= 23) || (mes == 11 && dia <= 21)) return {nome: "Escorpião", sym: "♏"};
+        if ((mes == 11 && dia >= 22) || (mes == 12 && dia <= 21)) return {nome: "Sagitário", sym: "♐"};
+        if ((mes == 12 && dia >= 22) || (mes == 1 && dia <= 19)) return {nome: "Capricórnio", sym: "♑"};
+        if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) return {nome: "Aquário", sym: "♒"};
+        return {nome: "Peixes", sym: "♓"};
     }
 
-    function calcularIdade(nasc, falec = null) {
-        const fim = falec ? falec.date : new Date();
-        let idade = fim.getFullYear() - nasc.y;
-        const m = fim.getMonth() - (nasc.m - 1);
-        if (m < 0 || (m === 0 && fim.getDate() < nasc.d)) idade--;
-        return idade;
+    function calcularIdade(nasc, falec) {
+        if (!nasc) return null;
+        let fim = falec || hoje;
+        let anos = fim.getFullYear() - nasc.getFullYear();
+        let m = fim.getMonth() - nasc.getMonth();
+        if (m < 0 || (m === 0 && fim.getDate() < nasc.getDate())) anos--;
+        return anos;
     }
 
-    const pessoas = rawData.map(linha => {
-        if (linha.includes("NATAL")) {
-            const partes = linha.split(',');
-            return { nome: partes[0], foto: partes[1], isNatal: true, mes: 12, dia: 25 };
-        }
+    // Inicialização dos dados
+    pessoas = rawData.map(linha => {
         const partes = linha.split(',');
-        const nome = partes[0];
-        const nascStr = partes.find(p => p.startsWith('*'))?.substring(1);
-        const falecStr = partes.find(p => p.startsWith('+'))?.substring(1);
-        const foto = partes[partes.length - 1];
+        const isEspecial = partes[0].includes("NATAL");
         
-        const nasc = parseData(nascStr);
-        const falec = parseData(falecStr);
-        const signo = getSigno(nasc.d, nasc.m);
-
-        return {
-            nome, nasc, falec, foto, signo,
-            idade: calcularIdade(nasc, falec),
-            anosFalecimento: falec ? calcularIdade(falec) : null,
-            isNatal: false
-        };
+        let nome, nascStr, falecStr, foto;
+        
+        if(isEspecial) {
+            nome = partes[0];
+            foto = partes[1];
+            return { nome, foto, especial: true, mes: 11, dia: 25 };
+        } else {
+            nome = partes[0];
+            nascStr = partes[1].replace('*', '');
+            falecStr = partes.length === 4 ? partes[2].replace('+', '') : null;
+            foto = partes[partes.length - 1];
+            
+            const dtNasc = parseData(nascStr);
+            const dtFalec = parseData(falecStr);
+            
+            return {
+                nome,
+                dtNasc,
+                dtFalec,
+                foto,
+                idade: calcularIdade(dtNasc, dtFalec),
+                anosFalecimento: dtFalec ? calcularIdade(dtFalec, null) : null,
+                signo: getSigno(dtNasc),
+                mes: dtNasc.getMonth(),
+                dia: dtNasc.getDate(),
+                nascFormat: nascStr,
+                falecFormat: falecStr
+            };
+        }
     });
 
-    document.getElementById('total').innerText = pessoas.length;
-
-    let filtroAtivo = 'todos';
-
-    function normalizar(texto) {
-        return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    }
-
-    function renderizar(dados = pessoas, busca = "") {
+    function renderizar(lista) {
         const container = document.getElementById('lista-aniversariantes');
-        container.innerHTML = "";
-        let count = 0;
+        container.innerHTML = '';
+        const buscaTermo = normalizar(document.getElementById('busca').value);
 
-        const hoje = new Date();
-        const dHoje = hoje.getDate();
-        const mHoje = hoje.getMonth() + 1;
+        document.getElementById('totalReg').innerText = pessoas.length;
+        document.getElementById('totalFilt').innerText = lista.length;
 
-        mesesNomes.forEach((mesNome, idx) => {
-            const mesNum = idx + 1;
-            const pessoasMes = dados.filter(p => (p.nasc?.m === mesNum) || (p.isNatal && p.mes === mesNum));
+        for (let i = 0; i < 12; i++) {
+            const pessoasMes = lista.filter(p => p.mes === i).sort((a,b) => a.dia - b.dia);
             
             if (pessoasMes.length > 0) {
-                pessoasMes.sort((a, b) => (a.nasc?.d || a.dia) - (b.nasc?.d || b.dia));
+                const sec = document.createElement('div');
+                sec.className = 'mes-secao';
+                sec.innerHTML = `<div class="mes-titulo">${mesesNomes[i]}</div>`;
                 
-                const divMes = document.createElement('div');
-                divMes.className = 'mes-container';
-                divMes.innerHTML = `<div class="mes-titulo">${mesNome}</div><div class="grid-aniversariantes"></div>`;
-                const grid = divMes.querySelector('.grid-aniversariantes');
+                const grid = document.createElement('div');
+                grid.className = 'grid-pessoas';
 
                 pessoasMes.forEach(p => {
-                    count++;
+                    const isAnivHoje = p.dtNasc && p.dtNasc.getDate() === hoje.getDate() && p.dtNasc.getMonth() === hoje.getMonth();
                     const card = document.createElement('div');
                     card.className = 'card';
-                    
-                    let html = `<div class="moldura"><img src="${server}${p.foto}"></div>`;
-                    
-                    let nomeExibicao = p.nome;
-                    if (busca) {
-                        const regex = new RegExp(`(${busca})`, 'gi');
-                        nomeExibicao = p.nome.replace(regex, '<mark>$1</mark>');
+
+                    let html = `
+                        <div class="moldura"><img src="${servidor}${p.foto}" alt="${p.nome}"></div>
+                        <span class="nome">${destacar(p.nome, buscaTermo)}</span>
+                    `;
+
+                    if (!p.especial) {
+                        html += `
+                            <div class="data-nasc">${p.nascFormat}</div>
+                            <div class="idade">${p.idade} anos</div>
+                            <div class="signo">${p.signo.sym} ${destacar(p.signo.nome, buscaTermo)}</div>
+                        `;
+
+                        if (p.dtFalec) {
+                            html += `<div class="falecimento">† ${p.falecFormat}<br>(há ${p.anosFalecimento} anos)</div>`;
+                        }
+
+                        if (isAnivHoje) {
+                            html += `<div class="piscante">${p.dtFalec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>`;
+                        }
+                    } else {
+                        html += `<div class="signo">✨ Divino</div>`;
                     }
 
-                    html += `<div class="nome">${nomeExibicao}</div>`;
-
-                    if (p.isNatal) {
-                        grid.innerHTML += `<div class="card">${html}</div>`;
-                        return;
-                    }
-
-                    const ehAniv = p.nasc.d === dHoje && p.nasc.m === mHoje;
-                    if (ehAniv) {
-                        html += `<div class="piscante">${p.falec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>`;
-                    }
-
-                    html += `<div class="nascimento">* ${String(p.nasc.d).padStart(2,'0')}/${String(p.nasc.m).padStart(2,'0')}/${p.nasc.y}</div>`;
-                    html += `<div class="idade">${p.idade} anos</div>`;
-                    
-                    if (p.falec) {
-                        html += `<div class="falecimento">† ${String(p.falec.d).padStart(2,'0')}/${String(p.falec.m).padStart(2,'0')}/${p.falec.y}</div>`;
-                        html += `<div class="falecimento">(há ${p.anosFalecimento} anos)</div>`;
-                    }
-
-                    html += `<div class="signo">${p.signo.s} ${p.signo.n}</div>`;
                     card.innerHTML = html;
                     grid.appendChild(card);
                 });
-                container.appendChild(divMes);
+                sec.appendChild(grid);
+                container.appendChild(sec);
             }
-        });
-        document.getElementById('filtrados').innerText = count;
+        }
+    }
+
+    function normalizar(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    }
+
+    function destacar(texto, termo) {
+        if (!termo) return texto;
+        const regex = new RegExp(`(${termo})`, 'gi');
+        return texto.replace(regex, '<span class="highlight">$1</span>');
     }
 
     function filtrar() {
         const termo = normalizar(document.getElementById('busca').value);
         const filtrados = pessoas.filter(p => {
-            const matchBusca = normalizar(p.nome).includes(termo) || 
-                               (p.signo && normalizar(p.signo.n).includes(termo)) ||
-                               (p.nasc && mesesNomes[p.nasc.m-1].toLowerCase().includes(termo));
-            
-            const hoje = new Date();
-            if (filtroAtivo === 'mes_atual') return matchBusca && p.nasc?.m === (hoje.getMonth() + 1);
-            if (filtroAtivo === 'mes_anterior') {
-                let mesAnt = hoje.getMonth(); 
-                if (mesAnt === 0) mesAnt = 12;
-                return matchBusca && p.nasc?.m === mesAnt;
-            }
-            if (filtroAtivo === 'vivos') return matchBusca && !p.falec;
-            if (filtroAtivo === 'falecidos') return matchBusca && p.falec;
-            
-            return matchBusca;
+            const alvo = normalizar(`${p.nome} ${mesesNomes[p.mes]} ${p.signo ? p.signo.nome : ''}`);
+            return alvo.includes(termo);
         });
-        renderizar(filtrados, termo);
+        renderizar(filtrados);
     }
 
-    function setFiltro(f) { filtroAtivo = f; filtrar(); }
-    function limparFiltros() { 
-        document.getElementById('busca').value = ""; 
-        filtroAtivo = 'todos'; 
-        filtrar(); 
+    function filtrarMes(offset) {
+        const alvo = new Date(hoje.getFullYear(), hoje.getMonth() + offset, 1).getMonth();
+        renderizar(pessoas.filter(p => p.mes === alvo));
     }
 
-    // Inicialização
-    renderizar();
+    function filtrarStatus(status) {
+        if (status === 'vivos') {
+            renderizar(pessoas.filter(p => !p.dtFalec));
+        } else {
+            renderizar(pessoas.filter(p => p.dtFalec && !p.especial));
+        }
+    }
+
+    function limparInput() {
+        document.getElementById('busca').value = '';
+        renderizar(pessoas);
+    }
+
+    function resetarFiltros() {
+        limparInput();
+    }
+
+    // Iniciar
+    renderizar(pessoas);
 </script>
+
 </body>
 </html>
