@@ -3,150 +3,495 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aniversariantes - Família Anerão</title>
+    <title>Aniversariantes da Família</title>
     <style>
-        :root {
-            --ouro: #d4af37;
-            --azul-3d: #0056b3;
-            --verde-sucesso: #28a745;
-            --marrom-cruz: #5d4037;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
+        
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            padding-bottom: 50px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        h2 {
             text-align: center;
-            padding: 20px;
+            color: #c00000;
+            margin: 30px 0 40px;
+            font-size: 2.5rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            letter-spacing: 1px;
         }
-
-        h2 { color: #333; margin-bottom: 20px; }
-
-        /* Moldura Dourada Redonda */
-        .foto-container {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 10px;
-            border: 4px solid var(--ouro);
-            border-radius: 50%;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        
+        #search-container {
+            background: white;
+            border-radius: 50px;
+            padding: 10px 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            max-width: 600px;
+            margin: 25px auto;
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 100;
         }
-
-        .foto-container img {
+        
+        #search-input {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Botões 3D */
-        .btn-3d {
             border: none;
-            padding: 8px 15px;
-            margin: 5px;
-            border-radius: 5px;
+            padding: 12px 15px;
+            font-size: 16px;
+            outline: none;
+            background: transparent;
+        }
+        
+        #search-input::placeholder {
+            color: #888;
+        }
+        
+        #counts {
+            text-align: center;
+            margin: 15px 0;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+        
+        #filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 25px 0;
+            position: sticky;
+            top: 10px;
+            z-index: 90;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 10px 0;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 100%;
+            overflow-x: auto;
+        }
+        
+        .filter-btn {
+            border: none;
             color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px #999;
-            transition: 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+            min-width: 100px;
+            position: relative;
+            overflow: hidden;
+            font-size: 0.85rem;
         }
-
-        .btn-3d:active { box-shadow: 0 1px #666; transform: translateY(4px); }
-        .bg-azul { background-color: blue; }
-        .bg-cinza { background-color: grey; }
-        .bg-preto { background-color: black; }
-        .bg-verde { background-color: green; }
-        .bg-vermelho { background-color: red; }
-
-        /* Botão Voltar ao Topo Piscante */
-        #btnTopo {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: blue;
-            color: white;
-            border: 2px solid white;
-            box-shadow: 0 0 15px blue;
-            display: none;
-            cursor: pointer;
-            z-index: 1000;
-            animation: piscanteAzul 1s infinite alternate;
-        }
-
-        @keyframes piscanteAzul {
-            from { opacity: 1; box-shadow: 0 0 5px blue; }
-            to { opacity: 0.7; box-shadow: 0 0 20px blue; }
-        }
-
-        /* Estilização de Texto */
-        .mes-titulo { color: red; font-weight: bold; margin-top: 30px; font-size: 1.5em; }
-        .nome { color: blue; font-weight: bold; font-size: 1.1em; }
-        .data-nasc { color: green; font-weight: bold; }
-        .idade { color: green; font-weight: bold; }
-        .falecimento { color: var(--marrom-cruz); }
-        .piscante-alerta { color: red; font-weight: bold; animation: pisca 0.8s infinite; }
         
-        @keyframes pisca { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
-
-        .cartao {
-            background: white;
-            padding: 15px;
-            margin: 10px;
-            display: inline-block;
-            width: 250px;
-            vertical-align: top;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        .filter-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.25);
         }
-
-        mark { background-color: yellow; }
-
-        /* Responsividade */
-        @media (max-width: 600px) { .cartao { width: 90%; } }
+        
+        .filter-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255,255,255,0.2);
+            transform: rotate(30deg);
+            transition: all 0.6s;
+            opacity: 0;
+        }
+        
+        .filter-btn:hover::after {
+            opacity: 1;
+            left: 100%;
+        }
+        
+        .blue { background: #2962ff; }
+        .orange { background: #ff6d00; }
+        .gray { background: #616161; }
+        .black { background: #212121; }
+        .green { background: #00c853; }
+        .red { background: #d50000; }
+        
+        .month-section {
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            padding: 25px;
+            transition: transform 0.3s ease;
+        }
+        
+        .month-section:hover {
+            transform: translateY(-5px);
+        }
+        
+        .month-title {
+            text-align: center;
+            color: #c00000;
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .month-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: #ffc107;
+            border-radius: 2px;
+        }
+        
+        .persons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            justify-items: center;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            width: 100%;
+            max-width: 300px;
+            transition: all 0.4s ease;
+            position: relative;
+            text-align: center;
+            padding: 20px 15px;
+        }
+        
+        .card.highlight-search {
+            box-shadow: 0 0 0 3px #ffeb3b, 0 8px 25px rgba(0,0,0,0.15);
+            transform: scale(1.03);
+            z-index: 10;
+        }
+        
+        .card.special {
+            background: linear-gradient(135deg, #1a2a6c, #2c3e50, #4a6491);
+            color: white;
+            box-shadow: 0 10px 30px rgba(75, 0, 130, 0.35);
+        }
+        
+        .photo-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 5px solid #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #f8f4e5, #e9e1c9);
+        }
+        
+        .photo {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid rgba(212, 175, 55, 0.8);
+            display: block;
+        }
+        
+        .card.special .photo-container {
+            border-color: #e6d3a7;
+            box-shadow: 0 0 20px rgba(230, 211, 167, 0.7);
+        }
+        
+        .name {
+            font-weight: bold;
+            font-size: 1.35rem;
+            color: #1565c0;
+            margin: 10px 0;
+            min-height: 28px;
+        }
+        
+        .card.special .name {
+            color: #ffd700;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+        
+        .birth-date, .age {
+            color: #2e7d32;
+            font-weight: bold;
+            margin: 4px 0;
+            font-size: 1.1rem;
+        }
+        
+        .death-date {
+            color: #5d4037;
+            margin: 6px 0;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .death-date::before {
+            content: "✝";
+            font-size: 1.4em;
+        }
+        
+        .zodiac {
+            margin-top: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1.15rem;
+        }
+        
+        .zodiac::before {
+            font-size: 1.5rem;
+        }
+        
+        .birthday-message {
+            margin-top: 12px;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 25px;
+            animation: blink 1.5s infinite;
+            font-size: 1.1rem;
+        }
+        
+        @keyframes blink {
+            50% { opacity: 0.5; }
+        }
+        
+        .blinking-red {
+            color: #d32f2f;
+            background: rgba(255, 235, 59, 0.3);
+            border: 1px solid #ff5252;
+        }
+        
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: #2962ff;
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(41, 98, 255, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(41, 98, 255, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(41, 98, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(41, 98, 255, 0); }
+        }
+        
+        #back-to-top:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(41, 98, 255, 0.6);
+            animation: none;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px;
+            color: #2c3e50;
+            font-size: 1.1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        footer p {
+            margin: 5px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .persons-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            h2 {
+                font-size: 2.1rem;
+                margin: 20px 0 30px;
+            }
+            
+            .month-title {
+                font-size: 1.9rem;
+            }
+            
+            #filter-buttons {
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            
+            .filter-btn {
+                min-width: 90px;
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+            
+            #back-to-top {
+                width: 48px;
+                height: 48px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .persons-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card {
+                max-width: 100%;
+                padding: 18px 12px;
+            }
+            
+            .photo-container {
+                width: 130px;
+                height: 130px;
+            }
+            
+            .photo {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .name {
+                font-size: 1.25rem;
+            }
+            
+            #search-container {
+                margin: 15px auto;
+                padding: 8px 15px;
+            }
+            
+            #search-input {
+                padding: 10px 12px;
+                font-size: 15px;
+            }
+            
+            #counts {
+                font-size: 1rem;
+                margin: 10px 0;
+            }
+            
+            h2 {
+                font-size: 1.9rem;
+                margin: 15px 0 25px;
+            }
+            
+            .month-title {
+                font-size: 1.7rem;
+            }
+            
+            .filter-btn {
+                min-width: 80px;
+                padding: 5px 8px;
+                font-size: 0.7rem;
+            }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .sign-aquarius::before { content: "♒"; }
+        .sign-pisces::before { content: "♓"; }
+        .sign-aries::before { content: "♈"; }
+        .sign-taurus::before { content: "♉"; }
+        .sign-gemini::before { content: "♊"; }
+        .sign-cancer::before { content: "♋"; }
+        .sign-leo::before { content: "♌"; }
+        .sign-virgo::before { content: "♍"; }
+        .sign-libra::before { content: "♎"; }
+        .sign-scorpio::before { content: "♏"; }
+        .sign-sagittarius::before { content: "♐"; }
+        .sign-capricorn::before { content: "♑"; }
+        .sign-divine::before { content: "☧"; }
     </style>
 </head>
 <body>
-
-    <h2>ANIVERSARIANTES</h2>
-
-    <input type="text" id="busca" placeholder="Busca nome, mês ou signo..." onkeyup="filtrar()" style="padding:10px; width:80%; max-width:400px; margin-bottom:10px;">
+    <div class="container">
+        <h2>ANIVERSARIANTES</h2>
+        
+        <div id="search-container">
+            <input type="text" id="search-input" placeholder="Buscar por nome, mês ou signo...">
+        </div>
+        
+        <div id="counts">Total registros: <span id="total-count">0</span> | Filtrados: <span id="filtered-count">0</span></div>
+        
+        <div id="filter-buttons">
+            <button class="filter-btn blue" data-filter="all">Todos</button>
+            <button class="filter-btn orange" data-filter="next">Próx.aniv</button>
+            <button class="filter-btn gray" data-filter="clear">Limpar Filtros</button>
+            <button class="filter-btn black" data-filter="prev-month">Mês ←</button>
+            <button class="filter-btn black" data-filter="current-month">Mês atual</button>
+            <button class="filter-btn black" data-filter="next-month">Mês →</button>
+            <button class="filter-btn green" data-filter="alive">Vivos</button>
+            <button class="filter-btn red" data-filter="deceased">Falecidos</button>
+        </div>
+        
+        <div id="anniversaries">
+            <!-- Month sections will be generated by JavaScript -->
+        </div>
+        
+        <footer>
+            <p>©2016-2026 José Amarildo Anerão</p>
+            <p>Atualizado: 04/02/2026</p>
+        </footer>
+    </div>
     
-    <div>
-        <button class="btn-3d bg-azul" onclick="filtroRapido('todos')">Todos</button>
-        <button class="btn-3d bg-cinza" onclick="limparFiltros()">Limpar filtros</button>
-        <br>
-        <button class="btn-3d bg-preto" onclick="filtroMes(-1)">Mês Ant</button>
-        <button class="btn-3d bg-preto" onclick="filtroMes(0)">Mês Atual</button>
-        <button class="btn-3d bg-preto" onclick="filtroMes(1)">Próx. Mês</button>
-        <br>
-        <button class="btn-3d bg-verde" onclick="filtroVida(true)">Vivos</button>
-        <button class="btn-3d bg-vermelho" onclick="filtroVida(false)">Falecidos</button>
-    </div>
-
-    <div style="margin: 15px;">
-        Total registros: <span id="totalReg">0</span> | Filtrados: <span id="totalFilt">0</span>
-    </div>
-
-    <div id="listaAniversariantes"></div>
-
-    <button id="btnTopo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
-
-    <footer>
-        <p>&copy;J.A.Anerão, 2016-2026<br>Atualizado: 03/02/2026</p>
-    </footer>
-
+    <button id="back-to-top">↑</button>
+    
     <script>
-        const BASE_FOTO = "https://amarildo1963.github.io/jaa/fotos/";
-        const dadosBrutos = `INGRID GRAZIELA FERNANDES ANERÃO,*06/01/1997,ingrid.jpg
+        document.addEventListener('DOMContentLoaded', function() {
+            // Dados dos aniversariantes
+            const dataString = `INGRID GRAZIELA FERNANDES ANERÃO,*06/01/1997,ingrid.jpg
 MARIA AMARILZA ANERÃO,*14/01/1969,amarilza.jpg
 SANDRA REGINA MOLLER DE CAMPOS,*22/01/1964,+20/07/2020,sandra.jpg
 ROSA FRACHELLI ANERÃO,*01/02/1901,+15/01/1971,rosa_frachelli.jpg
 BRAZ GESTICH,*03/02/1944,+08/05/2023,braz.jpg
 HUMBERTO DONIZETE ANERÃO,*22/02/1961,+14/07/2021,humberto.png
-PRISCILA TOLEDO RETI,*03/03/1990,priscila.jpg
+PRISCILA TOLEDO RETI,*03/03/1990,priscila.jpg                                                    
 VALERIA APARECIDA GESTICH,*07/03/1988,valeria.jpg
 IRIA RIBEIRO ANERÃO,*23/03/1930,+10/01/1979,iria.jpg
 ZULMIRA BORGES GESTICH,*25/03/1907,+19/09/1964,zulmira.JPG
@@ -189,152 +534,455 @@ ROSA LIA ANERÃO MOLLER,*15/12/1943,rosalina.jpg
 RITA DE CÁSSIA RIBEIRO,*18/12/1974,rita.jpg
 REGINA APARECIDA RIBEIRO,*21/12/1971,regina.jpg
 25/12 NATAL DO MENINO JESUS,jesus.jpg`;
-
-        const mesesStr = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
-
-        function getSigno(dia, mes) {
-            if (dia === 25 && mes === 12) return "Divino ☀️";
-            const signos = [
-                { s: "Capricórnio ♑", d: 20 }, { s: "Aquário ♒", d: 19 }, { s: "Peixes ♓", d: 20 },
-                { s: "Áries ♈", d: 20 }, { s: "Touro ♉", d: 21 }, { s: "Gêmeos ♊", d: 21 },
-                { s: "Câncer ♋", d: 22 }, { s: "Leão ♌", d: 23 }, { s: "Virgem ♍", d: 23 },
-                { s: "Libra ♎", d: 23 }, { s: "Escorpião ♏", d: 22 }, { s: "Sagitário ♐", d: 21 }, { s: "Capricórnio ♑", d: 31 }
+            
+            // Parse dos dados
+            const lines = dataString.trim().split('\n');
+            const persons = [];
+            const monthsPT = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+            const zodiacSigns = [
+                {sign: 'capricorn', start: [12,22], end: [1,19], name: 'Capricórnio'},
+                {sign: 'aquarius', start: [1,20], end: [2,18], name: 'Aquário'},
+                {sign: 'pisces', start: [2,19], end: [3,20], name: 'Peixes'},
+                {sign: 'aries', start: [3,21], end: [4,19], name: 'Áries'},
+                {sign: 'taurus', start: [4,20], end: [5,20], name: 'Touro'},
+                {sign: 'gemini', start: [5,21], end: [6,20], name: 'Gêmeos'},
+                {sign: 'cancer', start: [6,21], end: [7,22], name: 'Câncer'},
+                {sign: 'leo', start: [7,23], end: [8,22], name: 'Leão'},
+                {sign: 'virgo', start: [8,23], end: [9,22], name: 'Virgem'},
+                {sign: 'libra', start: [9,23], end: [10,22], name: 'Libra'},
+                {sign: 'scorpio', start: [10,23], end: [11,21], name: 'Escorpião'},
+                {sign: 'sagittarius', start: [11,22], end: [12,21], name: 'Sagitário'}
             ];
-            return dia <= signos[mes - 1].d ? signos[mes - 1].s : signos[mes].s;
-        }
-
-        function parseData(str) {
-            if (!str) return null;
-            const parts = str.replace(/[^\d/]/g, '').split('/');
-            return new Date(parts[2], parts[1] - 1, parts[0]);
-        }
-
-        function calcularIdade(nasc, ref) {
-            let idade = ref.getFullYear() - nasc.getFullYear();
-            const m = ref.getMonth() - nasc.getMonth();
-            if (m < 0 || (m === 0 && ref.getDate() < nasc.getDate())) idade--;
-            return idade;
-        }
-
-        function normalizar(str) {
-            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-        }
-
-        let pessoas = dadosBrutos.split('\n').map(linha => {
-            const cols = linha.split(',');
-            if (cols.length < 2) return null;
             
-            let nome = cols[0], nascStr = "", falecStr = "", foto = "";
+            // Data atual para cálculos
+            const today = new Date();
+            const currentDay = today.getDate();
+            const currentMonth = today.getMonth(); // 0-11
+            const currentYear = today.getFullYear();
             
-            if (nome.includes("NATAL")) {
-                return { nome, especial: true, foto: cols[1], mes: 12, dia: 25, signo: "Divino" };
-            }
-
-            nascStr = cols[1].replace('*', '');
-            if (cols[2].includes('+')) {
-                falecStr = cols[2].replace('+', '');
-                foto = cols[3];
-            } else {
-                foto = cols[2];
-            }
-
-            const dNasc = parseData(nascStr);
-            const dFalec = parseData(falecStr);
-            const hoje = new Date();
-            
-            const idadeFinal = dFalec ? calcularIdade(dNasc, dFalec) : calcularIdade(dNasc, hoje);
-            const anosFalec = dFalec ? calcularIdade(dFalec, hoje) : null;
-
-            return {
-                nome, dNasc, dFalec, foto, idadeFinal, anosFalec,
-                dia: dNasc.getDate(),
-                mes: dNasc.getMonth() + 1,
-                signo: getSigno(dNasc.getDate(), dNasc.getMonth() + 1),
-                isAniv: dNasc.getDate() === hoje.getDate() && dNasc.getMonth() === hoje.getMonth()
+            // Função para remover acentos
+            const removeAccents = (str) => {
+                return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
             };
-        }).filter(p => p);
-
-        function render(filtroTexto = "", filtroEspecifico = null) {
-            const container = document.getElementById('listaAniversariantes');
-            container.innerHTML = "";
-            let contagem = 0;
-
-            mesesStr.forEach((mesNome, i) => {
-                const mesIdx = i + 1;
-                const pessoasMes = pessoas.filter(p => p.mes === mesIdx)
-                                          .sort((a,b) => a.dia - b.dia);
-
-                let htmlMes = `<div class="mes-bloco" id="mes-${mesIdx}">
-                                <h3 class="mes-titulo">${mesNome}</h3>`;
-                let temPessoa = false;
-
-                pessoasMes.forEach(p => {
-                    const txtBusca = normalizar(p.nome + p.signo + mesesStr[p.mes-1]);
-                    const term = normalizar(filtroTexto);
-
-                    // Lógica de Filtros
-                    if (filtroTexto && !txtBusca.includes(term)) return;
-                    if (filtroEspecifico === 'vivos' && p.dFalec) return;
-                    if (filtroEspecifico === 'falecidos' && (!p.dFalec || p.especial)) return;
-                    if (typeof filtroEspecifico === 'number' && p.mes !== filtroEspecifico) return;
-
-                    temPessoa = true;
-                    contagem++;
-
-                    let displayNome = p.nome;
-                    if (filtroTexto) {
-                        const regex = new RegExp(`(${filtroTexto})`, 'gi');
-                        displayNome = p.nome.replace(regex, "<mark>$1</mark>");
+            
+            // Função para calcular idade
+            const calculateAge = (birthDate, deathDate = null) => {
+                const endDate = deathDate ? new Date(deathDate) : new Date();
+                let age = endDate.getFullYear() - birthDate.getFullYear();
+                const m = endDate.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && endDate.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                return age;
+            };
+            
+            // Função para calcular anos desde o falecimento
+            const yearsSinceDeath = (deathDate) => {
+                const death = new Date(deathDate);
+                let years = currentYear - death.getFullYear();
+                if (currentMonth < death.getMonth() || (currentMonth === death.getMonth() && currentDay < death.getDate())) {
+                    years--;
+                }
+                return years;
+            };
+            
+            // Função para determinar signo
+            const getZodiacSign = (day, month) => {
+                // month: 0-11 (Jan-Dec), day: 1-31
+                // Convert to 1-12 for sign calculation
+                const m = month + 1;
+                
+                // Special case for Natal
+                if (day === 25 && m === 12) {
+                    return {sign: 'divine', name: 'Divino'};
+                }
+                
+                for (const zodiac of zodiacSigns) {
+                    const startMonth = zodiac.start[0];
+                    const startDay = zodiac.start[1];
+                    const endMonth = zodiac.end[0];
+                    const endDay = zodiac.end[1];
+                    
+                    // Sign that spans year end
+                    if (startMonth > endMonth) {
+                        if ((m === startMonth && day >= startDay) || (m === endMonth && day <= endDay) || (m > startMonth) || (m < endMonth)) {
+                            return {sign: zodiac.sign, name: zodiac.name};
+                        }
+                    } 
+                    // Regular sign
+                    else if (m === startMonth && day >= startDay) {
+                        return {sign: zodiac.sign, name: zodiac.name};
+                    } else if (m === endMonth && day <= endDay) {
+                        return {sign: zodiac.sign, name: zodiac.name};
+                    } else if (m > startMonth && m < endMonth) {
+                        return {sign: zodiac.sign, name: zodiac.name};
                     }
-
-                    htmlMes += `
-                        <div class="cartao">
-                            <div class="foto-container">
-                                <img src="${BASE_FOTO + p.foto}" alt="${p.nome}" onerror="this.src='https://via.placeholder.com'">
-                            </div>
-                            <div class="nome">${displayNome}</div>
-                            ${p.especial ? '' : `
-                                <div class="data-nasc">${p.dNasc.toLocaleDateString('pt-BR')}</div>
-                                <div class="idade">${p.idadeFinal} anos</div>
-                                ${p.dFalec ? `<div class="falecimento">† ${p.dFalec.toLocaleDateString('pt-BR')} (há ${p.anosFalec} anos)</div>` : ''}
-                                <div>${p.signo}</div>
-                                ${p.isAniv ? `<div class="piscante-alerta">${p.dFalec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>` : ''}
-                            `}
-                        </div>
-                    `;
-                });
-
-                htmlMes += `</div>`;
-                if (temPessoa) container.innerHTML += htmlMes;
+                }
+                
+                return {sign: 'capricorn', name: 'Capricórnio'}; // default
+            };
+            
+            // Parse de cada linha
+            lines.forEach(line => {
+                const parts = line.split(',').map(part => part.trim());
+                let person = {
+                    isSpecial: false,
+                    name: '',
+                    birthDate: null,
+                    deathDate: null,
+                    photo: '',
+                    birthDay: null,
+                    birthMonth: null,
+                    isDeceased: false
+                };
+                
+                // Identificar entrada especial do Natal
+                if (parts[0].includes('NATAL DO MENINO JESUS')) {
+                    person.isSpecial = true;
+                    person.name = 'NATAL DO MENINO JESUS';
+                    person.birthDay = 25;
+                    person.birthMonth = 11; // Dezembro (0-indexed)
+                    person.photo = parts[1] || 'jesus.jpg';
+                    person.zodiac = {sign: 'divine', name: 'Divino'};
+                } else {
+                    // Processar nome e datas
+                    person.name = parts[0];
+                    
+                    // Encontrar data de nascimento (começa com *)
+                    for (let i = 1; i < parts.length - 1; i++) {
+                        if (parts[i].startsWith('*')) {
+                            const dateStr = parts[i].substring(1).trim();
+                            const [day, month, year] = dateStr.split('/').map(Number);
+                            person.birthDate = new Date(year, month - 1, day);
+                            person.birthDay = day;
+                            person.birthMonth = month - 1; // 0-11
+                        } else if (parts[i].startsWith('+')) {
+                            const dateStr = parts[i].substring(1).trim();
+                            const [day, month, year] = dateStr.split('/').map(Number);
+                            person.deathDate = new Date(year, month - 1, day);
+                            person.isDeceased = true;
+                        }
+                    }
+                    
+                    // Foto é sempre o último elemento
+                    person.photo = parts[parts.length - 1];
+                    
+                    // Calcular signo
+                    if (person.birthDay && person.birthMonth !== null) {
+                        person.zodiac = getZodiacSign(person.birthDay, person.birthMonth);
+                    }
+                    
+                    // Calcular idade
+                    if (person.birthDate) {
+                        person.age = calculateAge(person.birthDate, person.deathDate);
+                    }
+                    
+                    // Calcular anos desde falecimento
+                    if (person.deathDate) {
+                        person.yearsSinceDeath = yearsSinceDeath(person.deathDate);
+                    }
+                }
+                
+                // Criar string para busca (nome, mês, signo)
+                person.searchString = removeAccents(person.name);
+                if (!person.isSpecial) {
+                    person.searchString += ` ${removeAccents(monthsPT[person.birthMonth])} ${removeAccents(person.zodiac.name)}`;
+                } else {
+                    person.searchString += ' natal dezembro divino';
+                }
+                
+                // Verificar se é aniversário hoje
+                person.isBirthday = (person.birthDay === currentDay && person.birthMonth === currentMonth);
+                
+                persons.push(person);
             });
-
-            document.getElementById('totalReg').innerText = pessoas.length;
-            document.getElementById('totalFilt').innerText = contagem;
-        }
-
-        function filtrar() { render(document.getElementById('busca').value); }
-        function limparFiltros() { document.getElementById('busca').value = ""; render(); }
-        function filtroVida(vivo) { render("", vivo ? 'vivos' : 'falecidos'); }
-        function filtroRapido(tipo) { if(tipo === 'todos') render(); }
-        function filtroMes(offset) {
-            let m = new Date().getMonth() + 1 + offset;
-            if (m < 1) m = 12; if (m > 12) m = 1;
-            render("", m);
-            document.getElementById(`mes-${m}`)?.scrollIntoView();
-        }
-
-        // Scroll Top
-        window.onscroll = () => {
-            document.getElementById("btnTopo").style.display = window.scrollY > 300 ? "block" : "none";
-        };
-
-        // Inicialização: Abre no mês atual
-        const mesAtual = new Date().getMonth() + 1;
-        render();
-        setTimeout(() => {
-            document.getElementById(`mes-${mesAtual}`)?.scrollIntoView({behavior: "smooth"});
-        }, 500);
-
+            
+            // Criar seções de meses
+            const anniversariesDiv = document.getElementById('anniversaries');
+            const monthSections = [];
+            
+            monthsPT.forEach((monthName, monthIndex) => {
+                const monthSection = document.createElement('div');
+                monthSection.className = 'month-section';
+                monthSection.id = `month-${monthIndex}`;
+                monthSection.innerHTML = `<h3 class="month-title">${monthName}</h3><div class="persons-grid" id="grid-${monthIndex}"></div>`;
+                anniversariesDiv.appendChild(monthSection);
+                monthSections.push(monthSection);
+            });
+            
+            // Ordenar pessoas por data de nascimento dentro de cada mês
+            const personsByMonth = Array(12).fill().map(() => []);
+            
+            persons.forEach(person => {
+                if (person.isSpecial) {
+                    // Natal vai em dezembro
+                    personsByMonth[11].push(person);
+                } else {
+                    personsByMonth[person.birthMonth].push(person);
+                }
+            });
+            
+            // Ordenar cada mês por dia do aniversário
+            personsByMonth.forEach((monthPersons, monthIndex) => {
+                monthPersons.sort((a, b) => {
+                    // Natal sempre no final de dezembro
+                    if (a.isSpecial) return 1;
+                    if (b.isSpecial) return -1;
+                    return a.birthDay - b.birthDay;
+                });
+                
+                // Adicionar pessoas ao grid do mês
+                const grid = document.getElementById(`grid-${monthIndex}`);
+                monthPersons.forEach(person => {
+                    const card = createPersonCard(person);
+                    grid.appendChild(card);
+                });
+            });
+            
+            // Função para criar card de pessoa
+            function createPersonCard(person) {
+                const card = document.createElement('div');
+                card.className = `card ${person.isSpecial ? 'special' : ''}`;
+                card.dataset.birthMonth = person.birthMonth;
+                card.dataset.birthDay = person.birthDay;
+                card.dataset.isDeceased = person.isDeceased ? 'true' : 'false';
+                card.dataset.searchable = person.searchString;
+                
+                // URL da foto
+                const photoUrl = `https://amarildo1963.github.io/jaa/fotos/${person.photo}`;
+                
+                // Conteúdo do card
+                let cardContent = `
+                    <div class="photo-container">
+                        <img src="${photoUrl}" alt="${person.name}" class="photo" onerror="this.src='https://via.placeholder.com/150/92c952?text=Sem+Foto'">
+                    </div>
+                    <div class="name">${person.name}</div>
+                `;
+                
+                // Para entradas normais (não especial)
+                if (!person.isSpecial) {
+                    // Data de nascimento
+                    const birthStr = person.birthDate ? person.birthDate.toLocaleDateString('pt-BR') : `${person.birthDay}/${person.birthMonth + 1}`;
+                    cardContent += `<div class="birth-date">*${birthStr}</div>`;
+                    
+                    // Idade
+                    if (person.age !== undefined) {
+                        cardContent += `<div class="age">${person.age} anos</div>`;
+                    }
+                    
+                    // Data de falecimento
+                    if (person.deathDate) {
+                        const deathStr = person.deathDate.toLocaleDateString('pt-BR');
+                        const yearsText = person.yearsSinceDeath === 1 ? 'ano' : 'anos';
+                        cardContent += `<div class="death-date">${deathStr} (há ${person.yearsSinceDeath} ${yearsText})</div>`;
+                    }
+                    
+                    // Signo
+                    cardContent += `<div class="zodiac sign-${person.zodiac.sign}">${person.zodiac.name}</div>`;
+                    
+                    // Mensagem de aniversário
+                    if (person.isBirthday) {
+                        if (person.isDeceased) {
+                            cardContent += `<div class="birthday-message blinking-red">Faria aniversário hoje!</div>`;
+                        } else {
+                            cardContent += `<div class="birthday-message blinking-red">Parabéns, Feliz Aniversário!</div>`;
+                        }
+                    }
+                }
+                
+                card.innerHTML = cardContent;
+                return card;
+            }
+            
+            // Estado dos filtros
+            const filterState = {
+                mode: 'all', // 'all', 'month', 'next'
+                month: currentMonth, // 0-11
+                deceased: null, // null, 'alive', 'deceased'
+                search: ''
+            };
+            
+            // Elementos DOM
+            const searchInput = document.getElementById('search-input');
+            const totalCountEl = document.getElementById('total-count');
+            const filteredCountEl = document.getElementById('filtered-count');
+            const backToTopBtn = document.getElementById('back-to-top');
+            
+            // Atualizar contagem total
+            totalCountEl.textContent = persons.length;
+            
+            // Função para aplicar filtros
+            function applyFilters() {
+                let visibleCount = 0;
+                const normalizedSearch = removeAccents(filterState.search);
+                
+                // Processar cada card
+                document.querySelectorAll('.card').forEach(card => {
+                    const birthMonth = parseInt(card.dataset.birthMonth);
+                    const isDeceased = card.dataset.isDeceased === 'true';
+                    const searchable = card.dataset.searchable;
+                    
+                    // Verificar filtro de modo
+                    let modeMatch = false;
+                    
+                    if (filterState.mode === 'all') {
+                        modeMatch = true;
+                    } 
+                    else if (filterState.mode === 'month') {
+                        modeMatch = (birthMonth === filterState.month);
+                    } 
+                    else if (filterState.mode === 'next') {
+                        // Calcular próximos aniversários (próximos 30 dias)
+                        let nextBirthday = new Date(currentYear, birthMonth, parseInt(card.dataset.birthDay));
+                        if (nextBirthday < today) {
+                            nextBirthday = new Date(currentYear + 1, birthMonth, parseInt(card.dataset.birthDay));
+                        }
+                        const diffTime = nextBirthday - today;
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        modeMatch = (diffDays <= 30);
+                    }
+                    
+                    // Verificar filtro de falecidos
+                    let deceasedMatch = true;
+                    if (filterState.deceased === 'alive') {
+                        deceasedMatch = !isDeceased;
+                    } else if (filterState.deceased === 'deceased') {
+                        deceasedMatch = isDeceased;
+                    }
+                    
+                    // Verificar busca
+                    const searchMatch = normalizedSearch === '' || searchable.includes(normalizedSearch);
+                    
+                    // Verificar se a entrada especial deve ser exibida nos falecidos
+                    let specialEntryMatch = true;
+                    if (card.classList.contains('special') && filterState.deceased === 'deceased') {
+                        specialEntryMatch = false;
+                    }
+                    
+                    // Aplicar filtros
+                    const isVisible = modeMatch && deceasedMatch && searchMatch && specialEntryMatch;
+                    
+                    if (isVisible) {
+                        card.classList.remove('hidden');
+                        visibleCount++;
+                        
+                        // Aplicar highlight de busca
+                        if (normalizedSearch !== '') {
+                            card.classList.add('highlight-search');
+                        } else {
+                            card.classList.remove('highlight-search');
+                        }
+                    } else {
+                        card.classList.add('hidden');
+                        card.classList.remove('highlight-search');
+                    }
+                });
+                
+                // Atualizar contagem filtrada
+                filteredCountEl.textContent = visibleCount;
+                
+                // Atualizar seções de mês (esconder seções vazias)
+                document.querySelectorAll('.month-section').forEach(section => {
+                    const hasVisibleCards = section.querySelector('.card:not(.hidden)');
+                    if (filterState.mode === 'month') {
+                        // Se estiver no modo mês, esconder todos os meses exceto o selecionado
+                        const monthId = parseInt(section.id.split('-')[1]);
+                        section.style.display = (monthId === filterState.month) ? 'block' : 'none';
+                    } else {
+                        section.style.display = hasVisibleCards ? 'block' : 'none';
+                    }
+                });
+            }
+            
+            // Eventos dos botões de filtro
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const filterType = button.dataset.filter;
+                    
+                    switch(filterType) {
+                        case 'all':
+                            filterState.mode = 'all';
+                            filterState.deceased = null;
+                            break;
+                        case 'next':
+                            filterState.mode = 'next';
+                            break;
+                        case 'clear':
+                            filterState.mode = 'all';
+                            filterState.month = currentMonth;
+                            filterState.deceased = null;
+                            filterState.search = '';
+                            searchInput.value = '';
+                            break;
+                        case 'prev-month':
+                            if (filterState.mode !== 'month') {
+                                filterState.mode = 'month';
+                                filterState.month = (currentMonth - 1 + 12) % 12;
+                            } else {
+                                filterState.month = (filterState.month - 1 + 12) % 12;
+                            }
+                            break;
+                        case 'current-month':
+                            filterState.mode = 'month';
+                            filterState.month = currentMonth;
+                            break;
+                        case 'next-month':
+                            if (filterState.mode !== 'month') {
+                                filterState.mode = 'month';
+                                filterState.month = (currentMonth + 1) % 12;
+                            } else {
+                                filterState.month = (filterState.month + 1) % 12;
+                            }
+                            break;
+                        case 'alive':
+                            filterState.deceased = filterState.deceased === 'alive' ? null : 'alive';
+                            break;
+                        case 'deceased':
+                            filterState.deceased = filterState.deceased === 'deceased' ? null : 'deceased';
+                            break;
+                    }
+                    
+                    applyFilters();
+                });
+            });
+            
+            // Evento de busca
+            searchInput.addEventListener('input', (e) => {
+                filterState.search = e.target.value;
+                applyFilters();
+            });
+            
+            // Botão voltar ao topo
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Mostrar/ocultar botão voltar ao topo
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.style.display = 'flex';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+            
+            // Rolar para o mês atual ao carregar a página
+            setTimeout(() => {
+                const currentMonthSection = document.getElementById(`month-${currentMonth}`);
+                if (currentMonthSection) {
+                    currentMonthSection.scrollIntoView({behavior: 'smooth', block: 'start'});
+                }
+            }, 500);
+            
+            // Aplicar filtros iniciais
+            applyFilters();
+            
+            // Atualizar automaticamente ao carregar a página
+            window.addEventListener('load', applyFilters);
+        });
     </script>
 </body>
 </html>
