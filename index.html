@@ -6,285 +6,335 @@
     <title>Aniversariantes - Família Anerão</title>
     <style>
         :root {
-            --gold: #d4af37;
-            --blue: #0000ff;
-            --red: #ff0000;
-            --green: #008000;
-            --brown: #8b4513;
+            --ouro: #d4af37;
+            --azul-3d: #0056b3;
+            --verde-sucesso: #28a745;
+            --marrom-cruz: #5d4037;
         }
 
-        body { font-family: sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h2 { color: #333; margin-bottom: 20px; }
+
+        /* Moldura Dourada Redonda */
+        .foto-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 10px;
+            border: 4px solid var(--ouro);
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .foto-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Botões 3D */
+        .btn-3d {
+            border: none;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px #999;
+            transition: 0.2s;
+        }
+
+        .btn-3d:active { box-shadow: 0 1px #666; transform: translateY(4px); }
+        .bg-azul { background-color: blue; }
+        .bg-cinza { background-color: grey; }
+        .bg-preto { background-color: black; }
+        .bg-verde { background-color: green; }
+        .bg-vermelho { background-color: red; }
+
+        /* Botão Voltar ao Topo Piscante */
+        #btnTopo {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: blue;
+            color: white;
+            border: 2px solid white;
+            box-shadow: 0 0 15px blue;
+            display: none;
+            cursor: pointer;
+            z-index: 1000;
+            animation: piscanteAzul 1s infinite alternate;
+        }
+
+        @keyframes piscanteAzul {
+            from { opacity: 1; box-shadow: 0 0 5px blue; }
+            to { opacity: 0.7; box-shadow: 0 0 20px blue; }
+        }
+
+        /* Estilização de Texto */
+        .mes-titulo { color: red; font-weight: bold; margin-top: 30px; font-size: 1.5em; }
+        .nome { color: blue; font-weight: bold; font-size: 1.1em; }
+        .data-nasc { color: green; font-weight: bold; }
+        .idade { color: green; font-weight: bold; }
+        .falecimento { color: var(--marrom-cruz); }
+        .piscante-alerta { color: red; font-weight: bold; animation: pisca 0.8s infinite; }
         
-        .container { max-width: 1000px; margin: auto; }
+        @keyframes pisca { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
 
-        /* Filtros e Busca */
-        .search-box { margin-bottom: 20px; padding: 10px; width: 80%; font-size: 16px; border: 2px solid #ccc; border-radius: 5px; }
-        .highlight { background-color: yellow; font-weight: bold; }
-        
-        .btn-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 20px; }
-        .btn-3d { 
-            padding: 8px 15px; border: none; border-radius: 5px; color: white; font-weight: bold; 
-            cursor: pointer; box-shadow: 0 4px #999; transition: 0.2s; text-transform: uppercase; font-size: 12px;
-        }
-        .btn-3d:active { box-shadow: 0 2px #666; transform: translateY(2px); }
-        .btn-blue { background-color: blue; }
-        .btn-gray { background-color: gray; }
-        .btn-orange { background-color: orange; }
-        .btn-green { background-color: green; }
-        .btn-red { background-color: red; }
-
-        /* Grid de Pessoas */
-        .month-section { margin-top: 40px; }
-        .month-title { color: var(--red); font-size: 24px; font-weight: bold; border-bottom: 2px solid var(--red); padding-bottom: 5px; margin-bottom: 20px; }
-        
-        .grid-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-        .person-card { 
-            background: white; padding: 15px; border-radius: 10px; width: 220px; 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center;
+        .cartao {
+            background: white;
+            padding: 15px;
+            margin: 10px;
+            display: inline-block;
+            width: 250px;
+            vertical-align: top;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .photo-frame { 
-            width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--gold); 
-            overflow: hidden; margin-bottom: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2);
-        }
-        .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+        mark { background-color: yellow; }
 
-        .name { color: var(--blue); font-weight: bold; font-size: 16px; margin: 5px 0; }
-        .birth { color: var(--green); font-weight: bold; font-size: 14px; }
-        .death { color: var(--brown); font-size: 13px; }
-        .zodiac { font-style: italic; margin-top: 5px; }
-
-        .blinking { 
-            color: red; font-weight: bold; animation: blinker 1s linear infinite; font-size: 12px; margin-top: 5px;
-        }
-        @keyframes blinker { 50% { opacity: 0; } }
-
-        footer { margin-top: 50px; font-size: 12px; color: #666; }
+        /* Responsividade */
+        @media (max-width: 600px) { .cartao { width: 90%; } }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>ANIVERSARIANTES</h2>
+    <h2>ANIVERSARIANTES</h2>
 
-        <input type="text" id="searchInput" class="search-box" placeholder="Busque por nome, mês ou signo..." onkeyup="filterData()">
-
-        <div class="btn-group">
-            <button class="btn-3d btn-blue" onclick="resetFilters()">Todos</button>
-            <button class="btn-3d btn-gray" onclick="clearSearch()">Limpar Filtros</button>
-            <button class="btn-3d btn-orange" onclick="filterByMonth(-1)">Mês Anterior</button>
-            <button class="btn-3d btn-orange" onclick="filterByMonth(0)">Mês Atual</button>
-            <button class="btn-3d btn-orange" onclick="filterByMonth(1)">Próx. Mês</button>
-            <button class="btn-3d btn-green" onclick="filterStatus('vivos')">Vivos</button>
-            <button class="btn-3d btn-red" onclick="filterStatus('falecidos')">Falecidos</button>
-        </div>
-
-        <div id="stats">Total registros: <span id="totalReg">0</span> | Filtrados: <span id="filteredReg">0</span></div>
-
-        <div id="results"></div>
-
-        <footer>
-            ©J.A.Anerão, 2016-2026<br>
-            Atualizado: 03/02/2026
-        </footer>
+    <input type="text" id="busca" placeholder="Busca nome, mês ou signo..." onkeyup="filtrar()" style="padding:10px; width:80%; max-width:400px; margin-bottom:10px;">
+    
+    <div>
+        <button class="btn-3d bg-azul" onclick="filtroRapido('todos')">Todos</button>
+        <button class="btn-3d bg-cinza" onclick="limparFiltros()">Limpar filtros</button>
+        <br>
+        <button class="btn-3d bg-preto" onclick="filtroMes(-1)">Mês Ant</button>
+        <button class="btn-3d bg-preto" onclick="filtroMes(0)">Mês Atual</button>
+        <button class="btn-3d bg-preto" onclick="filtroMes(1)">Próx. Mês</button>
+        <br>
+        <button class="btn-3d bg-verde" onclick="filtroVida(true)">Vivos</button>
+        <button class="btn-3d bg-vermelho" onclick="filtroVida(false)">Falecidos</button>
     </div>
 
-<script>
-    const baseUrl = "https://amarildo1963.github.io/jaa/fotos/";
-    const rawData = [
-        "INGRID GRAZIELA FERNANDES ANERÃO,*06/01/1997,ingrid.jpg",
-        "MARIA AMARILZA ANERÃO,*14/01/1969,amarilza.jpg",
-        "SANDRA REGINA MOLLER DE CAMPOS,*22/01/1964,+20/07/2020,sandra.jpg",
-        "ROSA FRACHELLI ANERÃO,*01/02/1901,+15/01/1971,rosa_frachelli.jpg",
-        "BRAZ GESTICH,*03/02/1944,+08/05/2023,braz.jpg",
-        "HUMBERTO DONIZETE ANERÃO,*22/02/1961,+14/07/2021,humberto.png",
-        "PRISCILA TOLEDO RETI,*03/03/1990,priscila.jpg",
-        "VALERIA APARECIDA GESTICH,*07/03/1988,valeria.jpg",
-        "IRIA RIBEIRO ANERÃO,*23/03/1930,+10/01/1979,iria.jpg",
-        "ZULMIRA BORGES GESTICH,*25/03/1907,+19/09/1964,zulmira.JPG",
-        "NICOLAS MIGUEL ANERÃO FONSECA,*25/03/2014,nicolas.jpg",
-        "JOSÉ AMARILDO ANERÃO,*30/03/1963,amarildo.jpg",
-        "IVANIRA FERREIRA LIMA,*01/04/1973,ivanira.jpg",
-        "MARIA DE LOURDES MALAQUIAS GESTICH,*07/04/1955,maria_lourdes.jpg",
-        "ROSA APARECIDA ANERÃO DE JESUS,*08/04/1950,+20/09/2021,rosa_aparecida.jpg",
-        "AURORA RIBEIRO,*16/04/1946,aurora.jpg",
-        "ARLINDO FRANCISCO RIBEIRO,*16/04/1948,+24/10/2001,arlindo.jpg",
-        "DIONATAS WILLIAN DE SOUZA FONSECA,*18/04/1992,dionatas.jpg",
-        "CAROLINA GABRIELA FERNANDES ANERÃO,*04/05/1994,carolina.jpg",
-        "JOSÉ REGINALDO GESTICH,*29/05/1980,jose_reginaldo.jpg",
-        "KARINA KRISTINA LIMA ANERÃO,*30/05/1996,karina.jpg",
-        "GENÉSIO DE SOUZA,*11/06/1947,+08/02/2000,genesio.jpg",
-        "AMÉLIA ANERÃO DONEDA,*15/06/1926,+23/02/2020,amelia.png",
-        "JOÃO PAULO GESTICH,*19/06/1984,joao_paulo.jpg",
-        "JOÃO GESTICH,*24/06/1895,+04/05/1980,joao_gestich.jpg",
-        "LEONOR OLIVEIRA DE SOUZA,*29/06/1951,+21/03/2019,leonor.jpg",
-        "GUILHERME GABRIEL FERNANDES ANERÃO,*06/07/2009,guilherme.jpg",
-        "ELIAS GESTICH,*27/07/1948,elias.jpg",
-        "ANTONIO FERNANDES DE LIMA,*18/08/1943,+28/02/2019,antonio_lima.jpg",
-        "JOÃO ANERÃO,*24/08/1924,+30/01/2007,joao_anerao.png",
-        "JOSÉ ANERÃO,*25/08/1889,+11/08/1976,jose_anerao.jpg",
-        "LAURA RACHEL DIAS LINS ANERÃO,*05/09/1982,laura.jpg",
-        "APARECIDA ORDÁLIA GARCIA DE LIMA,*07/09/1943,aparecida.jpg",
-        "MARIA CRISTINA ANERÃO,*10/09/1941,+12/03/2023,cristina.jpg",
-        "LEANDRO HENRIQUE DE LIMA NETO,*29/09/1990,leandro.jpg",
-        "PAULO DE ASSIS ANERÃO,*18/10/1962,paulo.jpg",
-        "ANTONIO AMAURI ANERÃO,*19/10/1965,amauri.jpg",
-        "SONIA REGINA MOLLER,*21/10/1975,+10/10/2019,sonia.jpg",
-        "ANTONIO AMAURI ANERÃO JUNIOR,*24/10/1991,amauri_jr.jpg",
-        "SOLAMITA FERNANDES DE LIMA,*30/10/1972,solamita.jpg",
-        "VICENTE GESTICH,*13/11/1938,+27/05/2022,vicente.jpg",
-        "LUIZ FERNANDO LIMA ANERÃO,*27/11/2005,luiz.jpg",
-        "ARVELINO ANERÃO,*29/11/1937,+02/07/2007,arvelino.png",
-        "SANDRO FERNANDES DE LIMA,*29/11/1974,+23/12/2016,sandro.jpg",
-        "ANTONIO GESTICH,*02/12/1951,antonio_gestich.jpg",
-        "ROSA LIA ANERÃO MOLLER,*15/12/1943,rosalina.jpg",
-        "RITA DE CÁSSIA RIBEIRO,*18/12/1974,rita.jpg",
-        "REGINA APARECIDA RIBEIRO,*21/12/1971,regina.jpg",
-        "25/12 NATAL DO MENINO JESUS,jesus.jpg"
-    ];
+    <div style="margin: 15px;">
+        Total registros: <span id="totalReg">0</span> | Filtrados: <span id="totalFilt">0</span>
+    </div>
 
-    const months = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
+    <div id="listaAniversariantes"></div>
 
-    function getZodiac(day, month) {
-        if (month == 1) return day >= 20 ? ["♒", "Aquário"] : ["♑", "Capricórnio"];
-        if (month == 2) return day >= 19 ? ["♓", "Peixes"] : ["♒", "Aquário"];
-        if (month == 3) return day >= 21 ? ["♈", "Áries"] : ["♓", "Peixes"];
-        if (month == 4) return day >= 20 ? ["♉", "Touro"] : ["♈", "Áries"];
-        if (month == 5) return day >= 21 ? ["♊", "Gêmeos"] : ["♉", "Touro"];
-        if (month == 6) return day >= 21 ? ["♋", "Câncer"] : ["♊", "Gêmeos"];
-        if (month == 7) return day >= 23 ? ["♌", "Leão"] : ["♋", "Câncer"];
-        if (month == 8) return day >= 23 ? ["♍", "Virgem"] : ["♌", "Leão"];
-        if (month == 9) return day >= 23 ? ["♎", "Libra"] : ["♍", "Virgem"];
-        if (month == 10) return day >= 23 ? ["♏", "Escorpião"] : ["♎", "Libra"];
-        if (month == 11) return day >= 22 ? ["♐", "Sagitário"] : ["♏", "Escorpião"];
-        if (month == 12) return day >= 22 ? ["♑", "Capricórnio"] : ["♐", "Sagitário"];
-    }
+    <button id="btnTopo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
 
-    function parsePeople() {
-        return rawData.map(line => {
-            if (line.includes("NATAL DO MENINO JESUS")) {
-                const parts = line.split(",");
-                return { nome: parts[0], foto: parts[1], isJesus: true, mes: 12, dia: 25, signo: "Divino" };
-            }
-            const parts = line.split(",");
-            const nome = parts[0];
-            const nascStr = parts[1].replace("*", "").split("/");
-            const dN = parseInt(nascStr[0]), mN = parseInt(nascStr[1]), aN = parseInt(nascStr[2]);
+    <footer>
+        <p>&copy;J.A.Anerão, 2016-2026<br>Atualizado: 03/02/2026</p>
+    </footer>
+
+    <script>
+        const BASE_FOTO = "https://amarildo1963.github.io/jaa/fotos/";
+        const dadosBrutos = `INGRID GRAZIELA FERNANDES ANERÃO,*06/01/1997,ingrid.jpg
+MARIA AMARILZA ANERÃO,*14/01/1969,amarilza.jpg
+SANDRA REGINA MOLLER DE CAMPOS,*22/01/1964,+20/07/2020,sandra.jpg
+ROSA FRACHELLI ANERÃO,*01/02/1901,+15/01/1971,rosa_frachelli.jpg
+BRAZ GESTICH,*03/02/1944,+08/05/2023,braz.jpg
+HUMBERTO DONIZETE ANERÃO,*22/02/1961,+14/07/2021,humberto.png
+PRISCILA TOLEDO RETI,*03/03/1990,priscila.jpg
+VALERIA APARECIDA GESTICH,*07/03/1988,valeria.jpg
+IRIA RIBEIRO ANERÃO,*23/03/1930,+10/01/1979,iria.jpg
+ZULMIRA BORGES GESTICH,*25/03/1907,+19/09/1964,zulmira.JPG
+NICOLAS MIGUEL ANERÃO FONSECA,*25/03/2014,nicolas.jpg
+JOSÉ AMARILDO ANERÃO,*30/03/1963,amarildo.jpg
+IVANIRA FERREIRA LIMA,*01/04/1973,ivanira.jpg
+MARIA DE LOURDES MALAQUIAS GESTICH,*07/04/1955,maria_lourdes.jpg
+ROSA APARECIDA ANERÃO DE JESUS,*08/04/1950,+20/09/2021,rosa_aparecida.jpg
+AURORA RIBEIRO,*16/04/1946,aurora.jpg
+ARLINDO FRANCISCO RIBEIRO,*16/04/1948,+24/10/2001,arlindo.jpg
+DIONATAS WILLIAN DE SOUZA FONSECA,*18/04/1992,dionatas.jpg
+CAROLINA GABRIELA FERNANDES ANERÃO,*04/05/1994,carolina.jpg
+JOSÉ REGINALDO GESTICH,*29/05/1980,jose_reginaldo.jpg
+KARINA KRISTINA LIMA ANERÃO,*30/05/1996,karina.jpg
+GENÉSIO DE SOUZA,*11/06/1947,+08/02/2000,genesio.jpg
+AMÉLIA ANERÃO DONEDA,*15/06/1926,+23/02/2020,amelia.png
+JOÃO PAULO GESTICH,*19/06/1984,joao_paulo.jpg
+JOÃO GESTICH,*24/06/1895,+04/05/1980,joao_gestich.jpg
+LEONOR OLIVEIRA DE SOUZA,*29/06/1951,+21/03/2019,leonor.jpg
+GUILHERME GABRIEL FERNANDES ANERÃO,*06/07/2009,guilherme.jpg
+ELIAS GESTICH,*27/07/1948,elias.jpg
+ANTONIO FERNANDES DE LIMA,*18/08/1943,+28/02/2019,antonio_lima.jpg
+JOÃO ANERÃO,*24/08/1924,+30/01/2007,joao_anerao.png
+JOSÉ ANERÃO,*25/08/1889,+11/08/1976,jose_anerao.jpg
+LAURA RACHEL DIAS LINS ANERÃO,*05/09/1982,laura.jpg
+APARECIDA ORDÁLIA GARCIA DE LIMA,*07/09/1943,aparecida.jpg
+MARIA CRISTINA ANERÃO,*10/09/1941,+12/03/2023,cristina.jpg
+LEANDRO HENRIQUE DE LIMA NETO,*29/09/1990,leandro.jpg
+PAULO DE ASSIS ANERÃO,*18/10/1962,paulo.jpg
+ANTONIO AMAURI ANERÃO,*19/10/1965,amauri.jpg
+SONIA REGINA MOLLER,*21/10/1975,+10/10/2019,sonia.jpg
+ANTONIO AMAURI ANERÃO JUNIOR,*24/10/1991,amauri_jr.jpg
+SOLAMITA FERNANDES DE LIMA,*30/10/1972,solamita.jpg
+VICENTE GESTICH,*13/11/1938,+27/05/2022,vicente.jpg
+LUIZ FERNANDO LIMA ANERÃO,*27/11/2005,luiz.jpg
+ARVELINO ANERÃO,*29/11/1937,+02/07/2007,arvelino.png
+SANDRO FERNANDES DE LIMA,*29/11/1974,+23/12/2016,sandro.jpg
+ANTONIO GESTICH,*02/12/1951,antonio_gestich.jpg
+ROSA LIA ANERÃO MOLLER,*15/12/1943,rosalina.jpg
+RITA DE CÁSSIA RIBEIRO,*18/12/1974,rita.jpg
+REGINA APARECIDA RIBEIRO,*21/12/1971,regina.jpg
+25/12 NATAL DO MENINO JESUS,jesus.jpg`;
+
+        const mesesStr = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
+
+        function getSigno(dia, mes) {
+            if (dia === 25 && mes === 12) return "Divino ☀️";
+            const signos = [
+                { s: "Capricórnio ♑", d: 20 }, { s: "Aquário ♒", d: 19 }, { s: "Peixes ♓", d: 20 },
+                { s: "Áries ♈", d: 20 }, { s: "Touro ♉", d: 21 }, { s: "Gêmeos ♊", d: 21 },
+                { s: "Câncer ♋", d: 22 }, { s: "Leão ♌", d: 23 }, { s: "Virgem ♍", d: 23 },
+                { s: "Libra ♎", d: 23 }, { s: "Escorpião ♏", d: 22 }, { s: "Sagitário ♐", d: 21 }, { s: "Capricórnio ♑", d: 31 }
+            ];
+            return dia <= signos[mes - 1].d ? signos[mes - 1].s : signos[mes].s;
+        }
+
+        function parseData(str) {
+            if (!str) return null;
+            const parts = str.replace(/[^\d/]/g, '').split('/');
+            return new Date(parts[2], parts[1] - 1, parts[0]);
+        }
+
+        function calcularIdade(nasc, ref) {
+            let idade = ref.getFullYear() - nasc.getFullYear();
+            const m = ref.getMonth() - nasc.getMonth();
+            if (m < 0 || (m === 0 && ref.getDate() < nasc.getDate())) idade--;
+            return idade;
+        }
+
+        function normalizar(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        }
+
+        let pessoas = dadosBrutos.split('\n').map(linha => {
+            const cols = linha.split(',');
+            if (cols.length < 2) return null;
             
-            let falec = null;
-            let foto = parts[2];
-            if (parts.length === 4) {
-                const falStr = parts[2].replace("+", "").split("/");
-                falec = { dia: parseInt(falStr[0]), mes: parseInt(falStr[1]), ano: parseInt(falStr[2]) };
-                foto = parts[3];
+            let nome = cols[0], nascStr = "", falecStr = "", foto = "";
+            
+            if (nome.includes("NATAL")) {
+                return { nome, especial: true, foto: cols[1], mes: 12, dia: 25, signo: "Divino" };
             }
 
-            return { nome, dia: dN, mes: mN, ano: aN, falecimento: falec, foto, isJesus: false };
-        });
-    }
+            nascStr = cols[1].replace('*', '');
+            if (cols[2].includes('+')) {
+                falecStr = cols[2].replace('+', '');
+                foto = cols[3];
+            } else {
+                foto = cols[2];
+            }
 
-    function calculateAge(p) {
-        if (p.isJesus) return "";
-        const refDate = p.falecimento ? new Date(p.falecimento.ano, p.falecimento.mes - 1, p.falecimento.dia) : new Date();
-        let age = refDate.getFullYear() - p.ano;
-        const m = refDate.getMonth() - (p.mes - 1);
-        if (m < 0 || (m === 0 && refDate.getDate() < p.dia)) age--;
-        return age;
-    }
+            const dNasc = parseData(nascStr);
+            const dFalec = parseData(falecStr);
+            const hoje = new Date();
+            
+            const idadeFinal = dFalec ? calcularIdade(dNasc, dFalec) : calcularIdade(dNasc, hoje);
+            const anosFalec = dFalec ? calcularIdade(dFalec, hoje) : null;
 
-    function calculateDeathYears(p) {
-        if (!p.falecimento) return null;
-        const today = new Date();
-        let yrs = today.getFullYear() - p.falecimento.ano;
-        const m = today.getMonth() - (p.falecimento.mes - 1);
-        if (m < 0 || (m === 0 && today.getDate() < p.falecimento.dia)) yrs--;
-        return yrs;
-    }
+            return {
+                nome, dNasc, dFalec, foto, idadeFinal, anosFalec,
+                dia: dNasc.getDate(),
+                mes: dNasc.getMonth() + 1,
+                signo: getSigno(dNasc.getDate(), dNasc.getMonth() + 1),
+                isAniv: dNasc.getDate() === hoje.getDate() && dNasc.getMonth() === hoje.getMonth()
+            };
+        }).filter(p => p);
 
-    const people = parsePeople();
-    document.getElementById('totalReg').innerText = people.length;
+        function render(filtroTexto = "", filtroEspecifico = null) {
+            const container = document.getElementById('listaAniversariantes');
+            container.innerHTML = "";
+            let contagem = 0;
 
-    function render(data) {
-        const resultsDiv = document.getElementById('results');
-        resultsDiv.innerHTML = "";
-        const searchTerm = document.getElementById('searchInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            mesesStr.forEach((mesNome, i) => {
+                const mesIdx = i + 1;
+                const pessoasMes = pessoas.filter(p => p.mes === mesIdx)
+                                          .sort((a,b) => a.dia - b.dia);
 
-        months.forEach((monthName, idx) => {
-            const monthIdx = idx + 1;
-            const peopleInMonth = data.filter(p => p.mes === monthIdx).sort((a,b) => a.dia - b.dia);
+                let htmlMes = `<div class="mes-bloco" id="mes-${mesIdx}">
+                                <h3 class="mes-titulo">${mesNome}</h3>`;
+                let temPessoa = false;
 
-            if (peopleInMonth.length > 0) {
-                const section = document.createElement('div');
-                section.className = 'month-section';
-                section.innerHTML = `<div class="month-title">${monthName}</div>`;
-                
-                const grid = document.createElement('div');
-                grid.className = 'grid-container';
+                pessoasMes.forEach(p => {
+                    const txtBusca = normalizar(p.nome + p.signo + mesesStr[p.mes-1]);
+                    const term = normalizar(filtroTexto);
 
-                peopleInMonth.forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = 'person-card';
-                    
-                    const age = calculateAge(p);
-                    const deathYrs = calculateDeathYears(p);
-                    const zodiac = p.isJesus ? "Divino" : getZodiac(p.dia, p.mes).join(" ");
-                    
-                    const today = new Date();
-                    const isBday = today.getDate() === p.dia && (today.getMonth() + 1) === p.mes;
+                    // Lógica de Filtros
+                    if (filtroTexto && !txtBusca.includes(term)) return;
+                    if (filtroEspecifico === 'vivos' && p.dFalec) return;
+                    if (filtroEspecifico === 'falecidos' && (!p.dFalec || p.especial)) return;
+                    if (typeof filtroEspecifico === 'number' && p.mes !== filtroEspecifico) return;
 
-                    let nameHtml = p.nome;
-                    if (searchTerm) {
-                        const regex = new RegExp(`(${searchTerm})`, "gi");
-                        nameHtml = nameHtml.replace(regex, `<span class="highlight">$1</span>`);
+                    temPessoa = true;
+                    contagem++;
+
+                    let displayNome = p.nome;
+                    if (filtroTexto) {
+                        const regex = new RegExp(`(${filtroTexto})`, 'gi');
+                        displayNome = p.nome.replace(regex, "<mark>$1</mark>");
                     }
 
-                    card.innerHTML = `
-                        <div class="photo-frame"><img src="${baseUrl}${p.foto}" alt="${p.nome}"></div>
-                        <div class="name">${nameHtml}</div>
-                        ${isBday ? `<div class="blinking">${p.falecimento ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>` : ''}
-                        ${!p.isJesus ? `
-                            <div class="birth">${p.dia.toString().padStart(2, '0')}/${p.mes.toString().padStart(2, '0')}/${p.ano}</div>
-                            <div class="birth">${age} anos</div>
-                            ${p.falecimento ? `
-                                <div class="death">† ${p.falecimento.dia.toString().padStart(2, '0')}/${p.falecimento.mes.toString().padStart(2, '0')}/${p.falecimento.ano}</div>
-                                <div class="death">(há ${deathYrs} anos)</div>
-                            ` : ''}
-                            <div class="zodiac">${zodiac}</div>
-                        ` : ''}
+                    htmlMes += `
+                        <div class="cartao">
+                            <div class="foto-container">
+                                <img src="${BASE_FOTO + p.foto}" alt="${p.nome}" onerror="this.src='https://via.placeholder.com'">
+                            </div>
+                            <div class="nome">${displayNome}</div>
+                            ${p.especial ? '' : `
+                                <div class="data-nasc">${p.dNasc.toLocaleDateString('pt-BR')}</div>
+                                <div class="idade">${p.idadeFinal} anos</div>
+                                ${p.dFalec ? `<div class="falecimento">† ${p.dFalec.toLocaleDateString('pt-BR')} (há ${p.anosFalec} anos)</div>` : ''}
+                                <div>${p.signo}</div>
+                                ${p.isAniv ? `<div class="piscante-alerta">${p.dFalec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>` : ''}
+                            `}
+                        </div>
                     `;
-                    grid.appendChild(card);
                 });
-                section.appendChild(grid);
-                resultsDiv.appendChild(section);
-            }
-        });
-        document.getElementById('filteredReg').innerText = data.length;
-    }
 
-    function filterData() {
-        const val = document.getElementById('searchInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        const filtered = people.filter(p => {
-            const searchBase = (p.nome + months[p.mes-1] + (p.isJesus ? "Divino" : getZodiac(p.dia, p.mes)[1])).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            return searchBase.includes(val);
-        });
-        render(filtered);
-    }
+                htmlMes += `</div>`;
+                if (temPessoa) container.innerHTML += htmlMes;
+            });
 
-    function filterByMonth(offset) {
-        const targetMonth = (new Date().getMonth() + offset + 12) % 12 + 1;
-        render(people.filter(p => p.mes === targetMonth));
-    }
+            document.getElementById('totalReg').innerText = pessoas.length;
+            document.getElementById('totalFilt').innerText = contagem;
+        }
 
-    function filterStatus(status) {
-        if (status === 'vivos') render(people.filter(p => !p.falecimento));
-        else render(people.filter(p => p.falecimento && !p.isJesus));
-    }
+        function filtrar() { render(document.getElementById('busca').value); }
+        function limparFiltros() { document.getElementById('busca').value = ""; render(); }
+        function filtroVida(vivo) { render("", vivo ? 'vivos' : 'falecidos'); }
+        function filtroRapido(tipo) { if(tipo === 'todos') render(); }
+        function filtroMes(offset) {
+            let m = new Date().getMonth() + 1 + offset;
+            if (m < 1) m = 12; if (m > 12) m = 1;
+            render("", m);
+            document.getElementById(`mes-${m}`)?.scrollIntoView();
+        }
 
-    function resetFilters() { render(people); }
-    function clearSearch() { document.getElementById('searchInput').value = ""; render(people); }
+        // Scroll Top
+        window.onscroll = () => {
+            document.getElementById("btnTopo").style.display = window.scrollY > 300 ? "block" : "none";
+        };
 
-    // Inicialização
-    render(people);
-</script>
+        // Inicialização: Abre no mês atual
+        const mesAtual = new Date().getMonth() + 1;
+        render();
+        setTimeout(() => {
+            document.getElementById(`mes-${mesAtual}`)?.scrollIntoView({behavior: "smooth"});
+        }, 500);
+
+    </script>
 </body>
 </html>
