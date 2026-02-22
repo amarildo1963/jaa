@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aniversariantes - Anerão</title>
+    <link rel="icon" type="image/png" href="https://amarildo1963.github.io">
+    <style>
+        :root {
+            --azul: #0000FF;
+            --verde: #008000;
+            --dourado: #B8860B;
+            --cinza-claro: #f4f4f4;
+            --vermelho: #CC0000;
+        }
+
+        body {
+            font-family: 'Open Sans', Arial, sans-serif;
+            background-color: #fff;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h3 { color: var(--azul); text-transform: uppercase; }
+
+        /* Busca e Filtros */
+        .search-container {
+            position: sticky;
+            top: 10px;
+            background: white;
+            padding: 15px;
+            z-index: 100;
+            border-bottom: 2px solid var(--azul);
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 60%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn-limpar {
+            padding: 10px 15px;
+            cursor: pointer;
+            background: #eee;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .stats { margin: 10px 0; font-weight: bold; }
+
+        /* Layout de Meses e Blocos */
+        .mes-titulo {
+            color: var(--vermelho);
+            font-size: 1.5em;
+            margin-top: 30px;
+            border-bottom: 2px solid var(--vermelho);
+            display: inline-block;
+            padding: 0 20px;
+        }
+
+        .grid-aniversariantes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--cinza-claro);
+            border: 1px solid #ddd;
+            padding: 15px;
+            width: 250px;
+            border-radius: 8px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .foto-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 10px;
+        }
+
+        .foto {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--dourado);
+        }
+
+        .piscante { animation: blink 1s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        .nome { color: var(--azul); font-weight: bold; margin: 10px 0; display: block; }
+        .nascimento { color: var(--verde); font-weight: bold; font-size: 0.9em; }
+        .falecimento { color: var(--dourado); font-weight: bold; font-size: 0.9em; }
+        .idade-viva { color: var(--verde); font-weight: bold; }
+        .idade-falecida { color: var(--dourado); font-weight: bold; }
+        .signo { font-style: italic; margin-top: 5px; display: block; }
+        
+        mark { background: yellow; color: black; }
+
+        /* Seta Voltar ao Topo */
+        #btnTopo {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--azul);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            font-weight: bold;
+            animation: blink 0.8s infinite;
+            z-index: 1000;
+        }
+
+        footer { margin-top: 50px; font-size: 0.8em; border-top: 1px solid #ccc; padding-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <h3>ANIVERSARIANTES</h3>
+
+    <div class="search-container">
+        <input type="text" id="inputBusca" placeholder="Buscar Nome, mês, datas, signo, vivo/falecido..." onkeyup="filtrar()">
+        <button class="btn-limpar" onclick="limparBusca()">Limpar 🧹</button>
+        <div class="stats">
+            Registros: <span id="totalReg">0</span> / Filtrados: <span id="totalFiltro">0</span>
+        </div>
+    </div>
+
+    <div id="conteudo"></div>
+
+    <button id="btnTopo" onclick="window.scrollTo(0,0)">↑</button>
+
+    <footer>
+        ©2016-2026 J.A.Anerão<br>
+        jaanerao@hotmail.com<br>
+        Atualizado: 21/02/2026
+    </footer>
+
+<script>
+    const dataRef = new Date(2026, 1, 21); // Data do enunciado
+    const urlBase = "https://amarildo1963.github.io/jaa/fotos/";
+    const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+
+    const dadosBrutos = `INGRID GRAZIELA FERNANDES ANERÃO,06/01/1997,,ingrid.jpg
+MARIA AMARILZA ANERÃO,14/01/1969,,amarilza.jpg
+SANDRA REGINA MOLLER DE CAMPOS,22/01/1964,20/07/2020,sandra.jpg
+ROSA FRACHELLI ANERÃO,01/02/1901,15/01/1971,rosa_frachelli.jpg
+BRAZ GESTICH,03/02/1944,08/05/2023,braz.jpg
+HUMBERTO DONIZETE ANERÃO,22/02/1961,14/07/2021,humberto.png
+PRISCILA TOLEDO RETI,03/03/1990,,priscila.jpg
+VALERIA APARECIDA GESTICH,07/03/1988,,valeria.jpg
+IRIA RIBEIRO ANERÃO,23/03/1930,10/01/1979,iria.jpg
+ZULMIRA BORGES GESTICH,25/03/1907,19/09/1964,zulmira.JPG
+NICOLAS MIGUEL ANERÃO FONSECA,25/03/2014,,nicolas.jpg
+JOSÉ AMARILDO ANERÃO,30/03/1963,,amarildo.jpg
+IVANIRA FERREIRA LIMA,01/04/1973,,ivanira.jpg
+MARIA DE LOURDES MALAQUIAS GESTICH,07/04/1955,,maria_lourdes.jpg
+ROSA APARECIDA ANERÃO DE JESUS,08/04/1950,20/09/2021,rosa_aparecida.jpg
+AURORA RIBEIRO,16/04/1946,,aurora.jpg
+ARLINDO FRANCISCO RIBEIRO,16/04/1948,24/10/2001,arlindo.jpg
+DIONATAS WILLIAN DE SOUZA FONSECA,18/04/1992,,dionatas.jpg
+CAROLINA GABRIELA FERNANDES ANERÃO,04/05/1994,,carolina.jpg
+JOSÉ REGINALDO GESTICH,29/05/1980,,jose_reginaldo.jpg
+KARINA KRISTINA LIMA ANERÃO,30/05/1996,,karina.jpg
+GENÉSIO DE SOUZA,11/06/1947,08/02/2000,genesio.jpg
+AMÉLIA ANERÃO DONEDA,15/06/1926,23/02/2020,amelia.png
+JOÃO PAULO GESTICH,19/06/1984,,joao_paulo.jpg
+JOÃO GESTICH,24/06/1895,04/05/1980,joao_gestich.jpg
+LEONOR OLIVEIRA DE SOUZA,29/06/1951,21/03/2019,leonor.jpg
+GUILHERME GABRIEL FERNANDES ANERÃO,06/07/2009,,guilherme.jpg
+ELIAS GESTICH,27/07/1948,,elias.jpg
+ANTONIO FERNANDES DE LIMA,18/08/1943,28/02/2019,antonio_lima.jpg
+JOÃO ANERÃO,24/08/1924,30/01/2007,joao_anerao.png
+JOSÉ ANERÃO,25/08/1889,11/08/1976,jose_anerao.jpg
+LAURA RACHEL DIAS LINS ANERÃO,05/09/1982,,laura.jpg
+APARECIDA ORDÁLIA GARCIA DE LIMA,07/09/1943,,aparecida.jpg
+MARIA CRISTINA ANERÃO,10/09/1941,12/03/2023,cristina.jpg
+LEANDRO HENRIQUE DE LIMA NETO,29/09/1990,,leandro.jpg
+PAULO DE ASSIS ANERÃO,18/10/1962,,paulo.jpg
+ANTONIO AMAURI ANERÃO,19/10/1965,,amauri.jpg
+SONIA REGINA MOLLER,21/10/1975,10/10/2019,sonia.jpg
+ANTONIO AMAURI ANERÃO JUNIOR,24/10/1991,,amauri_jr.jpg
+SOLAMITA FERNANDES DE LIMA,30/10/1972,,solamita.jpg
+VICENTE GESTICH,13/11/1938,27/05/2022,vicente.jpg
+LUIZ FERNANDO LIMA ANERÃO,27/11/2005,,luiz.jpg
+ARVELINO ANERÃO,29/11/1937,02/07/2007,arvelino.png
+SANDRO FERNANDES DE LIMA,29/11/1974,23/12/2016,sandro.jpg
+ANTONIO GESTICH,02/12/1951,,antonio_gestich.jpg
+ROSA LIA ANERÃO MOLLER,15/12/1943,,rosalina.jpg
+RITA DE CÁSSIA RIBEIRO,18/12/1974,,rita.jpg
+REGINA APARECIDA RIBEIRO,21/12/1971,,regina.jpg
+NATAL DO MENINO JESUS (25/12),,,jesus.jpg`;
+
+    function parseData(str) {
+        return str.split('\n').map(line => {
+            const [nome, nasc, falec, foto] = line.split(',');
+            return { nome, nasc, falec, foto, id: Math.random().toString(36) };
+        });
+    }
+
+    function getSigno(dia, mes) {
+        if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) return "♒ Aquário";
+        if ((mes == 2 && dia >= 19) || (mes == 3 && dia <= 20)) return "♓ Peixes";
+        if ((mes == 3 && dia >= 21) || (mes == 4 && dia <= 19)) return "♈ Áries";
+        if ((mes == 4 && dia >= 20) || (mes == 5 && dia <= 20)) return "♉ Touro";
+        if ((mes == 5 && dia >= 21) || (mes == 6 && dia <= 20)) return "♊ Gêmeos";
+        if ((mes == 6 && dia >= 21) || (mes == 7 && dia <= 22)) return "♋ Câncer";
+        if ((mes == 7 && dia >= 23) || (mes == 8 && dia <= 22)) return "♌ Leão";
+        if ((mes == 8 && dia >= 23) || (mes == 9 && dia <= 22)) return "♍ Virgem";
+        if ((mes == 9 && dia >= 23) || (mes == 10 && dia <= 22)) return "♎ Libra";
+        if ((mes == 10 && dia >= 23) || (mes == 11 && dia <= 21)) return "♏ Escorpião";
+        if ((mes == 11 && dia >= 22) || (mes == 12 && dia <= 21)) return "♐ Sagitário";
+        return "♑ Capricórnio";
+    }
+
+    function diffAnos(dataFim, dataInicio) {
+        let anos = dataFim.getFullYear() - dataInicio.getFullYear();
+        const m = dataFim.getMonth() - dataInicio.getMonth();
+        if (m < 0 || (m === 0 && dataFim.getDate() < dataInicio.getDate())) anos--;
+        return anos;
+    }
+
+    function formatarData(str) {
+        if (!str) return null;
+        const [d, m, a] = str.split('/').map(Number);
+        const data = new Date(a, m - 1, d);
+        const ddd = data.toLocaleDateString('pt-br', { weekday: 'short' }).toLowerCase().replace('.', '');
+        return { dia: d, mes: m, ano: a, ddd, full: data, original: str.replace(/\//g, '') };
+    }
+
+    const pessoas = parseData(dadosBrutos);
+    const container = document.getElementById('conteudo');
+
+    function renderizar(filtro = "") {
+        container.innerHTML = "";
+        let filtradosCount = 0;
+        const termo = filtro.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+        for (let m = 1; m <= 12; m++) {
+            const pessoasMes = pessoas.filter(p => {
+                const dNasc = formatarData(p.nasc);
+                if (!dNasc && m !== 12) return false;
+                if (!dNasc && m === 12 && p.nome.includes("NATAL")) return true;
+                return dNasc && dNasc.mes === m;
+            });
+
+            let htmlMes = "";
+            let temNoMes = false;
+
+            pessoasMes.forEach(p => {
+                const dNasc = formatarData(p.nasc);
+                const dFalec = formatarData(p.falec);
+                const eNatal = p.nome.includes("NATAL");
+                
+                let signo = eNatal ? "Divino" : getSigno(dNasc.dia, dNasc.mes);
+                let idade = "";
+                let anosFalec = "";
+                let vivo = !p.falec && !eNatal;
+                let situacao = vivo ? "vivo" : "falecido";
+
+                if (!eNatal) {
+                    const fimVida = dFalec ? dFalec.full : dataRef;
+                    idade = diffAnos(fimVida, dNasc.full);
+                    if (dFalec) anosFalec = diffAnos(dataRef, dFalec.full);
+                }
+
+                // Lógica de Busca
+                const strBusca = `${p.nome} ${mesesNomes[m-1]} ${p.nasc || ''} ${p.falec || ''} ${signo} ${situacao} ${dNasc?.original || ''}`.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                
+                if (termo && !strBusca.includes(termo)) return;
+
+                temNoMes = true;
+                filtradosCount++;
+
+                const highlight = (text) => {
+                    if (!termo) return text;
+                    const regex = new RegExp(`(${termo})`, 'gi');
+                    return text.toString().replace(regex, '<mark>$1</mark>');
+                };
+
+                htmlMes += `
+                    <div class="card" id="card-${p.id}">
+                        <div class="foto-container">
+                            <img src="${urlBase}${p.foto}" class="foto" id="img-${p.id}">
+                        </div>
+                        <span class="nome">${highlight(p.nome)}</span>
+                        ${eNatal ? '' : `
+                            <div class="nascimento">★ ${highlight(p.nasc)} ${dNasc.ddd}</div>
+                            ${p.falec ? `<div class="falecimento">† ${highlight(p.falec)} ${dFalec.ddd}</div>` : ''}
+                            ${anosFalec !== "" ? `<div class="falecimento"> há ${anosFalec} anos</div>` : ''}
+                            <div class="${p.falec ? 'idade-falecida' : 'idade-viva'}">${idade} anos</div>
+                        `}
+                        <span class="signo">${highlight(signo)}</span>
+                    </div>
+                `;
+            });
+
+            if (temNoMes) {
+                container.innerHTML += `
+                    <div class="mes-titulo">${mesesNomes[m - 1].toUpperCase()}</div>
+                    <div class="grid-aniversariantes">${htmlMes}</div>
+                `;
+            }
+        }
+        document.getElementById('totalReg').innerText = pessoas.length;
+        document.getElementById('totalFiltro').innerText = filtradosCount;
+    }
+
+    function filtrar() {
+        const val = document.getElementById('inputBusca').value;
+        renderizar(val);
+    }
+
+    function limparBusca() {
+        document.getElementById('inputBusca').value = "";
+        renderizar();
+    }
+
+    // Inicialização e Scroll para o próximo
+    window.onload = () => {
+        renderizar();
+        
+        // Encontrar próximo aniversariante
+        const hojeMes = dataRef.getMonth() + 1;
+        const hojeDia = dataRef.getDate();
+        
+        let proximo = pessoas
+            .filter(p => p.nasc)
+            .map(p => ({...p, d: formatarData(p.nasc)}))
+            .sort((a,b) => (a.d.mes * 100 + a.d.dia) - (b.d.mes * 100 + b.d.dia));
+
+        let alvo = proximo.find(p => (p.d.mes > hojeMes) || (p.d.mes === hojeMes && p.d.dia >= hojeDia)) || proximo[0];
+
+        if (alvo) {
+            const el = document.getElementById(`card-${alvo.id}`);
+            const img = document.getElementById(`img-${alvo.id}`);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                img.classList.add('piscante');
+                setTimeout(() => img.classList.remove('piscante'), 10000);
+            }
+        }
+    };
+
+    // Seta topo
+    window.onscroll = function() {
+        const btn = document.getElementById("btnTopo");
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            btn.style.display = "block";
+        } else {
+            btn.style.display = "none";
+        }
+    };
+</script>
+
+</body>
+</html>
