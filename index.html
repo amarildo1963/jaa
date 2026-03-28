@@ -6,28 +6,21 @@
     <title>Aniversariantes - Anerão</title>
     <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
     <style>
-        /* Inclusão da Fonte Vintage Mono */
+        /* Inclusão da Fonte Customizada */
         @font-face {
             font-family: 'VintageMono';
             src: url('fonts/1403-Vintage-Mono-Limited.ttf') format('truetype');
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        /* Aplicação da fonte em todo o corpo */
-        body { 
-            background-color: #f4f4f4; 
-            padding: 20px; 
-            padding-bottom: 100px; 
-            font-family: 'VintageMono', 'Helvetica', Arial, sans-serif; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'VintageMono', 'Helvetica', Arial, sans-serif; }
+        body { background-color: #f4f4f4; padding: 20px; padding-bottom: 100px; }
         
         h3 { color: blue; text-align: center; font-size: 24px; margin-bottom: 20px; }
 
         /* Controles */
         .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-        input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; font-family: inherit; }
-        .btn-limpar { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; font-family: inherit; }
+        input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; }
+        .btn-limpar { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; }
         .stats { text-align: center; margin-bottom: 10px; font-weight: bold; }
 
         /* Meses e Blocos */
@@ -37,6 +30,7 @@
         .registro-card { 
             background: #e0e0e0; border: 2px solid #bbb; border-radius: 10px; 
             padding: 15px; width: 280px; text-align: center; position: relative;
+            transition: background 0.3s;
         }
 
         /* Imagem */
@@ -50,6 +44,12 @@
         @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
         .pulse-active { animation: pulse-img 1s linear 10; }
 
+        @keyframes target-blink { 
+            0%, 100% { background-color: #e0e0e0; }
+            50% { background-color: yellow; }
+        }
+        .highlight-target { animation: target-blink 0.5s ease-in-out 10; }
+
         @keyframes blink-red { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
         .bday-msg { color: red; font-weight: bold; animation: blink-red 0.8s infinite; margin-top: 5px; font-size: 0.9em; }
 
@@ -62,19 +62,27 @@
         /* Tipografia */
         .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
         .info-nasc { color: green; font-weight: bold; }
-        .info-falec { color: #b8860b; font-weight: bold; } 
+        .info-falec { color: #b8860b; font-weight: bold; }
         .info-idade-viva { color: green; font-weight: bold; }
         .info-idade-morta { color: #b8860b; font-weight: bold; }
         .highlight { background-color: yellow; }
 
-        /* Lista Alfabética */
-        #lista-alfabetica-container { max-width: 800px; margin: 50px auto; text-align: left; padding: 20px; background: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .lista-titulo { color: blue; margin-bottom: 15px; border-bottom: 2px solid blue; padding-bottom: 5px; }
-        .lista-nomes { list-style: none; column-count: 2; column-gap: 30px; }
-        @media (max-width: 600px) { .lista-nomes { column-count: 1; } }
-        .lista-nomes li { margin-bottom: 5px; }
-        .lista-nomes a { text-decoration: none; color: black; transition: color 0.3s; }
-        .lista-nomes a:hover { color: blue; text-decoration: underline; }
+        /* Estilo Lista Alfabética (Linha de Caderno) */
+        #lista-alfabetica-container { 
+            max-width: 800px; margin: 50px auto; padding: 20px; background: #fff;
+            border-left: 2px solid #ff9999; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+        .titulo-lista { color: blue; margin-bottom: 20px; border-bottom: 2px solid blue; display: inline-block; }
+        .lista-caderno { list-style: none; text-align: left; }
+        .lista-item { 
+            border-bottom: 1px solid #add8e6; padding: 8px 0; 
+            display: flex; align-items: center;
+        }
+        .lista-link { 
+            text-decoration: none; color: black; font-weight: normal; 
+            width: 100%; transition: color 0.2s;
+        }
+        .lista-link:hover { color: blue; font-weight: bold; }
 
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; }
     </style>
@@ -95,8 +103,8 @@
     <div id="conteudo"></div>
 
     <div id="lista-alfabetica-container">
-        <h4 class="lista-titulo" id="ancora-lista">LISTA ALFABÉTICA</h4>
-        <ul id="listaNomes" class="lista-nomes"></ul>
+        <h4 class="titulo-lista">LISTA ALFABÉTICA</h4>
+        <ul id="listaAlfabetica" class="lista-caderno"></ul>
     </div>
 
     <footer>
@@ -199,17 +207,14 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
             return new Date(y || new Date().getFullYear(), m - 1, d);
         }
 
-        // Processamento de dados
         const pessoas = dadosRaw.split('\n').map((linha, index) => {
             const [nome, nascStr, falecStr, img] = linha.split(',');
             const dNasc = parsingDatas(nascStr);
             const dFalec = parsingDatas(falecStr);
-            
             let signo = ["✨", "Divino"];
             if (nome.indexOf("JESUS") === -1) {
                 signo = getSigno(dNasc.getDate(), dNasc.getMonth() + 1);
             }
-
             return {
                 id: 'p' + index,
                 nome,
@@ -224,18 +229,33 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
             };
         });
 
+        function irParaRegistro(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                el.classList.add('highlight-target');
+                setTimeout(() => el.classList.remove('highlight-target'), 5000);
+            }
+        }
+
+        function voltarParaLista() {
+            document.getElementById('lista-alfabetica-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
         function render(filtro = "") {
             const container = document.getElementById('conteudo');
+            const listaUl = document.getElementById('listaAlfabetica');
             container.innerHTML = "";
+            listaUl.innerHTML = "";
+            
             let count = 0;
             const hoje = new Date();
             const hojeDM = hoje.getDate().toString().padStart(2,'0') + (hoje.getMonth()+1).toString().padStart(2,'0');
-
             const termo = filtro.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
+            // Renderizar Cards por Meses
             mesesNomes.forEach((mes, idx) => {
-                const pessoasMes = pessoas.filter(p => p.mesNum === idx);
-                const filtrados = pessoasMes.filter(p => {
+                const filtrados = pessoas.filter(p => p.mesNum === idx).filter(p => {
                     if (!termo) return true;
                     const status = p.dFalec ? "falecido" : "vivo";
                     const buscaString = `${p.nome} ${p.nascStr} ${p.falecStr} ${status} ${p.signo} ${mesesNomes[p.mesNum]}`
@@ -254,7 +274,6 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
                         const card = document.createElement('div');
                         card.className = 'registro-card';
                         card.id = p.id;
-
                         const isToday = p.diaMes === hojeDM;
                         const isJesus = p.nome.includes("JESUS");
                         const idade = calcularIdade(p.dNasc, p.dFalec);
@@ -262,34 +281,22 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
                         const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
                         const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
 
-                        let html = `
-                            <div class="img-container" ondblclick="irParaLista()">
-                                <img src="${BASE_URL}${p.img}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}">
+                        card.innerHTML = `
+                            <div class="img-container" ondblclick="voltarParaLista()">
+                                <img src="${BASE_URL}${p.img}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
                             </div>
-                            <span class="nome" id="ref-${p.id}">${destacar(p.nome, termo)}</span>
-                        `;
-
-                        if (!isJesus) {
-                            html += `
+                            <span class="nome">${destacar(p.nome, termo)}</span>
+                            ${!isJesus ? `
                                 <div class="info-nasc">★ ${destacar(p.nascStr, termo)} ${diaSemNasc}</div>
-                            `;
-                            if (p.dFalec) {
-                                html += `
+                                ${p.dFalec ? `
                                     <div class="info-falec">✝ ${destacar(p.falecStr, termo)} ${diaSemFalec}</div>
                                     <div class="info-falec">há ${anosFalec} anos</div>
                                     <div class="info-idade-morta">viveu ${idade} anos</div>
-                                `;
-                            } else {
-                                html += `<div class="info-idade-viva"> ${idade} anos</div>`;
-                            }
-                            html += `<div>${destacar(p.signo, termo)}</div>`;
-                        }
-
-                        if (isToday) {
-                            html += `<div class="bday-msg">${p.dFalec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>`;
-                        }
-
-                        card.innerHTML = html;
+                                ` : `<div class="info-idade-viva"> ${idade} anos</div>`}
+                                <div>${destacar(p.signo, termo)}</div>
+                            ` : ''}
+                            ${isToday ? `<div class="bday-msg">${p.dFalec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>` : ''}
+                        `;
                         grid.appendChild(card);
                     });
                     mesDiv.appendChild(grid);
@@ -297,34 +304,16 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
                 }
             });
 
-            document.getElementById('stats').innerText = `Registros: ${pessoas.length} / Filtrados: ${count}`;
-            gerarListaAlfabetica();
-        }
-
-        // Função para gerar a lista alfabética no final
-        function gerarListaAlfabetica() {
-            const listaUl = document.getElementById('listaNomes');
-            listaUl.innerHTML = "";
-            
-            const ordenados = [...pessoas].sort((a, b) => a.nome.localeCompare(b.nome));
-            
-            ordenados.forEach(p => {
+            // Gerar Lista Alfabética
+            const alfabetica = [...pessoas].sort((a, b) => a.nome.localeCompare(b.nome));
+            alfabetica.forEach(p => {
                 const li = document.createElement('li');
-                const link = document.createElement('a');
-                link.href = `#ref-${p.id}`;
-                link.innerText = p.nome;
-                link.onclick = (e) => {
-                    e.preventDefault();
-                    document.getElementById(p.id).scrollIntoView({ behavior: 'smooth', block: 'center' });
-                };
-                li.appendChild(link);
+                li.className = 'lista-item';
+                li.innerHTML = `<a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro('${p.id}')">${p.nome}</a>`;
                 listaUl.appendChild(li);
             });
-        }
 
-        // Função para o clique duplo na foto
-        function irParaLista() {
-            document.getElementById('ancora-lista').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('stats').innerText = `Registros: ${pessoas.length} / Filtrados: ${count}`;
         }
 
         function destacar(texto, termo) {
@@ -333,7 +322,6 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
             return texto.replace(regex, '<span class="highlight">$1</span>');
         }
 
-        // Lógica de busca
         document.getElementById('searchInput').addEventListener('input', function(e) {
             let val = e.target.value;
             if (/^\d+$/.test(val)) {
@@ -368,7 +356,6 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
 
         findProximo();
         render();
-
     </script>
 </body>
 </html>
