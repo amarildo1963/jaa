@@ -6,23 +6,28 @@
     <title>Aniversariantes - Anerão</title>
     <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
     <style>
+        /* Inclusão da Fonte Vintage Mono */
         @font-face {
-            font-family: 'Vintage Mono';
-            src: url('/fonts/1403-Vintage-Mono-Limited.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
+            font-family: 'VintageMono';
+            src: url('fonts/1403-Vintage-Mono-Limited.ttf') format('truetype');
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vintage Mono', 'Helvetica', Arial, sans-serif; }
-        body { background-color: #f4f4f4; padding: 20px; padding-bottom: 100px; }
+        /* Aplicação da fonte em todo o corpo */
+        body { 
+            background-color: #f4f4f4; 
+            padding: 20px; 
+            padding-bottom: 100px; 
+            font-family: 'VintageMono', 'Helvetica', Arial, sans-serif; 
+        }
         
         h3 { color: blue; text-align: center; font-size: 24px; margin-bottom: 20px; }
 
         /* Controles */
         .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-        input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; }
-        .btn-limpar { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; }
+        input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; font-family: inherit; }
+        .btn-limpar { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; font-family: inherit; }
         .stats { text-align: center; margin-bottom: 10px; font-weight: bold; }
 
         /* Meses e Blocos */
@@ -35,7 +40,7 @@
         }
 
         /* Imagem */
-        .img-container { position: relative; width: 120px; height: 120px; margin: 0 auto 10px; }
+        .img-container { position: relative; width: 120px; height: 120px; margin: 0 auto 10px; cursor: pointer; }
         .img-pessoa { 
             width: 100%; height: 100%; object-fit: cover; border-radius: 50%; 
             border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2);
@@ -57,51 +62,19 @@
         /* Tipografia */
         .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
         .info-nasc { color: green; font-weight: bold; }
-        .info-falec { color: #b8860b; font-weight: bold; } /* DarkGoldenRod */
+        .info-falec { color: #b8860b; font-weight: bold; } 
         .info-idade-viva { color: green; font-weight: bold; }
         .info-idade-morta { color: #b8860b; font-weight: bold; }
         .highlight { background-color: yellow; }
 
         /* Lista Alfabética */
-        .lista-alfabetica {
-            max-width: 900px;
-            margin: 60px auto 30px;
-            background: #fff;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .lista-alfabetica h2 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 22px;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 10px;
-        }
-        
-        .lista-nomes {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start;
-            gap: 8px;
-        }
-        
-        .lista-nomes a {
-            color: #000;
-            text-decoration: none;
-            padding: 5px 12px;
-            border-radius: 4px;
-            transition: background-color 0.2s;
-            font-size: 16px;
-            display: inline-block;
-        }
-        
-        .lista-nomes a:hover {
-            background-color: #007bff;
-            color: #fff;
-        }
+        #lista-alfabetica-container { max-width: 800px; margin: 50px auto; text-align: left; padding: 20px; background: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .lista-titulo { color: blue; margin-bottom: 15px; border-bottom: 2px solid blue; padding-bottom: 5px; }
+        .lista-nomes { list-style: none; column-count: 2; column-gap: 30px; }
+        @media (max-width: 600px) { .lista-nomes { column-count: 1; } }
+        .lista-nomes li { margin-bottom: 5px; }
+        .lista-nomes a { text-decoration: none; color: black; transition: color 0.3s; }
+        .lista-nomes a:hover { color: blue; text-decoration: underline; }
 
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; }
     </style>
@@ -121,10 +94,9 @@
 
     <div id="conteudo"></div>
 
-    <!-- Lista Alfabética -->
-    <div class="lista-alfabetica">
-        <h2>LISTA ALFABÉTICA</h2>
-        <div id="listaNomes" class="lista-nomes"></div>
+    <div id="lista-alfabetica-container">
+        <h4 class="lista-titulo" id="ancora-lista">LISTA ALFABÉTICA</h4>
+        <ul id="listaNomes" class="lista-nomes"></ul>
     </div>
 
     <footer>
@@ -252,32 +224,6 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
             };
         });
 
-        // Gerar lista alfabética
-        function gerarListaAlfabetica() {
-            const container = document.getElementById('listaNomes');
-            const nomesOrdenados = [...pessoas].sort((a, b) => 
-                a.nome.toLowerCase().localeCompare(b.nome.toLowerCase(), 'pt-BR')
-            );
-            
-            nomesOrdenados.forEach(p => {
-                const link = document.createElement('a');
-                link.href = '#' + p.id;
-                link.textContent = p.nome;
-                link.onclick = function(e) {
-                    e.preventDefault();
-                    const el = document.getElementById(p.id);
-                    if (el) {
-                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        el.style.border = '3px solid #007bff';
-                        setTimeout(() => {
-                            el.style.border = '2px solid #bbb';
-                        }, 2000);
-                    }
-                };
-                container.appendChild(link);
-            });
-        }
-
         function render(filtro = "") {
             const container = document.getElementById('conteudo');
             container.innerHTML = "";
@@ -317,10 +263,10 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
                         const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
 
                         let html = `
-                            <div class="img-container">
+                            <div class="img-container" ondblclick="irParaLista()">
                                 <img src="${BASE_URL}${p.img}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}">
                             </div>
-                            <span class="nome">${destacar(p.nome, termo)}</span>
+                            <span class="nome" id="ref-${p.id}">${destacar(p.nome, termo)}</span>
                         `;
 
                         if (!isJesus) {
@@ -352,6 +298,33 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
             });
 
             document.getElementById('stats').innerText = `Registros: ${pessoas.length} / Filtrados: ${count}`;
+            gerarListaAlfabetica();
+        }
+
+        // Função para gerar a lista alfabética no final
+        function gerarListaAlfabetica() {
+            const listaUl = document.getElementById('listaNomes');
+            listaUl.innerHTML = "";
+            
+            const ordenados = [...pessoas].sort((a, b) => a.nome.localeCompare(b.nome));
+            
+            ordenados.forEach(p => {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#ref-${p.id}`;
+                link.innerText = p.nome;
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    document.getElementById(p.id).scrollIntoView({ behavior: 'smooth', block: 'center' });
+                };
+                li.appendChild(link);
+                listaUl.appendChild(li);
+            });
+        }
+
+        // Função para o clique duplo na foto
+        function irParaLista() {
+            document.getElementById('ancora-lista').scrollIntoView({ behavior: 'smooth' });
         }
 
         function destacar(texto, termo) {
@@ -360,10 +333,9 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
             return texto.replace(regex, '<span class="highlight">$1</span>');
         }
 
-        // Lógica de busca sem barras e filtros
+        // Lógica de busca
         document.getElementById('searchInput').addEventListener('input', function(e) {
             let val = e.target.value;
-            // Auto-formatar se for só números para data
             if (/^\d+$/.test(val)) {
                 if (val.length === 4) e.target.value = val.slice(0,2) + "/" + val.slice(2,4);
                 if (val.length === 8) e.target.value = val.slice(0,2) + "/" + val.slice(2,4) + "/" + val.slice(4,8);
@@ -376,7 +348,6 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
             render();
         }
 
-        // Identificar próximo aniversariante para o ID de início
         let proximoId = "";
         const findProximo = () => {
             const hoje = new Date();
@@ -395,10 +366,8 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
             }, 500);
         };
 
-        // Inicializar
         findProximo();
         render();
-        gerarListaAlfabetica();
 
     </script>
 </body>
