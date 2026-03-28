@@ -6,7 +6,7 @@
     <title>Aniversariantes - Anerão</title>
     <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: '1403 Vintage Mono Limited', Arial, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Helvetica', Arial, sans-serif; }
         body { background-color: #f4f4f4; padding: 20px; padding-bottom: 100px; }
         
         h3 { color: blue; text-align: center; font-size: 24px; margin-bottom: 20px; }
@@ -55,7 +55,14 @@
         .highlight { background-color: yellow; }
 
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; }
-    </style>
+    
+@font-face {
+    font-family: 'VintageMono';
+    src: url('fonts/1403-Vintage-Mono-Limited.ttf') format('truetype');
+}
+body { font-family: 'VintageMono', monospace !important; }
+
+</style>
 </head>
 <body>
 
@@ -72,9 +79,10 @@
 
     <div id="conteudo"></div>
 
-    <footer>
-        © 2016-2026 JAAnerão<br>
-        jaanerao@hotmail.com<br>
+    <div id="lista-nomes" style="margin-top:40px;"></div>
+<footer>
+        ©2016-2026 JAAnerão<br>
+		jaanerao@hotmail.com<br>
         Atualizado: 28/03/2026
     </footer>
 
@@ -293,6 +301,7 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
         function limparBusca() {
             document.getElementById('searchInput').value = "";
             render();
+        gerarLista();
         }
 
         // Identificar próximo aniversariante para o ID de início
@@ -317,7 +326,26 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
         // Inicializar
         findProximo();
         render();
+        gerarLista();
 
-    </script>
+    
+// Gerar listagem final indexada por dia/mês
+function gerarLista() {
+    const listaDiv = document.getElementById('lista-nomes');
+    let ordenados = [...pessoas].sort((a,b) => a.diaMes.localeCompare(b.diaMes));
+
+    let htmlLista = '<h3>LISTAGEM POR DATA</h3><div style="display:flex;flex-wrap:wrap;gap:10px;">';
+
+    ordenados.forEach(p => {
+        const dd = p.nascStr.split('/')[0];
+        const mm = p.nascStr.split('/')[1];
+        htmlLista += `<a href="#${p.id}" style="color:black;text-decoration:none;">${dd}/${mm} - ${p.nome}</a><br>`;
+    });
+
+    htmlLista += '</div>';
+    listaDiv.innerHTML = htmlLista;
+}
+
+</script>
 </body>
 </html>
