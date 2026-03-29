@@ -14,43 +14,38 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'VintageMono', 'Helvetica', Arial, sans-serif; }
         
-        /* ALTERAÇÃO AQUI: Fundo Moderno com Gradiente */
         body { 
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); /* Fundo moderno e suave */
-            background-attachment: fixed; /* Mantém o fundo fixo ao rolar */
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); 
+            background-attachment: fixed; 
             padding: 20px; 
             padding-bottom: 100px; 
         }
         
         h3 { color: blue; text-align: center; font-size: 24px; margin-bottom: 20px; }
 
-        /* Controles */
         .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
         input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.8); }
         .btn-limpar { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; }
         .stats { text-align: center; margin-bottom: 10px; font-weight: bold; }
 
-        /* Meses e Blocos */
         .mes-titulo { color: red; font-weight: bold; font-size: 28px; text-align: center; margin: 40px 0 20px; text-transform: uppercase; }
         .grid-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
         
         .registro-card { 
-            background: rgba(224, 224, 224, 0.9); /* Ligeiramente transparente para integrar com o fundo */
+            background: rgba(224, 224, 224, 0.9); 
             border: 2px solid #bbb; border-radius: 10px; 
             padding: 15px; width: 280px; text-align: center; position: relative;
             transition: background 0.3s, transform 0.2s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Sombra leve nos cards */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
         }
-        .registro-card:hover { transform: translateY(-3px); } /* Efeito hover suave */
+        .registro-card:hover { transform: translateY(-3px); }
 
-        /* Imagem */
         .img-container { position: relative; width: 120px; height: 120px; margin: 0 auto 10px; cursor: pointer; }
         .img-pessoa { 
             width: 100%; height: 100%; object-fit: cover; border-radius: 50%; 
             border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2);
         }
         
-        /* Animações */
         @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
         .pulse-active { animation: pulse-img 1s linear 10; }
 
@@ -69,7 +64,6 @@
             text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100;
         }
 
-        /* Tipografia */
         .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
         .info-nasc { color: green; font-weight: bold; }
         .info-falec { color: #b8860b; font-weight: bold; }
@@ -77,7 +71,6 @@
         .info-idade-morta { color: #b8860b; font-weight: bold; }
         .highlight { background-color: yellow; }
 
-        /* Estilo Lista Alfabética (Linha de Caderno) */
         #lista-alfabetica-container { 
             max-width: 800px; margin: 50px auto; padding: 20px; background: rgba(255, 255, 255, 0.95);
             border-left: 2px solid #ff9999; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
@@ -121,11 +114,10 @@
     <footer>
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 28/03/2026
+        Atualizado: 29/03/2026
     </footer>
 
 <script>
-// O SCRIPT PERMANECE EXATAMENTE O MESMO
 const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
 const dadosRaw = `Ingrid Graziela Fernandes Anerão,06/01/1997,,ingrid.jpg
 Maria Amarilza Anerão,14/01/1969,,amarilza.jpg
@@ -207,10 +199,17 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
             const hoje = new Date();
             const fim = falec ? new Date(falec) : hoje;
             const inicio = new Date(nasc);
+            
+            // Cálculo de anos
             let idade = fim.getFullYear() - inicio.getFullYear();
             const m = fim.getMonth() - inicio.getMonth();
             if (m < 0 || (m === 0 && fim.getDate() < inicio.getDate())) idade--;
-            return idade;
+            
+            // Cálculo de dias exatos
+            const diffTime = fim - inicio;
+            const diasVividos = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            return { anos: idade, dias: diasVividos };
         }
 
         function parsingDatas(str) {
@@ -265,7 +264,6 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
             const hojeDM = hoje.getDate().toString().padStart(2,'0') + (hoje.getMonth()+1).toString().padStart(2,'0');
             const termo = filtro.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
-            // Renderizar Cards por Meses
             mesesNomes.forEach((mes, idx) => {
                 const filtrados = pessoas.filter(p => p.mesNum === idx).filter(p => {
                     if (!termo) return true;
@@ -288,8 +286,9 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
                         card.id = p.id;
                         const isToday = p.diaMes === hojeDM;
                         const isJesus = p.nome.includes("JESUS");
-                        const idade = calcularIdade(p.dNasc, p.dFalec);
-                        const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null) : 0;
+                        
+                        const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
+                        const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null).anos : 0;
                         const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
                         const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
 
@@ -303,8 +302,12 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
                                 ${p.dFalec ? `
                                     <div class="info-falec">✝ ${destacar(p.falecStr, termo)} ${diaSemFalec}</div>
                                     <div class="info-falec">há ${anosFalec} anos</div>
-                                    <div class="info-idade-morta">viveu ${idade} anos</div>
-                                ` : `<div class="info-idade-viva"> ${idade} anos</div>`}
+                                    <div class="info-idade-morta">viveu ${dadosIdade.anos} anos</div>
+                                    <div class="info-idade-morta" style="font-size: 0.85em;">(${dadosIdade.dias.toLocaleString()} dias vividos)</div>
+                                ` : `
+                                    <div class="info-idade-viva">${dadosIdade.anos} anos</div>
+                                    <div class="info-idade-viva" style="font-size: 0.85em;">(${dadosIdade.dias.toLocaleString()} dias vividos)</div>
+                                `}
                                 <div>${destacar(p.signo, termo)}</div>
                             ` : ''}
                             ${isToday ? `<div class="bday-msg">${p.dFalec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>` : ''}
@@ -316,7 +319,6 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
                 }
             });
 
-            // Gerar Lista Alfabética
             const alfabetica = [...pessoas].sort((a, b) => a.nome.localeCompare(b.nome));
             alfabetica.forEach(p => {
                 const li = document.createElement('li');
