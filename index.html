@@ -13,13 +13,20 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'VintageMono', 'Helvetica', Arial, sans-serif; }
-        body { background-color: #f4f4f4; padding: 20px; padding-bottom: 100px; }
+        
+        /* ALTERAÇÃO AQUI: Fundo Moderno com Gradiente */
+        body { 
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); /* Fundo moderno e suave */
+            background-attachment: fixed; /* Mantém o fundo fixo ao rolar */
+            padding: 20px; 
+            padding-bottom: 100px; 
+        }
         
         h3 { color: blue; text-align: center; font-size: 24px; margin-bottom: 20px; }
 
         /* Controles */
         .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-        input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; }
+        input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.8); }
         .btn-limpar { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; }
         .stats { text-align: center; margin-bottom: 10px; font-weight: bold; }
 
@@ -28,10 +35,13 @@
         .grid-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
         
         .registro-card { 
-            background: #e0e0e0; border: 2px solid #bbb; border-radius: 10px; 
+            background: rgba(224, 224, 224, 0.9); /* Ligeiramente transparente para integrar com o fundo */
+            border: 2px solid #bbb; border-radius: 10px; 
             padding: 15px; width: 280px; text-align: center; position: relative;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Sombra leve nos cards */
         }
+        .registro-card:hover { transform: translateY(-3px); } /* Efeito hover suave */
 
         /* Imagem */
         .img-container { position: relative; width: 120px; height: 120px; margin: 0 auto 10px; cursor: pointer; }
@@ -45,7 +55,7 @@
         .pulse-active { animation: pulse-img 1s linear 10; }
 
         @keyframes target-blink { 
-            0%, 100% { background-color: #e0e0e0; }
+            0%, 100% { background-color: rgba(224, 224, 224, 0.9); }
             50% { background-color: yellow; }
         }
         .highlight-target { animation: target-blink 0.5s ease-in-out 10; }
@@ -69,8 +79,9 @@
 
         /* Estilo Lista Alfabética (Linha de Caderno) */
         #lista-alfabetica-container { 
-            max-width: 800px; margin: 50px auto; padding: 20px; background: #fff;
+            max-width: 800px; margin: 50px auto; padding: 20px; background: rgba(255, 255, 255, 0.95);
             border-left: 2px solid #ff9999; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
         }
         .titulo-lista { color: blue; margin-bottom: 20px; border-bottom: 2px solid blue; display: inline-block; }
         .lista-caderno { list-style: none; text-align: left; }
@@ -84,7 +95,7 @@
         }
         .lista-link:hover { color: blue; font-weight: bold; }
 
-        footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; }
+        footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     </style>
 </head>
 <body>
@@ -108,12 +119,13 @@
     </div>
 
     <footer>
-        ©2016-2026 J.A.Anerão<br>
+        ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
         Atualizado: 28/03/2026
     </footer>
 
 <script>
+// O SCRIPT PERMANECE EXATAMENTE O MESMO
 const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
 const dadosRaw = `Ingrid Graziela Fernandes Anerão,06/01/1997,,ingrid.jpg
 Maria Amarilza Anerão,14/01/1969,,amarilza.jpg
