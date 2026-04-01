@@ -16,7 +16,6 @@
             padding-bottom: 100px; 
         }
         
-        /* Novo container para o Topo */
         .header-container {
             display: flex;
             align-items: center;
@@ -26,15 +25,13 @@
         }
 
         .img-topo {
-            width: 50px; /* Ajuste o tamanho conforme desejar */
+            width: 50px;
             height: auto;
             cursor: pointer;
             transition: transform 0.2s;
         }
 
-        .img-topo:hover {
-            transform: scale(1.1);
-        }
+        .img-topo:hover { transform: scale(1.1); }
 
         h3 { color: blue; font-size: 24px; margin-bottom: 0; }
 
@@ -55,11 +52,29 @@
         }
         .registro-card:hover { transform: translateY(-3px); }
 
-        .img-container { position: relative; width: 120px; height: 120px; margin: 0 auto 10px; cursor: pointer; }
+        /* Container da Foto + Ícone Info */
+        .foto-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px; /* Espaço entre a foto e o ícone */
+            margin-bottom: 10px;
+        }
+
+        .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
         .img-pessoa { 
             width: 100%; height: 100%; object-fit: cover; border-radius: 50%; 
             border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2);
         }
+
+        /* Estilo do Ícone Info */
+        .icon-info {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .icon-info:hover { transform: scale(1.2); }
         
         @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
         .pulse-active { animation: pulse-img 1s linear 10; }
@@ -139,19 +154,18 @@
     </div>
 
     <footer id="footer">
-	    <br>
-		<br>
+	    <br><br>
 	    Atalhos:<br>
 		Clicar no ícone do bolo, indexa a página.<br>
 	    Clicar duas vezes na foto, vai para a lista.<br>
+        Clicar no ícone "i", vê informações da pessoa.<br>
         Clicar no nome da lista, vai para o registro.<br>
 		Seta azul abaixo, vai no final da página.<br>
 		Seta azul acima, vai no início da página.<br>
 		<br>
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 30/03/2026				
-
+        Atualizado: 01/04/2026				
     </footer>
 
 <script>
@@ -217,6 +231,27 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
 
         const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 
+        // Função para buscar informações no info.txt
+        async function mostrarInfo(nome) {
+            try {
+                const response = await fetch('info.txt');
+                const text = await response.text();
+                const linhas = text.split('\n');
+                
+                // Busca a linha que começa com o nome da pessoa
+                const infoPessoa = linhas.find(l => l.startsWith(nome));
+                
+                if (infoPessoa) {
+                    const mensagem = infoPessoa.split('|')[1] || "Sem detalhes adicionais.";
+                    alert(`Informações de ${nome}:\n\n${mensagem.replace(/\\n/g, '\n')}`);
+                } else {
+                    alert(`${linhas[0]}\n(Nenhuma informação específica para ${nome})`);
+                }
+            } catch (error) {
+                alert("Erro ao carregar o arquivo info.txt");
+            }
+        }
+
         function getSigno(dia, mes) {
             if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) return ["♒", "Aquário"];
             if ((mes == 2 && dia >= 19) || (mes == 3 && dia <= 20)) return ["♓", "Peixes"];
@@ -236,14 +271,11 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
             const hoje = new Date();
             const fim = falec ? new Date(falec) : hoje;
             const inicio = new Date(nasc);
-            
             let idade = fim.getFullYear() - inicio.getFullYear();
             const m = fim.getMonth() - inicio.getMonth();
             if (m < 0 || (m === 0 && fim.getDate() < inicio.getDate())) idade--;
-            
             const diffTime = fim - inicio;
             const diasVividos = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            
             return { anos: idade, dias: diasVividos };
         }
 
@@ -293,7 +325,6 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
             const listaUl = document.getElementById('listaAlfabetica');
             container.innerHTML = "";
             listaUl.innerHTML = "";
-            
             let count = 0;
             const hoje = new Date();
             const hojeDM = hoje.getDate().toString().padStart(2,'0') + (hoje.getMonth()+1).toString().padStart(2,'0');
@@ -321,15 +352,17 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
                         card.id = p.id;
                         const isToday = p.diaMes === hojeDM;
                         const isJesus = p.nome.includes("JESUS");
-                        
                         const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
                         const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null).anos : 0;
                         const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
                         const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
 
                         card.innerHTML = `
-                            <div class="img-container" ondblclick="voltarParaLista()">
-                                <img src="${BASE_URL}${p.img}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
+                            <div class="foto-wrapper">
+                                <div class="img-container" ondblclick="voltarParaLista()">
+                                    <img src="${BASE_URL}${p.img}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
+                                </div>
+                                <img src="info.png" class="icon-info" onclick="mostrarInfo('${p.nome}')" title="Ver detalhes">
                             </div>
                             <span class="nome">${destacar(p.nome, termo)}</span>
                             ${!isJesus ? `
@@ -361,7 +394,6 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
                 li.innerHTML = `<a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro('${p.id}')">${p.nome}</a>`;
                 listaUl.appendChild(li);
             });
-
             document.getElementById('stats').innerText = `Registros: ${pessoas.length} / Filtrados: ${count}`;
         }
 
@@ -396,7 +428,6 @@ NATAL DO MENINO JESUS 25/12,25/12/0001,,jesus.jpg`;
             });
             const prox = ordenados.find(p => ((p.dNasc.getMonth() + 1) * 100 + p.dNasc.getDate()) >= hojeDM) || ordenados[0];
             proximoId = prox.id;
-            
             setTimeout(() => {
                 const el = document.getElementById(proximoId);
                 if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
