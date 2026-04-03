@@ -102,7 +102,7 @@
     "nascimento": "30/03/1963",
     "falecimento": "",
     "imagem": "amarildo.jpg",
-    "info": "Criador desse sistema|Irmão do Amauri|Imão da Amarilza|Pai da Carol|Pai da Ingrid|Pai do Guilherme"
+    "info": "Irmão do Amauri|Imão da Amarilza|Pai da Carol|Pai da Ingrid|Pai do Guilherme|Criador desse sistema de dados"
   },
   {
     "nome": "Ivanira Ferreira Lima",
@@ -130,7 +130,7 @@
     "nascimento": "16/04/1946",
     "falecimento": "",
     "imagem": "aurora.jpg",
-    "info": "Tia do Amarildo|Irmã de Maria Cristina Anerão|Mãe da Regina|Mãe da Rita|Esposa de Arlindo Francisco|"
+    "info": "Tia do Amarildo|Irmã de Maria Cristina Anerão|Mãe da Regina|Mãe da Rita|Esposa de Arlindo Francisco Ribeiro|"
   },
   {
     "nome": "Arlindo Francisco Ribeiro",
@@ -214,7 +214,7 @@
     "nascimento": "06/07/2009",
     "falecimento": "",
     "imagem": "guilherme.jpg",
-    "info": "Filha do Amarildo|Filha da Solamita|Irmã da Carol|Irmã da Ingrid|Irmã do Leandro|"
+    "info": "Filho do Amarildo|Filho da Solamita|Irmão da Carol|Irmão da Ingrid|Irmão do Leandro|"
   },
   {
     "nome": "Elias Gestich",
@@ -228,7 +228,7 @@
     "nascimento": "18/08/1943",
     "falecimento": "28/02/2019",
     "imagem": "antonio_lima.jpg",
-    "info": "Pai da Solamita|Esposo de Aparecida Ordália|Avô da Carol|Avô da Ingrid|Avô do Guilherme|Avô do Leandro"
+    "info": "Pai da Solamita|Esposo de Aparecida Ordália Garcia de Lima|Avô da Carol|Avô da Ingrid|Avô do Guilherme|Avô do Leandro"
   },
   {
     "nome": "João Anerão",
@@ -242,7 +242,7 @@
     "nascimento": "25/08/1889",
     "falecimento": "11/08/1976",
     "imagem": "jose_anerao.jpg",
-    "info": "Avô paterna do Amarildo|Pai de Arvelino Anerão|Esposo da Rosa Frachelli Anerão|||"
+    "info": "Avô paterno do Amarildo|Pai de Arvelino Anerão|Esposo da Rosa Frachelli Anerão|||"
   },
   {
     "nome": "Antonio Anerão (Tonico)",
