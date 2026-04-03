@@ -130,11 +130,11 @@ function parsingDatas(str) {
     return new Date(y || new Date().getFullYear(), m - 1, d);
 }
 
-// Carregar dados do JSON5 externo
+// Carregar dados do JSON externo
 async function carregarDados() {
     try {
-        const response = await fetch('dados.json5');
-        const data = await response.json5();
+        const response = await fetch('dados.json');
+        const data = await response.json();
         
         pessoas = data.map((p, index) => {
             const dNasc = parsingDatas(p.nascimento);
@@ -160,7 +160,7 @@ async function carregarDados() {
         findProximo();
         render();
     } catch (error) {
-        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json5.";
+        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
         console.error("Erro:", error);
     }
 }
