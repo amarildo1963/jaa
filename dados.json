@@ -1,7 +1,8 @@
 {
-  "_comentário": "Formato: Nome,Nascimento,Falecimento,Imagem,|||||",
+  "_comment": "Formato: Nome,Nascimento,Falecimento,Imagem,|||||",
   "_comentário": "Note: Se não houver infos, deixe em branco após a imagem.",
-  "_comentário": "Última alteração: 03/04/2026, sexta-feira"
+  "_comment": "Última alteração: 03/04/2026, sexta-feira
+  }
 }
 [
   {
