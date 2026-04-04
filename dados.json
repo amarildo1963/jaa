@@ -1,7 +1,7 @@
 {
-  "comentário": "Formato: Nome,Nascimento,Falecimento,Imagem,|||||",
-  "_comment": "Note: Se não houver infos, deixe em branco após a imagem.",
-  "comentário": "Última alteração: 03/04/2026, sexta-feira"
+  "_comentário": "Formato: Nome,Nascimento,Falecimento,Imagem,|||||",
+  "_comentário": "Note: Se não houver infos, deixe em branco após a imagem.",
+  "_comentário": "Última alteração: 03/04/2026, sexta-feira"
 }
 [
   {
@@ -79,7 +79,7 @@
     "nascimento": "13/03/1970",
     "falecimento": "",
     "imagem": "wilson_cosme.jpg",
-    "info": "|||||"
+    "info": "Já foi casado com Amarilza|||||"
   },
   {
     "nome": "Iria Ribeiro Anerão",
