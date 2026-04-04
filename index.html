@@ -8,48 +8,184 @@
     <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
-        body { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); background-attachment: fixed; padding: 20px; padding-bottom: 100px; }
-        .header-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
-        .img-topo { width: 50px; height: auto; cursor: pointer; transition: transform 0.2s; }
+        
+        body { 
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); 
+            background-attachment: fixed; 
+            padding: 20px; 
+            padding-bottom: 100px; 
+        }
+        
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .img-topo {
+            width: 50px;
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
         .img-topo:hover { transform: scale(1.1); }
+
         h3 { color: blue; font-size: 24px; margin-bottom: 0; }
+
         .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
         input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.8); }
         .btn-limpar { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; }
         .stats { text-align: center; margin-bottom: 10px; font-weight: bold; }
+
         .mes-titulo { color: red; font-weight: bold; font-size: 28px; text-align: center; margin: 40px 0 20px; text-transform: uppercase; }
         .grid-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-        .registro-card { background: rgba(224, 224, 224, 0.9); border: 2px solid #bbb; border-radius: 10px; padding: 15px; width: 280px; text-align: center; position: relative; transition: background 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        
+        .registro-card { 
+            background: rgba(224, 224, 224, 0.9); 
+            border: 2px solid #bbb; border-radius: 10px; 
+            padding: 15px; width: 280px; text-align: center; position: relative;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
         .registro-card:hover { transform: translateY(-3px); }
-        .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; position: relative; }
+
+        .photo-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
         .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
-        .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
-        .icon-info { width: 32px; height: 32px; cursor: pointer; transition: opacity 0.2s; }
+        .img-pessoa { 
+            width: 100%; height: 100%; object-fit: cover; border-radius: 50%; 
+            border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .icon-info {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
         .icon-info:hover { opacity: 0.7; }
-        .info-bubble { display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); width: 90%; background-color: #ffffe0; border: 1px solid black; border-radius: 8px; padding: 10px; z-index: 10; text-align: left; font-size: 11px; color: black; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+        .info-bubble {
+            display: none;
+            position: absolute;
+            top: 130px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            background-color: #ffffe0; 
+            border: 1px solid black; 
+            border-radius: 8px;
+            padding: 10px;
+            z-index: 10;
+            text-align: left;
+            font-size: 11px;
+            color: black;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
         @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
         .pulse-active { animation: pulse-img 1s linear 10; }
-        @keyframes target-blink { 0%, 100% { background-color: rgba(224, 224, 224, 0.9); } 50% { background-color: yellow; } }
+
+        @keyframes target-blink { 
+            0%, 100% { background-color: rgba(224, 224, 224, 0.9); }
+            50% { background-color: yellow; }
+        }
         .highlight-target { animation: target-blink 0.5s ease-in-out 10; }
+
         @keyframes blink-red { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
         .bday-msg { color: red; font-weight: bold; animation: blink-red 0.8s infinite; margin-top: 5px; font-size: 0.9em; }
+
         @keyframes blink-blue { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
-        .scroll-top { position: fixed; bottom: 20px; right: 20px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
-        .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
+        .scroll-top { 
+            position: fixed; bottom: 20px; right: 20px; font-size: 40px; color: blue; 
+            text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100;
+        }
+
         .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
         .info-nasc { color: green; font-weight: bold; }
         .info-falec { color: #b8860b; font-weight: bold; }
         .info-idade-viva { color: green; font-weight: bold; }
         .info-idade-morta { color: #b8860b; font-weight: bold; }
         .highlight { background-color: yellow; }
-        #lista-alfabetica-container { max-width: 800px; margin: 50px auto; padding: 20px; background: rgba(255, 255, 255, 0.95); border-left: 2px solid #ff9999; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); border-radius: 8px; }
+
+        #lista-alfabetica-container { 
+            max-width: 800px; margin: 50px auto; padding: 20px; background: rgba(255, 255, 255, 0.95);
+            border-left: 2px solid #ff9999; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
         .titulo-lista { color: blue; margin-bottom: 20px; border-bottom: 2px solid blue; display: inline-block; }
         .lista-caderno { list-style: none; text-align: left; }
-        .lista-item { border-bottom: 1px solid #add8e6; padding: 8px 0; display: flex; align-items: center; }
-        .lista-link { text-decoration: none; color: black; font-weight: normal; width: 100%; transition: color 0.2s; }
+        .lista-item { 
+            border-bottom: 1px solid #add8e6; padding: 8px 0; 
+            display: flex; align-items: center;
+        }
+        .lista-link { 
+            text-decoration: none; color: black; font-weight: normal; 
+            width: 100%; transition: color 0.2s;
+        }
         .lista-link:hover { color: blue; font-weight: bold; }
+
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
-    </style>
+    
+        .scroll-bottom { 
+            position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; 
+            text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100;
+        }
+    /* Estilos para o botão de ajuda e balão no rodapé */
+.help-container {
+    position: relative;
+    display: inline-block;
+    margin-top: 15px;
+}
+.icon-help {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.icon-help:hover { transform: scale(1.1); }
+
+.help-bubble {
+    display: none;
+    position: absolute;
+    bottom: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 250px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    z-index: 100;
+    text-align: left;
+    font-size: 12px;
+    color: blue;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+	
+	function toggleHelp() {
+    const bubble = document.getElementById('helpBubble');
+    bubble.style.display = 'block';
+    
+    // Desaparece após 8 segundos (8000 milissegundos)
+    setTimeout(() => {
+        bubble.style.display = 'none';
+    }, 8000);
+}
+}
+	
+	</style>
 </head>
 <body>
 
@@ -64,7 +200,7 @@
     </div>
 
     <div class="controls">
-        <input type="text" id="searchInput" placeholder="Buscar (nome, data, mês, signo, etc...)">
+        <input type="text" id="searchInput" placeholder="Buscar (nome, data, mês, signo, etc...)" onkeyup="filtrar()">
         <button class="btn-limpar" onclick="limparBusca()">Limpar 🧹</button>
     </div>
 
@@ -77,25 +213,176 @@
         <ul id="listaAlfabetica" class="lista-caderno"></ul>
     </div>
 
-    <footer id="footer">
-	    <br><br>
-	    Atalhos:<br>
-		Clicar no ícone do bolo, indexa a página.<br>
-	    Clicar duas vezes na foto, vai para a lista.<br>
-        Clicar no nome da lista, vai para o registro.<br>
-		Seta azul abaixo, vai no final da página.<br>
-		Seta azul acima, vai no início da página.<br>
-		<br>
-        ©2016-2026 JAAnerão<br>
-        jaanerao@hotmail.com<br>
-        Atualizado: 03/04/2026				
-    </footer>
+    <style>
+    /* ... seus estilos anteriores ... */
+
+    .footer-help-container {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+
+    .help-icon-footer {
+        width: 35px;
+        height: 35px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .help-icon-footer:hover { transform: scale(1.1); }
+
+    .help-bubble-footer {
+        display: none;
+        position: absolute;
+        bottom: 45px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 250px;
+        background-color: white;
+        border: 1px solid black;
+        padding: 10px;
+        z-index: 1000;
+        text-align: left;
+        font-size: 11px;
+        color: blue;
+        font-weight: bold;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+</style>
+
+<footer id="footer">
+    <div class="footer-help-container">
+        <img src="help.png" class="help-icon-footer" onclick="toggleHelpFooter()" alt="Ajuda">
+        <div id="helpBubbleFooter" class="help-bubble-footer">
+            Clicar no ícone do bolo, indexa a página.<br>
+            Clicar duas vezes na foto, vai para a lista.<br>
+            Clicar no nome da lista, vai para o registro.<br>
+            Seta azul abaixo, vai no final da página.<br>
+            Seta azul acima, vai no início da página.
+        </div>
+    </div>
+    <br>
+    ©2016-2026 JAAnerão<br>
+    jaanerao@hotmail.com<br>
+    Atualizado: 03/04/2026	
+</footer>
+
+<script>
+    // ... suas funções anteriores (carregarDados, render, etc) ...
+
+    function toggleHelpFooter() {
+        const bubble = document.getElementById('helpBubbleFooter');
+        bubble.style.display = 'block';
+        
+        // Desaparece após 6 segundos (6000 milissegundos)
+        setTimeout(() => {
+            bubble.style.display = 'none';
+        }, 6000);
+    }
+</script>
 
 <script> 
 const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
-const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+const DATA_URL = "dados.json"; // Certifique-se que o arquivo está na mesma pasta
+
 let pessoas = [];
+const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 let proximoId = "";
+
+async function carregarDados() {
+    try {
+        const response = await fetch(DATA_URL);
+        const json = await response.json(); // Se for JSON puro. Se for json real, use uma lib ou mantenha como .json padrão.
+        
+        pessoas = json.map((p, index) => {
+            const dNasc = parsingDatas(p.nasc);
+            const dFalec = parsingDatas(p.falec);
+            let signo = ["✨", "Divino"];
+            if (p.nome.indexOf("JESUS") === -1) {
+                signo = getSigno(dNasc.getDate(), dNasc.getMonth() + 1);
+            }
+            return {
+                id: 'p' + index,
+                nome: p.nome, nascStr: p.nasc, falecStr: p.falec, dNasc, dFalec, img: p.img, infoTexto: p.info,
+                signo: signo[0] + " " + signo[1],
+                mesNum: dNasc.getMonth(),
+                diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0')
+            };
+        });
+
+        findProximo();
+        render();
+    } catch (<style>
+    /* ... seus estilos anteriores ... */
+
+    .footer-help-container {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+
+    .help-icon-footer {
+        width: 35px;
+        height: 35px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .help-icon-footer:hover { transform: scale(1.1); }
+
+    .help-bubble-footer {
+        display: none;
+        position: absolute;
+        bottom: 45px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 250px;
+        background-color: white;
+        border: 1px solid black;
+        padding: 10px;
+        z-index: 1000;
+        text-align: left;
+        font-size: 11px;
+        color: blue;
+        font-weight: bold;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+</style>
+
+<footer id="footer">
+    <div class="footer-help-container">
+        <img src="help.png" class="help-icon-footer" onclick="toggleHelpFooter()" alt="Ajuda">
+        <div id="helpBubbleFooter" class="help-bubble-footer">
+            Clicar no ícone do bolo, indexa a página.<br>
+            Clicar duas vezes na foto, vai para a lista.<br>
+            Clicar no nome da lista, vai para o registro.<br>
+            Seta azul abaixo, vai no final da página.<br>
+            Seta azul acima, vai no início da página.
+        </div>
+    </div>
+    <br>
+    ©2016-2026 JAAnerão<br>
+    jaanerao@hotmail.com<br>
+    Atualizado: 03/04/2026-sex			
+</footer>
+
+<script>
+    // ... suas funções anteriores (carregarDados, render, etc) ...
+
+    function toggleHelpFooter() {
+        const bubble = document.getElementById('helpBubbleFooter');
+        bubble.style.display = 'block';
+        
+        // Desaparece após 6 segundos (6000 milissegundos)
+        setTimeout(() => {
+            bubble.style.display = 'none';
+        }, 6000);
+    }
+</script>or) {
+        console.error("Erro ao carregar dados:", error);
+        document.getElementById('stats').innerText = "Erro ao carregar aniversariantes.";
+    }
+}
 
 function getSigno(dia, mes) {
     if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) return ["♒", "Aquário"];
@@ -128,41 +415,6 @@ function parsingDatas(str) {
     if (!str) return null;
     const [d, m, y] = str.split('/');
     return new Date(y || new Date().getFullYear(), m - 1, d);
-}
-
-// Carregar dados do JSON externo
-async function carregarDados() {
-    try {
-        const response = await fetch('dados.json');
-        const data = await response.json();
-        
-        pessoas = data.map((p, index) => {
-            const dNasc = parsingDatas(p.nascimento);
-            const dFalec = parsingDatas(p.falecimentos || p.falecimento);
-            let signo = ["✨", "Divino"];
-            if (p.nome.indexOf("JESUS") === -1) {
-                signo = getSigno(dNasc.getDate(), dNasc.getMonth() + 1);
-            }
-            return {
-                id: 'p' + index,
-                nome: p.nome, 
-                nascStr: p.nascimento, 
-                falecStr: p.falecimento, 
-                dNasc, dFalec, 
-                img: p.imagem, 
-                infoTexto: p.info,
-                signo: signo[0] + " " + signo[1],
-                mesNum: dNasc.getMonth(),
-                diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0')
-            };
-        });
-        
-        findProximo();
-        render();
-    } catch (error) {
-        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
-        console.error("Erro:", error);
-    }
 }
 
 function mostrarInfo(id) {
@@ -276,14 +528,15 @@ function destacar(texto, termo) {
     return texto.replace(regex, '<span class="highlight">$1</span>');
 }
 
-document.getElementById('searchInput').addEventListener('input', function(e) {
-    let val = e.target.value;
+function filtrar() {
+    const input = document.getElementById('searchInput');
+    let val = input.value;
     if (/^\d+$/.test(val)) {
-        if (val.length === 4) e.target.value = val.slice(0,2) + "/" + val.slice(2,4);
-        if (val.length === 8) e.target.value = val.slice(0,2) + "/" + val.slice(2,4) + "/" + val.slice(4,8);
+        if (val.length === 4) input.value = val.slice(0,2) + "/" + val.slice(2,4);
+        if (val.length === 8) input.value = val.slice(0,2) + "/" + val.slice(2,4) + "/" + val.slice(4,8);
     }
-    render(e.target.value);
-});
+    render(input.value);
+}
 
 function limparBusca() {
     document.getElementById('searchInput').value = "";
@@ -291,6 +544,7 @@ function limparBusca() {
 }
 
 const findProximo = () => {
+    if (pessoas.length === 0) return;
     const hoje = new Date();
     const hojeDM = (hoje.getMonth() + 1) * 100 + hoje.getDate();
     const ordenados = [...pessoas].sort((a,b) => {
@@ -299,14 +553,12 @@ const findProximo = () => {
         return dmA - dmB;
     });
     const prox = ordenados.find(p => ((p.dNasc.getMonth() + 1) * 100 + p.dNasc.getDate()) >= hojeDM) || ordenados[0];
-    proximoId = prox ? prox.id : "";
+    proximoId = prox.id;
     
-    if(proximoId) {
-        setTimeout(() => {
-            const el = document.getElementById(proximoId);
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 500);
-    }
+    setTimeout(() => {
+        const el = document.getElementById(proximoId);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 500);
 };
 
 // Iniciar carregamento
