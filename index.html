@@ -103,7 +103,7 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 03/04/2026<br>
+        Atualizado: 04/04/2026<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -111,7 +111,19 @@
                 Clicar duas vezes na foto, vai para a lista<br>
                 Clicar no nome da lista, vai para o registro<br>
                 Seta azul abaixo, vai no final da página<br>
-                Seta azul acima, vai no início da página
+                Seta azul acima, vai no início da<br>
+				<br> 
+                ***** Digitar no campo de busca *****<br>
+                Exemplos:<br>
+				janeiro = filtra pessoas de janeiro<br>
+				2911 = filtra pessoas de 29/11<br>
+				/12/ = filtra pessoas de dezembro<br>
+				/03/1963 = filtra pessoas de 03/1963<br>
+				aries = filtra pessoas de áries<br>
+				setemb = filtra pessoas de setembro<br>
+				viva = filtra pessoas vivas<br>
+				falecida = filtra pessoas falecidas<br>
+				ou digite alguns caracteres para filtrar<br>
             </div>
         </div>
         <br>
@@ -203,7 +215,7 @@ function mostrarInfo(id) {
     const el = document.getElementById('info-' + id);
     if (el) {
         el.style.display = 'block';
-        setTimeout(() => { el.style.display = 'none'; }, 8000);
+        setTimeout(() => { el.style.display = 'none'; }, 10000);
     }
 }
 
@@ -212,7 +224,7 @@ function irParaRegistro(id) {
     if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         el.classList.add('highlight-target');
-        setTimeout(() => el.classList.remove('highlight-target'), 5000);
+        setTimeout(() => el.classList.remove('highlight-target'), 10000);
     }
 }
 
