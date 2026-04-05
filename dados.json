@@ -18,14 +18,14 @@
     "nascimento": "22/01/1964",
     "falecimento": "20/07/2020",
     "imagem": "sandra.jpg",
-    "info": "Prima do Amarildo|Filha de Rosa Lia Moller Anerão|Filha de Alfredo Moller|Irmã da Sonia|Irmã da Suzi|"
+    "info": "Prima do Amarildo|Filha de Rosa Lia Anerão Moller|Filha de Alfredo Moller|Irmã da Sonia|Irmã da Suzi|"
   },
   {
     "nome": "Horácio Anerão",
     "nascimento": "24/01/1930",
     "falecimento": "12/09/2004",
     "imagem": "horacio.jpg",
-    "info": "Tio do Amarildo|Irmão de Arvelino Anerão|Pai do Humberto Anerão|Filho de José Anerão|Filho de Rosa Frachelli Anerão|"
+    "info": "Tio do Amarildo|Irmão de Arvelino Anerão|Pai do Humberto Donizete Anerão|Filho de José Anerão|Filho de Rosa Frachelli Anerão|"
   },
   {
     "nome": "Rosa Frachelli Anerão",
@@ -74,7 +74,7 @@
     "nascimento": "13/03/1970",
     "falecimento": "",
     "imagem": "wilson_cosme.jpg",
-    "info": "|||||"
+    "info": "Já foi casado com Maria Amarilza Anerão|||||"
   },
   {
     "nome": "Iria Ribeiro Anerão",
@@ -102,7 +102,7 @@
     "nascimento": "30/03/1963",
     "falecimento": "",
     "imagem": "amarildo.jpg",
-    "info": "Irmão do Amauri / irmão da Amarilza / pai da Carol / pai da  Ingrid / pai do Guilherme / criador desse sistema de dados.|E-mail: jaanerao@hotmail.com||||"
+    "info": "Irmão do Amauri / irmão da Amarilza / pai da Carol / pai da Ingrid / pai do Guilherme / criador desse sistema de dados.|Avô do Nícolas|E-mail: jaanerao@hotmail.com|||"
   },
   {
     "nome": "Ivanira Ferreira Lima",
@@ -123,7 +123,7 @@
     "nascimento": "08/04/1950",
     "falecimento": "20/09/2021",
     "imagem": "rosa_aparecida.jpg",
-    "info": "Prima do Amarildo|Filha de joão Anerão|Filha de Iria Ribeiro Anerão|||"
+    "info": "Prima do Amarildo|Filha de João Anerão|Filha de Iria Ribeiro Anerão|||"
   },
   {
     "nome": "Aurora Ribeiro Ribeiro",
@@ -158,7 +158,7 @@
     "nascimento": "29/05/1980",
     "falecimento": "",
     "imagem": "jose_reginaldo.jpg",
-    "info": "Primo do Amarildo|Filho de Braz Gestich|Filho de Maria José Gestich|Irmão do João Paulo|Imão da Valeria"
+    "info": "Primo do Amarildo|Filho de Braz Gestich|Filho de Maria José Gestich|Irmão do João Paulo|Irmão da Valeria"
   },
   {
     "nome": "Karina Kristina Lima Anerão",
@@ -193,7 +193,7 @@
     "nascimento": "19/06/1984",
     "falecimento": "",
     "imagem": "joao_paulo.jpg",
-    "info": "Primo do Amarildo|Filho de Braz Gestich|Filho de Maria José Gestich|Irmão do Reginaldo|Imão da Valeria|"
+    "info": "Primo do Amarildo|Filho de Braz Gestich|Filho de Maria José Gestich|Irmão do Reginaldo|Irmão da Valeria|"
   },
   {
     "nome": "João Gestich",
@@ -298,14 +298,14 @@
     "nascimento": "29/09/1990",
     "falecimento": "",
     "imagem": "leandro.jpg",
-    "info": "Filho da Solamita|Irmã da Carol|Irmã da Ingrid|Irmã do Guilherme||"
+    "info": "Filho da Solamita|Irmão da Carol|Irmão da Ingrid|Irmão do Guilherme||"
   },
   {
     "nome": "Paulo de Assis Anerão",
     "nascimento": "18/10/1962",
     "falecimento": "",
     "imagem": "paulo.jpg",
-    "info": "Primo do Amarildo|Flho de João Anerão|Filho de Iria Ribeiro Anerão|||"
+    "info": "Primo do Amarildo|Filho de João Anerão|Filho de Iria Ribeiro Anerão|||"
   },
   {
     "nome": "Antonio Amauri Anerão",
@@ -319,7 +319,7 @@
     "nascimento": "21/10/1975",
     "falecimento": "10/10/2019",
     "imagem": "sonia.jpg",
-    "info": "Prima do Amarildo|Filha de Rosa Lia Moller Anerão|Filha de Alfredo Moller|Irmã da Sandra|Irmã da Suzi|"
+    "info": "Prima do Amarildo|Filha de Rosa Lia Anerão Moller|Filha de Alfredo Moller|Irmã da Sandra|Irmã da Suzi|"
   },
   {
     "nome": "Antonio Amauri Anerão Junior",
@@ -354,7 +354,7 @@
     "nascimento": "29/11/1937",
     "falecimento": "02/07/2007",
     "imagem": "arvelino.png",
-    "info": "Pai do Amarildo|Pai do Amauri|Pai da Amarilza|Esposo de Maria Cristina Anerão|Filho de José Anerão|Filho de Rosa Frachelli Anerão"
+    "info": "Pai do José Amarildo Anerão|Pai do Antonio Amauri Anerão|Pai da Maria Amarilza Anerão|Esposo de Maria Cristina Anerão|Filho de José Anerão|Filho de Rosa Frachelli Anerão"
   },
   {
     "nome": "Sandro Fernandes de Lima",
