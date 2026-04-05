@@ -103,18 +103,18 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 04/04/2026<br>
+        Atualizado: 05/04/2026<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
                 Clicar no ícone bolo, indexa a página<br>
                 2 cliques na foto, vai para a lista<br>
                 1 clique nome da lista, vai ao registro<br>
-                Seta azul ▼, vai no final da página<br>
-                Seta azul ▲, vai no início da página<br>
-				Ícone amarelo ⓘ é de informações<br>
+                seta azul ▼, vai no final da página<br>
+                seta azul ▲, vai no início da página<br>
+				ícone ⓘ amarelo, exibe informações<br>
 				<br> 
-                ( DIGITAR NO CAMPO BUSCA )<br>
+                ( DIGITAR NO CAMPO DE BUSCA )<br>
 				<br>
                 Exemplos de filtros e procura:<br>
 				janeiro = filtra pessoas de janeiro<br>
@@ -124,7 +124,7 @@
 				/03/1963 = filtra mês/ano 03/1963<br>
 				aries = filtra signos de áries<br>
 				viva = filtra pessoas vivas<br>
-				falecida = filtra falecidas<br>
+				falecida = filtra pessoas falecidas<br>
 				ou digite o nome para procurar<br>
             </div>
         </div>
@@ -202,6 +202,17 @@ async function carregarDados() {
                 signo: signo[0] + " " + signo[1],
                 mesNum: dNasc.getMonth(),
                 diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0')
+            ,
+                Info01: p.Info01,
+                Info02: p.Info02,
+                Info03: p.Info03,
+                Info04: p.Info04,
+                Info05: p.Info05,
+                Info06: p.Info06,
+                Info07: p.Info07,
+                Info08: p.Info08,
+                Info09: p.Info09,
+                Info10: p.Info10
             };
         });
         
@@ -273,7 +284,11 @@ function render(filtro = "") {
                 const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
                 const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
 
-                let arrayInfos = p.infoTexto.split('|').filter(x => x.trim() !== "");
+                let arrayInfos = [p.infoTexto,
+                    p.Info01,p.Info02,p.Info03,p.Info04,p.Info05,
+                    p.Info06,p.Info07,p.Info08,p.Info09,p.Info10]
+                    .filter(x=>x && x.trim()!='')
+                    .join(' | ').split('|').filter(x => x.trim() !== "");
                 let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
 
                 card.innerHTML = `
