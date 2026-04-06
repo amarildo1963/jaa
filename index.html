@@ -318,7 +318,7 @@ function render(filtro = "") {
                 card.id = p.id;
                 
                 const isToday = p.diaMes === hojeDM;
-                const isJESUS = p.nome.toUpperCase().includes("JESUS");
+                const isJesus = p.nome.toUpperCase().includes("JESUS");
                 const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
                 const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null).anos : 0;
                 
