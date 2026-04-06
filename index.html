@@ -1,196 +1,432 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aniversariantes - Anerão</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aniversariantes - Anerão</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
+    
+    <style>
+        /* --- RESET E ESTILOS GERAIS --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
+        
+        body { 
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); 
+            background-attachment: fixed; 
+            padding: 20px; 
+            padding-bottom: 100px; 
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+        /* --- CABEÇALHO E CONTROLES --- */
+        .header-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
+        .img-topo { width: 50px; height: auto; cursor: pointer; transition: transform 0.2s; }
+        .img-topo:hover { transform: scale(1.1); }
+        h3 { color: blue; font-size: 24px; margin-bottom: 0; }
 
-<style>
-:root{
-  --bg:#f5f7fa;
-  --card:#ffffff;
-  --primary:#2563eb;
-  --accent:#f59e0b;
-  --text:#111827;
-}
+        .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.8); }
+        .btn-limpar { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Roboto',sans-serif;}
+        .stats { text-align: center; margin-bottom: 10px; font-weight: bold; }
+        .mes-titulo { color: red; font-weight: bold; font-size: 28px; text-align: center; margin: 40px 0 20px; text-transform: uppercase; }
 
-body{
-  background:var(--bg);
-  padding:20px;
-}
+        /* --- GRID E CARDS DE PESSOAS --- */
+        .grid-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .registro-card { 
+            background: rgba(224, 224, 224, 0.9); 
+            border: 2px solid #bbb; 
+            border-radius: 10px; 
+            padding: 15px; 
+            width: 280px; 
+            text-align: center; 
+            position: relative; 
+            transition: background 0.3s, transform 0.2s; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
+        .registro-card:hover { transform: translateY(-3px); }
 
-/* HEADER */
-.header{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  margin-bottom:20px;
-}
-.header img{width:40px;}
-.header h1{font-size:22px;color:var(--primary);}
+        /* --- FOTOS E BALÃO DE INFORMAÇÕES --- */
+        .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; position: relative; }
+        .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
+        .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
+        
+        .icon-info { width: 32px; height: 32px; cursor: pointer; transition: opacity 0.2s; }
+        .info-bubble { 
+            display: none; 
+            position: absolute; 
+            top: 130px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 90%; 
+            background-color: #ffffe0; 
+            border: 1px solid black; 
+            border-radius: 8px; 
+            padding: 10px; 
+            z-index: 10; 
+            text-align: left; 
+            font-size: 11px; 
+            color: black; 
+            font-weight: bold; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
+        }
+        
+        /* --- ANIMAÇÕES --- */
+        @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .pulse-active { animation: pulse-img 1s linear 10; } /* Pulsa a foto do próximo aniversariante */
+        
+        @keyframes target-blink { 0%, 100% { background-color: rgba(224, 224, 224, 0.9); } 50% { background-color: yellow; } }
+        .highlight-target { animation: target-blink 0.5s ease-in-out 10; } /* Pisca em amarelo ao clicar na lista */
 
-/* CONTROLS */
-.controls{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  margin-bottom:15px;
-}
-.controls input{
-  padding:10px;
-  width:260px;
-  border-radius:8px;
-  border:1px solid #ccc;
-}
-.controls button{
-  padding:10px 16px;
-  border:none;
-  background:var(--primary);
-  color:#fff;
-  border-radius:8px;
-  cursor:pointer;
-}
+        @keyframes blink-red { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+        .bday-msg { color: red; font-weight: bold; animation: blink-red 0.8s infinite; margin-top: 5px; font-size: 0.9em; }
 
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-  gap:16px;
-}
+        /* --- NAVEGAÇÃO FIXA --- */
+        @keyframes blink-blue { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+        .scroll-top { position: fixed; bottom: 20px; right: 20px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
+        .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
 
-/* CARD */
-.card{
-  background:var(--card);
-  border-radius:16px;
-  padding:15px;
-  text-align:center;
-  box-shadow:0 6px 16px rgba(0,0,0,0.08);
-  transition:.2s;
-}
-.card:hover{transform:translateY(-4px);}
+        /* --- TIPOGRAFIA DE DADOS --- */
+        .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
+        .info-nasc { color: green; font-weight: bold; }
+        .info-falec { color: #b8860b; font-weight: bold; }
+        .info-idade-viva { color: green; font-weight: bold; }
+        .info-idade-morta { color: #b8860b; font-weight: bold; }
+        .highlight { background-color: yellow; } /* Destaque da busca */
 
-.card img{
-  width:100px;
-  height:100px;
-  border-radius:50%;
-  object-fit:cover;
-  border:3px solid var(--accent);
-}
+        /* --- LISTA ALFABÉTICA (ESTILO CADERNO) --- */
+        #lista-alfabetica-container { max-width: 800px; margin: 50px auto; padding: 20px; background: rgba(255, 255, 255, 0.95); border-left: 2px solid #ff9999; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); border-radius: 8px; }
+        .titulo-lista { color: blue; margin-bottom: 20px; border-bottom: 2px solid blue; display: inline-block; }
+        .lista-caderno { list-style: none; text-align: left; }
+        .lista-item { border-bottom: 1px solid #add8e6; padding: 8px 0; display: flex; align-items: center; }
+        .lista-link { text-decoration: none; color: black; font-weight: normal; width: 100%; transition: color 0.2s; }
+        .lista-link:hover { color: blue; font-weight: bold; }
 
-.nome{font-weight:700;margin-top:8px;color:var(--primary);}
-.info{font-size:13px;margin-top:4px;}
-
-/* LISTA */
-.lista{
-  margin-top:40px;
-}
-.lista h2{margin-bottom:10px;color:var(--primary);}
-.lista ul{list-style:none;}
-.lista li{padding:6px 0;border-bottom:1px solid #ddd;cursor:pointer;}
-
-footer{
-  margin-top:40px;
-  text-align:center;
-  font-size:13px;
-}
-</style>
+        footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
+        #help-bubble { display: none; position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); width: 250px; background-color: white; border: 1px solid black; border-radius: 10px; padding: 10px; z-index: 100; text-align: left; font-size: 12px; color: blue; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+    </style>
 </head>
-
 <body>
 
-<div class="header">
-  <img src="aniver.png">
-  <h1>ANIVERSARIANTES</h1>
-</div>
+    <a href="#" class="scroll-top" id="backToTop" title="Ir para o topo">▲</a>
+    <a href="#footer" class="scroll-bottom" id="goToBottom" title="Ir para o final">▼</a>
 
-<div class="controls">
-  <input type="text" id="search" placeholder="Buscar...">
-  <button onclick="limpar()">Limpar</button>
-</div>
-
-<div id="stats"></div>
-<div id="grid" class="grid"></div>
-
-<div class="lista">
-  <h2>Lista Alfabética</h2>
-  <ul id="lista"></ul>
-</div>
-
-<footer>
-©2016-2026 JAAnerão
-</footer>
-
-<script>
-const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
-let pessoas = [];
-
-const elGrid = document.getElementById('grid');
-const elLista = document.getElementById('lista');
-const elStats = document.getElementById('stats');
-
-/* LOAD */
-async function load(){
-  const res = await fetch('dados.json');
-  const data = await res.json();
-
-  pessoas = data.map((p,i)=>({
-    id:i,
-    nome:p.nome,
-    nasc:p.nascimento,
-    img:p.imagem
-  }));
-
-  render();
-}
-
-/* RENDER */
-function render(filtro=""){
-  const termo = filtro.toLowerCase();
-
-  const filtrados = pessoas.filter(p =>
-    p.nome.toLowerCase().includes(termo)
-  );
-
-  elGrid.innerHTML = filtrados.map(p=>`
-    <div class="card" onclick="scrollToItem(${p.id})">
-      <img loading="lazy" src="${BASE_URL}${p.img}">
-      <div class="nome">${p.nome}</div>
-      <div class="info">${p.nasc}</div>
+    <div class="header-container">
+        <a href="index.html">
+            <img src="aniver.png" alt="Ícone Aniversário" class="img-topo">
+        </a>
+        <h3>ANIVERSARIANTES</h3>
     </div>
-  `).join("");
 
-  elLista.innerHTML = pessoas
-    .sort((a,b)=>a.nome.localeCompare(b.nome))
-    .map(p=>`<li onclick="scrollToItem(${p.id})">${p.nome}</li>`)
-    .join("");
+    <div class="controls">
+        <input type="text" id="searchInput" placeholder="Buscar (nome, data, mês, signo, etc...)">
+        <button class="btn-limpar" onclick="limparBusca()">Limpar 🧹</button>
+    </div>
 
-  elStats.innerText = `Total: ${pessoas.length} | Filtrados: ${filtrados.length}`;
+    <div class="stats" id="stats">Carregando dados...</div>
+
+    <div id="conteudo"></div>
+
+    <div id="lista-alfabetica-container">
+        <h4 class="titulo-lista">LISTA ALFABÉTICA</h4>
+        <ul id="listaAlfabetica" class="lista-caderno"></ul>
+    </div>
+
+    <footer id="footer">
+        ©2016-2026 JAAnerão<br>
+        jaanerao@hotmail.com<br>
+        Atualizado: 06/04/2026<br>
+        <div class="help-container" style="position: relative; display: inline-block;">
+            <img src="help.png" class="help-icon" style="width:30px; cursor:pointer;" onclick="toggleHelp()" alt="Ajuda">
+            <div id="help-bubble">
+                Clicar no ícone bolo, indexa a página<br>
+                2 cliques na foto, vai para a lista<br>
+                1 clique nome da lista, vai ao registro<br>
+                seta azul ▼, vai no final da página<br>
+                seta azul ▲, vai no início da página<br>
+				ícone ⓘ amarelo, exibe informações<br>
+				<br> 
+                ( DIGITAR NO CAMPO DE BUSCA )<br>
+				<br>
+                Exemplos de filtros e procura:<br>
+				janeiro = filtra pessoas de janeiro<br>
+				setemb = filtra pessoas de setembro<br>
+				2911 = filtra pessoas de 29/11<br>
+				/12/ = filtra pessoas do mês 12<br>
+				/03/1963 = filtra mês/ano 03/1963<br>
+				aries = filtra signos de áries<br>
+				viva = filtra pessoas vivas<br>
+				falecida = filtra pessoas falecidas<br>
+				ou digite o nome para procurar<br>
+            </div>
+        </div>
+    </footer>
+
+<script> 
+// --- CONFIGURAÇÕES GERAIS ---
+const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
+const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+let pessoas = [];    // Array global que armazenará os dados do JSON
+let proximoId = "";  // Armazena o ID do próximo aniversariante para animação
+
+// Exibe o balão de ajuda e esconde após 8 segundos
+function toggleHelp() {
+    const bubble = document.getElementById('help-bubble');
+    bubble.style.display = 'block';
+    setTimeout(() => { bubble.style.display = 'none'; }, 8000);
 }
 
-/* EVENTS */
-document.getElementById('search').addEventListener('input', e=>{
-  render(e.target.value);
+// Lógica de cálculo de Signos baseada no dia e mês
+function getSigno(dia, mes) {
+    if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) return ["♒", "Aquário"];
+    if ((mes == 2 && dia >= 19) || (mes == 3 && dia <= 20)) return ["♓", "Peixes"];
+    if ((mes == 3 && dia >= 21) || (mes == 4 && dia <= 19)) return ["♈", "Áries"];
+    if ((mes == 4 && dia >= 20) || (mes == 5 && dia <= 20)) return ["♉", "Touro"];
+    if ((mes == 5 && dia >= 21) || (mes == 6 && dia <= 20)) return ["♊", "Gêmeos"];
+    if ((mes == 6 && dia >= 21) || (mes == 7 && dia <= 22)) return ["♋", "Câncer"];
+    if ((mes == 7 && dia >= 23) || (mes == 8 && dia <= 22)) return ["♌", "Leão"];
+    if ((mes == 8 && dia >= 23) || (mes == 9 && dia <= 22)) return ["♍", "Virgem"];
+    if ((mes == 9 && dia >= 23) || (mes == 10 && dia <= 22)) return ["♎", "Libra"];
+    if ((mes == 10 && dia >= 23) || (mes == 11 && dia <= 21)) return ["♏", "Escorpião"];
+    if ((mes == 11 && dia >= 22) || (mes == 12 && dia <= 21)) return ["♐", "Sagitário"];
+    return ["♑", "Capricórnio"];
+}
+
+// Calcula anos e total de dias vividos (ou idade atual)
+function calcularIdade(nasc, falec) {
+    const hoje = new Date();
+    const fim = falec ? new Date(falec) : hoje;
+    const inicio = new Date(nasc);
+    let idade = fim.getFullYear() - inicio.getFullYear();
+    const m = fim.getMonth() - inicio.getMonth();
+    
+    // Ajuste caso ainda não tenha feito aniversário no ano vigente
+    if (m < 0 || (m === 0 && fim.getDate() < inicio.getDate())) idade--;
+    
+    const diffTime = fim - inicio;
+    const diasVividos = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    return { anos: idade, dias: diasVividos };
+}
+
+// Converte string "DD/MM/AAAA" em objeto Date do JS
+function parsingDatas(str) {
+    if (!str) return null;
+    const [d, m, y] = str.split('/');
+    // Se não houver ano, usa o ano atual para fins de comparação de aniversário
+    return new Date(y || new Date().getFullYear(), m - 1, d);
+}
+
+// --- CARREGAMENTO DE DADOS ---
+async function carregarDados() {
+    try {
+        const response = await fetch('dados.json');
+        const data = await response.json();
+        
+        // Mapeia os dados brutos para um formato mais fácil de manipular
+        pessoas = data.map((p, index) => {
+            const dNasc = parsingDatas(p.nascimento);
+            const dFalec = parsingDatas(p.falecimentos || p.falecimento);
+            let signo = ["✨", "Divino"];
+            
+            // Regra especial: não calcula signo para "JESUS"
+            if (p.nome.toUpperCase().indexOf("JESUS") === -1) {
+                signo = getSigno(dNasc.getDate(), dNasc.getMonth() + 1);
+            }
+
+            return {
+                id: 'p' + index,
+                nome: p.nome, 
+                nascStr: p.nascimento, 
+                falecStr: p.falecimento, 
+                dNasc, dFalec, 
+                img: p.imagem, 
+                infoTexto: p.info,
+                signo: signo[0] + " " + signo[1],
+                mesNum: dNasc.getMonth(),
+                // Chave para ordenação e busca por dia/mês (ex: 2512 para 25 de Dezembro)
+                diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0'),
+                // Consolidação de campos extras de informação
+                extras: [p.Info01, p.Info02, p.Info03, p.Info04, p.Info05, p.Info06, p.Info07, p.Info08, p.Info09, p.Info10]
+            };
+        });
+        
+        findProximo(); // Identifica quem é o próximo aniversariante
+        render();      // Desenha a tela
+    } catch (error) {
+        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
+        console.error("Erro:", error);
+    }
+}
+
+// Exibe o balão de info do card e some após 10s
+function mostrarInfo(id) {
+    const el = document.getElementById('info-' + id);
+    if (el) {
+        el.style.display = 'block';
+        setTimeout(() => { el.style.display = 'none'; }, 10000);
+    }
+}
+
+// Navegação suave da lista para o card individual
+function irParaRegistro(id) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('highlight-target');
+        setTimeout(() => el.classList.remove('highlight-target'), 10000);
+    }
+}
+
+function voltarParaLista() {
+    document.getElementById('lista-alfabetica-container').scrollIntoView({ behavior: 'smooth' });
+}
+
+// --- RENDERIZAÇÃO DA INTERFACE ---
+function render(filtro = "") {
+    const container = document.getElementById('conteudo');
+    const listaUl = document.getElementById('listaAlfabetica');
+    container.innerHTML = "";
+    listaUl.innerHTML = "";
+    
+    let count = 0;
+    const hoje = new Date();
+    const hojeDM = hoje.getDate().toString().padStart(2,'0') + (hoje.getMonth()+1).toString().padStart(2,'0');
+    
+    // Normalização de texto para busca ignorar acentos
+    const termo = filtro.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+
+    // Itera por meses para criar as divisões visuais
+    mesesNomes.forEach((mes, idx) => {
+        const filtrados = pessoas.filter(p => p.mesNum === idx).filter(p => {
+            if (!termo) return true;
+            const status = p.dFalec ? "falecido" : "vivo";
+            const buscaString = `${p.nome} ${p.nascStr} ${p.falecStr} ${status} ${p.signo} ${mesesNomes[p.mesNum]}`
+                .toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            return buscaString.includes(termo);
+        });
+
+        if (filtrados.length > 0) {
+            const mesDiv = document.createElement('div');
+            mesDiv.innerHTML = `<div class="mes-titulo">${mes}</div>`;
+            const grid = document.createElement('div');
+            grid.className = 'grid-container';
+
+            filtrados.forEach(p => {
+                count++;
+                const card = document.createElement('div');
+                card.className = 'registro-card';
+                card.id = p.id;
+                
+                const isToday = p.diaMes === hojeDM;
+                const isJesus = p.nome.toUpperCase().includes("JESUS");
+                const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
+                const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null).anos : 0;
+                
+                // Formata dias da semana
+                const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
+                const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
+
+                // Prepara conteúdo do balão de info
+                let arrayInfos = [p.infoTexto, ...p.extras]
+                    .filter(x => x && x.trim() !== '')
+                    .join(' | ').split('|').filter(x => x.trim() !== "");
+                let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
+
+                card.innerHTML = `
+                    <div class="photo-wrapper">
+                        <div class="img-container" ondblclick="voltarParaLista()">
+                            <img src="${BASE_URL}${p.img}" 
+                                 class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" 
+                                 alt="${p.nome}" 
+                                 title="Duplo clique para voltar à lista">
+                        </div>
+                        <img src="info.png" class="icon-info" onclick="mostrarInfo('${p.id}')" alt="Info">
+                        <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
+                    </div>
+                    <span class="nome">${destacar(p.nome, termo)}</span>
+                    ${!isJesus ? `
+                        <div class="info-nasc">★ ${destacar(p.nascStr, termo)} ${diaSemNasc}</div>
+                        ${p.dFalec ? `
+                            <div class="info-falec">✝ ${destacar(p.falecStr, termo)} ${diaSemFalec}</div>
+                            <div class="info-falec">há ${anosFalec} anos</div>
+                            <div class="info-idade-morta">viveu ${dadosIdade.anos} anos</div>
+                            <div class="info-idade-morta" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
+                        ` : `
+                            <div class="info-idade-viva">${dadosIdade.anos} anos</div>
+                            <div class="info-idade-viva" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
+                        `}
+                        <div>${destacar(p.signo, termo)}</div>
+                    ` : ''}
+                    ${isToday ? `<div class="bday-msg">${p.dFalec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>` : ''}
+                `;
+                grid.appendChild(card);
+            });
+            mesDiv.appendChild(grid);
+            container.appendChild(mesDiv);
+        }
+    });
+
+    // Renderiza a lista alfabética ao final
+    const alfabetica = [...pessoas].sort((a, b) => a.nome.localeCompare(b.nome));
+    alfabetica.forEach(p => {
+        const li = document.createElement('li');
+        li.className = 'lista-item';
+        li.innerHTML = `<a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro('${p.id}')">${p.nome}</a>`;
+        listaUl.appendChild(li);
+    });
+
+    document.getElementById('stats').innerText = `Registros: ${pessoas.length} / Filtrados: ${count}`;
+}
+
+// Função para envolver o texto buscado em uma tag de destaque
+function destacar(texto, termo) {
+    if (!termo || !texto) return texto;
+    const regex = new RegExp(`(${termo})`, 'gi');
+    return texto.replace(regex, '<span class="highlight">$1</span>');
+}
+
+// --- EVENTOS E LOGICA DE BUSCA ---
+document.getElementById('searchInput').addEventListener('input', function(e) {
+    let val = e.target.value;
+    // Auto-formatação: se digitar apenas números, tenta converter em data DD/MM ou DD/MM/AAAA
+    if (/^\d+$/.test(val)) {
+        if (val.length === 4) e.target.value = val.slice(0,2) + "/" + val.slice(2,4);
+        if (val.length === 8) e.target.value = val.slice(0,2) + "/" + val.slice(2,4) + "/" + val.slice(4,8);
+    }
+    render(e.target.value);
 });
 
-function limpar(){
-  document.getElementById('search').value="";
-  render();
+function limparBusca() {
+    document.getElementById('searchInput').value = "";
+    render();
 }
 
-function scrollToItem(id){
-  const card = document.querySelectorAll('.card')[id];
-  if(card){
-    card.scrollIntoView({behavior:'smooth',block:'center'});
-  }
-}
+// Identifica quem é o aniversariante do dia ou o próximo mais próximo
+const findProximo = () => {
+    const hoje = new Date();
+    const hojeDM = (hoje.getMonth() + 1) * 100 + hoje.getDate();
+    
+    const ordenados = [...pessoas].sort((a,b) => {
+        const dmA = (a.dNasc.getMonth() + 1) * 100 + a.dNasc.getDate();
+        const dmB = (b.dNasc.getMonth() + 1) * 100 + b.dNasc.getDate();
+        return dmA - dmB;
+    });
+    
+    // Busca o primeiro cuja data é maior ou igual a hoje
+    const prox = ordenados.find(p => ((p.dNasc.getMonth() + 1) * 100 + p.dNasc.getDate()) >= hojeDM) || ordenados[0];
+    proximoId = prox ? prox.id : "";
+    
+    // Auto-scroll para o próximo aniversariante ao carregar
+    if(proximoId) {
+        setTimeout(() => {
+            const el = document.getElementById(proximoId);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 500);
+    }
+};
 
-load();
+// Inicializa a aplicação
+carregarDados();
 </script>
-
 </body>
 </html>
