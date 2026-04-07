@@ -311,7 +311,7 @@ function render(filtro = "") {
                         <div class="img-container" ondblclick="voltarParaLista()">
                             <img loading="lazy" src="${BASE_URL}${p.img}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
                         </div>
-                        ${mostrarLuto ? `<img src="luto.gif" class="icon-luto" alt="Luto">` : ''}
+                        ${mostrarLuto ? `<img src="https://amarildo1963.github.io/jaa/fotos/luto.gif" class="icon-luto" alt="Luto">` : ''}
                         <img src="info.png" class="icon-info" onclick="mostrarInfo('${p.id}')" alt="Info">
                         <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
                     </div>
