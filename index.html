@@ -277,7 +277,7 @@ function render(filtro = "") {
                 card.className = 'registro-card';
                 card.id = p.id;
                 const isToday = p.diaMes === hojeDM;
-                const isJesus = p.nome.includes("JESUS");
+                const isJesus = p.nome.includes("JESUS") || (p.nascStr === "25/12");
                 
                 const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
                 const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null).anos : 0;
@@ -294,12 +294,12 @@ function render(filtro = "") {
                 card.innerHTML = `
                     <div class="photo-wrapper">
                         <div class="img-container" ondblclick="voltarParaLista()">
-                            <img src="${BASE_URL}${p.img}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
+                            <img loading="lazy" src="${BASE_URL}${p.img}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
                         </div>
                         <img src="info.png" class="icon-info" onclick="mostrarInfo('${p.id}')" alt="Info">
                         <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
                     </div>
-                    <span class="nome">${destacar(p.nome, termo)}</span>
+                    <span class="nome">${destacar(isJesus ? "NATAL DO MENINO JESUS 25/12" : p.nome, termo)}</span>
                     ${!isJesus ? `
                         <div class="info-nasc">★ ${destacar(p.nascStr, termo)} ${diaSemNasc}</div>
                         ${p.dFalec ? `
@@ -339,13 +339,19 @@ function destacar(texto, termo) {
     return texto.replace(regex, '<span class="highlight">$1</span>');
 }
 
+
+let debounceTimer;
 document.getElementById('searchInput').addEventListener('input', function(e) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+
     let val = e.target.value;
     if (/^\d+$/.test(val)) {
         if (val.length === 4) e.target.value = val.slice(0,2) + "/" + val.slice(2,4);
         if (val.length === 8) e.target.value = val.slice(0,2) + "/" + val.slice(2,4) + "/" + val.slice(4,8);
     }
     render(e.target.value);
+    }, 250);
 });
 
 function limparBusca() {
