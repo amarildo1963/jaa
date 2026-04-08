@@ -7,29 +7,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
     <style>
-        /* ESTILIZAÇÃO GLOBAL E LAYOUT: Define o reset de margens, gradiente de fundo e tipografia Roboto. */
+        /* ESTILIZAÇÃO GLOBAL E LAYOUT */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
         body { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); background-attachment: fixed; padding: 20px; padding-bottom: 100px; }
         
-        /* CABEÇALHO: Alinhamento central do logo e título. */
+        /* CABEÇALHO */
         .header-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
         .img-topo { width: 50px; height: auto; cursor: pointer; transition: transform 0.2s; }
         .img-topo:hover { transform: scale(1.1); }
         h3 { color: blue; font-size: 24px; margin-bottom: 0; }
         
-        /* CONTROLES: Área de busca e filtros. */
+        /* CONTROLES */
         .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
         input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.8); }
         .btn-limpar { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; }
         .stats { text-align: center; margin-bottom: 10px; font-weight: bold; }
         
-        /* CARDS E GRID: Organização dos registros em cartões responsivos. */
+        /* CARDS E GRID */
         .mes-titulo { color: red; font-weight: bold; font-size: 28px; text-align: center; margin: 40px 0 20px; text-transform: uppercase; }
         .grid-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
         .registro-card { background: rgba(224, 224, 224, 0.9); border: 2px solid #bbb; border-radius: 10px; padding: 15px; width: 280px; text-align: center; position: relative; transition: background 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .registro-card:hover { transform: translateY(-3px); }
         
-        /* ELEMENTOS DO CARD: Foto, ícones de luto e balão de informação. */
+        /* ELEMENTOS DO CARD */
         .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; position: relative; }
         .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
         .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
@@ -38,12 +38,12 @@
         .icon-info:hover { opacity: 0.7; }
         .info-bubble { display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); width: 90%; background-color: #ffffe0; border: 1px solid black; border-radius: 8px; padding: 10px; z-index: 10; text-align: left; font-size: 11px; color: black; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         
-        /* AJUDA: Balão flutuante de instruções no rodapé. */
+        /* AJUDA */
         .help-container { position: relative; display: inline-block; margin-top: 10px; }
         .help-icon { width: 30px; height: 30px; cursor: pointer; vertical-align: middle; }
         #help-bubble { display: none; position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); width: 250px; background-color: white; border: 1px solid black; border-radius: 10px; padding: 10px; z-index: 100; text-align: left; font-size: 12px; color: blue; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
 
-        /* ANIMAÇÕES: Pulso para o próximo aniversariante e destaque de busca. */
+        /* ANIMAÇÕES */
         @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
         .pulse-active { animation: pulse-img 1s linear 10; }
         @keyframes target-blink { 0%, 100% { background-color: rgba(224, 224, 224, 0.9); } 50% { background-color: yellow; } }
@@ -54,7 +54,7 @@
         .scroll-top { position: fixed; bottom: 20px; right: 20px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
         .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
         
-        /* TIPOGRAFIA DE DADOS: Cores específicas para vivos, falecidos e destaques. */
+        /* TIPOGRAFIA DE DADOS */
         .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
         .info-nasc { color: green; font-weight: bold; }
         .info-falec { color: #b8860b; font-weight: bold; }
@@ -62,13 +62,15 @@
         .info-idade-morta { color: #b8860b; font-weight: bold; }
         .highlight { background-color: yellow; }
         
-        /* LISTA ALFABÉTICA: Estilo do caderno/lista no final da página. */
+        /* LISTA ALFABÉTICA */
         #lista-alfabetica-container { max-width: 800px; margin: 50px auto; padding: 20px; background: rgba(255, 255, 255, 0.95); border-left: 2px solid #ff9999; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); border-radius: 8px; }
         .titulo-lista { color: blue; margin-bottom: 20px; border-bottom: 2px solid blue; display: inline-block; }
         .lista-caderno { list-style: none; text-align: left; }
-        .lista-item { border-bottom: 1px solid #add8e6; padding: 8px 0; display: flex; align-items: center; }
-        .lista-link { text-decoration: none; color: black; font-weight: normal; width: 100%; transition: color 0.2s; }
+        .lista-item { border-bottom: 1px solid #add8e6; padding: 8px 0; display: flex; align-items: center; gap: 10px; }
+        .lista-link { text-decoration: none; color: black; font-weight: normal; width: 100%; transition: color 0.2s; display: flex; align-items: center; gap: 10px; }
         .lista-link:hover { color: blue; font-weight: bold; }
+        .micro-foto { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1px solid #ccc; }
+        
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     </style>
 </head>
@@ -102,7 +104,7 @@
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
         Atualizado: 08/04/2026<br>
-		Versão 1.01<br>
+		Versão 1.02<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -131,18 +133,11 @@
     </footer>
 
 <script> 
-/** * CONFIGURAÇÕES INICIAIS
- * BASE_URL: Caminho base para as imagens no GitHub.
- * pessoas: Array global que armazenará os objetos vindos do JSON.
- */
 const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
 const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 let pessoas = [];
 let proximoId = "";
 
-/**
- * PROCEDIMENTO: Exibe o balão de ajuda por 8 segundos.
- */
 function toggleHelp() {
     const bubble = document.getElementById('help-bubble');
     bubble.style.display = 'block';
@@ -151,9 +146,6 @@ function toggleHelp() {
     }, 8000);
 }
 
-/**
- * LÓGICA: Retorna o signo e o emoji correspondente baseado no dia e mês.
- */
 function getSigno(dia, mes) {
     if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) return ["♒", "Aquário"];
     if ((mes == 2 && dia >= 19) || (mes == 3 && dia <= 20)) return ["♓", "Peixes"];
@@ -169,9 +161,6 @@ function getSigno(dia, mes) {
     return ["♑", "Capricórnio"];
 }
 
-/**
- * LÓGICA: Calcula a idade atual (ou idade ao falecer) e o total de dias vividos.
- */
 function calcularIdade(nasc, falec) {
     const hoje = new Date();
     const fim = falec ? new Date(falec) : hoje;
@@ -184,19 +173,12 @@ function calcularIdade(nasc, falec) {
     return { anos: idade, dias: diasVividos };
 }
 
-/**
- * PROCEDIMENTO: Converte string "DD/MM/AAAA" para objeto Date do JavaScript.
- */
 function parsingDatas(str) {
     if (!str) return null;
     const [d, m, y] = str.split('/');
     return new Date(y || new Date().getFullYear(), m - 1, d);
 }
 
-/**
- * PROCEDIMENTO: Carrega o arquivo dados.json e processa os dados para o formato interno.
- * Atribui signos, converte datas e mapeia campos de informação (Info01 a Info10).
- */
 async function carregarDados() {
     try {
         const response = await fetch('dados.json');
@@ -233,9 +215,6 @@ async function carregarDados() {
     }
 }
 
-/**
- * PROCEDIMENTO: Exibe o balão de informações (info-bubble) por 10 segundos ao clicar no ícone 'i'.
- */
 function mostrarInfo(id) {
     const el = document.getElementById('info-' + id);
     if (el) {
@@ -244,9 +223,6 @@ function mostrarInfo(id) {
     }
 }
 
-/**
- * PROCEDIMENTO: Navegação suave até o registro selecionado na lista alfabética, com efeito de brilho.
- */
 function irParaRegistro(id) {
     const el = document.getElementById(id);
     if (el) {
@@ -260,10 +236,6 @@ function voltarParaLista() {
     document.getElementById('lista-alfabetica-container').scrollIntoView({ behavior: 'smooth' });
 }
 
-/**
- * LÓGICA DE RENDERIZAÇÃO: Constrói o HTML dos meses, cards e lista alfabética.
- * Aplica os filtros de busca (nome, status, signo, mês) e normaliza acentos para melhor procura.
- */
 function render(filtro = "") {
     const container = document.getElementById('conteudo');
     const listaUl = document.getElementById('listaAlfabetica');
@@ -301,7 +273,6 @@ function render(filtro = "") {
                 const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
                 const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null).anos : 0;
                 
-                // Lógica de Luto: Exibe ícone se o falecimento ocorreu há menos de 1 ano.
                 let mostrarLuto = false;
                 if (p.dFalec) {
                     const umAnoAtras = new Date();
@@ -312,7 +283,6 @@ function render(filtro = "") {
                 const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
                 const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
 
-                // Agrega todos os campos Info01-Info10 e infoTexto em um único parágrafo separado por barras.
                 let arrayInfos = [p.infoTexto, p.Info01, p.Info02, p.Info03, p.Info04, p.Info05, p.Info06, p.Info07, p.Info08, p.Info09, p.Info10]
                     .filter(x => x && x.trim() !== '' && x !== "|||||")
                     .join(' | ').split('|').filter(x => x.trim() !== "");
@@ -350,31 +320,27 @@ function render(filtro = "") {
         }
     });
 
-    // Renderização da lista alfabética final.
     const alfabetica = [...pessoas].sort((a, b) => a.nome.localeCompare(b.nome));
     alfabetica.forEach(p => {
         const li = document.createElement('li');
         li.className = 'lista-item';
-        li.innerHTML = `<a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro('${p.id}')">${p.nome}</a>`;
+        li.innerHTML = `
+            <a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro('${p.id}')">
+                <img src="${BASE_URL}${p.img}" class="micro-foto" alt="">
+                ${p.nome}
+            </a>`;
         listaUl.appendChild(li);
     });
 
     document.getElementById('stats').innerText = `Registros: ${pessoas.length} / Filtrados: ${count}`;
 }
 
-/**
- * PROCEDIMENTO: Envolve o termo buscado em uma tag span.highlight para destaque visual.
- */
 function destacar(texto, termo) {
     if (!termo || !texto) return texto;
     const regex = new RegExp(`(${termo})`, 'gi');
     return texto.replace(regex, '<span class="highlight">$1</span>');
 }
 
-/**
- * LÓGICA DE BUSCA: Debounce de 250ms para evitar re-renderização excessiva.
- * Inclui formatação automática de números para o padrão DD/MM ou DD/MM/AAAA.
- */
 let debounceTimer;
 document.getElementById('searchInput').addEventListener('input', function(e) {
     clearTimeout(debounceTimer);
@@ -393,10 +359,6 @@ function limparBusca() {
     render();
 }
 
-/**
- * LÓGICA: Identifica o próximo aniversariante a partir da data atual.
- * Faz o scroll automático até o card e inicia a animação de pulso.
- */
 const findProximo = () => {
     const hoje = new Date();
     const hojeDM = (hoje.getMonth() + 1) * 100 + hoje.getDate();
@@ -416,7 +378,6 @@ const findProximo = () => {
     }
 };
 
-// Inicialização do sistema.
 carregarDados();
 </script>
 </body>
