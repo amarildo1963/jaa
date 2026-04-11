@@ -38,23 +38,12 @@
         .icon-info:hover { opacity: 0.7; }
         .info-bubble { display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); width: 90%; background-color: #ffffe0; border: 1px solid black; border-radius: 8px; padding: 10px; z-index: 10; text-align: left; font-size: 11px; color: black; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         
-        /* RODAPÉ E ÍCONES */
-        .admin-icons { display: flex; justify-content: center; gap: 20px; margin-top: 15px; }
-        .help-icon, .manut-icon { width: 35px; height: 35px; cursor: pointer; transition: transform 0.2s; }
-        .help-icon:hover, .manut-icon:hover { transform: scale(1.2); }
-        
-        /* MODAL DE MANUTENÇÃO */
-        #modal-manut { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; overflow-y: auto; padding: 20px; }
-        .modal-content { background: white; max-width: 600px; margin: 20px auto; padding: 25px; border-radius: 15px; position: relative; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; color: #333; }
-        .form-group input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-        .modal-buttons { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-        .btn-save { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-        .btn-cancel { background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-        .btn-delete { background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        /* AJUDA */
+        .help-container { position: relative; display: inline-block; margin-top: 10px; }
+        .help-icon { width: 30px; height: 30px; cursor: pointer; vertical-align: middle; }
+        #help-bubble { display: none; position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); width: 250px; background-color: white; border: 1px solid black; border-radius: 10px; padding: 10px; z-index: 100; text-align: left; font-size: 12px; color: blue; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
 
-        /* ANIMAÇÕES EXISTENTES... */
+        /* ANIMAÇÕES */
         @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
         .pulse-active { animation: pulse-img 1s linear 10; }
         @keyframes target-blink { 0%, 100% { background-color: rgba(224, 224, 224, 0.9); } 50% { background-color: yellow; } }
@@ -65,21 +54,69 @@
         .scroll-top { position: fixed; bottom: 20px; right: 20px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
         .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
         
-        /* TIPOGRAFIA E LISTA... */
+        /* TIPOGRAFIA DE DADOS */
         .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
-        .info-nasc, .info-falec, .info-idade-viva, .info-idade-morta { font-weight: bold; }
-        .info-nasc, .info-idade-viva { color: green; }
-        .info-falec, .info-idade-morta { color: #b8860b; }
+        .info-nasc { color: green; font-weight: bold; }
+        .info-falec { color: #b8860b; font-weight: bold; }
+        .info-idade-viva { color: green; font-weight: bold; }
+        .info-idade-morta { color: #b8860b; font-weight: bold; }
         .highlight { background-color: yellow; }
-
-        #lista-alfabetica-container { max-width: 900px; margin: 60px auto; padding: 25px; background: linear-gradient(135deg, #ffffff, #f7f9fc); border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
-        .titulo-lista { color: #1e3a8a; margin-bottom: 20px; font-size: 22px; font-weight: 700; border-left: 5px solid #3b82f6; padding-left: 10px; }
-        .lista-caderno { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
-        .lista-item { background: #ffffff; border-radius: 8px; padding: 8px 10px; transition: all 0.2s ease; border: 1px solid #e5e7eb; }
-        .lista-item:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-color: #3b82f6; }
-        .lista-link { text-decoration: none; color: #111827; font-weight: 500; display: flex; align-items: center; gap: 10px; }
-        .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
-        footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding: 20px 20px 40px; background: rgba(235, 237, 238, 0.8); }
+        
+        /* LISTA ALFABÉTICA - VISUAL MODERNO */
+        #lista-alfabetica-container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 25px;
+            background: linear-gradient(135deg, #ffffff, #f7f9fc);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        .titulo-lista {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: 700;
+            border-left: 5px solid #3b82f6;
+            padding-left: 10px;
+        }
+        .lista-caderno {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 10px;
+        }
+        .lista-item {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 8px 10px;
+            transition: all 0.2s ease;
+            border: 1px solid #e5e7eb;
+        }
+        .lista-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            border-color: #3b82f6;
+        }
+        .lista-link {
+            text-decoration: none;
+            color: #111827;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .lista-link:hover {
+            color: #2563eb;
+        }
+        .micro-foto {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #3b82f6;
+        }
+        
+        footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     </style>
 </head>
 <body>
@@ -88,7 +125,9 @@
     <a href="#footer" class="scroll-bottom" id="goToBottom">▼</a>
 
     <div class="header-container">
-        <a href="index.html"><img src="aniver.png" alt="Ícone Aniversário" class="img-topo"></a>
+        <a href="index.html">
+            <img src="aniver.png" alt="Ícone Aniversário" class="img-topo">
+        </a>
         <h3>ANIVERSARIANTES</h3>
     </div>
 
@@ -98,6 +137,7 @@
     </div>
 
     <div class="stats" id="stats">Carregando dados...</div>
+
     <div id="conteudo"></div>
 
     <div id="lista-alfabetica-container">
@@ -105,225 +145,50 @@
         <ul id="listaAlfabetica" class="lista-caderno"></ul>
     </div>
 
-    <div id="modal-manut">
-        <div class="modal-content">
-            <h2 id="modal-titulo" style="margin-bottom:20px; color: blue;">Manutenção de Registro</h2>
-            <div id="form-manut">
-                <input type="hidden" id="edit-index">
-                <div class="form-group"><label>Nome:</label><input type="text" id="m-nome" placeholder="Ex: João Silva"></div>
-                <div class="form-group"><label>Imagem (.jpg):</label><input type="text" id="m-img" placeholder="foto.jpg"></div>
-                <div class="form-group"><label>Nascimento:</label><input type="text" id="m-nasc" placeholder="dd/mm/aaaa"></div>
-                <div class="form-group"><label>Falecimento:</label><input type="text" id="m-falec" placeholder="dd/mm/aaaa (deixe vazio se vivo)"></div>
-                <div class="form-group"><label>Info Principal:</label><input type="text" id="m-info"></div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <div class="form-group"><label>Info01:</label><input type="text" id="m-i01"></div>
-                    <div class="form-group"><label>Info02:</label><input type="text" id="m-i02"></div>
-                    <div class="form-group"><label>Info03:</label><input type="text" id="m-i03"></div>
-                    <div class="form-group"><label>Info04:</label><input type="text" id="m-i04"></div>
-                    <div class="form-group"><label>Info05:</label><input type="text" id="m-i05"></div>
-                    <div class="form-group"><label>Info06:</label><input type="text" id="m-i06"></div>
-                    <div class="form-group"><label>Info07:</label><input type="text" id="m-i07"></div>
-                    <div class="form-group"><label>Info08:</label><input type="text" id="m-i08"></div>
-                    <div class="form-group"><label>Info09:</label><input type="text" id="m-i09"></div>
-                    <div class="form-group"><label>Info10:</label><input type="text" id="m-i10"></div>
-                </div>
-            </div>
-            <div class="modal-buttons">
-                <button class="btn-save" onclick="salvarRegistro()">Salvar e Baixar JSON 💾</button>
-                <button class="btn-delete" id="btn-excluir" onclick="excluirRegistro()">Excluir 🗑️</button>
-                <button class="btn-cancel" onclick="fecharManut()">Cancelar</button>
-            </div>
-        </div>
-    </div>
-
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 11/04/2026<br>
-		Versão 1.04<br>
-        
-        <div class="admin-icons">
+        Atualizado: 10/04/2026<br>
+		Versão 1.02<br>
+        <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
-            <img src="manut.png" class="manut-icon" onclick="abrirAdmin()" alt="Manutenção">
+            <div id="help-bubble">
+                Clicar no ícone bolo, indexa a página<br>
+                2 cliques na foto, vai para a lista<br>
+                1 clique nome da lista, vai ao registro<br>
+                seta azul ▼, vai no final da página<br>
+                seta azul ▲, vai no início da página<br>
+				ícone ⓘ amarelo, exibe informações<br>
+				<br> 
+                ( DIGITAR NO CAMPO DE BUSCA )<br>
+				<br>
+                Exemplos de filtros e procura:<br>
+				janeiro = filtra pessoas de janeiro<br>
+				setemb = filtra pessoas de setembro<br>
+				2911 = filtra pessoas de 29/11<br>
+				/12/ = filtra pessoas do mês 12<br>
+				/03/1963 = filtra mês/ano 03/1963<br>
+				aries = filtra signos de áries<br>
+				vivo = filtra pessoas vivas<br>
+				falecido = filtra pessoas falecidas<br>
+				ou digite o nome para procurar<br>
+            </div>
         </div>
-
-        <div id="help-bubble" style="display:none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); width: 280px; background: white; border: 2px solid blue; padding: 15px; border-radius: 10px; z-index: 1000; color: blue; font-weight: bold; text-align: left;">
-            Clicar no ícone bolo, indexa a página<br>
-            2 cliques na foto, vai para a lista<br>
-            1 clique nome da lista, vai ao registro<br>
-            ícone ⓘ amarelo, exibe informações<br>
-            Manutenção: requer senha para editar.
-        </div>
+        <br>
     </footer>
 
 <script> 
 const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
 const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
-let pessoasRaw = []; // Dados originais do JSON
-let pessoas = [];    // Dados processados
+let pessoas = [];
 let proximoId = "";
-const SENHA_ACESSO = "100941291137";
 
-async function carregarDados() {
-    try {
-        const response = await fetch('dados.json');
-        pessoasRaw = await response.json();
-        processarDados();
-    } catch (error) {
-        document.getElementById('stats').innerText = "Erro ao carregar dados.json";
-    }
-}
-
-function processarDados() {
-    pessoas = pessoasRaw.map((p, index) => {
-        const dNasc = parsingDatas(p.nascimento);
-        const dFalec = parsingDatas(p.falecimento || p.falecimentos);
-        let signo = (p.nome && p.nome.toUpperCase().includes("JESUS")) ? ["✨", "Divino"] : getSigno(dNasc.getDate(), dNasc.getMonth() + 1);
-        
-        return {
-            id: 'p' + index,
-            idxOriginal: index,
-            nome: p.nome,
-            nascStr: p.nascimento,
-            falecStr: p.falecimento || p.falecimentos,
-            dNasc, dFalec,
-            img: p.imagem,
-            infoTexto: p.info,
-            signo: signo[0] + " " + signo[1],
-            mesNum: dNasc.getMonth(),
-            diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0'),
-            ...p
-        };
-    });
-    findProximo();
-    render();
-}
-
-// LÓGICA DE MANUTENÇÃO
-function abrirAdmin() {
-    const senha = prompt("Digite a senha de manutenção:");
-    if (senha === SENHA_ACESSO) {
-        if(confirm("Deseja ADICIONAR um novo registro? (Cancele para editar um existente clicando na foto)")) {
-            prepararModal(-1);
-        } else {
-            alert("Para ALTERAR ou EXCLUIR, clique na FOTO da pessoa desejada.");
-            window.modoEdicao = true;
-        }
-    } else if (senha !== null) {
-        alert("Senha incorreta!");
-    }
-}
-
-function prepararModal(idx) {
-    const modal = document.getElementById('modal-manut');
-    const titulo = document.getElementById('modal-titulo');
-    const btnExcluir = document.getElementById('btn-excluir');
-    
-    document.querySelectorAll('#form-manut input').forEach(i => i.value = "");
-    
-    if(idx === -1) {
-        titulo.innerText = "Adicionar Novo Registro";
-        btnExcluir.style.display = "none";
-        document.getElementById('edit-index').value = "-1";
-    } else {
-        const p = pessoasRaw[idx];
-        titulo.innerText = "Alterar Registro";
-        btnExcluir.style.display = "block";
-        document.getElementById('edit-index').value = idx;
-        document.getElementById('m-nome').value = p.nome;
-        document.getElementById('m-img').value = p.imagem;
-        document.getElementById('m-nasc').value = p.nascimento;
-        document.getElementById('m-falec').value = p.falecimento || "";
-        document.getElementById('m-info').value = p.info || "";
-        document.getElementById('m-i01').value = p.Info01 || "";
-        document.getElementById('m-i02').value = p.Info02 || "";
-        document.getElementById('m-i03').value = p.Info03 || "";
-        document.getElementById('m-i04').value = p.Info04 || "";
-        document.getElementById('m-i05').value = p.Info05 || "";
-        document.getElementById('m-i06').value = p.Info06 || "";
-        document.getElementById('m-i07').value = p.Info07 || "";
-        document.getElementById('m-i08').value = p.Info08 || "";
-        document.getElementById('m-i09').value = p.Info09 || "";
-        document.getElementById('m-i10').value = p.Info10 || "";
-    }
-    modal.style.display = "block";
-}
-
-function fecharManut() {
-    document.getElementById('modal-manut').style.display = "none";
-    window.modoEdicao = false;
-}
-
-function capitalizar(str) {
-    if(!str) return "";
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-function salvarRegistro() {
-    const idx = parseInt(document.getElementById('edit-index').value);
-    
-    // Validação de Imagem
-    let imgNome = document.getElementById('m-img').value;
-    if(!imgNome.toLowerCase().endsWith('.jpg')) {
-        alert("A imagem deve ser obrigatoriamente .jpg");
-        return;
-    }
-
-    const novoP = {
-        "nome": capitalizar(document.getElementById('m-nome').value),
-        "nascimento": document.getElementById('m-nasc').value,
-        "falecimento": document.getElementById('m-falec').value,
-        "imagem": imgNome,
-        "info": capitalizar(document.getElementById('m-info').value),
-        "Info01": capitalizar(document.getElementById('m-i01').value),
-        "Info02": capitalizar(document.getElementById('m-i02').value),
-        "Info03": capitalizar(document.getElementById('m-i03').value),
-        "Info04": capitalizar(document.getElementById('m-i04').value),
-        "Info05": capitalizar(document.getElementById('m-i05').value),
-        "Info06": capitalizar(document.getElementById('m-i06').value),
-        "Info07": capitalizar(document.getElementById('m-i07').value),
-        "Info08": capitalizar(document.getElementById('m-i08').value),
-        "Info09": capitalizar(document.getElementById('m-i09').value),
-        "Info10": capitalizar(document.getElementById('m-i10').value)
-    };
-
-    if(idx === -1) {
-        pessoasRaw.push(novoP);
-    } else {
-        pessoasRaw[idx] = novoP;
-    }
-
-    baixarJSON();
-    processarDados();
-    fecharManut();
-}
-
-function excluirRegistro() {
-    const idx = parseInt(document.getElementById('edit-index').value);
-    if(confirm("Tem certeza que deseja EXCLUIR este registro permanentemente?")) {
-        pessoasRaw.splice(idx, 1);
-        baixarJSON();
-        processarDados();
-        fecharManut();
-    }
-}
-
-function baixarJSON() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(pessoasRaw, null, 4));
-    const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", "dados.json");
-    document.body.appendChild(downloadAnchorNode);
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
-    alert("Arquivo 'dados.json' gerado! Substitua o arquivo antigo na sua pasta para efetivar as mudanças.");
-}
-
-// FUNÇÕES DE APOIO EXISTENTES
-function parsingDatas(str) {
-    if (!str || str.trim() === "") return new Date(1900,0,1);
-    const parts = str.split('/');
-    return new Date(parts[2] || new Date().getFullYear(), parts[1] - 1, parts[0]);
+function toggleHelp() {
+    const bubble = document.getElementById('help-bubble');
+    bubble.style.display = 'block';
+    setTimeout(() => {
+        bubble.style.display = 'none';
+    }, 8000);
 }
 
 function getSigno(dia, mes) {
@@ -343,14 +208,77 @@ function getSigno(dia, mes) {
 
 function calcularIdade(nasc, falec) {
     const hoje = new Date();
-    const fim = (falec && falec.getFullYear() > 1901) ? falec : hoje;
-    const inicio = nasc;
+    const fim = falec ? new Date(falec) : hoje;
+    const inicio = new Date(nasc);
     let idade = fim.getFullYear() - inicio.getFullYear();
     const m = fim.getMonth() - inicio.getMonth();
     if (m < 0 || (m === 0 && fim.getDate() < inicio.getDate())) idade--;
-    const diffTime = Math.abs(fim - inicio);
+    const diffTime = fim - inicio;
     const diasVividos = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     return { anos: idade, dias: diasVividos };
+}
+
+function parsingDatas(str) {
+    if (!str) return null;
+    const [d, m, y] = str.split('/');
+    return new Date(y || new Date().getFullYear(), m - 1, d);
+}
+
+async function carregarDados() {
+    try {
+        const response = await fetch('dados.json');
+        const data = await response.json();
+        
+        pessoas = data.map((p, index) => {
+            const dNasc = parsingDatas(p.nascimento);
+            const dFalec = parsingDatas(p.falecimentos || p.falecimento);
+            let signo = ["✨", "Divino"];
+            if (p.nome.indexOf("JESUS") === -1) {
+                signo = getSigno(dNasc.getDate(), dNasc.getMonth() + 1);
+            }
+            return {
+                id: 'p' + index,
+                nome: p.nome, 
+                nascStr: p.nascimento, 
+                falecStr: p.falecimento, 
+                dNasc, dFalec, 
+                img: p.imagem, 
+                infoTexto: p.info,
+                signo: signo[0] + " " + signo[1],
+                mesNum: dNasc.getMonth(),
+                diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0'),
+                Info01: p.Info01, Info02: p.Info02, Info03: p.Info03, Info04: p.Info04, Info05: p.Info05,
+                Info06: p.Info06, Info07: p.Info07, Info08: p.Info08, Info09: p.Info09, Info10: p.Info10
+            };
+        });
+        
+        findProximo();
+        render();
+    } catch (error) {
+        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
+        console.error("Erro:", error);
+    }
+}
+
+function mostrarInfo(id) {
+    const el = document.getElementById('info-' + id);
+    if (el) {
+        el.style.display = 'block';
+        setTimeout(() => { el.style.display = 'none'; }, 10000);
+    }
+}
+
+function irParaRegistro(id) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('highlight-target');
+        setTimeout(() => el.classList.remove('highlight-target'), 10000);
+    }
+}
+
+function voltarParaLista() {
+    document.getElementById('lista-alfabetica-container').scrollIntoView({ behavior: 'smooth' });
 }
 
 function render(filtro = "") {
@@ -367,7 +295,7 @@ function render(filtro = "") {
     mesesNomes.forEach((mes, idx) => {
         const filtrados = pessoas.filter(p => p.mesNum === idx).filter(p => {
             if (!termo) return true;
-            const status = (p.dFalec && p.dFalec.getFullYear() > 1901) ? "falecido" : "vivo";
+            const status = p.dFalec ? "falecido" : "vivo";
             const buscaString = `${p.nome} ${p.nascStr} ${p.falecStr} ${status} ${p.signo} ${mesesNomes[p.mesNum]}`
                 .toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             return buscaString.includes(termo);
@@ -384,37 +312,51 @@ function render(filtro = "") {
                 const card = document.createElement('div');
                 card.className = 'registro-card';
                 card.id = p.id;
-                
                 const isToday = p.diaMes === hojeDM;
-                const isJesus = p.nome.toUpperCase().includes("JESUS");
-                const temFalecimento = p.dFalec && p.dFalec.getFullYear() > 1901;
+                const isJesus = p.nome.includes("JESUS") || (p.nascStr === "25/12");
                 
                 const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
+                const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null).anos : 0;
                 
+                let mostrarLuto = false;
+                if (p.dFalec) {
+                    const umAnoAtras = new Date();
+                    umAnoAtras.setFullYear(hoje.getFullYear() - 1);
+                    if (p.dFalec > umAnoAtras) mostrarLuto = true;
+                }
+
+                const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
+                const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
+
+                let arrayInfos = [p.infoTexto, p.Info01, p.Info02, p.Info03, p.Info04, p.Info05, p.Info06, p.Info07, p.Info08, p.Info09, p.Info10]
+                    .filter(x => x && x.trim() !== '' && x !== "|||||")
+                    .join(' | ').split('|').filter(x => x.trim() !== "");
+                let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
+
                 card.innerHTML = `
                     <div class="photo-wrapper">
-                        <div class="img-container" onclick="if(window.modoEdicao) prepararModal(${p.idxOriginal})" ondblclick="voltarParaLista()">
-                            <img loading="lazy" src="${BASE_URL}${p.img}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}">
+                        <div class="img-container" ondblclick="voltarParaLista()">
+                            <img loading="lazy" src="${BASE_URL}${p.img}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
                         </div>
-                        ${temFalecimento ? `<img src="https://amarildo1963.github.io/jaa/fotos/luto.gif" class="icon-luto" alt="Luto">` : ''}
+                        ${mostrarLuto ? `<img src="https://amarildo1963.github.io/jaa/fotos/luto.gif" class="icon-luto" alt="Luto">` : ''}
                         <img src="info.png" class="icon-info" onclick="mostrarInfo('${p.id}')" alt="Info">
-                        <div id="info-${p.id}" class="info-bubble">
-                            ${[p.info, p.Info01, p.Info02, p.Info03, p.Info04, p.Info05, p.Info06, p.Info07, p.Info08, p.Info09, p.Info10]
-                                .filter(t => t && t.trim() !== "").join(" | ")}
-                        </div>
+                        <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
                     </div>
-                    <span class="nome">${destacar(p.nome, termo)}</span>
+                    <span class="nome">${destacar(isJesus ? "NATAL DO MENINO JESUS 25/12" : p.nome, termo)}</span>
                     ${!isJesus ? `
-                        <div class="info-nasc">★ ${destacar(p.nascStr, termo)}</div>
-                        ${temFalecimento ? `
-                            <div class="info-falec">✝ ${destacar(p.falecStr, termo)}</div>
+                        <div class="info-nasc">★ ${destacar(p.nascStr, termo)} ${diaSemNasc}</div>
+                        ${p.dFalec ? `
+                            <div class="info-falec">✝ ${destacar(p.falecStr, termo)} ${diaSemFalec}</div>
+                            <div class="info-falec">há ${anosFalec} anos</div>
                             <div class="info-idade-morta">viveu ${dadosIdade.anos} anos</div>
+                            <div class="info-idade-morta" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
                         ` : `
                             <div class="info-idade-viva">${dadosIdade.anos} anos</div>
+                            <div class="info-idade-viva" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
                         `}
                         <div>${destacar(p.signo, termo)}</div>
                     ` : ''}
-                    ${isToday ? `<div class="bday-msg">${temFalecimento ? 'Faria aniversário hoje!' : 'Parabéns!'}</div>` : ''}
+                    ${isToday ? `<div class="bday-msg">${p.dFalec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>` : ''}
                 `;
                 grid.appendChild(card);
             });
@@ -423,12 +365,15 @@ function render(filtro = "") {
         }
     });
 
-    // Lista Alfabética
-    [...pessoas].sort((a, b) => a.nome.localeCompare(b.nome)).forEach(p => {
+    const alfabetica = [...pessoas].sort((a, b) => a.nome.localeCompare(b.nome));
+    alfabetica.forEach(p => {
         const li = document.createElement('li');
         li.className = 'lista-item';
-        li.innerHTML = `<a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro('${p.id}')">
-            <img src="${BASE_URL}${p.img}" class="micro-foto"> ${p.nome}</a>`;
+        li.innerHTML = `
+            <a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro('${p.id}')">
+                <img src="${BASE_URL}${p.img}" class="micro-foto" alt="">
+                ${p.nome}
+            </a>`;
         listaUl.appendChild(li);
     });
 
@@ -441,11 +386,23 @@ function destacar(texto, termo) {
     return texto.replace(regex, '<span class="highlight">$1</span>');
 }
 
-function limparBusca() { document.getElementById('searchInput').value = ""; render(); }
-function mostrarInfo(id) { const el = document.getElementById('info-' + id); el.style.display = 'block'; setTimeout(() => el.style.display='none', 8000); }
-function irParaRegistro(id) { const el = document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth', block:'center'}); }
-function voltarParaLista() { document.getElementById('lista-alfabetica-container').scrollIntoView({behavior:'smooth'}); }
-function toggleHelp() { const b = document.getElementById('help-bubble'); b.style.display = b.style.display==='none'?'block':'none'; }
+let debounceTimer;
+document.getElementById('searchInput').addEventListener('input', function(e) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        let val = e.target.value;
+        if (/^\d+$/.test(val)) {
+            if (val.length === 4) e.target.value = val.slice(0,2) + "/" + val.slice(2,4);
+            if (val.length === 8) e.target.value = val.slice(0,2) + "/" + val.slice(2,4) + "/" + val.slice(4,8);
+        }
+        render(e.target.value);
+    }, 250);
+});
+
+function limparBusca() {
+    document.getElementById('searchInput').value = "";
+    render();
+}
 
 const findProximo = () => {
     const hoje = new Date();
@@ -457,6 +414,13 @@ const findProximo = () => {
     });
     const prox = ordenados.find(p => ((p.dNasc.getMonth() + 1) * 100 + p.dNasc.getDate()) >= hojeDM) || ordenados[0];
     proximoId = prox ? prox.id : "";
+    
+    if(proximoId) {
+        setTimeout(() => {
+            const el = document.getElementById(proximoId);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 500);
+    }
 };
 
 carregarDados();
