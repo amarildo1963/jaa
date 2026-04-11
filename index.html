@@ -3,281 +3,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aniversariantes - Manutenção</title>
+    <title>Aniversariantes - Anerão</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
     <style>
-        /* MANTENDO ESTILOS ORIGINAIS E ADICIONANDO MANUTENÇÃO */
+        /* ESTILIZAÇÃO GLOBAL E LAYOUT */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
         body { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); background-attachment: fixed; padding: 20px; padding-bottom: 100px; }
         
+        /* CABEÇALHO */
         .header-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
         .img-topo { width: 50px; height: auto; cursor: pointer; transition: transform 0.2s; }
+        .img-topo:hover { transform: scale(1.1); }
         h3 { color: blue; font-size: 24px; margin-bottom: 0; }
         
+        /* CONTROLES */
         .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
         input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.8); }
         .btn-limpar { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; }
         .stats { text-align: center; margin-bottom: 10px; font-weight: bold; }
         
+        /* CARDS E GRID */
         .mes-titulo { color: red; font-weight: bold; font-size: 28px; text-align: center; margin: 40px 0 20px; text-transform: uppercase; }
         .grid-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
         .registro-card { background: rgba(224, 224, 224, 0.9); border: 2px solid #bbb; border-radius: 10px; padding: 15px; width: 280px; text-align: center; position: relative; transition: background 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .registro-card:hover { transform: translateY(-3px); }
         
-        /* ESTILOS DA ÁREA DE MANUTENÇÃO */
-        #modal-manutencao { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; overflow-y: auto; padding: 20px; }
-        .manut-container { background: white; max-width: 600px; margin: 20px auto; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
-        .manut-container h2 { color: #1e3a8a; margin-bottom: 20px; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; }
-        .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; color: #444; }
-        .form-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
-        .manut-btns { display: flex; gap: 10px; margin-top: 25px; }
-        .btn-acao { flex: 1; padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: opacity 0.2s; }
-        .btn-save { background: #10b981; color: white; }
-        .btn-cancel { background: #ef4444; color: white; }
-        .btn-delete { background: #6b7280; color: white; }
-        .edit-icon { position: absolute; top: 10px; right: 10px; cursor: pointer; background: #3b82f6; color: white; padding: 5px; border-radius: 5px; font-size: 10px; }
-
-        /* RODAPÉ E ÍCONES */
-        .manut-icon { width: 32px; height: 32px; cursor: pointer; vertical-align: middle; margin-left: 10px; transition: transform 0.2s; }
-        .manut-icon:hover { transform: rotate(20deg); }
-        footer { text-align: center; margin-top: 50px; padding: 20px; border-top: 1px solid #ccc; background: rgba(235, 237, 238, 0.8); }
-
-        /* REUTILIZANDO OS ESTILOS ORIGINAIS DO SEU ARQUIVO */
+        /* ELEMENTOS DO CARD */
         .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; position: relative; }
         .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
-        .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; }
-        .info-bubble { display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); width: 90%; background-color: #ffffe0; border: 1px solid black; border-radius: 8px; padding: 10px; z-index: 10; text-align: left; font-size: 11px; font-weight: bold; }
+        .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
+        .icon-luto { width: 30px; height: auto; margin-left: 5px; }
+        .icon-info { width: 32px; height: 32px; cursor: pointer; transition: opacity 0.2s; }
+        .icon-info:hover { opacity: 0.7; }
+        .info-bubble { display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); width: 90%; background-color: #ffffe0; border: 1px solid black; border-radius: 8px; padding: 10px; z-index: 10; text-align: left; font-size: 11px; color: black; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        
+        /* AJUDA */
+        .help-container { position: relative; display: inline-block; margin-top: 10px; }
+        .help-icon { width: 30px; height: 30px; cursor: pointer; vertical-align: middle; }
+        #help-bubble { display: none; position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); width: 250px; background-color: white; border: 1px solid black; border-radius: 10px; padding: 10px; z-index: 100; text-align: left; font-size: 12px; color: blue; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+
+        /* ANIMAÇÕES */
+        @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .pulse-active { animation: pulse-img 1s linear 10; }
+        @keyframes target-blink { 0%, 100% { background-color: rgba(224, 224, 224, 0.9); } 50% { background-color: yellow; } }
+        .highlight-target { animation: target-blink 0.5s ease-in-out 10; }
+        @keyframes blink-red { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+        .bday-msg { color: red; font-weight: bold; animation: blink-red 0.8s infinite; margin-top: 5px; font-size: 0.9em; }
+        @keyframes blink-blue { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+        .scroll-top { position: fixed; bottom: 20px; right: 20px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
+        .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
+        
+        /* TIPOGRAFIA DE DADOS */
         .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
         .info-nasc { color: green; font-weight: bold; }
         .info-falec { color: #b8860b; font-weight: bold; }
         .info-idade-viva { color: green; font-weight: bold; }
         .info-idade-morta { color: #b8860b; font-weight: bold; }
-        .scroll-top, .scroll-bottom { position: fixed; bottom: 20px; font-size: 40px; color: blue; text-decoration: none; z-index: 100; }
-        .scroll-top { right: 20px; }
-        .scroll-bottom { right: 70px; }
+        .highlight { background-color: yellow; }
+        
+        /* LISTA ALFABÉTICA - VISUAL MODERNO */
+        #lista-alfabetica-container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 25px;
+            background: linear-gradient(135deg, #ffffff, #f7f9fc);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        .titulo-lista {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: 700;
+            border-left: 5px solid #3b82f6;
+            padding-left: 10px;
+        }
+        .lista-caderno {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 10px;
+        }
+        .lista-item {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 8px 10px;
+            transition: all 0.2s ease;
+            border: 1px solid #e5e7eb;
+        }
+        .lista-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            border-color: #3b82f6;
+        }
+        .lista-link {
+            text-decoration: none;
+            color: #111827;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .lista-link:hover {
+            color: #2563eb;
+        }
+        .micro-foto {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #3b82f6;
+        }
+        
+        footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     </style>
 </head>
 <body>
 
-    <a href="#" class="scroll-top">▲</a>
-    <a href="#footer" class="scroll-bottom">▼</a>
+    <a href="#" class="scroll-top" id="backToTop">▲</a>
+    <a href="#footer" class="scroll-bottom" id="goToBottom">▼</a>
 
     <div class="header-container">
-        <a href="index.html"><img src="aniver.png" alt="Ícone" class="img-topo"></a>
+        <a href="index.html">
+            <img src="aniver.png" alt="Ícone Aniversário" class="img-topo">
+        </a>
         <h3>ANIVERSARIANTES</h3>
     </div>
 
     <div class="controls">
         <input type="text" id="searchInput" placeholder="Buscar (nome, data, mês, signo, etc...)">
         <button class="btn-limpar" onclick="limparBusca()">Limpar 🧹</button>
-        <button class="btn-limpar" style="background: #3b82f6; color: white;" onclick="abrirManutencao()">Novo Registro ➕</button>
     </div>
 
     <div class="stats" id="stats">Carregando dados...</div>
+
     <div id="conteudo"></div>
 
-    <div id="modal-manutencao">
-        <div class="manut-container">
-            <h2 id="manut-titulo">Manutenção de Registro</h2>
-            <input type="hidden" id="edit-index">
-            
-            <div class="form-group">
-                <label>Nome Completo</label>
-                <input type="text" id="m-nome" placeholder="Ex: José Amarildo" oninput="capitalizar(this)">
-            </div>
-            
-            <div class="form-group" style="display: flex; gap: 10px;">
-                <div style="flex: 1;">
-                    <label>Nascimento (DD/MM/AAAA)</label>
-                    <input type="text" id="m-nasc" placeholder="00/00/0000" maxlength="10">
-                </div>
-                <div style="flex: 1;">
-                    <label>Falecimento (Opcional)</label>
-                    <input type="text" id="m-falec" placeholder="00/00/0000" maxlength="10">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Nome da Imagem (Ex: foto.jpg - Deve ser 500x500)</label>
-                <input type="text" id="m-img" placeholder="nome_da_pessoa.jpg">
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 200px; overflow-y: auto; padding-right: 5px;">
-                <div class="form-group"><label>Info 01</label><input type="text" id="m-i1" oninput="capitalizar(this)"></div>
-                <div class="form-group"><label>Info 02</label><input type="text" id="m-i2" oninput="capitalizar(this)"></div>
-                <div class="form-group"><label>Info 03</label><input type="text" id="m-i3" oninput="capitalizar(this)"></div>
-                <div class="form-group"><label>Info 04</label><input type="text" id="m-i4" oninput="capitalizar(this)"></div>
-                <div class="form-group"><label>Info 05</label><input type="text" id="m-i5" oninput="capitalizar(this)"></div>
-                <div class="form-group"><label>Info 06</label><input type="text" id="m-i6" oninput="capitalizar(this)"></div>
-                <div class="form-group"><label>Info 07</label><input type="text" id="m-i7" oninput="capitalizar(this)"></div>
-                <div class="form-group"><label>Info 08</label><input type="text" id="m-i8" oninput="capitalizar(this)"></div>
-                <div class="form-group"><label>Info 09</label><input type="text" id="m-i9" oninput="capitalizar(this)"></div>
-                <div class="form-group"><label>Info 10</label><input type="text" id="m-i10" oninput="capitalizar(this)"></div>
-            </div>
-
-            <div class="manut-btns">
-                <button class="btn-acao btn-save" onclick="salvarRegistro()">Gravar Dados 💾</button>
-                <button id="btn-excluir" class="btn-acao btn-delete" style="display:none;" onclick="excluirRegistro()">Excluir 🗑️</button>
-                <button class="btn-acao btn-cancel" onclick="fecharManutencao()">Fechar</button>
-            </div>
-            <p style="font-size: 10px; margin-top: 10px; color: gray;">* Após salvar, você precisará baixar o arquivo JSON atualizado para subir no GitHub.</p>
-        </div>
+    <div id="lista-alfabetica-container">
+        <h4 class="titulo-lista">LISTA ALFABÉTICA</h4>
+        <ul id="listaAlfabetica" class="lista-caderno"></ul>
     </div>
 
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
-        jaanerao@hotmail.com | Versão 1.03 (Manutenção)<br>
-        <img src="help.png" class="help-icon" onclick="toggleHelp()" style="width:30px; cursor:pointer;">
-        <img src="manut.png" class="manut-icon" onclick="abrirManutencao()" alt="Manutenção">
+        jaanerao@hotmail.com<br>
+        Atualizado: 10/04/2026<br>
+		Versão 1.02<br>
+        <div class="help-container">
+            <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
+            <div id="help-bubble">
+                Clicar no ícone bolo, indexa a página<br>
+                2 cliques na foto, vai para a lista<br>
+                1 clique nome da lista, vai ao registro<br>
+                seta azul ▼, vai no final da página<br>
+                seta azul ▲, vai no início da página<br>
+				ícone ⓘ amarelo, exibe informações<br>
+				<br> 
+                ( DIGITAR NO CAMPO DE BUSCA )<br>
+				<br>
+                Exemplos de filtros e procura:<br>
+				janeiro = filtra pessoas de janeiro<br>
+				setemb = filtra pessoas de setembro<br>
+				2911 = filtra pessoas de 29/11<br>
+				/12/ = filtra pessoas do mês 12<br>
+				/03/1963 = filtra mês/ano 03/1963<br>
+				aries = filtra signos de áries<br>
+				vivo = filtra pessoas vivas<br>
+				falecido = filtra pessoas falecidas<br>
+				ou digite o nome para procurar<br>
+            </div>
+        </div>
+        <br>
     </footer>
 
-<script>
+<script> 
 const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
-const PASS_KEY = "100941291137";
+const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 let pessoas = [];
-let dadosOriginais = []; // Para manter o formato original do JSON
+let proximoId = "";
 
-// Lógica de Capitalização
-function capitalizar(input) {
-    let valor = input.value;
-    if (valor.length > 0) {
-        input.value = valor.charAt(0).toUpperCase() + valor.slice(1);
-    }
+function toggleHelp() {
+    const bubble = document.getElementById('help-bubble');
+    bubble.style.display = 'block';
+    setTimeout(() => {
+        bubble.style.display = 'none';
+    }, 8000);
 }
 
-// Abrir Manutenção com Senha
-function abrirManutencao(index = null) {
-    const senha = prompt("Digite a senha de manutenção:");
-    if (senha !== PASS_KEY) {
-        alert("Senha incorreta!");
-        return;
-    }
-
-    document.getElementById('modal-manutencao').style.display = 'block';
-    if (index !== null) {
-        const p = pessoas[index];
-        document.getElementById('manut-titulo').innerText = "Alterar Registro";
-        document.getElementById('edit-index').value = index;
-        document.getElementById('m-nome').value = p.nome;
-        document.getElementById('m-nasc').value = p.nascStr;
-        document.getElementById('m-falec').value = p.falecStr || "";
-        document.getElementById('m-img').value = p.img;
-        document.getElementById('m-i1').value = p.Info01 || "";
-        document.getElementById('m-i2').value = p.Info02 || "";
-        document.getElementById('m-i3').value = p.Info03 || "";
-        document.getElementById('m-i4').value = p.Info04 || "";
-        document.getElementById('m-i5').value = p.Info05 || "";
-        document.getElementById('m-i6').value = p.Info06 || "";
-        document.getElementById('m-i7').value = p.Info07 || "";
-        document.getElementById('m-i8').value = p.Info08 || "";
-        document.getElementById('m-i9').value = p.Info09 || "";
-        document.getElementById('m-i10').value = p.Info10 || "";
-        document.getElementById('btn-excluir').style.display = 'block';
-    } else {
-        limparFormManut();
-    }
+function getSigno(dia, mes) {
+    if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) return ["♒", "Aquário"];
+    if ((mes == 2 && dia >= 19) || (mes == 3 && dia <= 20)) return ["♓", "Peixes"];
+    if ((mes == 3 && dia >= 21) || (mes == 4 && dia <= 19)) return ["♈", "Áries"];
+    if ((mes == 4 && dia >= 20) || (mes == 5 && dia <= 20)) return ["♉", "Touro"];
+    if ((mes == 5 && dia >= 21) || (mes == 6 && dia <= 20)) return ["♊", "Gêmeos"];
+    if ((mes == 6 && dia >= 21) || (mes == 7 && dia <= 22)) return ["♋", "Câncer"];
+    if ((mes == 7 && dia >= 23) || (mes == 8 && dia <= 22)) return ["♌", "Leão"];
+    if ((mes == 8 && dia >= 23) || (mes == 9 && dia <= 22)) return ["♍", "Virgem"];
+    if ((mes == 9 && dia >= 23) || (mes == 10 && dia <= 22)) return ["♎", "Libra"];
+    if ((mes == 10 && dia >= 23) || (mes == 11 && dia <= 21)) return ["♏", "Escorpião"];
+    if ((mes == 11 && dia >= 22) || (mes == 12 && dia <= 21)) return ["♐", "Sagitário"];
+    return ["♑", "Capricórnio"];
 }
 
-function fecharManutencao() {
-    document.getElementById('modal-manutencao').style.display = 'none';
+function calcularIdade(nasc, falec) {
+    const hoje = new Date();
+    const fim = falec ? new Date(falec) : hoje;
+    const inicio = new Date(nasc);
+    let idade = fim.getFullYear() - inicio.getFullYear();
+    const m = fim.getMonth() - inicio.getMonth();
+    if (m < 0 || (m === 0 && fim.getDate() < inicio.getDate())) idade--;
+    const diffTime = fim - inicio;
+    const diasVividos = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    return { anos: idade, dias: diasVividos };
 }
 
-function limparFormManut() {
-    document.getElementById('manut-titulo').innerText = "Novo Registro";
-    document.getElementById('edit-index').value = "";
-    document.getElementById('btn-excluir').style.display = 'none';
-    const campos = ['m-nome', 'm-nasc', 'm-falec', 'm-img', 'm-i1', 'm-i2', 'm-i3', 'm-i4', 'm-i5', 'm-i6', 'm-i7', 'm-i8', 'm-i9', 'm-i10'];
-    campos.forEach(c => document.getElementById(c).value = "");
+function parsingDatas(str) {
+    if (!str) return null;
+    const [d, m, y] = str.split('/');
+    return new Date(y || new Date().getFullYear(), m - 1, d);
 }
-
-// SALVAR E GERAR JSON
-function salvarRegistro() {
-    const index = document.getElementById('edit-index').value;
-    const novoRegistro = {
-        "nome": document.getElementById('m-nome').value,
-        "nascimento": document.getElementById('m-nasc').value,
-        "falecimento": document.getElementById('m-falec').value,
-        "imagem": document.getElementById('m-img').value.toLowerCase().endsWith('.jpg') ? document.getElementById('m-img').value : document.getElementById('m-img').value + ".jpg",
-        "info": "",
-        "Info01": document.getElementById('m-i1').value,
-        "Info02": document.getElementById('m-i2').value,
-        "Info03": document.getElementById('m-i3').value,
-        "Info04": document.getElementById('m-i4').value,
-        "Info05": document.getElementById('m-i5').value,
-        "Info06": document.getElementById('m-i6').value,
-        "Info07": document.getElementById('m-i7').value,
-        "Info08": document.getElementById('m-i8').value,
-        "Info09": document.getElementById('m-i9').value,
-        "Info10": document.getElementById('m-i10').value
-    };
-
-    if (index === "") {
-        dadosOriginais.push(novoRegistro);
-    } else {
-        dadosOriginais[index] = novoRegistro;
-    }
-
-    baixarJSON();
-    location.reload(); // Recarrega para ver as mudanças locais
-}
-
-function excluirRegistro() {
-    if (confirm("Tem certeza que deseja excluir este registro?")) {
-        const index = document.getElementById('edit-index').value;
-        dadosOriginais.splice(index, 1);
-        baixarJSON();
-        location.reload();
-    }
-}
-
-function baixarJSON() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dadosOriginais, null, 2));
-    const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", "dados.json");
-    document.body.appendChild(downloadAnchorNode);
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
-    alert("Arquivo 'dados.json' gerado! Substitua-o no seu GitHub para atualizar o site oficialmente.");
-}
-
-// --- FUNÇÕES DE RENDERIZAÇÃO ORIGINAIS ---
 
 async function carregarDados() {
     try {
         const response = await fetch('dados.json');
-        dadosOriginais = await response.json();
+        const data = await response.json();
         
-        pessoas = dadosOriginais.map((p, index) => {
+        pessoas = data.map((p, index) => {
             const dNasc = parsingDatas(p.nascimento);
-            const dFalec = parsingDatas(p.falecimento);
+            const dFalec = parsingDatas(p.falecimentos || p.falecimento);
+            let signo = ["✨", "Divino"];
+            if (p.nome.indexOf("JESUS") === -1) {
+                signo = getSigno(dNasc.getDate(), dNasc.getMonth() + 1);
+            }
             return {
-                id: index,
-                nome: p.nome, nascStr: p.nascimento, falecStr: p.falecimento,
-                dNasc, dFalec, img: p.imagem,
-                mesNum: dNasc ? dNasc.getMonth() : 0,
+                id: 'p' + index,
+                nome: p.nome, 
+                nascStr: p.nascimento, 
+                falecStr: p.falecimento, 
+                dNasc, dFalec, 
+                img: p.imagem, 
+                infoTexto: p.info,
+                signo: signo[0] + " " + signo[1],
+                mesNum: dNasc.getMonth(),
+                diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0'),
                 Info01: p.Info01, Info02: p.Info02, Info03: p.Info03, Info04: p.Info04, Info05: p.Info05,
                 Info06: p.Info06, Info07: p.Info07, Info08: p.Info08, Info09: p.Info09, Info10: p.Info10
             };
         });
+        
+        findProximo();
         render();
-    } catch (e) { console.error(e); }
+    } catch (error) {
+        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
+        console.error("Erro:", error);
+    }
 }
 
-function parsingDatas(str) {
-    if (!str || str.trim() === "") return null;
-    const parts = str.split('/');
-    return new Date(parts[2], parts[1] - 1, parts[0]);
+function mostrarInfo(id) {
+    const el = document.getElementById('info-' + id);
+    if (el) {
+        el.style.display = 'block';
+        setTimeout(() => { el.style.display = 'none'; }, 10000);
+    }
+}
+
+function irParaRegistro(id) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('highlight-target');
+        setTimeout(() => el.classList.remove('highlight-target'), 10000);
+    }
+}
+
+function voltarParaLista() {
+    document.getElementById('lista-alfabetica-container').scrollIntoView({ behavior: 'smooth' });
 }
 
 function render(filtro = "") {
     const container = document.getElementById('conteudo');
+    const listaUl = document.getElementById('listaAlfabetica');
     container.innerHTML = "";
-    const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+    listaUl.innerHTML = "";
+    
+    let count = 0;
+    const hoje = new Date();
+    const hojeDM = hoje.getDate().toString().padStart(2,'0') + (hoje.getMonth()+1).toString().padStart(2,'0');
+    const termo = filtro.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
     mesesNomes.forEach((mes, idx) => {
-        const filtrados = pessoas.filter(p => p.mesNum === idx);
+        const filtrados = pessoas.filter(p => p.mesNum === idx).filter(p => {
+            if (!termo) return true;
+            const status = p.dFalec ? "falecido" : "vivo";
+            const buscaString = `${p.nome} ${p.nascStr} ${p.falecStr} ${status} ${p.signo} ${mesesNomes[p.mesNum]}`
+                .toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            return buscaString.includes(termo);
+        });
+
         if (filtrados.length > 0) {
             const mesDiv = document.createElement('div');
             mesDiv.innerHTML = `<div class="mes-titulo">${mes}</div>`;
@@ -285,18 +308,55 @@ function render(filtro = "") {
             grid.className = 'grid-container';
 
             filtrados.forEach(p => {
+                count++;
                 const card = document.createElement('div');
                 card.className = 'registro-card';
+                card.id = p.id;
+                const isToday = p.diaMes === hojeDM;
+                const isJesus = p.nome.includes("JESUS") || (p.nascStr === "25/12");
+                
+                const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
+                const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null).anos : 0;
+                
+                let mostrarLuto = false;
+                if (p.dFalec) {
+                    const umAnoAtras = new Date();
+                    umAnoAtras.setFullYear(hoje.getFullYear() - 1);
+                    if (p.dFalec > umAnoAtras) mostrarLuto = true;
+                }
+
+                const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
+                const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
+
+                let arrayInfos = [p.infoTexto, p.Info01, p.Info02, p.Info03, p.Info04, p.Info05, p.Info06, p.Info07, p.Info08, p.Info09, p.Info10]
+                    .filter(x => x && x.trim() !== '' && x !== "|||||")
+                    .join(' | ').split('|').filter(x => x.trim() !== "");
+                let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
+
                 card.innerHTML = `
-                    <div class="edit-icon" onclick="abrirManutencao(${p.id})">EDITAR ⚙️</div>
                     <div class="photo-wrapper">
-                        <div class="img-container">
-                            <img src="${BASE_URL}${p.img}" class="img-pessoa" alt="${p.nome}">
+                        <div class="img-container" ondblclick="voltarParaLista()">
+                            <img loading="lazy" src="${BASE_URL}${p.img}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
                         </div>
+                        ${mostrarLuto ? `<img src="https://amarildo1963.github.io/jaa/fotos/luto.gif" class="icon-luto" alt="Luto">` : ''}
+                        <img src="info.png" class="icon-info" onclick="mostrarInfo('${p.id}')" alt="Info">
+                        <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
                     </div>
-                    <span class="nome">${p.nome}</span>
-                    <div class="info-nasc">★ ${p.nascStr}</div>
-                    ${p.falecStr ? `<div class="info-falec">✝ ${p.falecStr}</div>` : ''}
+                    <span class="nome">${destacar(isJesus ? "NATAL DO MENINO JESUS 25/12" : p.nome, termo)}</span>
+                    ${!isJesus ? `
+                        <div class="info-nasc">★ ${destacar(p.nascStr, termo)} ${diaSemNasc}</div>
+                        ${p.dFalec ? `
+                            <div class="info-falec">✝ ${destacar(p.falecStr, termo)} ${diaSemFalec}</div>
+                            <div class="info-falec">há ${anosFalec} anos</div>
+                            <div class="info-idade-morta">viveu ${dadosIdade.anos} anos</div>
+                            <div class="info-idade-morta" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
+                        ` : `
+                            <div class="info-idade-viva">${dadosIdade.anos} anos</div>
+                            <div class="info-idade-viva" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
+                        `}
+                        <div>${destacar(p.signo, termo)}</div>
+                    ` : ''}
+                    ${isToday ? `<div class="bday-msg">${p.dFalec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>` : ''}
                 `;
                 grid.appendChild(card);
             });
@@ -304,8 +364,64 @@ function render(filtro = "") {
             container.appendChild(mesDiv);
         }
     });
-    document.getElementById('stats').innerText = `Registros: ${pessoas.length}`;
+
+    const alfabetica = [...pessoas].sort((a, b) => a.nome.localeCompare(b.nome));
+    alfabetica.forEach(p => {
+        const li = document.createElement('li');
+        li.className = 'lista-item';
+        li.innerHTML = `
+            <a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro('${p.id}')">
+                <img src="${BASE_URL}${p.img}" class="micro-foto" alt="">
+                ${p.nome}
+            </a>`;
+        listaUl.appendChild(li);
+    });
+
+    document.getElementById('stats').innerText = `Registros: ${pessoas.length} / Filtrados: ${count}`;
 }
+
+function destacar(texto, termo) {
+    if (!termo || !texto) return texto;
+    const regex = new RegExp(`(${termo})`, 'gi');
+    return texto.replace(regex, '<span class="highlight">$1</span>');
+}
+
+let debounceTimer;
+document.getElementById('searchInput').addEventListener('input', function(e) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        let val = e.target.value;
+        if (/^\d+$/.test(val)) {
+            if (val.length === 4) e.target.value = val.slice(0,2) + "/" + val.slice(2,4);
+            if (val.length === 8) e.target.value = val.slice(0,2) + "/" + val.slice(2,4) + "/" + val.slice(4,8);
+        }
+        render(e.target.value);
+    }, 250);
+});
+
+function limparBusca() {
+    document.getElementById('searchInput').value = "";
+    render();
+}
+
+const findProximo = () => {
+    const hoje = new Date();
+    const hojeDM = (hoje.getMonth() + 1) * 100 + hoje.getDate();
+    const ordenados = [...pessoas].sort((a,b) => {
+        const dmA = (a.dNasc.getMonth() + 1) * 100 + a.dNasc.getDate();
+        const dmB = (b.dNasc.getMonth() + 1) * 100 + b.dNasc.getDate();
+        return dmA - dmB;
+    });
+    const prox = ordenados.find(p => ((p.dNasc.getMonth() + 1) * 100 + p.dNasc.getDate()) >= hojeDM) || ordenados[0];
+    proximoId = prox ? prox.id : "";
+    
+    if(proximoId) {
+        setTimeout(() => {
+            const el = document.getElementById(proximoId);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 500);
+    }
+};
 
 carregarDados();
 </script>
