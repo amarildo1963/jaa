@@ -148,8 +148,8 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 10/04/2026<br>
-		Versão 1.02<br>
+        Atualizado: 12/04/2026<br>
+		Versão 1.03<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -158,7 +158,7 @@
                 1 clique nome da lista, vai ao registro<br>
                 seta azul ▼, vai no final da página<br>
                 seta azul ▲, vai no início da página<br>
-				ícone ⓘ amarelo, exibe informações<br>
+				ícone (i) ⓘ exibe informações<br>
 				<br> 
                 ( DIGITAR NO CAMPO DE BUSCA )<br>
 				<br>
@@ -175,7 +175,85 @@
             </div>
         </div>
         <br>
-    </footer>
+    
+<!-- ===== MANUTENÇÃO ===== -->
+<div style="text-align:center; margin-top:20px;">
+    <img src="manut.png" style="width:40px; cursor:pointer;" onclick="abrirManut()" title="Manutenção">
+</div>
+
+<div id="painelManut" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+background:#fff; border:2px solid #333; padding:20px; z-index:999; width:350px; border-radius:10px;">
+    <h3>Manutenção</h3>
+    <input type="password" id="senhaManut" placeholder="Senha"><br><br>
+    <button onclick="validarSenha()">Entrar</button>
+    <div id="areaManut" style="display:none; margin-top:15px;">
+        <button onclick="addRegistro()">Adicionar</button>
+        <button onclick="editarRegistro()">Alterar</button>
+        <button onclick="excluirRegistro()">Excluir</button>
+    </div>
+</div>
+
+<script>
+function abrirManut(){ document.getElementById('painelManut').style.display='block'; }
+
+function validarSenha(){
+    const s = document.getElementById('senhaManut').value;
+    if(s==='100941291137'){
+        document.getElementById('areaManut').style.display='block';
+    } else {
+        alert('Senha incorreta');
+    }
+}
+
+function formatarNome(n){ return n.charAt(0).toUpperCase()+n.slice(1).toLowerCase(); }
+
+function validarData(d){ return /^\d{2}\/\d{2}\/\d{4}$/.test(d); }
+
+async function salvarJSON(dados){
+    dados.sort((a,b)=> new Date(a.nascimento.split('/').reverse().join('-')) - new Date(b.nascimento.split('/').reverse().join('-')));
+    const blob = new Blob([JSON.stringify(dados,null,2)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'dados.json';
+    a.click();
+}
+
+function addRegistro(){
+    let nome = formatarNome(prompt('Nome:'));
+    let nascimento = prompt('Nascimento DD/MM/AAAA:');
+    if(!validarData(nascimento)){ alert('Data inválida'); return;}
+    let obj = {
+        nome,
+        nascimento,
+        falecimento:'',
+        imagem: prompt('Imagem (.jpg 500x500):'),
+        info:'|||||',
+        Info01:'',Info02:'',Info03:'',Info04:'',Info05:'',
+        Info06:'',Info07:'',Info08:'',Info09:'',Info10:''
+    };
+    pessoas.push(obj);
+    salvarJSON(pessoas);
+    alert('Registro adicionado');
+}
+
+function editarRegistro(){
+    let nome = prompt('Nome para alterar:');
+    let p = pessoas.find(x=>x.nome===nome);
+    if(!p){ alert('Não encontrado'); return;}
+    p.nome = formatarNome(prompt('Novo nome:',p.nome));
+    salvarJSON(pessoas);
+    alert('Alterado');
+}
+
+function excluirRegistro(){
+    let nome = prompt('Nome para excluir:');
+    pessoas = pessoas.filter(x=>x.nome!==nome);
+    salvarJSON(pessoas);
+    alert('Excluído');
+}
+</script>
+
+</footer>
 
 <script> 
 const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
