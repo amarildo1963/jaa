@@ -36,25 +36,12 @@
         .icon-luto { width: 30px; height: auto; margin-left: 5px; }
         .icon-info { width: 32px; height: 32px; cursor: pointer; transition: opacity 0.2s; }
         .icon-info:hover { opacity: 0.7; }
-        .icon-edit { position: absolute; top: -5px; right: -5px; width: 25px; cursor: pointer; background: white; border-radius: 50%; padding: 2px; display: none; }
         .info-bubble { display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); width: 90%; background-color: #ffffe0; border: 1px solid black; border-radius: 8px; padding: 10px; z-index: 10; text-align: left; font-size: 11px; color: black; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         
-        /* AJUDA E MANUTENÇÃO */
-        .admin-icons { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 15px; }
-        .help-icon, .manut-icon { width: 35px; height: 35px; cursor: pointer; transition: transform 0.2s; }
-        .manut-icon:hover { transform: rotate(15deg); }
-        #help-bubble { display: none; position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%); width: 250px; background-color: white; border: 1px solid black; border-radius: 10px; padding: 10px; z-index: 100; text-align: left; font-size: 12px; color: blue; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-
-        /* MODAL MANUTENÇÃO */
-        .modal-manut { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 1000; overflow-y: auto; }
-        .modal-content { background: white; max-width: 600px; margin: 30px auto; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-weight: bold; font-size: 12px; color: #555; margin-bottom: 4px; }
-        .form-group input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; }
-        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-        .btn-save { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; flex: 1; font-weight: bold; }
-        .btn-del { background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .btn-cancel { background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        /* AJUDA */
+        .help-container { position: relative; display: inline-block; margin-top: 10px; }
+        .help-icon { width: 30px; height: 30px; cursor: pointer; vertical-align: middle; }
+        #help-bubble { display: none; position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); width: 250px; background-color: white; border: 1px solid black; border-radius: 10px; padding: 10px; z-index: 100; text-align: left; font-size: 12px; color: blue; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
 
         /* ANIMAÇÕES */
         @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
@@ -75,15 +62,59 @@
         .info-idade-morta { color: #b8860b; font-weight: bold; }
         .highlight { background-color: yellow; }
         
-        /* LISTA ALFABÉTICA */
-        #lista-alfabetica-container { max-width: 900px; margin: 60px auto; padding: 25px; background: linear-gradient(135deg, #ffffff, #f7f9fc); border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
-        .titulo-lista { color: #1e3a8a; margin-bottom: 20px; font-size: 22px; font-weight: 700; border-left: 5px solid #3b82f6; padding-left: 10px; }
-        .lista-caderno { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
-        .lista-item { background: #ffffff; border-radius: 8px; padding: 8px 10px; transition: all 0.2s ease; border: 1px solid #e5e7eb; }
-        .lista-item:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-color: #3b82f6; }
-        .lista-link { text-decoration: none; color: #111827; font-weight: 500; display: flex; align-items: center; gap: 10px; }
-        .lista-link:hover { color: #2563eb; }
-        .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
+        /* LISTA ALFABÉTICA - VISUAL MODERNO */
+        #lista-alfabetica-container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 25px;
+            background: linear-gradient(135deg, #ffffff, #f7f9fc);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        .titulo-lista {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: 700;
+            border-left: 5px solid #3b82f6;
+            padding-left: 10px;
+        }
+        .lista-caderno {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 10px;
+        }
+        .lista-item {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 8px 10px;
+            transition: all 0.2s ease;
+            border: 1px solid #e5e7eb;
+        }
+        .lista-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            border-color: #3b82f6;
+        }
+        .lista-link {
+            text-decoration: none;
+            color: #111827;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .lista-link:hover {
+            color: #2563eb;
+        }
+        .micro-foto {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #3b82f6;
+        }
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     </style>
@@ -103,7 +134,6 @@
     <div class="controls">
         <input type="text" id="searchInput" placeholder="Buscar (nome, data, mês, signo, etc...)">
         <button class="btn-limpar" onclick="limparBusca()">Limpar 🧹</button>
-        <button id="btnNovo" style="display:none; background: #28a745; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;" onclick="abrirManutencao()">+ Novo Registro</button>
     </div>
 
     <div class="stats" id="stats">Carregando dados...</div>
@@ -115,63 +145,13 @@
         <ul id="listaAlfabetica" class="lista-caderno"></ul>
     </div>
 
-    <div id="modalManut" class="modal-manut">
-        <div class="modal-content">
-            <h2 id="modalTitle" style="color: #1e3a8a; margin-bottom: 20px; border-bottom: 2px solid #3b82f6; padding-bottom: 10px;">Manutenção de Registro</h2>
-            <form id="formPessoa">
-                <input type="hidden" id="editIndex">
-                <div class="form-group">
-                    <label>Nome Completo (Iniciais Maiúsculas):</label>
-                    <input type="text" id="mNome" required oninput="capsFirst(this)">
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <div class="form-group">
-                        <label>Nascimento (DD/MM/AAAA):</label>
-                        <input type="text" id="mNasc" placeholder="00/00/0000" required maxlength="10" onkeyup="mascaraData(this)">
-                    </div>
-                    <div class="form-group">
-                        <label>Falecimento (Opcional):</label>
-                        <input type="text" id="mFalec" placeholder="00/00/0000" maxlength="10" onkeyup="mascaraData(this)">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Imagem (Nome do arquivo .jpg):</label>
-                    <input type="text" id="mImg" placeholder="exemplo.jpg" required oninput="validaJpg(this)">
-                </div>
-                <div class="form-group" style="display:none;">
-                    <label>Info (Padrão):</label>
-                    <input type="text" id="mInfo" value="|||||">
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 200px; overflow-y: auto; padding: 10px; border: 1px solid #eee;">
-                    <div class="form-group"><label>Info01:</label><input type="text" id="mI01" oninput="capsFirst(this)"></div>
-                    <div class="form-group"><label>Info02:</label><input type="text" id="mI02" oninput="capsFirst(this)"></div>
-                    <div class="form-group"><label>Info03:</label><input type="text" id="mI03" oninput="capsFirst(this)"></div>
-                    <div class="form-group"><label>Info04:</label><input type="text" id="mI04" oninput="capsFirst(this)"></div>
-                    <div class="form-group"><label>Info05:</label><input type="text" id="mI05" oninput="capsFirst(this)"></div>
-                    <div class="form-group"><label>Info06:</label><input type="text" id="mI06" oninput="capsFirst(this)"></div>
-                    <div class="form-group"><label>Info07:</label><input type="text" id="mI07" oninput="capsFirst(this)"></div>
-                    <div class="form-group"><label>Info08:</label><input type="text" id="mI08" oninput="capsFirst(this)"></div>
-                    <div class="form-group"><label>Info09:</label><input type="text" id="mI09" oninput="capsFirst(this)"></div>
-                    <div class="form-group"><label>Info10:</label><input type="text" id="mI10" oninput="capsFirst(this)"></div>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn-cancel" onclick="fecharManut()">Cancelar</button>
-                    <button type="button" id="btnExcluir" class="btn-del" style="display:none;" onclick="excluirRegistro()">Excluir</button>
-                    <button type="submit" class="btn-save">Salvar e Gerar dados.json</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 12/04/2026<br>
-		Versão 1.03<br>
-        
-        <div class="admin-icons">
+        Atualizado: 10/04/2026<br>
+		Versão 1.02<br>
+        <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
-            <img src="manut.png" class="manut-icon" onclick="acessoManutencao()" alt="Manutenção">
             <div id="help-bubble">
                 Clicar no ícone bolo, indexa a página<br>
                 2 cliques na foto, vai para a lista<br>
@@ -194,6 +174,7 @@
 				ou digite o nome para procurar<br>
             </div>
         </div>
+        <br>
     </footer>
 
 <script> 
@@ -201,151 +182,15 @@ const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
 const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 let pessoas = [];
 let proximoId = "";
-let modoAdmin = false;
 
-// --- FUNÇÕES DE UTILIDADE ---
 function toggleHelp() {
     const bubble = document.getElementById('help-bubble');
-    bubble.style.display = bubble.style.display === 'block' ? 'none' : 'block';
-    if(bubble.style.display === 'block') setTimeout(() => { bubble.style.display = 'none'; }, 8000);
+    bubble.style.display = 'block';
+    setTimeout(() => {
+        bubble.style.display = 'none';
+    }, 8000);
 }
 
-function capsFirst(input) {
-    input.value = input.value.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
-}
-
-function mascaraData(input) {
-    let v = input.value.replace(/\D/g, '');
-    if (v.length > 8) v = v.slice(0, 8);
-    if (v.length >= 5) v = v.replace(/^(\d{2})(\d{2})(\d{0,4}).*/, "$1/$2/$3");
-    else if (v.length >= 3) v = v.replace(/^(\d{2})(\d{0,2}).*/, "$1/$2");
-    input.value = v;
-}
-
-function validaJpg(input) {
-    if(!input.value.toLowerCase().endsWith('.jpg') && input.value !== "") {
-        input.style.borderColor = "red";
-    } else {
-        input.style.borderColor = "#ddd";
-    }
-}
-
-// --- LÓGICA DE MANUTENÇÃO ---
-function acessoManutencao() {
-    const pass = prompt("Digite a senha de manutenção:");
-    if (pass === "100941291137") {
-        modoAdmin = true;
-        document.getElementById('btnNovo').style.display = 'block';
-        alert("Modo manutenção ativado! Ícones de edição aparecerão nos cards.");
-        render();
-    } else {
-        alert("Senha incorreta.");
-    }
-}
-
-function abrirManutencao(idx = -1) {
-    const modal = document.getElementById('modalManut');
-    const form = document.getElementById('formPessoa');
-    const title = document.getElementById('modalTitle');
-    const btnExcluir = document.getElementById('btnExcluir');
-    
-    form.reset();
-    document.getElementById('mInfo').value = "|||||";
-    
-    if(idx > -1) {
-        const p = pessoas[idx];
-        title.innerText = "Editar: " + p.nome;
-        document.getElementById('editIndex').value = idx;
-        document.getElementById('mNome').value = p.nome;
-        document.getElementById('mNasc').value = p.nascStr;
-        document.getElementById('mFalec').value = p.falecStr || "";
-        document.getElementById('mImg').value = p.img;
-        document.getElementById('mI01').value = p.Info01 || "";
-        document.getElementById('mI02').value = p.Info02 || "";
-        document.getElementById('mI03').value = p.Info03 || "";
-        document.getElementById('mI04').value = p.Info04 || "";
-        document.getElementById('mI05').value = p.Info05 || "";
-        document.getElementById('mI06').value = p.Info06 || "";
-        document.getElementById('mI07').value = p.Info07 || "";
-        document.getElementById('mI08').value = p.Info08 || "";
-        document.getElementById('mI09').value = p.Info09 || "";
-        document.getElementById('mI10').value = p.Info10 || "";
-        btnExcluir.style.display = 'block';
-    } else {
-        title.innerText = "Novo Registro";
-        document.getElementById('editIndex').value = "-1";
-        btnExcluir.style.display = 'none';
-    }
-    modal.style.display = 'block';
-}
-
-function fecharManut() {
-    document.getElementById('modalManut').style.display = 'none';
-}
-
-function excluirRegistro() {
-    if(confirm("Deseja realmente excluir este registro?")) {
-        const idx = document.getElementById('editIndex').value;
-        pessoas.splice(idx, 1);
-        salvarEBaixar();
-    }
-}
-
-document.getElementById('formPessoa').onsubmit = function(e) {
-    e.preventDefault();
-    const idx = document.getElementById('editIndex').value;
-    
-    const novoDado = {
-        nome: document.getElementById('mNome').value,
-        nascimento: document.getElementById('mNasc').value,
-        falecimento: document.getElementById('mFalec').value,
-        imagem: document.getElementById('mImg').value,
-        info: "|||||",
-        Info01: document.getElementById('mI01').value,
-        Info02: document.getElementById('mI02').value,
-        Info03: document.getElementById('mI03').value,
-        Info04: document.getElementById('mI04').value,
-        Info05: document.getElementById('mI05').value,
-        Info06: document.getElementById('mI06').value,
-        Info07: document.getElementById('mI07').value,
-        Info08: document.getElementById('mI08').value,
-        Info09: document.getElementById('mI09').value,
-        Info10: document.getElementById('mI10').value
-    };
-
-    if(idx === "-1") {
-        pessoas.push(novoDado);
-    } else {
-        // Preserva campos que não estão no form mas podem existir no JSON original
-        const original = pessoas[idx];
-        pessoas[idx] = {...original, ...novoDado};
-    }
-    
-    salvarEBaixar();
-};
-
-function salvarEBaixar() {
-    // Ordenar por data de nascimento (mês e dia)
-    pessoas.sort((a, b) => {
-        const [da, ma] = a.nascimento.split('/');
-        const [db, mb] = b.nascimento.split('/');
-        return (ma + da) - (mb + db);
-    });
-
-    const dataStr = JSON.stringify(pessoas, null, 4);
-    const blob = new Blob([dataStr], {type: 'application/json'});
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'dados.json';
-    link.click();
-    
-    alert("Arquivo 'dados.json' gerado! Substitua-o na pasta do seu site.");
-    fecharManut();
-    location.reload(); // Recarrega para processar as datas corretas no formato Date()
-}
-
-// --- FUNÇÕES ORIGINAIS ADAPTADAS ---
 function getSigno(dia, mes) {
     if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) return ["♒", "Aquário"];
     if ((mes == 2 && dia >= 19) || (mes == 3 && dia <= 20)) return ["♓", "Peixes"];
@@ -375,12 +220,8 @@ function calcularIdade(nasc, falec) {
 
 function parsingDatas(str) {
     if (!str) return null;
-    const parts = str.split('/');
-    if(parts.length < 2) return null;
-    const d = parts[0];
-    const m = parts[1];
-    const y = parts[2] || new Date().getFullYear();
-    return new Date(y, m - 1, d);
+    const [d, m, y] = str.split('/');
+    return new Date(y || new Date().getFullYear(), m - 1, d);
 }
 
 async function carregarDados() {
@@ -390,21 +231,24 @@ async function carregarDados() {
         
         pessoas = data.map((p, index) => {
             const dNasc = parsingDatas(p.nascimento);
-            const dFalec = parsingDatas(p.falecimento || p.falecimentos);
+            const dFalec = parsingDatas(p.falecimentos || p.falecimento);
             let signo = ["✨", "Divino"];
-            if (p.nome && p.nome.indexOf("JESUS") === -1 && dNasc) {
+            if (p.nome.indexOf("JESUS") === -1) {
                 signo = getSigno(dNasc.getDate(), dNasc.getMonth() + 1);
             }
             return {
-                ...p,
                 id: 'p' + index,
-                idxOrig: index,
+                nome: p.nome, 
                 nascStr: p.nascimento, 
-                falecStr: p.falecimento || p.falecimentos, 
+                falecStr: p.falecimento, 
                 dNasc, dFalec, 
+                img: p.imagem, 
+                infoTexto: p.info,
                 signo: signo[0] + " " + signo[1],
-                mesNum: dNasc ? dNasc.getMonth() : 0,
-                diaMes: dNasc ? (dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0')) : "0000"
+                mesNum: dNasc.getMonth(),
+                diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0'),
+                Info01: p.Info01, Info02: p.Info02, Info03: p.Info03, Info04: p.Info04, Info05: p.Info05,
+                Info06: p.Info06, Info07: p.Info07, Info08: p.Info08, Info09: p.Info09, Info10: p.Info10
             };
         });
         
@@ -469,9 +313,9 @@ function render(filtro = "") {
                 card.className = 'registro-card';
                 card.id = p.id;
                 const isToday = p.diaMes === hojeDM;
-                const isJesus = p.nome && (p.nome.includes("JESUS") || (p.nascStr === "25/12"));
+                const isJesus = p.nome.includes("JESUS") || (p.nascStr === "25/12");
                 
-                const dadosIdade = p.dNasc ? calcularIdade(p.dNasc, p.dFalec) : {anos:0, dias:0};
+                const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
                 const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null).anos : 0;
                 
                 let mostrarLuto = false;
@@ -481,10 +325,10 @@ function render(filtro = "") {
                     if (p.dFalec > umAnoAtras) mostrarLuto = true;
                 }
 
-                const diaSemNasc = p.dNasc ? p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
+                const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
                 const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
 
-                let arrayInfos = [p.info, p.Info01, p.Info02, p.Info03, p.Info04, p.Info05, p.Info06, p.Info07, p.Info08, p.Info09, p.Info10]
+                let arrayInfos = [p.infoTexto, p.Info01, p.Info02, p.Info03, p.Info04, p.Info05, p.Info06, p.Info07, p.Info08, p.Info09, p.Info10]
                     .filter(x => x && x.trim() !== '' && x !== "|||||")
                     .join(' | ').split('|').filter(x => x.trim() !== "");
                 let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
@@ -492,9 +336,8 @@ function render(filtro = "") {
                 card.innerHTML = `
                     <div class="photo-wrapper">
                         <div class="img-container" ondblclick="voltarParaLista()">
-                            <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
+                            <img loading="lazy" src="${BASE_URL}${p.img}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
                         </div>
-                        ${modoAdmin ? `<img src="manut.png" class="icon-edit" style="display:block" onclick="abrirManutencao(${p.idxOrig})" title="Editar">` : ''}
                         ${mostrarLuto ? `<img src="https://amarildo1963.github.io/jaa/fotos/luto.gif" class="icon-luto" alt="Luto">` : ''}
                         <img src="info.png" class="icon-info" onclick="mostrarInfo('${p.id}')" alt="Info">
                         <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
@@ -522,13 +365,13 @@ function render(filtro = "") {
         }
     });
 
-    const alfabetica = [...pessoas].sort((a, b) => (a.nome||"").localeCompare(b.nome||""));
+    const alfabetica = [...pessoas].sort((a, b) => a.nome.localeCompare(b.nome));
     alfabetica.forEach(p => {
         const li = document.createElement('li');
         li.className = 'lista-item';
         li.innerHTML = `
             <a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro('${p.id}')">
-                <img src="${BASE_URL}${p.imagem}" class="micro-foto" alt="">
+                <img src="${BASE_URL}${p.img}" class="micro-foto" alt="">
                 ${p.nome}
             </a>`;
         listaUl.appendChild(li);
@@ -564,7 +407,7 @@ function limparBusca() {
 const findProximo = () => {
     const hoje = new Date();
     const hojeDM = (hoje.getMonth() + 1) * 100 + hoje.getDate();
-    const ordenados = [...pessoas].filter(p => p.dNasc).sort((a,b) => {
+    const ordenados = [...pessoas].sort((a,b) => {
         const dmA = (a.dNasc.getMonth() + 1) * 100 + a.dNasc.getDate();
         const dmB = (b.dNasc.getMonth() + 1) * 100 + b.dNasc.getDate();
         return dmA - dmB;
