@@ -103,6 +103,7 @@
                 <div><label>Info 04:</label><input type="text" id="f_i04"></div>
                 <div><label>Info 05:</label><input type="text" id="f_i05"></div>
                 <div><label>Info 06:</label><input type="text" id="f_i06"></div>
+				<div><label>Info 07:</label><input type="text" id="f_i07"></div>
                 <div><label>Info 08:</label><input type="text" id="f_i08"></div>
                 <div><label>Info 09:</label><input type="text" id="f_i09"></div>
                 <div><label>Info 10:</label><input type="text" id="f_i10"></div>
@@ -176,7 +177,7 @@
     }
 
     function clearForm() {
-        ['f_nome','f_nasc','f_fale','f_i01','f_i02','f_i03','f_i04','f_i05','f_i06','f_i08','f_i09','f_i10'].forEach(id => {
+        ['f_nome','f_nasc','f_fale','f_i01','f_i02','f_i03','f_i04','f_i05','f_i06','f_07','f_i08','f_i09','f_i10'].forEach(id => {
             document.getElementById(id).value = '';
         });
         document.getElementById('f_img').value = '';
@@ -211,6 +212,7 @@
         document.getElementById('f_i04').value = item.Info04 || "";
         document.getElementById('f_i05').value = item.Info05 || "";
         document.getElementById('f_i06').value = item.Info06 || "";
+        document.getElementById('f_i07').value = item.Info07 || "";
         document.getElementById('f_i08').value = item.Info08 || "";
         document.getElementById('f_i09').value = item.Info09 || "";
         document.getElementById('f_i10').value = item.Info10 || "";
@@ -235,7 +237,7 @@
                 Info04: capitalize(document.getElementById('f_i04').value),
                 Info05: capitalize(document.getElementById('f_i05').value),
                 Info06: capitalize(document.getElementById('f_i06').value),
-                Info07: "",
+                Info07: capitalize(document.getElementById('f_i07').value),
                 Info08: capitalize(document.getElementById('f_i08').value),
                 Info09: capitalize(document.getElementById('f_i09').value),
                 Info10: capitalize(document.getElementById('f_i10').value)
@@ -258,6 +260,7 @@
                 Info04: capitalize(document.getElementById('f_i04').value),
                 Info05: capitalize(document.getElementById('f_i05').value),
                 Info06: capitalize(document.getElementById('f_i06').value),
+				Info07: capitalize(document.getElementById('f_i07').value),
                 Info08: capitalize(document.getElementById('f_i08').value),
                 Info09: capitalize(document.getElementById('f_i09').value),
                 Info10: capitalize(document.getElementById('f_i10').value)
