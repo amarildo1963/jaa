@@ -85,6 +85,23 @@
     "Info10": ""
   },
   {
+    "nome": "Aparecida dos Santos",
+    "nascimento": "13/01/1952",
+    "falecimento": "",
+    "imagem": "aparecida_santos.jpg",
+    "info": "|||||",
+    "Info01": "Foi esposa de Braz Gestich",
+    "Info02": "Tia do Amarildo",
+    "Info03": "",
+    "Info04": "",
+    "Info05": "",
+    "Info06": "",
+    "Info07": "",
+    "Info08": "",
+    "Info09": "",
+    "Info10": ""
+  },
+  {
     "nome": "Maria Amarilza Anerão",
     "nascimento": "14/01/1969",
     "falecimento": "",
@@ -157,7 +174,7 @@
     "nascimento": "22/01/1981",
     "falecimento": "",
     "imagem": "falta_a_foto.jpg",
-    "info":"|||||",
+    "info": "|||||",
     "Info01": "Filha de Antonio Gestich",
     "Info02": "Filha de Maria de Lourdes Malaquias Gestich",
     "Info03": "Prima do Amarildo",
