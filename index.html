@@ -251,6 +251,7 @@ async function carregarDados() {
                 signo: signo[0] + " " + signo[1],
                 mesNum: dNasc.getMonth(),
                 diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0'),
+				conjuge: p.conjuge, filhos: p.filhos, netos: p.netos, bisnetos: p.bisnetos,
                 info01: p.info01, info02: p.info02, info03: p.info03, info04: p.info04, info05: p.info05,
                 info06: p.info06, info07: p.info07, info08: p.info08, info09: p.info09, info10: p.info10
             };
@@ -332,7 +333,7 @@ function render(filtro = "") {
                 const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
                 const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
 
-                let arrayInfos = [p.infoTexto, p.info01, p.info02, p.info03, p.info04, p.info05, p.info06, p.info07, p.info08, p.info09, p.info10]
+                let arrayInfos = [p.conjuge, p.filhos, p.netos, p.bisnetos, p.infoTexto, p.info01, p.info02, p.info03, p.info04, p.info05, p.info06, p.info07, p.info08, p.info09, p.info10]
                     .filter(x => x && x.trim() !== '' && x !== "|||||")
                     .join(' | ').split('|').filter(x => x.trim() !== "");
                 let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
