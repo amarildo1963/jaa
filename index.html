@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aniversariantes - Anerão</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
     <style>
@@ -37,7 +38,7 @@
         .icon-luto { width: 25px; height: auto; margin-left: 2px; }
         .icon-action { width: 30px; height: 30px; cursor: pointer; transition: opacity 0.2s; }
         .icon-genealogia { width: 45px; height: 45px; cursor: pointer; transition: opacity 0.2s; }
-        .icon-pdf { width: 30px; height: 30px; cursor: pointer; transition: opacity 0.2s; } /* Novo Ícone */
+        .icon-pdf { width: 30px; height: 30px; cursor: pointer; transition: opacity 0.2s; }
         
         .icon-action:hover, .icon-genealogia:hover, .icon-pdf:hover { opacity: 0.7; }
 
@@ -132,6 +133,7 @@
                 seta azul ▲, vai no início da página<br>
 				ícone árvore 🌳 exibe genealogia<br>
 				ícone (i) ⓘ exibe informações<br>
+                ícone PDF 📄 gera árvore em PDF<br>
 				<br> 
                 ( DIGITAR NO CAMPO DE BUSCA )<br>
 				<br>
@@ -163,6 +165,46 @@ function toggleHelp() {
     const bubble = document.getElementById('help-bubble');
     bubble.style.display = 'block';
     setTimeout(() => { bubble.style.display = 'none'; }, 8000);
+}
+
+// FUNÇÃO PARA GERAR O PDF
+function gerarArvorePDF(p) {
+    const confirmacao = confirm("Deseja gerar a página de árvore genealógica para:\n" + p.nome + "?\n\nClique em 'OK' para baixar o PDF ou 'Cancelar' para sair.");
+    if (!confirmacao) return;
+
+    // Cria um elemento temporário para o conteúdo do PDF
+    const div = document.createElement('div');
+    div.style.padding = "40px";
+    div.style.fontFamily = "Arial, sans-serif";
+    div.style.backgroundColor = "#fff";
+    
+    // Conteúdo da árvore
+    let htmlGen = `
+        <h1 style="color: blue; text-align: center;">Árvore Genealógica: ${p.nome}</h1>
+        <hr style="margin: 20px 0;">
+        <div style="font-size: 16px; line-height: 1.6;">
+            <p><strong>Nascimento:</strong> ${p.nascimento}</p>
+            ${p.dFalec ? `<p><strong>Falecimento:</strong> ${p.falecimento}</p>` : ''}
+            <br>
+            ${p.pai ? `<p><b>Pai:</b> ${p.pai}</p>` : ''}
+            ${p.mae ? `<p><b>Mãe:</b> ${p.mae}</p>` : ''}
+            ${p.conjuge ? `<p><b>Cônjuge:</b> ${p.conjuge}</p>` : ''}
+            ${p.filhos && p.filhos.length ? `<p><b>Filhos:</b> ${p.filhos.join(', ')}</p>` : ''}
+            ${p.netos && p.netos.length ? `<p><b>Netos:</b> ${p.netos.join(', ')}</p>` : ''}
+            ${p.irmaos && p.irmaos.length ? `<p><b>Irmãos:</b> ${p.irmaos.join(', ')}</p>` : ''}
+        </div>
+    `;
+    div.innerHTML = htmlGen;
+
+    const opt = {
+        margin:       1,
+        filename:     'Arvore_' + p.nome.replace(/\s+/g, '_') + '.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(div).save();
 }
 
 function getSigno(dia, mes) {
@@ -226,45 +268,6 @@ async function carregarDados() {
         document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
         console.error("Erro:", error);
     }
-}
-
-// Nova função para gerar a página de PDF/Impressão
-function gerarPdfGenealogia(p) {
-    const win = window.open('', '_blank');
-    const conteudoGen = document.getElementById('family-' + p.id).innerHTML;
-    
-    win.document.write(`
-        <html>
-        <head>
-            <title>Árvore Genealógica - ${p.nome}</title>
-            <style>
-                body { font-family: sans-serif; padding: 40px; }
-                h1 { color: #1e3a8a; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; }
-                .foto { width: 150px; border-radius: 50%; display: block; margin: 20px auto; }
-                .conteudo { margin-top: 30px; line-height: 1.6; }
-                .botoes { text-align: center; margin-top: 50px; print-visibility: hidden; }
-                @media print { .botoes { display: none; } }
-            </style>
-        </head>
-        <body>
-            <div style="text-align: center;">
-                <img src="${BASE_URL}${p.imagem}" class="foto">
-                <h1>${p.nome}</h1>
-                <p>Nascimento: ${p.nascimento}</p>
-            </div>
-            <div class="conteudo">
-                <h2>Árvore Genealógica</h2>
-                ${conteudoGen}
-            </div>
-            <div class="botoes">
-                <button onclick="window.print()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Imprimir / Salvar como PDF</button>
-                <button onclick="window.close()" style="padding: 10px 20px; font-size: 16px; cursor: pointer; margin-left: 10px;">Fechar</button>
-            </div>
-        </body>
-        </html>
-    `);
-    win.document.close();
-    win.focus();
 }
 
 function mostrarInfo(id) {
@@ -375,6 +378,9 @@ function render(filtro = "") {
                 if(htmlGen === `<div class="family-tree-content">`) htmlGen += "Dados genealógicos não informados.";
                 htmlGen += `</div>`;
 
+                // Convertendo objeto para string para passar na função
+                const pString = JSON.stringify(p).replace(/"/g, '&quot;');
+
                 card.innerHTML = `
                     <div class="photo-wrapper">
                         <img src="info.png" class="icon-action" onclick="mostrarInfo('${p.id}')" alt="Info">
@@ -382,7 +388,7 @@ function render(filtro = "") {
                             <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
                         </div>
                         <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
-                        <img src="pdf-print.png" class="icon-pdf" onclick='gerarPdfGenealogia(${JSON.stringify(p).replace(/"/g, '&quot;')})' alt="PDF" title="Gerar PDF da Genealogia">
+                        <img src="pdf-print.png" class="icon-pdf" onclick="gerarArvorePDF(${pString})" alt="Gerar PDF" title="Gerar Árvore em PDF">
                         
                         <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
                         <div id="family-${p.id}" class="family-bubble">${htmlGen}</div>
