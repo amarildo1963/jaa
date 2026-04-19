@@ -36,7 +36,10 @@
         
         .icon-luto { width: 25px; height: auto; margin-left: 2px; }
         .icon-action { width: 30px; height: 30px; cursor: pointer; transition: opacity 0.2s; }
-        .icon-action:hover { opacity: 0.7; }
+        /* Classe específica para genealogia aumentada em 50% */
+        .icon-genealogia { width: 45px; height: 45px; cursor: pointer; transition: opacity 0.2s; }
+        
+        .icon-action:hover, .icon-genealogia:hover { opacity: 0.7; }
 
         /* BALÕES DE INFORMAÇÃO */
         .info-bubble, .family-bubble { 
@@ -332,7 +335,7 @@ function render(filtro = "") {
                         <div class="img-container" ondblclick="voltarParaLista()">
                             <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
                         </div>
-                        <img src="genealogia.png" class="icon-action" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                        <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
                         
                         <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
                         <div id="family-${p.id}" class="family-bubble">${htmlGen}</div>
