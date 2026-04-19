@@ -249,9 +249,12 @@ async function carregarDados() {
                 img: p.imagem, 
                 infoTexto: p.info,
                 signo: signo[0] + " " + signo[1],
+                conjuge: p.conjuge,
+				filhos: p.filhos,
+				netos: p.netos,
+				bisnetos: p.bisnetos,
                 mesNum: dNasc.getMonth(),
                 diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0'),
-				conjuge: p.conjuge, filhos: p.filhos, netos: p.netos, bisnetos: p.bisnetos,
                 info01: p.info01, info02: p.info02, info03: p.info03, info04: p.info04, info05: p.info05,
                 info06: p.info06, info07: p.info07, info08: p.info08, info09: p.info09, info10: p.info10
             };
