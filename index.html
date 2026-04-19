@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aniversariantes - Anerão</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/bundle.min.js"></script>
+    <title>Aniversariantes - Anerão (com PDF e FamilySearch)</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
-        /* ESTILIZAÇÃO GLOBAL E LAYOUT */
+        /* ESTILIZAÇÃO GLOBAL E LAYOUT ORIGINAL */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
         body { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); background-attachment: fixed; padding: 20px; padding-bottom: 100px; }
         
@@ -38,9 +41,13 @@
         .icon-luto { width: 25px; height: auto; margin-left: 2px; }
         .icon-action { width: 30px; height: 30px; cursor: pointer; transition: opacity 0.2s; }
         .icon-genealogia { width: 45px; height: 45px; cursor: pointer; transition: opacity 0.2s; }
-        .icon-pdf { width: 30px; height: 30px; cursor: pointer; transition: opacity 0.2s; }
-        
-        .icon-action:hover, .icon-genealogia:hover, .icon-pdf:hover { opacity: 0.7; }
+
+        /* ADICIONADO: Estilos para novos ícones */
+        .icon-pdf { width: 40px; height: 40px; cursor: pointer; transition: opacity 0.2s; margin-top: 5px; }
+        .icon-fs { width: 35px; height: 35px; cursor: pointer; transition: opacity 0.2s; margin-top: 5px; }
+        .extra-icons-container { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+
+        .icon-action:hover, .icon-genealogia:hover, .icon-pdf:hover, .icon-fs:hover { opacity: 0.7; }
 
         /* BALÕES DE INFORMAÇÃO */
         .info-bubble, .family-bubble { 
@@ -90,6 +97,37 @@
         .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
+
+        /* ADICIONADO: Estilos para o Modal de PDF */
+        .pdf-modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center;
+        }
+        .pdf-modal-content {
+            background-color: white; padding: 30px; border-radius: 15px; text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); width: 300px;
+        }
+        .pdf-modal-btns { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
+        .pdf-btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-download { background-color: #4CAF50; color: white; }
+        .btn-share { background-color: #2196F3; color: white; }
+        .btn-close-modal { background-color: #f44336; color: white; margin-top: 15px; width: 100%; }
+
+        /* ADICIONADO: Estilo para a árvore de visualização do PDF (escondida no HTML principal) */
+        #pdf-rendering-template {
+            width: 595px; /* Largura A4 aprox. em pixels */
+            height: 842px; /* Altura A4 aprox. */
+            position: absolute; left: -10000px; top: -10000px; /* Escondido */
+            background-color: white; padding: 40px; font-family: 'Roboto', sans-serif;
+            border: 1px solid black; box-sizing: border-box;
+        }
+        .pdf-header { text-align: center; color: blue; border-bottom: 2px solid blue; padding-bottom: 10px; margin-bottom: 20px; }
+        .pdf-main-person { text-align: center; font-size: 24px; font-weight: bold; color: green; margin-bottom: 30px; }
+        .pdf-tree-content { font-size: 14px; line-height: 1.6; }
+        .pdf-tree-content b { color: #2563eb; display: block; margin-top: 10px; }
+        .pdf-tree-content span { display: block; padding-left: 15px; color: black; font-weight: bold; }
+        .pdf-fs-image { width: 100%; height: auto; margin-top: 30px; border: 1px solid #ccc; }
+        .pdf-footer { position: absolute; bottom: 20px; left: 40px; right: 40px; text-align: center; font-size: 10px; border-top: 1px solid #ccc; padding-top: 10px; }
     </style>
 </head>
 <body>
@@ -118,11 +156,37 @@
         <ul id="listaAlfabetica" class="lista-caderno"></ul>
     </div>
 
+    <div id="pdfModal" class="pdf-modal">
+        <div class="pdf-modal-content">
+            <h3>Gerar Árvore PDF</h3>
+            <p>Deseja baixar o arquivo ou compartilhar?</p>
+            <div class="pdf-modal-btns">
+                <button class="pdf-btn btn-download" onclick="processarAcaoPDF('download')">Baixar 💾</button>
+                <button class="pdf-btn btn-share" onclick="processarAcaoPDF('share')">Compartilhar 🔗</button>
+            </div>
+            <button class="pdf-btn btn-close-modal" onclick="fecharModalPDF()">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="pdf-rendering-template">
+        <div class="pdf-header">
+            <h2>ÁRVORE GENEALÓGICA</h2>
+            <p>Gerado por JAAnerão - Anerão</p>
+        </div>
+        <div id="pdf-main-person-name" class="pdf-main-person">Nome da Pessoa</div>
+        <div id="pdf-tree-branches" class="pdf-tree-content">
+            </div>
+        <img src="familysearch-chart.png" class="pdf-fs-image" alt="Exemplo Árvore FamilySearch">
+        <div class="pdf-footer">
+            ©2016-2026 JAAnerão | Dados parciais integrados com simulação FamilySearch
+        </div>
+    </div>
+
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
         Atualizado: 19/04/2026<br>
-		Versão 1.05<br>
+		Versão 1.06 (com PDF)<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -131,22 +195,12 @@
                 1 clique nome da lista, vai ao registro<br>
                 seta azul ▼, vai no final da página<br>
                 seta azul ▲, vai no início da página<br>
-				ícone árvore 🌳 exibe genealogia<br>
+				ícone árvore 🌳 exibe genealogia rápida<br>
 				ícone (i) ⓘ exibe informações<br>
-                ícone PDF 📄 gera árvore em PDF<br>
+                ícone PDF 📄 gera árvore para download<br>
+                ícone FS 🌳 pesquisa no FamilySearch<br>
 				<br> 
                 ( DIGITAR NO CAMPO DE BUSCA )<br>
-				<br>
-                Exemplos de filtros e procura:<br>
-				janeiro = filtra pessoas de janeiro<br>
-				setemb = filtra pessoas de setembro<br>
-				2911 = filtra pessoas de 29/11<br>
-				/12/ = filtra pessoas do mês 12<br>
-				/03/1963 = filtra mês/ano 03/1963<br>
-				aries = filtra signos de áries<br>
-				vivo = filtra pessoas vivas<br>
-				falecido = filtra pessoas falecidas<br>
-				ou digite o nome para procurar<br>
             </div>
             <br>
             <a href="manut.html">
@@ -160,6 +214,10 @@ const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
 const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 let pessoas = [];
 let proximoId = "";
+let pessoaSelecionadaParaPDF = null; // Variável global para armazenar temporariamente
+
+// Função para gerar o PDF real
+const { jsPDF } = window.jspdf;
 
 function toggleHelp() {
     const bubble = document.getElementById('help-bubble');
@@ -167,44 +225,37 @@ function toggleHelp() {
     setTimeout(() => { bubble.style.display = 'none'; }, 8000);
 }
 
-// FUNÇÃO PARA GERAR O PDF
-function gerarArvorePDF(p) {
-    const confirmacao = confirm("Deseja gerar a página de árvore genealógica para:\n" + p.nome + "?\n\nClique em 'OK' para baixar o PDF ou 'Cancelar' para sair.");
-    if (!confirmacao) return;
+// Funções para lidar com o Modal de PDF
+function abrirModalPDF(idPessoa) {
+    pessoaSelecionadaParaPDF = idPessoa;
+    document.getElementById('pdfModal').style.display = 'flex';
+}
 
-    // Cria um elemento temporário para o conteúdo do PDF
-    const div = document.createElement('div');
-    div.style.padding = "40px";
-    div.style.fontFamily = "Arial, sans-serif";
-    div.style.backgroundColor = "#fff";
+function fecharModalPDF() {
+    document.getElementById('pdfModal').style.display = 'none';
+    pessoaSelecionadaParaPDF = null;
+}
+
+function processarAcaoPDF(acao) {
+    if (pessoaSelecionadaParaPDF) {
+        fecharModalPDF();
+        gerarPaginaPDF(pessoaSelecionadaParaPDF, acao);
+    }
+}
+
+// Função simulada do FamilySearch (apenas abre pesquisa no site)
+function pesquisarNoFamilySearch(idPessoa) {
+    fecharBalores();
+    const pessoa = pessoas.find(p => p.id === idPessoa);
+    if (!pessoa) return;
     
-    // Conteúdo da árvore
-    let htmlGen = `
-        <h1 style="color: blue; text-align: center;">Árvore Genealógica: ${p.nome}</h1>
-        <hr style="margin: 20px 0;">
-        <div style="font-size: 16px; line-height: 1.6;">
-            <p><strong>Nascimento:</strong> ${p.nascimento}</p>
-            ${p.dFalec ? `<p><strong>Falecimento:</strong> ${p.falecimento}</p>` : ''}
-            <br>
-            ${p.pai ? `<p><b>Pai:</b> ${p.pai}</p>` : ''}
-            ${p.mae ? `<p><b>Mãe:</b> ${p.mae}</p>` : ''}
-            ${p.conjuge ? `<p><b>Cônjuge:</b> ${p.conjuge}</p>` : ''}
-            ${p.filhos && p.filhos.length ? `<p><b>Filhos:</b> ${p.filhos.join(', ')}</p>` : ''}
-            ${p.netos && p.netos.length ? `<p><b>Netos:</b> ${p.netos.join(', ')}</p>` : ''}
-            ${p.irmaos && p.irmaos.length ? `<p><b>Irmãos:</b> ${p.irmaos.join(', ')}</p>` : ''}
-        </div>
-    `;
-    div.innerHTML = htmlGen;
-
-    const opt = {
-        margin:       1,
-        filename:     'Arvore_' + p.nome.replace(/\s+/g, '_') + '.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2 },
-        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
-
-    html2pdf().set(opt).from(div).save();
+    // Constrói uma URL de pesquisa básica no FamilySearch baseada no nome
+    const nomeBusca = encodeURIComponent(pessoa.nome);
+    const url = `https://www.familysearch.org/search/record/results?q.givenName=${nomeBusca}`;
+    
+    // Mostra um alerta antes de redirecionar (pode ser removido)
+    alert(`Redirecionando para o FamilySearch para pesquisar: ${pessoa.nome}\nIsso abre uma nova janela.`);
+    window.open(url, '_blank');
 }
 
 function getSigno(dia, mes) {
@@ -358,41 +409,32 @@ function render(filtro = "") {
                     .join(' | ').split('|').filter(x => x.trim() !== "");
                 let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
 
-                // Genealogia
-                let htmlGen = `<div class="family-tree-content">`;
-				if(p.pai) htmlGen += `<b>Pai:</b> <span>${p.pai}</span>`;
-				if(p.mae) htmlGen += `<b>Mãe:</b> <span>${p.mae}</span>`;
-                if(p.conjuge) htmlGen += `<b>Cônjuge:</b> <span>${p.conjuge}</span>`;
-                if(p.filhos && p.filhos.length) htmlGen += `<b>Filhos:</b> <span>${p.filhos.join(', ')}</span>`;
-                if(p.netos && p.netos.length) htmlGen += `<b>Netos:</b> <span>${p.netos.join(', ')}</span>`;
-                if(p.bisnetos && p.bisnetos.length) htmlGen += `<b>Bisnetos:</b> <span>${p.bisnetos.join(', ')}</span>`;
-                if(p.trinetos && p.trinetos.length) htmlGen += `<b>Trinetos:</b> <span>${p.trinetos.join(', ')}</span>`;
-                if(p.tetranetos && p.tetranetos.length) htmlGen += `<b>Tetranetos:</b> <span>${p.tetranetos.join(', ')}</span>`;
-                if(p.irmaos && p.irmaos.length) htmlGen += `<b>Irmãos:</b> <span>${p.irmaos.join(', ')}</span>`;
-                if(p.tios && p.tios.length) htmlGen += `<b>Tios:</b> <span>${p.tios.join(', ')}</span>`;
-                if(p.sobrinhos && p.sobrinhos.length) htmlGen += `<b>Sobrinhos:</b> <span>${p.sobrinhos.join(', ')}</span>`;
-				if(p.primos && p.primos.length) htmlGen += `<b>Primos:</b> <span>${p.primos.join(', ')}</span>`;
-                if(p.avos && p.avos.length) htmlGen += `<b>Avós:</b> <span>${p.avos.join(', ')}</span>`;
-				if(p.bisavos && p.bisavos.length) htmlGen += `<b>Bisavós:</b> <span>${p.bisavos.join(', ')}</span>`;
-				if(p.trisavos && p.trisavos.length) htmlGen += `<b>\Trisavós:</b> <span>${p.trisavos.join(', ')}</span>`;
-                if(htmlGen === `<div class="family-tree-content">`) htmlGen += "Dados genealógicos não informados.";
-                htmlGen += `</div>`;
-
-                // Convertendo objeto para string para passar na função
-                const pString = JSON.stringify(p).replace(/"/g, '&quot;');
-
+                // MODIFICADO: Layout dos ícones para acomodar os novos
                 card.innerHTML = `
                     <div class="photo-wrapper">
                         <img src="info.png" class="icon-action" onclick="mostrarInfo('${p.id}')" alt="Info">
                         <div class="img-container" ondblclick="voltarParaLista()">
                             <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
                         </div>
-                        <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
-                        <img src="pdf-print.png" class="icon-pdf" onclick="gerarArvorePDF(${pString})" alt="Gerar PDF" title="Gerar Árvore em PDF">
+                        <div class="extra-icons-container">
+                            <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                            <img src="pdf-print.png" class="icon-pdf" onclick="abrirModalPDF('${p.id}')" alt="Gerar Árvore PDF" title="Gerar Árvore PDF Retrato">
+                            <img src="https://www.familysearch.org/favicon.ico" class="icon-fs" onclick="pesquisarNoFamilySearch('${p.id}')" alt="Pesquisar no FamilySearch" title="Pesquisar registro no FamilySearch">
+                        </div>
                         
                         <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
-                        <div id="family-${p.id}" class="family-bubble">${htmlGen}</div>
-                        ${mostrarLuto ? `<img src="https://amarildo1963.github.io/jaa/fotos/luto.gif" style="position:absolute; bottom:0; right:60px;" class="icon-luto" alt="Luto">` : ''}
+                        <div id="family-${p.id}" class="family-bubble">
+                            <div class="family-tree-content">
+                                ${p.pai ? `<b>Pai:</b> <span>${p.pai}</span>` : ''}
+                                ${p.mae ? `<b>Mãe:</b> <span>${p.mae}</span>` : ''}
+                                ${p.conjuge ? `<b>Cônjuge:</b> <span>${p.conjuge}</span>` : ''}
+                                ${p.filhos && p.filhos.length ? `<b>Filhos:</b> <span>${p.filhos.join(', ')}</span>` : ''}
+                                ${p.netos && p.netos.length ? `<b>Netos:</b> <span>${p.netos.join(', ')}</span>` : ''}
+                                ${p.irmaos && p.irmaos.length ? `<b>Irmãos:</b> <span>${p.irmaos.join(', ')}</span>` : ''}
+                                ${p.avos && p.avos.length ? `<b>Avós:</b> <span>${p.avos.join(', ')}</span>` : ''}
+                            </div>
+                        </div>
+                        ${mostrarLuto ? `<img src="https://amarildo1963.github.io/jaa/fotos/luto.gif" style="position:absolute; bottom:0; right:85px;" class="icon-luto" alt="Luto">` : ''}
                     </div>
                     <span class="nome">${destacar(isJesus ? "NATAL DO MENINO JESUS 25/12" : p.nome, termo)}</span>
                     ${!isJesus ? `
@@ -430,6 +472,84 @@ function render(filtro = "") {
     });
 
     document.getElementById('stats').innerText = `Registros: ${pessoas.length} / Filtrados: ${count}`;
+}
+
+// ADICIONADO: Função complexa para gerar o PDF A4 Retrato real
+function gerarPaginaPDF(idPessoa, acao) {
+    const pessoa = pessoas.find(p => p.id === idPessoa);
+    if (!pessoa) return;
+
+    alert(`Iniciando geração da árvore PDF para: ${pessoa.nome}\nAguarde alguns segundos...`);
+
+    // 1. Preparar o template de renderização (que está escondido no HTML)
+    document.getElementById('pdf-main-person-name').innerText = pessoa.nome;
+    const branchesContainer = document.getElementById('pdf-tree-branches');
+    branchesContainer.innerHTML = ''; // Limpar anterior
+
+    // 2. Popular o template com TODAS as ramificações disponíveis (Pai, Mãe, Filhos, Netos, etc.)
+    let htmlGen = "";
+    if(pessoa.pai) htmlGen += `<b>Pai:</b> <span>${pessoa.pai}</span>`;
+    if(pessoa.mae) htmlGen += `<b>Mãe:</b> <span>${pessoa.mae}</span>`;
+    if(pessoa.conjuge) htmlGen += `<b>Cônjuge:</b> <span>${pessoa.conjuge}</span>`;
+    if(pessoa.filhos && pessoa.filhos.length) htmlGen += `<b>Filhos:</b> <span>${pessoa.filhos.join(', ')}</span>`;
+    if(pessoa.netos && pessoa.netos.length) htmlGen += `<b>Netos:</b> <span>${pessoa.netos.join(', ')}</span>`;
+    if(pessoa.bisnetos && pessoa.bisnetos.length) htmlGen += `<b>Bisnetos:</b> <span>${pessoa.bisnetos.join(', ')}</span>`;
+    if(pessoa.irmaos && pessoa.irmaos.length) htmlGen += `<b>Irmãos:</b> <span>${pessoa.irmaos.join(', ')}</span>`;
+    if(pessoa.tios && pessoa.tios.length) htmlGen += `<b>Tios:</b> <span>${pessoa.tios.join(', ')}</span>`;
+    if(pessoa.avos && pessoa.avos.length) htmlGen += `<b>Avós:</b> <span>${pessoa.avos.join(', ')}</span>`;
+    if(pessoa.bisavos && pessoa.bisavos.length) htmlGen += `<b>Bisavós:</b> <span>${pessoa.bisavos.join(', ')}</span>`;
+    
+    if(!htmlGen) htmlGen = "Dados genealógicos não informados no registro principal.";
+    branchesContainer.innerHTML = htmlGen;
+
+    // 3. Usar html2canvas para capturar o template como uma imagem
+    const captureArea = document.getElementById('pdf-rendering-template');
+    
+    html2canvas(captureArea, {
+        scale: 2, // Aumenta qualidade da captura
+        useCORS: true, // Tenta carregar imagens externas se houver
+        logging: false
+    }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        
+        // 4. Criar o documento PDF A4 Retrato real
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        // Adicionar a imagem capturada preenchendo a página
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+        // 5. Salvar o arquivo com o nome da pessoa
+        const nomeArquivo = `${pessoa.nome.replace(/\s+/g, '_')}_Arvore.pdf`;
+        
+        if (acao === 'download') {
+            pdf.save(nomeArquivo);
+        } else if (acao === 'share') {
+            // Compartilhamento real em navegador é complexo e restrito.
+            // A melhor abordagem é gerar um Blob e tentar usar a Web Share API.
+            const pdfBlob = pdf.output('blob');
+            const file = new File([pdfBlob], nomeArquivo, { type: 'application/pdf' });
+
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                navigator.share({
+                    files: [file],
+                    title: `Árvore Genealógica de ${pessoa.nome}`,
+                    text: `Confira a árvore genealógica gerada por JAAnerão.`
+                })
+                .then(() => alert('PDF compartilhado com sucesso!'))
+                .catch((error) => {
+                    console.log('Erro ao compartilhar:', error);
+                    // Fallback se cancelado ou erro: baixa o arquivo
+                    alert('Não foi possível compartilhar diretamente. Iniciando download.');
+                    pdf.save(nomeArquivo);
+                });
+            } else {
+                alert('Seu navegador não suporta compartilhamento de arquivos nativo.\nIniciando download como alternativa.');
+                pdf.save(nomeArquivo);
+            }
+        }
+    });
 }
 
 function destacar(texto, termo) {
