@@ -309,6 +309,8 @@ function render(filtro = "") {
 
                 // Genealogia
                 let htmlGen = `<div class="family-tree-content">`;
+				if(p.pai) htmlGen += `<b>Pai:</b> <span>${p.pai}</span>`;
+				if(p.mae) htmlGen += `<b>Mãe:</b> <span>${p.mae}</span>`;
                 if(p.conjuge) htmlGen += `<b>Cônjuge:</b> <span>${p.conjuge}</span>`;
                 if(p.filhos && p.filhos.length) htmlGen += `<b>Filhos:</b> <span>${p.filhos.join(', ')}</span>`;
                 if(p.netos && p.netos.length) htmlGen += `<b>Netos:</b> <span>${p.netos.join(', ')}</span>`;
