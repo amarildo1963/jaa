@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aniversariantes - Anerão</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
+    <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
     <style>
         /* ESTILIZAÇÃO GLOBAL E LAYOUT */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
@@ -30,13 +30,26 @@
         .registro-card:hover { transform: translateY(-3px); }
         
         /* ELEMENTOS DO CARD */
-        .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; position: relative; }
+        .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; position: relative; }
         .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
         .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
-        .icon-luto { width: 25px; height: auto; margin-left: 5px; }
-        .icon-info { width: 32px; height: 32px; cursor: pointer; transition: opacity 0.2s; }
-        .icon-info:hover { opacity: 0.7; }
-        .info-bubble { display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); width: 90%; background-color: #ffffe0; border: 1px solid black; border-radius: 8px; padding: 10px; z-index: 10; text-align: left; font-size: 11px; color: black; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        
+        .icon-luto { width: 25px; height: auto; margin-left: 2px; }
+        .icon-action { width: 30px; height: 30px; cursor: pointer; transition: opacity 0.2s; }
+        .icon-action:hover { opacity: 0.7; }
+
+        /* BALÕES DE INFORMAÇÃO */
+        .info-bubble, .family-bubble { 
+            display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); 
+            width: 95%; border-radius: 8px; padding: 10px; z-index: 20; text-align: left; 
+            font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+        }
+        .info-bubble { background-color: #ffffe0; border: 1px solid black; color: black; font-weight: bold; }
+        
+        /* ESTILO ÁRVORE GENEALÓGICA */
+        .family-bubble { background-color: #f0f7ff; border: 1px solid #3b82f6; color: #1e3a8a; }
+        .family-tree-content b { color: #2563eb; display: block; margin-top: 5px; border-bottom: 1px solid #dbeafe; }
+        .family-tree-content span { display: block; padding-left: 10px; font-style: italic; color: #4b5563; }
         
         /* AJUDA E MANUTENÇÃO */
         .help-container { position: relative; display: inline-block; margin-top: 10px; text-align: center; }
@@ -62,59 +75,15 @@
         .info-idade-morta { color: #b8860b; font-weight: bold; }
         .highlight { background-color: yellow; }
         
-        /* LISTA ALFABÉTICA - VISUAL MODERNO */
-        #lista-alfabetica-container {
-            max-width: 900px;
-            margin: 60px auto;
-            padding: 25px;
-            background: linear-gradient(135deg, #ffffff, #f7f9fc);
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-        }
-        .titulo-lista {
-            color: #1e3a8a;
-            margin-bottom: 20px;
-            font-size: 22px;
-            font-weight: 700;
-            border-left: 5px solid #3b82f6;
-            padding-left: 10px;
-        }
-        .lista-caderno {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 10px;
-        }
-        .lista-item {
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 8px 10px;
-            transition: all 0.2s ease;
-            border: 1px solid #e5e7eb;
-        }
-        .lista-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            border-color: #3b82f6;
-        }
-        .lista-link {
-            text-decoration: none;
-            color: #111827;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .lista-link:hover {
-            color: #2563eb;
-        }
-        .micro-foto {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #3b82f6;
-        }
+        /* LISTA ALFABÉTICA */
+        #lista-alfabetica-container { max-width: 900px; margin: 60px auto; padding: 25px; background: linear-gradient(135deg, #ffffff, #f7f9fc); border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .titulo-lista { color: #1e3a8a; margin-bottom: 20px; font-size: 22px; font-weight: 700; border-left: 5px solid #3b82f6; padding-left: 10px; }
+        .lista-caderno { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+        .lista-item { background: #ffffff; border-radius: 8px; padding: 8px 10px; transition: all 0.2s ease; border: 1px solid #e5e7eb; }
+        .lista-item:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-color: #3b82f6; }
+        .lista-link { text-decoration: none; color: #111827; font-weight: 500; display: flex; align-items: center; gap: 10px; }
+        .lista-link:hover { color: #2563eb; }
+        .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     </style>
@@ -149,7 +118,7 @@
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
         Atualizado: 19/04/2026<br>
-		Versão 1.03<br>
+		Versão 1.05<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -159,26 +128,20 @@
                 seta azul ▼, vai no final da página<br>
                 seta azul ▲, vai no início da página<br>
 				ícone (i) ⓘ exibe informações<br>
+                ícone árvore 🌳 exibe genealogia<br>
 				<br> 
                 ( DIGITAR NO CAMPO DE BUSCA )<br>
 				<br>
-                Exemplos de filtros e procura:<br>
 				janeiro = filtra pessoas de janeiro<br>
-				setemb = filtra pessoas de setembro<br>
 				2911 = filtra pessoas de 29/11<br>
-				/12/ = filtra pessoas do mês 12<br>
-				/03/1963 = filtra mês/ano 03/1963<br>
 				aries = filtra signos de áries<br>
-				vivo = filtra pessoas vivas<br>
-				falecido = filtra pessoas falecidas<br>
-				ou digite o nome para procurar<br>
+				vivo/falecido = filtra status<br>
             </div>
             <br>
             <a href="manut.html">
                 <img src="manut.png" class="help-icon" alt="Manutenção" title="Acessar Manutenção">
             </a>
         </div>
-        <br>
     </footer>
 
 <script> 
@@ -190,9 +153,7 @@ let proximoId = "";
 function toggleHelp() {
     const bubble = document.getElementById('help-bubble');
     bubble.style.display = 'block';
-    setTimeout(() => {
-        bubble.style.display = 'none';
-    }, 8000);
+    setTimeout(() => { bubble.style.display = 'none'; }, 8000);
 }
 
 function getSigno(dia, mes) {
@@ -217,7 +178,7 @@ function calcularIdade(nasc, falec) {
     let idade = fim.getFullYear() - inicio.getFullYear();
     const m = fim.getMonth() - inicio.getMonth();
     if (m < 0 || (m === 0 && fim.getDate() < inicio.getDate())) idade--;
-    const diffTime = fim - inicio;
+    const diffTime = Math.abs(fim - inicio);
     const diasVividos = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     return { anos: idade, dias: diasVividos };
 }
@@ -235,24 +196,18 @@ async function carregarDados() {
         
         pessoas = data.map((p, index) => {
             const dNasc = parsingDatas(p.nascimento);
-            const dFalec = parsingDatas(p.falecimentos || p.falecimento);
+            const dFalec = parsingDatas(p.falecimento);
             let signo = ["✨", "Divino"];
-            if (p.nome.indexOf("JESUS") === -1) {
+            if (p.nome && p.nome.indexOf("JESUS") === -1) {
                 signo = getSigno(dNasc.getDate(), dNasc.getMonth() + 1);
             }
             return {
+                ...p,
                 id: 'p' + index,
-                nome: p.nome, 
-                nascStr: p.nascimento, 
-                falecStr: p.falecimento, 
                 dNasc, dFalec, 
-                img: p.imagem, 
-                infoTexto: p.info,
                 signo: signo[0] + " " + signo[1],
                 mesNum: dNasc.getMonth(),
-                diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0'),
-                info01: p.info01, info02: p.info02, info03: p.info03, info04: p.info04, info05: p.info05,
-                info06: p.info06, info07: p.info07, info08: p.info08, info09: p.info09, info10: p.info10
+                diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0')
             };
         });
         
@@ -265,11 +220,25 @@ async function carregarDados() {
 }
 
 function mostrarInfo(id) {
+    fecharBalores();
     const el = document.getElementById('info-' + id);
     if (el) {
         el.style.display = 'block';
         setTimeout(() => { el.style.display = 'none'; }, 10000);
     }
+}
+
+function mostrarGenealogia(id) {
+    fecharBalores();
+    const el = document.getElementById('family-' + id);
+    if (el) {
+        el.style.display = 'block';
+        setTimeout(() => { el.style.display = 'none'; }, 10000);
+    }
+}
+
+function fecharBalores() {
+    document.querySelectorAll('.info-bubble, .family-bubble').forEach(b => b.style.display = 'none');
 }
 
 function irParaRegistro(id) {
@@ -300,7 +269,7 @@ function render(filtro = "") {
         const filtrados = pessoas.filter(p => p.mesNum === idx).filter(p => {
             if (!termo) return true;
             const status = p.dFalec ? "falecido" : "vivo";
-            const buscaString = `${p.nome} ${p.nascStr} ${p.falecStr} ${status} ${p.signo} ${mesesNomes[p.mesNum]}`
+            const buscaString = `${p.nome} ${p.nascimento} ${p.falecimento} ${status} ${p.signo} ${mesesNomes[p.mesNum]}`
                 .toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             return buscaString.includes(termo);
         });
@@ -317,7 +286,7 @@ function render(filtro = "") {
                 card.className = 'registro-card';
                 card.id = p.id;
                 const isToday = p.diaMes === hojeDM;
-                const isJesus = p.nome.includes("JESUS") || (p.nascStr === "25/12");
+                const isJesus = p.nome.includes("JESUS") || (p.nascimento === "25/12");
                 
                 const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
                 const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null).anos : 0;
@@ -332,25 +301,40 @@ function render(filtro = "") {
                 const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
                 const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
 
-                let arrayInfos = [p.infoTexto, p.info01, p.info02, p.info03, p.info04, p.info05, p.info06, p.info07, p.info08, p.info09, p.info10]
+                // Infos Gerais
+                let arrayInfos = [p.info, p.info01, p.info02, p.info03, p.info04, p.info05, p.info06, p.info07, p.info08, p.info09, p.info10]
                     .filter(x => x && x.trim() !== '' && x !== "|||||")
                     .join(' | ').split('|').filter(x => x.trim() !== "");
                 let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
 
+                // Genealogia
+                let htmlGen = `<div class="family-tree-content">`;
+                if(p.conjuge) htmlGen += `<b>Cônjuge:</b> <span>${p.conjuge}</span>`;
+                if(p.filhos && p.filhos.length) htmlGen += `<b>Filhos:</b> <span>${p.filhos.join(', ')}</span>`;
+                if(p.netos && p.netos.length) htmlGen += `<b>Netos:</b> <span>${p.netos.join(', ')}</span>`;
+                if(p.bisnetos && p.bisnetos.length) htmlGen += `<b>Bisnetos:</b> <span>${p.bisnetos.join(', ')}</span>`;
+                if(p.trinetos && p.trinetos.length) htmlGen += `<b>Trinetos:</b> <span>${p.trinetos.join(', ')}</span>`;
+                if(p.tetranetos && p.tetranetos.length) htmlGen += `<b>Tetranetos:</b> <span>${p.tetranetos.join(', ')}</span>`;
+                if(htmlGen === `<div class="family-tree-content">`) htmlGen += "Dados genealógicos não informados.";
+                htmlGen += `</div>`;
+
                 card.innerHTML = `
                     <div class="photo-wrapper">
+                        <img src="info.png" class="icon-action" onclick="mostrarInfo('${p.id}')" alt="Info">
                         <div class="img-container" ondblclick="voltarParaLista()">
-                            <img loading="lazy" src="${BASE_URL}${p.img}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
+                            <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
                         </div>
-                        ${mostrarLuto ? `<img src="https://amarildo1963.github.io/jaa/fotos/luto.gif" class="icon-luto" alt="Luto">` : ''}
-                        <img src="info.png" class="icon-info" onclick="mostrarInfo('${p.id}')" alt="Info">
+                        <img src="genealogia.png" class="icon-action" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                        
                         <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
+                        <div id="family-${p.id}" class="family-bubble">${htmlGen}</div>
+                        ${mostrarLuto ? `<img src="https://amarildo1963.github.io/jaa/fotos/luto.gif" style="position:absolute; bottom:0; right:60px;" class="icon-luto" alt="Luto">` : ''}
                     </div>
                     <span class="nome">${destacar(isJesus ? "NATAL DO MENINO JESUS 25/12" : p.nome, termo)}</span>
                     ${!isJesus ? `
-                        <div class="info-nasc">★ ${destacar(p.nascStr, termo)} ${diaSemNasc}</div>
+                        <div class="info-nasc">★ ${destacar(p.nascimento, termo)} ${diaSemNasc}</div>
                         ${p.dFalec ? `
-                            <div class="info-falec">✝ ${destacar(p.falecStr, termo)} ${diaSemFalec}</div>
+                            <div class="info-falec">✝ ${destacar(p.falecimento, termo)} ${diaSemFalec}</div>
                             <div class="info-falec">há ${anosFalec} anos</div>
                             <div class="info-idade-morta">viveu ${dadosIdade.anos} anos</div>
                             <div class="info-idade-morta" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
@@ -369,13 +353,13 @@ function render(filtro = "") {
         }
     });
 
-    const alfabetica = [...pessoas].sort((a, b) => a.nome.localeCompare(b.nome));
+    const alfabetica = [...pessoas].sort((a, b) => (a.nome || "").localeCompare(b.nome || ""));
     alfabetica.forEach(p => {
         const li = document.createElement('li');
         li.className = 'lista-item';
         li.innerHTML = `
             <a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro('${p.id}')">
-                <img src="${BASE_URL}${p.img}" class="micro-foto" alt="">
+                <img src="${BASE_URL}${p.imagem}" class="micro-foto" alt="">
                 ${p.nome}
             </a>`;
         listaUl.appendChild(li);
