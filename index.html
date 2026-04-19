@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aniversariantes - Anerão</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
     <style>
@@ -34,15 +31,15 @@
         
         /* ELEMENTOS DO CARD */
         .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; position: relative; }
+        .actions-col { display: flex; flex-direction: column; gap: 5px; } /* Novo container para empilhar ícones */
         .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
         .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
         
         .icon-luto { width: 25px; height: auto; margin-left: 2px; }
         .icon-action { width: 30px; height: 30px; cursor: pointer; transition: opacity 0.2s; }
-        .icon-genealogia { width: 45px; height: 45px; cursor: pointer; transition: opacity 0.2s; }
-        .icon-pdf { width: 30px; height: 30px; cursor: pointer; transition: opacity 0.2s; } /* Novo ícone PDF */
+        .icon-genealogia { width: 40px; height: 40px; cursor: pointer; transition: opacity 0.2s; } /* Ajustado tamanho */
         
-        .icon-action:hover, .icon-genealogia:hover, .icon-pdf:hover { opacity: 0.7; }
+        .icon-action:hover, .icon-genealogia:hover { opacity: 0.7; }
 
         /* BALÕES DE INFORMAÇÃO */
         .info-bubble, .family-bubble { 
@@ -57,17 +54,12 @@
         .family-tree-content b { color: #2563eb; display: block; margin-top: 5px; border-bottom: 1px solid #dbeafe; }
         .family-tree-content span { display: block; padding-left: 10px; font-style: italic; color: #4b5563; }
         
-        /* MODAL PREVIEW PDF */
-        #pdf-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
-        #pdf-preview { background: white; padding: 20px; max-width: 600px; width: 100%; border-radius: 10px; }
-        .btn-modal { padding: 10px 20px; margin-top: 10px; cursor: pointer; }
-
         /* AJUDA E MANUTENÇÃO */
         .help-container { position: relative; display: inline-block; margin-top: 10px; text-align: center; }
         .help-icon { width: 30px; height: 30px; cursor: pointer; vertical-align: middle; margin-bottom: 5px; }
         #help-bubble { display: none; position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); width: 250px; background-color: white; border: 1px solid black; border-radius: 10px; padding: 10px; z-index: 100; text-align: left; font-size: 12px; color: blue; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
 
-        /* ANIMAÇÕES E TIPOGRAFIA */
+        /* ANIMAÇÕES */
         @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
         .pulse-active { animation: pulse-img 1s linear 10; }
         @keyframes target-blink { 0%, 100% { background-color: rgba(224, 224, 224, 0.9); } 50% { background-color: yellow; } }
@@ -78,6 +70,7 @@
         .scroll-top { position: fixed; bottom: 20px; right: 20px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
         .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
         
+        /* TIPOGRAFIA DE DADOS */
         .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
         .info-nasc { color: green; font-weight: bold; }
         .info-falec { color: #b8860b; font-weight: bold; }
@@ -85,29 +78,20 @@
         .info-idade-morta { color: #b8860b; font-weight: bold; }
         .highlight { background-color: yellow; }
         
+        /* LISTA ALFABÉTICA */
         #lista-alfabetica-container { max-width: 900px; margin: 60px auto; padding: 25px; background: linear-gradient(135deg, #ffffff, #f7f9fc); border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
         .titulo-lista { color: #1e3a8a; margin-bottom: 20px; font-size: 22px; font-weight: 700; border-left: 5px solid #3b82f6; padding-left: 10px; }
         .lista-caderno { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
         .lista-item { background: #ffffff; border-radius: 8px; padding: 8px 10px; transition: all 0.2s ease; border: 1px solid #e5e7eb; }
         .lista-item:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-color: #3b82f6; }
         .lista-link { text-decoration: none; color: #111827; font-weight: 500; display: flex; align-items: center; gap: 10px; }
+        .lista-link:hover { color: #2563eb; }
         .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     </style>
 </head>
 <body>
-
-    <div id="pdf-modal">
-        <div id="pdf-preview">
-            <h2 id="modal-title" style="text-align: center; color: blue;">Pré-visualização</h2>
-            <div id="content-to-print" style="padding: 20px; font-family: sans-serif;"></div>
-            <div style="text-align: center; margin-top: 20px;">
-                <button class="btn-modal" onclick="fecharModal()">Fechar</button>
-                <button class="btn-modal" style="background: blue; color: white;" onclick="downloadPDF()">Baixar PDF</button>
-            </div>
-        </div>
-    </div>
 
     <a href="#" class="scroll-top" id="backToTop">▲</a>
     <a href="#footer" class="scroll-bottom" id="goToBottom">▼</a>
@@ -148,9 +132,19 @@
                 seta azul ▲, vai no início da página<br>
 				ícone árvore 🌳 exibe genealogia<br>
 				ícone (i) ⓘ exibe informações<br>
-                ícone PDF ⬇️ gera PDF Genealógico<br>
 				<br> 
                 ( DIGITAR NO CAMPO DE BUSCA )<br>
+				<br>
+                Exemplos de filtros e procura:<br>
+				janeiro = filtra pessoas de janeiro<br>
+				setemb = filtra pessoas de setembro<br>
+				2911 = filtra pessoas de 29/11<br>
+				/12/ = filtra pessoas do mês 12<br>
+				/03/1963 = filtra mês/ano 03/1963<br>
+				aries = filtra signos de áries<br>
+				vivo = filtra pessoas vivas<br>
+				falecido = filtra pessoas falecidas<br>
+				ou digite o nome para procurar<br>
             </div>
             <br>
             <a href="manut.html">
@@ -164,48 +158,7 @@ const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
 const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 let pessoas = [];
 let proximoId = "";
-let currentPDFName = "";
 
-// Funções de PDF
-function gerarPDF(id) {
-    const p = pessoas.find(x => x.id === id);
-    if (!p) return;
-    currentPDFName = p.nome;
-
-    const previewDiv = document.getElementById('content-to-print');
-    previewDiv.innerHTML = `
-        <h2 style="color: blue; text-align:center;">Árvore Genealógica: ${p.nome}</h2>
-        <hr>
-        <div style="text-align:left; font-size: 14px;">
-            ${p.pai ? `<p><b>Pai:</b> ${p.pai}</p>` : ''}
-            ${p.mae ? `<p><b>Mãe:</b> ${p.mae}</p>` : ''}
-            ${p.conjuge ? `<p><b>Cônjuge:</b> ${p.conjuge}</p>` : ''}
-            ${p.filhos && p.filhos.length ? `<p><b>Filhos:</b> ${p.filhos.join(', ')}</p>` : ''}
-            ${p.netos && p.netos.length ? `<p><b>Netos:</b> ${p.netos.join(', ')}</p>` : ''}
-            ${p.bisnetos && p.bisnetos.length ? `<p><b>Bisnetos:</b> ${p.bisnetos.join(', ')}</p>` : ''}
-            ${p.irmaos && p.irmaos.length ? `<p><b>Irmãos:</b> ${p.irmaos.join(', ')}</p>` : ''}
-        </div>
-    `;
-    document.getElementById('pdf-modal').style.display = 'flex';
-}
-
-function fecharModal() { document.getElementById('pdf-modal').style.display = 'none'; }
-
-async function downloadPDF() {
-    const { jsPDF } = window.jspdf;
-    const element = document.getElementById('content-to-print');
-    const canvas = await html2canvas(element);
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const imgProps = pdf.getImageProperties(imgData);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-    pdf.addImage(imgData, 'PNG', 0, 10, pdfWidth, pdfHeight);
-    pdf.save(currentPDFName + ".pdf");
-    fecharModal();
-}
-
-// Lógica existente do sistema
 function toggleHelp() {
     const bubble = document.getElementById('help-bubble');
     bubble.style.display = 'block';
@@ -245,6 +198,43 @@ function parsingDatas(str) {
     return new Date(y || new Date().getFullYear(), m - 1, d);
 }
 
+// Função para gerar PDF visualizando em nova página
+function gerarPDF(id) {
+    const p = pessoas.find(x => x.id === id);
+    const el = document.getElementById('family-' + id);
+    const content = el ? el.innerHTML : "Dados genealógicos não informados.";
+    
+    // Abre nova janela para pré-visualização
+    const printWindow = window.open('', '_blank', 'height=600,width=800');
+    
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>${p.nome}</title>
+            <style>
+                body { font-family: 'Roboto', sans-serif; padding: 40px; color: #333; }
+                h1 { color: #1e3a8a; border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-bottom: 20px; }
+                .family-tree-content { line-height: 1.6; }
+                .family-tree-content b { color: #2563eb; display: block; margin-top: 10px; border-bottom: 1px solid #dbeafe; }
+                .family-tree-content span { display: block; padding-left: 10px; font-style: italic; color: #4b5563; }
+                @media print {
+                    @page { size: portrait; margin: 20mm; }
+                    body { -webkit-print-color-adjust: exact; }
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Árvore Genealógica: ${p.nome}</h1>
+            <div class="family-tree-content">${content}</div>
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    // Dispara a impressão (que permite salvar como PDF)
+    setTimeout(() => { printWindow.print(); }, 500);
+}
+
 async function carregarDados() {
     try {
         const response = await fetch('dados.json');
@@ -270,7 +260,7 @@ async function carregarDados() {
         findProximo();
         render();
     } catch (error) {
-        document.getElementById('stats').innerText = "Erro ao carregar dados.";
+        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
         console.error("Erro:", error);
     }
 }
@@ -357,13 +347,11 @@ function render(filtro = "") {
                 const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
                 const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
 
-                // Infos Gerais
                 let arrayInfos = [p.info, p.info01, p.info02, p.info03, p.info04, p.info05, p.info06, p.info07, p.info08, p.info09, p.info10]
                     .filter(x => x && x.trim() !== '' && x !== "|||||")
                     .join(' | ').split('|').filter(x => x.trim() !== "");
                 let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
 
-                // Genealogia
                 let htmlGen = `<div class="family-tree-content">`;
 				if(p.pai) htmlGen += `<b>Pai:</b> <span>${p.pai}</span>`;
 				if(p.mae) htmlGen += `<b>Mãe:</b> <span>${p.mae}</span>`;
@@ -385,12 +373,14 @@ function render(filtro = "") {
 
                 card.innerHTML = `
                     <div class="photo-wrapper">
-                        <img src="info.png" class="icon-action" onclick="mostrarInfo('${p.id}')" alt="Info">
+                        <div class="actions-col">
+                            <img src="info.png" class="icon-action" onclick="mostrarInfo('${p.id}')" alt="Info">
+                            <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                            <img src="pdf-print.png" class="icon-genealogia" onclick="gerarPDF('${p.id}')" alt="Baixar PDF">
+                        </div>
                         <div class="img-container" ondblclick="voltarParaLista()">
                             <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
                         </div>
-                        <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
-                        <img src="pdf-print.png" class="icon-pdf" onclick="gerarPDF('${p.id}')" alt="Baixar PDF">
                         
                         <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
                         <div id="family-${p.id}" class="family-bubble">${htmlGen}</div>
