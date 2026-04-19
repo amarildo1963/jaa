@@ -326,6 +326,13 @@ function render(filtro = "") {
                 if(p.bisnetos && p.bisnetos.length) htmlGen += `<b>Bisnetos:</b> <span>${p.bisnetos.join(', ')}</span>`;
                 if(p.trinetos && p.trinetos.length) htmlGen += `<b>Trinetos:</b> <span>${p.trinetos.join(', ')}</span>`;
                 if(p.tetranetos && p.tetranetos.length) htmlGen += `<b>Tetranetos:</b> <span>${p.tetranetos.join(', ')}</span>`;
+                if(p.irmaos && p.irmaos.length) htmlGen += `<b>Irmãos:</b> <span>${p.irmaos.join(', ')}</span>`;
+                if(p.tios && p.tios.length) htmlGen += `<b>Tios:</b> <span>${p.tios.join(', ')}</span>`;
+                if(p.sobrinhos && p.sobrinhos.length) htmlGen += `<b>Sobrinhos:</b> <span>${p.sobrinhos.join(', ')}</span>`;
+				if(p.primos && p.primos.length) htmlGen += `<b>Primos:</b> <span>${p.primos.join(', ')}</span>`;
+                if(p.avos && p.avos.length) htmlGen += `<b>Avós:</b> <span>${p.avos.join(', ')}</span>`;
+				if(p.bisavos && p.bisavos.length) htmlGen += `<b>Bisavós:</b> <span>${p.bisavos.join(', ')}</span>`;
+				if(p.trisavos && p.trisavos.length) htmlGen += `<b>\Trisavós:</b> <span>${p.trisavos.join(', ')}</span>`;
                 if(htmlGen === `<div class="family-tree-content">`) htmlGen += "Dados genealógicos não informados.";
                 htmlGen += `</div>`;
 
