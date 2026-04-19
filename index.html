@@ -56,10 +56,7 @@
         
         /* TIPOGRAFIA DE DADOS */
         .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
-        .conjuge { color: blue; font-weight: bold; font-size: 10px; margin-bottom: 5px; display: block; }
-        .filhos { color: blue; font-weight: bold; font-size: 10px; margin-bottom: 5px; display: block; }
-        .netos { color: blue; font-weight: bold; font-size: 10px; margin-bottom: 5px; display: block; }
-        .bisneto { color: green; font-weight: bold; }
+        .info-nasc { color: green; font-weight: bold; }
         .info-falec { color: #b8860b; font-weight: bold; }
         .info-idade-viva { color: green; font-weight: bold; }
         .info-idade-morta { color: #b8860b; font-weight: bold; }
@@ -252,10 +249,6 @@ async function carregarDados() {
                 img: p.imagem, 
                 infoTexto: p.info,
                 signo: signo[0] + " " + signo[1],
-                conjuge: p.conjuge,
-				filhos: p.filhos,
-				netos: p.netos,
-				bisnetos: p.bisnetos,
                 mesNum: dNasc.getMonth(),
                 diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0'),
                 info01: p.info01, info02: p.info02, info03: p.info03, info04: p.info04, info05: p.info05,
