@@ -36,7 +36,6 @@
         
         .icon-luto { width: 25px; height: auto; margin-left: 2px; }
         .icon-action { width: 30px; height: 30px; cursor: pointer; transition: opacity 0.2s; }
-        /* Classe específica para genealogia aumentada em 50% */
         .icon-genealogia { width: 45px; height: 45px; cursor: pointer; transition: opacity 0.2s; }
         
         .icon-action:hover, .icon-genealogia:hover { opacity: 0.7; }
@@ -132,6 +131,7 @@
                 seta azul ▲, vai no início da página<br>
 				ícone árvore 🌳 exibe genealogia<br>
 				ícone (i) ⓘ exibe informações<br>
+                ícone PDF 📄 gera PDF<br>
 				<br> 
                 ( DIGITAR NO CAMPO DE BUSCA )<br>
 				<br>
@@ -165,6 +165,7 @@ function toggleHelp() {
     setTimeout(() => { bubble.style.display = 'none'; }, 8000);
 }
 
+// ... [Manutenção das funções getSigno, calcularIdade, parsingDatas] ...
 function getSigno(dia, mes) {
     if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) return ["♒", "Aquário"];
     if ((mes == 2 && dia >= 19) || (mes == 3 && dia <= 20)) return ["♓", "Peixes"];
@@ -225,6 +226,42 @@ async function carregarDados() {
     } catch (error) {
         document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
         console.error("Erro:", error);
+    }
+}
+
+// Lógica de Geração de PDF
+function gerarPdf(id) {
+    const p = pessoas.find(x => x.id === id);
+    if (!p) return;
+
+    const confirmacao = confirm("Deseja gerar a página de genealogia para download/impressão em PDF? \n\n(Ao confirmar, será aberta uma janela. Use a opção 'Salvar como PDF' na impressora do navegador).");
+    if (confirmacao) {
+        // Constrói o conteúdo da genealogia
+        let htmlGen = `
+            <style>
+                body { font-family: sans-serif; padding: 40px; color: #333; }
+                h1 { color: #1e3a8a; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; }
+                .field { margin: 10px 0; }
+                b { color: #2563eb; }
+                .foto { width: 150px; border-radius: 50%; border: 3px solid #3b82f6; margin-bottom: 20px; }
+            </style>
+            <h1>Genealogia: ${p.nome}</h1>
+            <img src="${BASE_URL}${p.imagem}" class="foto">
+        `;
+        
+        if(p.pai) htmlGen += `<div class="field"><b>Pai:</b> ${p.pai}</div>`;
+        if(p.mae) htmlGen += `<div class="field"><b>Mãe:</b> ${p.mae}</div>`;
+        if(p.conjuge) htmlGen += `<div class="field"><b>Cônjuge:</b> ${p.conjuge}</div>`;
+        if(p.filhos && p.filhos.length) htmlGen += `<div class="field"><b>Filhos:</b> ${p.filhos.join(', ')}</div>`;
+        if(p.netos && p.netos.length) htmlGen += `<div class="field"><b>Netos:</b> ${p.netos.join(', ')}</div>`;
+        if(p.bisnetos && p.bisnetos.length) htmlGen += `<div class="field"><b>Bisnetos:</b> ${p.bisnetos.join(', ')}</div>`;
+        if(p.irmaos && p.irmaos.length) htmlGen += `<div class="field"><b>Irmãos:</b> ${p.irmaos.join(', ')}</div>`;
+        // ... (Adicionar outros campos se necessário)
+
+        const win = window.open('', '_blank');
+        win.document.write(`<html><head><title>Genealogia - ${p.nome}</title></head><body>${htmlGen}</body></html>`);
+        win.document.close();
+        win.print();
     }
 }
 
@@ -310,13 +347,11 @@ function render(filtro = "") {
                 const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
                 const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
 
-                // Infos Gerais
                 let arrayInfos = [p.info, p.info01, p.info02, p.info03, p.info04, p.info05, p.info06, p.info07, p.info08, p.info09, p.info10]
                     .filter(x => x && x.trim() !== '' && x !== "|||||")
                     .join(' | ').split('|').filter(x => x.trim() !== "");
                 let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
 
-                // Genealogia
                 let htmlGen = `<div class="family-tree-content">`;
 				if(p.pai) htmlGen += `<b>Pai:</b> <span>${p.pai}</span>`;
 				if(p.mae) htmlGen += `<b>Mãe:</b> <span>${p.mae}</span>`;
@@ -342,7 +377,10 @@ function render(filtro = "") {
                         <div class="img-container" ondblclick="voltarParaLista()">
                             <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
                         </div>
-                        <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                        <div style="display:flex; flex-direction:column; gap:5px;">
+                            <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                            <img src="pdf-print.png" class="icon-genealogia" onclick="gerarPdf('${p.id}')" alt="PDF">
+                        </div>
                         
                         <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
                         <div id="family-${p.id}" class="family-bubble">${htmlGen}</div>
