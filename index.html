@@ -67,54 +67,18 @@
             max-width: 900px;
             margin: 60px auto;
             padding: 25px;
-            background: linear-gradient(135deg, #ffffff, #f7f9fc);
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            background: linear-gradient(135deg, #ffffff, #f1f5f9);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
-        .titulo-lista {
-            color: #1e3a8a;
-            margin-bottom: 20px;
-            font-size: 22px;
-            font-weight: 700;
-            border-left: 5px solid #3b82f6;
-            padding-left: 10px;
-        }
-        .lista-caderno {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 10px;
-        }
-        .lista-item {
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 8px 10px;
-            transition: all 0.2s ease;
-            border: 1px solid #e5e7eb;
-        }
-        .lista-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            border-color: #3b82f6;
-        }
-        .lista-link {
-            text-decoration: none;
-            color: #111827;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .lista-link:hover {
-            color: #2563eb;
-        }
-        .micro-foto {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #3b82f6;
-        }
+        .lista-titulo { color: #1e293b; font-size: 22px; margin-bottom: 20px; text-align: center; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; }
+        .lista-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+        .lista-item { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; transition: all 0.2s; display: flex; align-items: center; }
+        .lista-item:hover { border-color: #3b82f6; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transform: scale(1.02); }
+        .lista-link { text-decoration: none; color: #475569; font-weight: 500; font-size: 14px; display: flex; align-items: center; gap: 10px; width: 100%; }
+        .lista-link:hover { color: #2563eb; }
+        .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     </style>
@@ -126,7 +90,7 @@
 
     <div class="header-container">
         <a href="index.html">
-            <img src="aniver.png" alt="Ícone Aniversário" class="img-topo">
+            <img src="https://amarildo1963.github.io/jaa/fotos/aniver.png" alt="Ícone Aniversário" class="img-topo">
         </a>
         <h3>ANIVERSARIANTES</h3>
     </div>
@@ -141,293 +105,216 @@
     <div id="conteudo"></div>
 
     <div id="lista-alfabetica-container">
-        <h4 class="titulo-lista">LISTA ALFABÉTICA</h4>
-        <ul id="listaAlfabetica" class="lista-caderno"></ul>
+        <h2 class="lista-titulo">Lista Alfabética Completa</h2>
+        <div id="listaAlfabetica" class="lista-grid"></div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+        <div class="help-container">
+            <img src="https://amarildo1963.github.io/jaa/fotos/ajuda.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
+            <div id="help-bubble">
+                Sistema criado por Amarildo Anerão para consulta de datas comemorativas da família e amigos.<br><br>
+                Use a busca acima para filtrar por qualquer termo.
+            </div>
+        </div>
     </div>
 
     <footer id="footer">
-        ©2016-2026 JAAnerão<br>
-        jaanerao@hotmail.com<br>
-        Atualizado: 13/04/2026<br>
-		Versão 1.03<br>
-        <div class="help-container">
-            <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
-            <div id="help-bubble">
-                Clicar no ícone bolo, indexa a página<br>
-                2 cliques na foto, vai para a lista<br>
-                1 clique nome da lista, vai ao registro<br>
-                seta azul ▼, vai no final da página<br>
-                seta azul ▲, vai no início da página<br>
-				ícone (i) ⓘ exibe informações<br>
-				<br> 
-                ( DIGITAR NO CAMPO DE BUSCA )<br>
-				<br>
-                Exemplos de filtros e procura:<br>
-				janeiro = filtra pessoas de janeiro<br>
-				setemb = filtra pessoas de setembro<br>
-				2911 = filtra pessoas de 29/11<br>
-				/12/ = filtra pessoas do mês 12<br>
-				/03/1963 = filtra mês/ano 03/1963<br>
-				aries = filtra signos de áries<br>
-				vivo = filtra pessoas vivas<br>
-				falecido = filtra pessoas falecidas<br>
-				ou digite o nome para procurar<br>
-            </div>
-            <br>
-            <a href="manut.html">
-                <img src="manut.png" class="help-icon" alt="Manutenção" title="Acessar Manutenção">
-            </a>
-        </div>
-        <br>
+        &copy; 2026 - Memorial da Família Anerão
     </footer>
 
-<script> 
-const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
-const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
-let pessoas = [];
-let proximoId = "";
+    <script>
+        const mesesNomes = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        let pessoas = [];
 
-function toggleHelp() {
-    const bubble = document.getElementById('help-bubble');
-    bubble.style.display = 'block';
-    setTimeout(() => {
-        bubble.style.display = 'none';
-    }, 8000);
-}
+        function parseData(str) {
+            if (!str) return null;
+            const parts = str.split('/');
+            return new Date(parts[2], parts[1] - 1, parts[0]);
+        }
 
-function getSigno(dia, mes) {
-    if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) return ["♒", "Aquário"];
-    if ((mes == 2 && dia >= 19) || (mes == 3 && dia <= 20)) return ["♓", "Peixes"];
-    if ((mes == 3 && dia >= 21) || (mes == 4 && dia <= 19)) return ["♈", "Áries"];
-    if ((mes == 4 && dia >= 20) || (mes == 5 && dia <= 20)) return ["♉", "Touro"];
-    if ((mes == 5 && dia >= 21) || (mes == 6 && dia <= 20)) return ["♊", "Gêmeos"];
-    if ((mes == 6 && dia >= 21) || (mes == 7 && dia <= 22)) return ["♋", "Câncer"];
-    if ((mes == 7 && dia >= 23) || (mes == 8 && dia <= 22)) return ["♌", "Leão"];
-    if ((mes == 8 && dia >= 23) || (mes == 9 && dia <= 22)) return ["♍", "Virgem"];
-    if ((mes == 9 && dia >= 23) || (mes == 10 && dia <= 22)) return ["♎", "Libra"];
-    if ((mes == 10 && dia >= 23) || (mes == 11 && dia <= 21)) return ["♏", "Escorpião"];
-    if ((mes == 11 && dia >= 22) || (mes == 12 && dia <= 21)) return ["♐", "Sagitário"];
-    return ["♑", "Capricórnio"];
-}
+        function getSigno(dia, mes) {
+            if ((mes == 1 && dia >= 21) || (mes == 2 && dia <= 18)) return ["♒", "Aquário"];
+            if ((mes == 2 && dia >= 19) || (mes == 3 && dia <= 20)) return ["♓", "Peixes"];
+            if ((mes == 3 && dia >= 21) || (mes == 4 && dia <= 20)) return ["♈", "Áries"];
+            if ((mes == 4 && dia >= 21) || (mes == 5 && dia <= 20)) return ["♉", "Touro"];
+            if ((mes == 5 && dia >= 21) || (mes == 6 && dia <= 20)) return ["♊", "Gêmeos"];
+            if ((mes == 6 && dia >= 21) || (mes == 7 && dia <= 22)) return ["♋", "Câncer"];
+            if ((mes == 7 && dia >= 23) || (mes == 8 && dia <= 22)) return ["♌", "Leão"];
+            if ((mes == 8 && dia >= 23) || (mes == 9 && dia <= 22)) return ["♍", "Virgem"];
+            if ((mes == 9 && dia >= 23) || (mes == 10 && dia <= 22)) return ["♎", "Libra"];
+            if ((mes == 10 && dia >= 23) || (mes == 11 && dia <= 21)) return ["♏", "Escorpião"];
+            if ((mes == 11 && dia >= 22) || (mes == 12 && dia <= 21)) return ["♐", "Sagitário"];
+            return ["♑", "Capricórnio"];
+        }
 
-function calcularIdade(nasc, falec) {
-    const hoje = new Date();
-    const fim = falec ? new Date(falec) : hoje;
-    const inicio = new Date(nasc);
-    let idade = fim.getFullYear() - inicio.getFullYear();
-    const m = fim.getMonth() - inicio.getMonth();
-    if (m < 0 || (m === 0 && fim.getDate() < inicio.getDate())) idade--;
-    const diffTime = fim - inicio;
-    const diasVividos = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    return { anos: idade, dias: diasVividos };
-}
+        function calcularIdade(nasc, falec) {
+            const hoje = new Date();
+            const fim = falec ? new Date(falec) : hoje;
+            const inicio = new Date(nasc);
+            let idade = fim.getFullYear() - inicio.getFullYear();
+            const m = fim.getMonth() - inicio.getMonth();
+            if (m < 0 || (m === 0 && fim.getDate() < inicio.getDate())) idade--;
+            
+            const diffTime = Math.abs(fim - inicio);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            return { anos: idade, dias: diffDays };
+        }
 
-function parsingDatas(str) {
-    if (!str) return null;
-    const [d, m, y] = str.split('/');
-    return new Date(y || new Date().getFullYear(), m - 1, d);
-}
+        async function carregarDados() {
+            try {
+                // Carregando do arquivo local conforme solicitado
+                const response = await fetch('dados.json');
+                const data = await response.json();
+                
+                pessoas = data.pessoas.map(p => {
+                    const dNasc = parseData(p.nascimento);
+                    const dFalec = parseData(p.falecimento);
+                    const signoArr = dNasc ? getSigno(dNasc.getDate(), dNasc.getMonth() + 1) : ["", ""];
+                    
+                    // Concatena as informações adicionais da nova estrutura
+                    let infoExtra = "";
+                    if (p.informacoes_adicionais) {
+                        const infos = Object.values(p.informacoes_adicionais).filter(v => v && v !== "|||||");
+                        infoExtra = infos.join("<br>");
+                    }
 
-async function carregarDados() {
-    try {
-        const response = await fetch('dados.json');
-        const data = await response.json();
-        
-        pessoas = data.map((p, index) => {
-            const dNasc = parsingDatas(p.nascimento);
-            const dFalec = parsingDatas(p.falecimentos || p.falecimento);
-            let signo = ["✨", "Divino"];
-            if (p.nome.indexOf("JESUS") === -1) {
-                signo = getSigno(dNasc.getDate(), dNasc.getMonth() + 1);
+                    return {
+                        ...p,
+                        dNasc,
+                        dFalec,
+                        mesNum: dNasc ? dNasc.getMonth() : -1,
+                        dia: dNasc ? dNasc.getDate() : 0,
+                        signo: `${signoArr[0]} ${signoArr[1]}`,
+                        infoExtra
+                    };
+                });
+
+                render();
+            } catch (error) {
+                document.getElementById('stats').innerText = "Erro ao carregar dados.";
+                console.error("Erro:", error);
             }
-            return {
-                id: 'p' + index,
-                nome: p.nome, 
-                nascStr: p.nascimento, 
-                falecStr: p.falecimento, 
-                dNasc, dFalec, 
-                img: p.imagem, 
-                infoTexto: p.info,
-                signo: signo[0] + " " + signo[1],
-                mesNum: dNasc.getMonth(),
-                diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0'),
-                Info01: p.Info01, Info02: p.Info02, Info03: p.Info03, Info04: p.Info04, Info05: p.Info05,
-                Info06: p.Info06, Info07: p.Info07, Info08: p.Info08, Info09: p.Info09, Info10: p.Info10
-            };
-        });
-        
-        findProximo();
-        render();
-    } catch (error) {
-        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
-        console.error("Erro:", error);
-    }
-}
+        }
 
-function mostrarInfo(id) {
-    const el = document.getElementById('info-' + id);
-    if (el) {
-        el.style.display = 'block';
-        setTimeout(() => { el.style.display = 'none'; }, 10000);
-    }
-}
-
-function irParaRegistro(id) {
-    const el = document.getElementById(id);
-    if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        el.classList.add('highlight-target');
-        setTimeout(() => el.classList.remove('highlight-target'), 10000);
-    }
-}
-
-function voltarParaLista() {
-    document.getElementById('lista-alfabetica-container').scrollIntoView({ behavior: 'smooth' });
-}
-
-function render(filtro = "") {
-    const container = document.getElementById('conteudo');
-    const listaUl = document.getElementById('listaAlfabetica');
-    container.innerHTML = "";
-    listaUl.innerHTML = "";
-    
-    let count = 0;
-    const hoje = new Date();
-    const hojeDM = hoje.getDate().toString().padStart(2,'0') + (hoje.getMonth()+1).toString().padStart(2,'0');
-    const termo = filtro.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-
-    mesesNomes.forEach((mes, idx) => {
-        const filtrados = pessoas.filter(p => p.mesNum === idx).filter(p => {
-            if (!termo) return true;
-            const status = p.dFalec ? "falecido" : "vivo";
-            const buscaString = `${p.nome} ${p.nascStr} ${p.falecStr} ${status} ${p.signo} ${mesesNomes[p.mesNum]}`
-                .toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            return buscaString.includes(termo);
-        });
-
-        if (filtrados.length > 0) {
-            const mesDiv = document.createElement('div');
-            mesDiv.innerHTML = `<div class="mes-titulo">${mes}</div>`;
-            const grid = document.createElement('div');
-            grid.className = 'grid-container';
-
-            filtrados.forEach(p => {
-                count++;
-                const card = document.createElement('div');
-                card.className = 'registro-card';
-                card.id = p.id;
-                const isToday = p.diaMes === hojeDM;
-                const isJesus = p.nome.includes("JESUS") || (p.nascStr === "25/12");
-                
-                const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
-                const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null).anos : 0;
-                
-                let mostrarLuto = false;
-                if (p.dFalec) {
-                    const umAnoAtras = new Date();
-                    umAnoAtras.setFullYear(hoje.getFullYear() - 1);
-                    if (p.dFalec > umAnoAtras) mostrarLuto = true;
+        function mostrarInfo(id) {
+            const el = document.getElementById('info-' + id);
+            if (el) {
+                el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+                if (el.style.display === 'block') {
+                    setTimeout(() => { el.style.display = 'none'; }, 10000);
                 }
+            }
+        }
 
-                const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
-                const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
+        function irParaRegistro(id) {
+            const el = document.getElementById('card-' + id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                el.classList.add('highlight-target');
+                setTimeout(() => el.classList.remove('highlight-target'), 10000);
+            }
+        }
 
-                let arrayInfos = [p.infoTexto, p.Info01, p.Info02, p.Info03, p.Info04, p.Info05, p.Info06, p.Info07, p.Info08, p.Info09, p.Info10]
-                    .filter(x => x && x.trim() !== '' && x !== "|||||")
-                    .join(' | ').split('|').filter(x => x.trim() !== "");
-                let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
+        function destacar(texto, termo) {
+            if (!termo || !texto) return texto;
+            const regex = new RegExp(`(${termo})`, 'gi');
+            return texto.toString().replace(regex, '<span class="highlight">$1</span>');
+        }
 
-                card.innerHTML = `
-                    <div class="photo-wrapper">
-                        <div class="img-container" ondblclick="voltarParaLista()">
-                            <img loading="lazy" src="${BASE_URL}${p.img}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
-                        </div>
-                        ${mostrarLuto ? `<img src="https://amarildo1963.github.io/jaa/fotos/luto.gif" class="icon-luto" alt="Luto">` : ''}
-                        <img src="info.png" class="icon-info" onclick="mostrarInfo('${p.id}')" alt="Info">
-                        <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
-                    </div>
-                    <span class="nome">${destacar(isJesus ? "NATAL DO MENINO JESUS 25/12" : p.nome, termo)}</span>
-                    ${!isJesus ? `
-                        <div class="info-nasc">★ ${destacar(p.nascStr, termo)} ${diaSemNasc}</div>
-                        ${p.dFalec ? `
-                            <div class="info-falec">✝ ${destacar(p.falecStr, termo)} ${diaSemFalec}</div>
-                            <div class="info-falec">há ${anosFalec} anos</div>
-                            <div class="info-idade-morta">viveu ${dadosIdade.anos} anos</div>
-                            <div class="info-idade-morta" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
-                        ` : `
-                            <div class="info-idade-viva">${dadosIdade.anos} anos</div>
-                            <div class="info-idade-viva" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
-                        `}
-                        <div>${destacar(p.signo, termo)}</div>
-                    ` : ''}
-                    ${isToday ? `<div class="bday-msg">${p.dFalec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>` : ''}
-                `;
-                grid.appendChild(card);
+        function render(filtro = "") {
+            const container = document.getElementById('conteudo');
+            const listaUl = document.getElementById('listaAlfabetica');
+            container.innerHTML = "";
+            listaUl.innerHTML = "";
+            let count = 0;
+
+            const hoje = new Date();
+            const hojeDM = hoje.getDate().toString().padStart(2,'0') + (hoje.getMonth()+1).toString().padStart(2,'0');
+            const termo = filtro.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+
+            // Renderizar Cards por Mês
+            mesesNomes.forEach((mesNome, idx) => {
+                const filtrados = pessoas.filter(p => p.mesNum === idx).filter(p => {
+                    if (!termo) return true;
+                    const buscaString = `${p.nome} ${p.nascimento} ${p.signo} ${p.infoExtra}`.toLowerCase();
+                    return buscaString.includes(termo);
+                }).sort((a,b) => a.dia - b.dia);
+
+                if (filtrados.length > 0) {
+                    const mesSec = document.createElement('section');
+                    mesSec.innerHTML = `<h2 class="mes-titulo">${mesNome}</h2><div class="grid-container" id="grid-${idx}"></div>`;
+                    container.appendChild(mesSec);
+                    
+                    const grid = document.getElementById(`grid-${idx}`);
+                    filtrados.forEach(p => {
+                        count++;
+                        const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
+                        const isBday = p.nascimento.substring(0,5).replace('/','') === hojeDM;
+                        const fotoPath = `https://amarildo1963.github.io/jaa/fotos/${p.imagem}`;
+
+                        const card = document.createElement('div');
+                        card.className = 'registro-card';
+                        card.id = 'card-' + p.id;
+                        card.innerHTML = `
+                            <div class="photo-wrapper">
+                                <div class="img-container" onclick="mostrarInfo(${p.id})">
+                                    <img src="${fotoPath}" class="img-pessoa ${isBday ? 'pulse-active' : ''}" onerror="this.src='https://amarildo1963.github.io/jaa/fotos/falta_a_imagem.jpg'">
+                                    <div class="info-bubble" id="info-${p.id}">${p.infoExtra}</div>
+                                </div>
+                                ${p.dFalec ? '<img src="https://amarildo1963.github.io/jaa/fotos/luto.png" class="icon-luto" title="Falecido">' : ''}
+                                <img src="https://amarildo1963.github.io/jaa/fotos/detalhes.png" class="icon-info" onclick="mostrarInfo(${p.id})" title="Ver detalhes">
+                            </div>
+                            <span class="nome">${destacar(p.nome, termo)}</span>
+                            <div class="info-nasc">Nasc: ${destacar(p.nascimento, termo)}</div>
+                            ${p.dFalec ? `<div class="info-falec">Falec: ${p.falecimento}</div>` : ''}
+                            ${p.dFalec ? 
+                                `<div class="info-idade-morta">viveu ${dadosIdade.anos} anos</div>` : 
+                                `<div class="info-idade-viva">${dadosIdade.anos} anos</div>`
+                            }
+                            <div>${destacar(p.signo, termo)}</div>
+                            ${isBday ? '<div class="bday-msg">🎉 PARABÉNS! 🎂</div>' : ''}
+                        `;
+                        grid.appendChild(card);
+                    });
+                }
             });
-            mesDiv.appendChild(grid);
-            container.appendChild(mesDiv);
+
+            // Renderizar Lista Alfabética
+            const alfabetica = [...pessoas].sort((a,b) => a.nome.localeCompare(b.nome));
+            alfabetica.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'lista-item';
+                item.innerHTML = `
+                    <a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro(${p.id})">
+                        <img src="https://amarildo1963.github.io/jaa/fotos/${p.imagem}" class="micro-foto" onerror="this.src='https://amarildo1963.github.io/jaa/fotos/falta_a_imagem.jpg'">
+                        ${p.nome} (${p.nascimento})
+                    </a>
+                `;
+                listaUl.appendChild(item);
+            });
+
+            document.getElementById('stats').innerText = `Encontrados: ${count} registros`;
         }
-    });
 
-    const alfabetica = [...pessoas].sort((a, b) => a.nome.localeCompare(b.nome));
-    alfabetica.forEach(p => {
-        const li = document.createElement('li');
-        li.className = 'lista-item';
-        li.innerHTML = `
-            <a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro('${p.id}')">
-                <img src="${BASE_URL}${p.img}" class="micro-foto" alt="">
-                ${p.nome}
-            </a>`;
-        listaUl.appendChild(li);
-    });
+        let debounceTimer;
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => render(e.target.value), 250);
+        });
 
-    document.getElementById('stats').innerText = `Registros: ${pessoas.length} / Filtrados: ${count}`;
-}
-
-function destacar(texto, termo) {
-    if (!termo || !texto) return texto;
-    const regex = new RegExp(`(${termo})`, 'gi');
-    return texto.replace(regex, '<span class="highlight">$1</span>');
-}
-
-let debounceTimer;
-document.getElementById('searchInput').addEventListener('input', function(e) {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-        let val = e.target.value;
-        if (/^\d+$/.test(val)) {
-            if (val.length === 4) e.target.value = val.slice(0,2) + "/" + val.slice(2,4);
-            if (val.length === 8) e.target.value = val.slice(0,2) + "/" + val.slice(2,4) + "/" + val.slice(4,8);
+        function limparBusca() {
+            document.getElementById('searchInput').value = "";
+            render();
         }
-        render(e.target.value);
-    }, 250);
-});
 
-function limparBusca() {
-    document.getElementById('searchInput').value = "";
-    render();
-}
+        function toggleHelp() {
+            const bubble = document.getElementById('help-bubble');
+            bubble.style.display = (bubble.style.display === 'block') ? 'none' : 'block';
+        }
 
-const findProximo = () => {
-    const hoje = new Date();
-    const hojeDM = (hoje.getMonth() + 1) * 100 + hoje.getDate();
-    const ordenados = [...pessoas].sort((a,b) => {
-        const dmA = (a.dNasc.getMonth() + 1) * 100 + a.dNasc.getDate();
-        const dmB = (b.dNasc.getMonth() + 1) * 100 + b.dNasc.getDate();
-        return dmA - dmB;
-    });
-    const prox = ordenados.find(p => ((p.dNasc.getMonth() + 1) * 100 + p.dNasc.getDate()) >= hojeDM) || ordenados[0];
-    proximoId = prox ? prox.id : "";
-    
-    if(proximoId) {
-        setTimeout(() => {
-            const el = document.getElementById(proximoId);
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 500);
-    }
-};
-
-carregarDados();
-</script>
+        window.onload = carregarDados;
+    </script>
 </body>
 </html>
