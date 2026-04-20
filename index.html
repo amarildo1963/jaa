@@ -337,14 +337,17 @@ function render(filtro = "") {
                 if(htmlGen === `<div class="family-tree-content">`) htmlGen += "Dados genealógicos não informados.";
                 htmlGen += `</div>`;
 
+                // Alteração: o ícone pdf-print.png foi colocado ACIMA do ícone genealogia.png
                 card.innerHTML = `
                     <div class="photo-wrapper">
                         <img src="info.png" class="icon-action" onclick="mostrarInfo('${p.id}')" alt="Info">
                         <div class="img-container" ondblclick="voltarParaLista()">
                             <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
                         </div>
-                        <img src="pdf-print.png" class="icon-action" onclick="gerarPDF('${p.id}')" alt="PDF">
-                        <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
+                            <img src="pdf-print.png" class="icon-action" onclick="gerarPDF('${p.id}')" alt="PDF">
+                            <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                        </div>
                         
                         <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
                         <div id="family-${p.id}" class="family-bubble">${htmlGen}</div>
@@ -437,8 +440,6 @@ function gerarPDF(id) {
 
     // Define o local base das imagens
     const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/"; 
-    // Nota: Ajustei para incluir a pasta /img/ se for onde elas estão, 
-    // caso estejam na raiz, use apenas "https://amarildo1963.github.io/jaa/"
 
     const dataAtual = new Date().toLocaleDateString('pt-BR');
 
@@ -518,7 +519,6 @@ function gerarPDF(id) {
     win.document.write(conteudo);
     win.document.close();
     
-    // O tempo de espera foi mantido para garantir que as imagens externas carreguem antes da impressão
     setTimeout(() => {
         win.print();
     }, 1000);
