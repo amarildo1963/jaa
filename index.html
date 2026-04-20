@@ -120,7 +120,7 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 19/04/2026<br>
+        Atualizado: 20/04/2026<br>
 		Versão 1.05<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -431,49 +431,77 @@ const findProximo = () => {
 };
 
 
-function gerarPDF(id){
+function gerarPDF(id) {
     const p = pessoas.find(x => x.id === id);
-    if(!p) return;
+    if (!p) return;
 
     const dataAtual = new Date().toLocaleDateString('pt-BR');
 
+    // Função auxiliar para criar linhas apenas se houver dado
+    const criarLinha = (label, valor) => {
+        if (!valor || (Array.isArray(valor) && valor.length === 0)) return '';
+        const conteudo = Array.isArray(valor) ? valor.join(', ') : valor;
+        return `<p><strong>${label}:</strong> ${conteudo}</p>`;
+    };
+
     const conteudo = `
     <html>
-    <head><title>PDF</title></head>
-    <body style="font-family:Arial;text-align:center;">
-        <img src="${BASE_URL}${p.imagem}" style="width:150px;height:150px;border-radius:50%;"><br><br>
-        <b>Nome:</b> ${p.nome}<br>
-        <b>Nascimento:</b> ${p.nascimento}<br>
-        <b>Falecimento:</b> ${p.falecimento || ''}<br><br>
+    <head>
+        <title>Ficha - ${p.nome}</title>
+        <style>
+            body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.6; color: #333; }
+            .centro { text-align: center; margin-bottom: 30px; }
+            .foto { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc; }
+            .dados { text-align: left; margin-top: 20px; }
+            .assinatura { margin-top: 50px; border-top: 1px solid #eee; pt-20px; font-size: 0.9em; text-align: left; }
+            p { margin: 5px 0; }
+        </style>
+    </head>
+    <body>
+        <div class="centro">
+            <img src="${BASE_URL}${p.imagem}" class="foto">
+        </div>
+        
+        <div class="dados">
+            ${criarLinha('Nome', p.nome)}
+            ${criarLinha('Nascimento', p.nascimento)}
+            ${criarLinha('Falecimento', p.falecimento)}
+            
+            ${criarLinha('Pai', p.pai)}
+            ${criarLinha('Mãe', p.mae)}
+            ${criarLinha('Cônjuge', p.conjuge)}
+            
+            ${criarLinha('Filhos', p.filhos)}
+            ${criarLinha('Netos', p.netos)}
+            ${criarLinha('Bisnetos', p.bisnetos)}
+            ${criarLinha('Trinetos', p.trinetos)}
+            ${criarLinha('Tetranetos', p.tetranetos)}
+            
+            ${criarLinha('Irmãos', p.irmaos)}
+            ${criarLinha('Tios', p.tios)}
+            ${criarLinha('Sobrinhos', p.sobrinhos)}
+            ${criarLinha('Primos', p.primos)}
+            
+            ${criarLinha('Avós', p.avos)}
+            ${criarLinha('Bisavós', p.bisavos)}
+            ${criarLinha('Trisavós', p.trisavos)}
+        </div>
 
-        <b>Pai:</b> ${p.pai || ''}<br>
-        <b>Mãe:</b> ${p.mae || ''}<br>
-        <b>Cônjuge:</b> ${p.conjuge || ''}<br>
-
-        <b>Filhos:</b> ${(p.filhos||[]).join(', ')}<br>
-        <b>Netos:</b> ${(p.netos||[]).join(', ')}<br>
-        <b>Bisnetos:</b> ${(p.bisnetos||[]).join(', ')}<br>
-        <b>Trinetos:</b> ${(p.trinetos||[]).join(', ')}<br>
-        <b>Tetranetos:</b> ${(p.tetranetos||[]).join(', ')}<br>
-
-        <b>Irmãos:</b> ${(p.irmaos||[]).join(', ')}<br>
-        <b>Tios:</b> ${(p.tios||[]).join(', ')}<br>
-        <b>Sobrinhos:</b> ${(p.sobrinhos||[]).join(', ')}<br>
-        <b>Primos:</b> ${(p.primos||[]).join(', ')}<br>
-
-        <b>Avós:</b> ${(p.avos||[]).join(', ')}<br>
-        <b>Bisavós:</b> ${(p.bisavos||[]).join(', ')}<br>
-        <b>Trisavós:</b> ${(p.trisavos||[]).join(', ')}<br><br>
-
-        Data de emissão: ${dataAtual}<br><br>
-        Assinado por: José Amarildo Anerão - https://amarildo1963.github.io/jaa/
+        <div class="assinatura">
+            <p><strong>Data de emissão:</strong> ${dataAtual}</p>
+            <p><strong>Assinado por:</strong> José Amarildo Anerão - https://amarildo1963.github.io/jaa/</p>
+        </div>
     </body>
     </html>`;
 
-    const win = window.open('', '', 'width=800,height=600');
+    const win = window.open('', '', 'width=800,height=800');
     win.document.write(conteudo);
     win.document.close();
-    win.print();
+    
+    // Pequeno delay para garantir o carregamento da imagem antes de imprimir
+    setTimeout(() => {
+        win.print();
+    }, 500);
 }
 
 carregarDados();
