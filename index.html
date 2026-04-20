@@ -90,6 +90,7 @@
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -342,6 +343,7 @@ function render(filtro = "") {
                         <div class="img-container" ondblclick="voltarParaLista()">
                             <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
                         </div>
+                        <img src="pdf-print.png" class="icon-action" onclick="gerarPDF('${p.id}')" alt="PDF">
                         <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
                         
                         <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
@@ -428,6 +430,100 @@ const findProximo = () => {
         }, 500);
     }
 };
+
+
+
+function gerarPDF(id){
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const p = pessoas.find(x => x.id === id);
+    if(!p) return;
+
+    let y = 20;
+
+    doc.setFontSize(18);
+    doc.text("Árvore Genealógica", 105, y, {align: "center"});
+    y += 10;
+
+    doc.rect(10, 10, 190, 277);
+
+    doc.setFontSize(14);
+    doc.text(p.nome || "", 105, y, {align: "center"});
+    y += 10;
+
+    doc.setFontSize(10);
+
+    function addLine(label, value){
+        if(value && value.length){
+            doc.text(label + ": " + value, 20, y);
+            y += 6;
+        }
+    }
+
+    addLine("Nascimento", p.nascimento || "");
+    addLine("Falecimento", p.falecimento || "");
+    addLine("Pai", p.pai || "");
+    addLine("Mãe", p.mae || "");
+    addLine("Cônjuge", p.conjuge || "");
+
+    addLine("Filhos", (p.filhos||[]).join(", "));
+    addLine("Netos", (p.netos||[]).join(", "));
+    addLine("Bisnetos", (p.bisnetos||[]).join(", "));
+    addLine("Trinetos", (p.trinetos||[]).join(", "));
+    addLine("Tetranetos", (p.tetranetos||[]).join(", "));
+
+    addLine("Irmãos", (p.irmaos||[]).join(", "));
+    addLine("Tios", (p.tios||[]).join(", "));
+    addLine("Sobrinhos", (p.sobrinhos||[]).join(", "));
+    addLine("Primos", (p.primos||[]).join(", "));
+
+    addLine("Avós", (p.avos||[]).join(", "));
+    addLine("Bisavós", (p.bisavos||[]).join(", "));
+    addLine("Trisavós", (p.trisavos||[]).join(", "));
+
+    y += 10;
+    const dataAtual = new Date().toLocaleDateString('pt-BR');
+    doc.text("Data de emissão: " + dataAtual, 20, y);
+    y += 6;
+    doc.text("Assinado por: José Amarildo Anerão", 20, y);
+
+    doc.save((p.nome || "registro") + ".pdf");
+}
+" style="width:150px;height:150px;border-radius:50%;"><br><br>
+        <b>Nome:</b> ${p.nome}<br>
+        <b>Nascimento:</b> ${p.nascimento}<br>
+        <b>Falecimento:</b> ${p.falecimento || ''}<br><br>
+
+        <b>Pai:</b> ${p.pai || ''}<br>
+        <b>Mãe:</b> ${p.mae || ''}<br>
+        <b>Cônjuge:</b> ${p.conjuge || ''}<br>
+
+        <b>Filhos:</b> ${(p.filhos||[]).join(', ')}<br>
+        <b>Netos:</b> ${(p.netos||[]).join(', ')}<br>
+        <b>Bisnetos:</b> ${(p.bisnetos||[]).join(', ')}<br>
+        <b>Trinetos:</b> ${(p.trinetos||[]).join(', ')}<br>
+        <b>Tetranetos:</b> ${(p.tetranetos||[]).join(', ')}<br>
+
+        <b>Irmãos:</b> ${(p.irmaos||[]).join(', ')}<br>
+        <b>Tios:</b> ${(p.tios||[]).join(', ')}<br>
+        <b>Sobrinhos:</b> ${(p.sobrinhos||[]).join(', ')}<br>
+        <b>Primos:</b> ${(p.primos||[]).join(', ')}<br>
+
+        <b>Avós:</b> ${(p.avos||[]).join(', ')}<br>
+        <b>Bisavós:</b> ${(p.bisavos||[]).join(', ')}<br>
+        <b>Trisavós:</b> ${(p.trisavos||[]).join(', ')}<br><br>
+
+        Data de emissão: ${dataAtual}<br><br>
+        Assinado por: José Amarildo Anerão - https://amarildo1963.github.io/jaa/
+    </body>
+    </html>`;
+
+    const win = window.open('', '', 'width=800,height=600');
+    win.document.write(conteudo);
+    win.document.close();
+    win.print();
+}
 
 carregarDados();
 </script>
