@@ -90,6 +90,7 @@
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -431,17 +432,65 @@ const findProximo = () => {
 };
 
 
+
 function gerarPDF(id){
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
     const p = pessoas.find(x => x.id === id);
     if(!p) return;
 
-    const dataAtual = new Date().toLocaleDateString('pt-BR');
+    let y = 20;
 
-    const conteudo = `
-    <html>
-    <head><title>PDF</title></head>
-    <body style="font-family:Arial;text-align:center;">
-        <img src="${BASE_URL}${p.imagem}" style="width:150px;height:150px;border-radius:50%;"><br><br>
+    doc.setFontSize(18);
+    doc.text("Árvore Genealógica", 105, y, {align: "center"});
+    y += 10;
+
+    doc.rect(10, 10, 190, 277);
+
+    doc.setFontSize(14);
+    doc.text(p.nome || "", 105, y, {align: "center"});
+    y += 10;
+
+    doc.setFontSize(10);
+
+    function addLine(label, value){
+        if(value && value.length){
+            doc.text(label + ": " + value, 20, y);
+            y += 6;
+        }
+    }
+
+    addLine("Nascimento", p.nascimento || "");
+    addLine("Falecimento", p.falecimento || "");
+    addLine("Pai", p.pai || "");
+    addLine("Mãe", p.mae || "");
+    addLine("Cônjuge", p.conjuge || "");
+
+    addLine("Filhos", (p.filhos||[]).join(", "));
+    addLine("Netos", (p.netos||[]).join(", "));
+    addLine("Bisnetos", (p.bisnetos||[]).join(", "));
+    addLine("Trinetos", (p.trinetos||[]).join(", "));
+    addLine("Tetranetos", (p.tetranetos||[]).join(", "));
+
+    addLine("Irmãos", (p.irmaos||[]).join(", "));
+    addLine("Tios", (p.tios||[]).join(", "));
+    addLine("Sobrinhos", (p.sobrinhos||[]).join(", "));
+    addLine("Primos", (p.primos||[]).join(", "));
+
+    addLine("Avós", (p.avos||[]).join(", "));
+    addLine("Bisavós", (p.bisavos||[]).join(", "));
+    addLine("Trisavós", (p.trisavos||[]).join(", "));
+
+    y += 10;
+    const dataAtual = new Date().toLocaleDateString('pt-BR');
+    doc.text("Data de emissão: " + dataAtual, 20, y);
+    y += 6;
+    doc.text("Assinado por: José Amarildo Anerão", 20, y);
+
+    doc.save((p.nome || "registro") + ".pdf");
+}
+" style="width:150px;height:150px;border-radius:50%;"><br><br>
         <b>Nome:</b> ${p.nome}<br>
         <b>Nascimento:</b> ${p.nascimento}<br>
         <b>Falecimento:</b> ${p.falecimento || ''}<br><br>
