@@ -430,14 +430,12 @@ const findProximo = () => {
     }
 };
 
-
 function gerarPDF(id) {
     const p = pessoas.find(x => x.id === id);
     if (!p) return;
 
     const dataAtual = new Date().toLocaleDateString('pt-BR');
 
-    // Função auxiliar para criar linhas apenas se houver dado
     const criarLinha = (label, valor) => {
         if (!valor || (Array.isArray(valor) && valor.length === 0)) return '';
         const conteudo = Array.isArray(valor) ? valor.join(', ') : valor;
@@ -450,14 +448,30 @@ function gerarPDF(id) {
         <title>Ficha - ${p.nome}</title>
         <style>
             body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.6; color: #333; }
+            .cabecalho-container { 
+                display: flex; 
+                align-items: center; 
+                justify-content: space-between; 
+                margin-bottom: 30px; 
+                border-bottom: 2px solid #eee;
+                padding-bottom: 10px;
+            }
+            .img-topo { width: 80px; height: auto; }
+            .titulo-topo { font-size: 1.5em; margin: 0; color: #2c3e50; }
             .centro { text-align: center; margin-bottom: 30px; }
             .foto { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc; }
             .dados { text-align: left; margin-top: 20px; }
-            .assinatura { margin-top: 50px; border-top: 1px solid #eee; pt-20px; font-size: 0.9em; text-align: left; }
+            .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
             p { margin: 5px 0; }
         </style>
     </head>
     <body>
+        <div class="cabecalho-container">
+            <img src="${BASE_URL}genealogia.png" class="img-topo">
+            <h3 class="titulo-topo">GENEALOGIA - FAMÍLIA ANERÃO</h3>
+            <img src="${BASE_URL}familia_anerao.png" class="img-topo">
+        </div>
+
         <div class="centro">
             <img src="${BASE_URL}${p.imagem}" class="foto">
         </div>
@@ -498,7 +512,6 @@ function gerarPDF(id) {
     win.document.write(conteudo);
     win.document.close();
     
-    // Pequeno delay para garantir o carregamento da imagem antes de imprimir
     setTimeout(() => {
         win.print();
     }, 500);
