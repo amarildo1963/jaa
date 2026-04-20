@@ -131,6 +131,7 @@
                 seta azul ▼, vai no final da página<br>
                 seta azul ▲, vai no início da página<br>
 				ícone árvore 🌳 exibe genealogia<br>
+				ícone (i) 📑 gera PDF da genealogia<br>
 				ícone (i) ⓘ exibe informações<br>
 				<br> 
                 ( DIGITAR NO CAMPO DE BUSCA )<br>
@@ -434,6 +435,11 @@ function gerarPDF(id) {
     const p = pessoas.find(x => x.id === id);
     if (!p) return;
 
+    // Define o local base das imagens
+    const BASE_URL = "https://amarildo1963.github.io/jaa/img/"; 
+    // Nota: Ajustei para incluir a pasta /img/ se for onde elas estão, 
+    // caso estejam na raiz, use apenas "https://amarildo1963.github.io/jaa/"
+
     const dataAtual = new Date().toLocaleDateString('pt-BR');
 
     const criarLinha = (label, valor) => {
@@ -512,9 +518,10 @@ function gerarPDF(id) {
     win.document.write(conteudo);
     win.document.close();
     
+    // O tempo de espera foi mantido para garantir que as imagens externas carreguem antes da impressão
     setTimeout(() => {
         win.print();
-    }, 500);
+    }, 1000);
 }
 
 carregarDados();
