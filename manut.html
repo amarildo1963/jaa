@@ -1,312 +1,348 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manutenção Aniversariantes - Completo</title>
+    <title>Manutenção Aniversariantes - Protegido</title>
     <style>
-        :root {
-            --primary: #007bff;
-            --danger: #dc3545;
-            --success: #28a745;
-            --warning: #ffc107;
-            --bg: #f4f7f6;
+        :root { --primary: #2563eb; --danger: #dc2626; --success: #16a34a; --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0; }
+        * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+        body { background: var(--bg); color: #1e293b; padding: 0; margin: 0; }
+        
+        /* Estilos da Tela de Login */
+        #loginScreen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #0f172a, #334155);
+            display: flex; justify-content: center; align-items: center; z-index: 9999;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; }
-        .container { max-width: 1200px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        header { text-align: center; margin-bottom: 20px; }
-        header img { height: 60px; vertical-align: middle; }
-        
-        .total-counter { font-weight: bold; color: var(--primary); margin-top: 5px; font-size: 14px; }
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
-        .tab-btn { padding: 10px 20px; border: none; background: #eee; cursor: pointer; border-radius: 5px; font-weight: bold; }
-        .tab-btn.active { background: var(--primary); color: white; }
+        .login-box {
+            background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-align: center; width: 90%; max-width: 400px;
+        }
+        .login-box h2 { margin-top: 0; color: #1e293b; }
+        .login-box input {
+            width: 100%; padding: 12px; margin: 15px 0; border: 2px solid var(--border);
+            border-radius: 8px; font-size: 16px; text-align: center; letter-spacing: 2px;
+        }
+        .login-box input:focus { border-color: var(--primary); outline: none; }
+        .btn-login {
+            width: 100%; padding: 12px; background: var(--primary); color: white; border: none;
+            border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .btn-login:hover { background: #1d4ed8; }
+        #loginError { color: var(--danger); margin-top: 10px; font-size: 14px; display: none; }
 
-        .section-title { margin-top: 20px; margin-bottom: 10px; font-weight: bold; color: var(--primary); border-bottom: 1px solid #ccc; padding-bottom: 5px; }
-        .form-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 15px; }
-        label { display: block; font-size: 11px; font-weight: bold; margin-bottom: 2px; color: #555; }
-        input, select { width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background: #f8f9fa; }
-        tr:nth-child(even) { background: #f9f9f9; }
-
-        .btn-action { padding: 10px 20px; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .btn-save { background: var(--success); width: 100%; }
-        .btn-export { background: var(--warning); color: #212529; width: 100%; font-size: 16px; border: 2px solid #e0a800; }
+        /* Estilos do Sistema Principal */
+        .container { max-width: 950px; margin: 20px auto; background: var(--card); padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: none; }
+        h1 { text-align: center; color: #0f172a; margin-top: 0; margin-bottom: 5px; }
+        .record-count { text-align: center; font-size: 1.1rem; font-weight: bold; color: var(--primary); margin-bottom: 15px; background: #eff6ff; padding: 10px; border-radius: 8px; }
+        .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; justify-content: space-between; background: #f1f5f9; padding: 10px; border-radius: 8px; }
+        .toolbar button, .toolbar input[type="file"] { padding: 9px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; transition: 0.2s; font-size: 0.9rem; }
+        .btn-load { background: #0ea5e9; color: white; }
+        .btn-add { background: var(--success); color: white; }
+        .btn-save { background: var(--primary); color: white; }
+        .btn-del { background: var(--danger); color: white; }
+        .btn-exp { background: #475569; color: white; }
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+        select { padding: 8px; border: 1px solid var(--border); border-radius: 6px; flex: 1; min-width: 200px; }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; }
+        label { font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; color: #475569; }
+        input { padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; }
+        input:focus { outline: 2px solid var(--primary); border-color: transparent; }
+        input:disabled { background: #e2e8f0; cursor: not-allowed; color: #64748b; }
+        fieldset { border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-bottom: 20px; background: #fdfdfd; }
+        legend { font-weight: bold; color: var(--primary); padding: 0 5px; font-size: 0.95rem; }
+        #status { text-align: center; margin-top: 15px; padding: 12px; border-radius: 6px; font-weight: 500; min-height: 20px; transition: 0.3s; }
+        .status-ok { background: #dcfce7; color: #166534; }
+        .status-err { background: #fee2e2; color: #991b1b; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <img src="manut.png" alt="Manutenção">
-        <h3 style="display:inline-block; margin: 0 15px;">Manutenção Aniversariantes</h3>
-        <img src="aniver.png" alt="Aniversário">
-        <div id="totalRegistros" class="total-counter">Total de Registros: 0</div>
-    </header>
-
-    <div id="auth-section" style="text-align:center; padding: 20px;">
-        <input type="password" id="passInput" placeholder="Senha" style="width: 250px; padding: 10px;">
-        <button onclick="checkAuth()" class="tab-btn active">Entrar</button>
+    <!-- TELA DE LOGIN -->
+    <div id="loginScreen">
+        <div class="login-box">
+            <h2>🔒 Acesso Restrito</h2>
+            <p>Digite a senha para gerenciar os aniversariantes.</p>
+            <input type="password" id="passInput" placeholder="Senha de Acesso" onkeydown="if(event.key==='Enter') checkLogin()">
+            <button class="btn-login" onclick="checkLogin()">Entrar</button>
+            <p id="loginError">❌ Senha incorreta!</p>
+        </div>
     </div>
 
-    <div id="main-content" style="display:none;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-            <div style="border: 2px dashed #ccc; padding: 10px; text-align: center;">
-                <label>Carregar JSON:</label>
-                <input type="file" id="fileInput" accept=".json">
-            </div>
-            <div style="border: 2px solid var(--warning); padding: 10px; text-align: center; border-radius: 8px;">
-                <label>Finalizar:</label>
-                <button onclick="exportJSON()" class="btn-action btn-export">Exportar dados.json</button>
-            </div>
-        </div>
-
-        <div class="tabs">
-            <button class="tab-btn active" onclick="showTab('add', event)">Adicionar</button>
-            <button class="tab-btn" onclick="showTab('edit', event)">Alterar</button>
-            <button class="tab-btn" onclick="showTab('del', event)" style="background-color: #fceaea; color: #dc3545;">Excluir</button>
-        </div>
-
-        <div id="form-container">
-            <div class="form-group" id="select-row" style="display:none; background: #fff3cd; padding: 10px;">
-                <div style="grid-column: 1 / -1;">
-                    <label>Selecionar Registro:</label>
-                    <select id="recordSelect" onchange="loadRecord(this.value)">
-                        <option value="">Selecione...</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="section-title">Dados Básicos</div>
-            <div class="form-group">
-                <div><label>ID:</label><input type="text" id="f_id"></div>
-                <div><label>Data Inclusão:</label><input type="text" id="f_data_inc" placeholder="DD/MM/AAAA"></div>
-                <div><label>Nome:</label><input type="text" id="f_nome"></div>
-                <div><label>Sexo:</label><input type="text" id="f_sexo"></div>
-                <div><label>Família:</label><input type="text" id="f_familia"></div>
-                <div><label>Nascimento:</label><input type="text" id="f_nasc" maxlength="10"></div>
-                <div><label>Falecimento:</label><input type="text" id="f_fale" maxlength="10"></div>
-                <div><label>Imagem (.jpg):</label><input type="file" id="f_img" accept=".jpg"></div>
-            </div>
-
-            <div class="section-title">Genealogia (Pai/Mãe/Cônjuge)</div>
-            <div class="form-group">
-                <div><label>Pai:</label><input type="text" id="f_pai"></div>
-                <div><label>Mãe:</label><input type="text" id="f_mae"></div>
-                <div><label>Cônjuge:</label><input type="text" id="f_conjuge"></div>
-            </div>
-
-            <div class="section-title">Parentes (separar por vírgula)</div>
-            <div class="form-group">
-                <div><label>Filhos:</label><input type="text" id="f_filhos"></div>
-                <div><label>Netos:</label><input type="text" id="f_netos"></div>
-                <div><label>Bisnetos:</label><input type="text" id="f_bisnetos"></div>
-                <div><label>Trinetos:</label><input type="text" id="f_trinetos"></div>
-                <div><label>Tetranetos:</label><input type="text" id="f_tetranetos"></div>
-                <div><label>Irmãos:</label><input type="text" id="f_irmaos"></div>
-                <div><label>Tios:</label><input type="text" id="f_tios"></div>
-                <div><label>Sobrinhos:</label><input type="text" id="f_sobrinhos"></div>
-                <div><label>Primos:</label><input type="text" id="f_primos"></div>
-                <div><label>Avós:</label><input type="text" id="f_avos"></div>
-                <div><label>Bisavós:</label><input type="text" id="f_bisavos"></div>
-                <div><label>Trisavós:</label><input type="text" id="f_trisavos"></div>
-            </div>
-
-            <div class="section-title">Informações Extras</div>
-            <div class="form-group">
-                <div><label>Info 01:</label><input type="text" id="f_i01"></div>
-                <div><label>Info 02:</label><input type="text" id="f_i02"></div>
-                <div><label>Info 03:</label><input type="text" id="f_i03"></div>
-                <div><label>Info 04:</label><input type="text" id="f_i04"></div>
-                <div><label>Info 05:</label><input type="text" id="f_i05"></div>
-                <div><label>Info 06:</label><input type="text" id="f_i06"></div>
-                <div><label>Info 07:</label><input type="text" id="f_i07"></div>
-                <div><label>Info 08:</label><input type="text" id="f_i08"></div>
-                <div><label>Info 09:</label><input type="text" id="f_i09"></div>
-                <div><label>Info 10:</label><input type="text" id="f_i10"></div>
-            </div>
-
-            <button id="mainBtn" onclick="processData()" class="btn-action btn-save">Confirmar</button>
-        </div>
-
-        <table id="dataTable">
-            <thead><tr><th>Nome</th><th>Nasc</th><th>Fale</th></tr></thead>
-            <tbody></tbody>
-        </table>
-    </div>
-</div>
-
-<script>
-    let db = [];
-    let currentTab = 'add';
-    const MASTER_PASS = "100941291137";
-    const fieldIds = ['f_id', 'f_data_inc', 'f_nome', 'f_sexo', 'f_familia', 'f_nasc', 'f_fale', 'f_pai', 'f_mae', 'f_conjuge', 
-                      'f_filhos', 'f_netos', 'f_bisnetos', 'f_trinetos', 'f_tetranetos', 'f_irmaos', 'f_tios', 'f_sobrinhos', 
-                      'f_primos', 'f_avos', 'f_bisavos', 'f_trisavos', 'f_i01', 'f_i02', 'f_i03', 'f_i04', 'f_i05', 'f_i06', 'f_i07', 'f_i08', 'f_i09', 'f_i10'];
-
-    function checkAuth() {
-        if(document.getElementById('passInput').value === MASTER_PASS) {
-            document.getElementById('auth-section').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
-        } else { alert("Senha incorreta!"); }
-    }
-
-    document.getElementById('fileInput').addEventListener('change', function(e) {
-        const reader = new FileReader();
-        reader.onload = function() {
-            try { db = JSON.parse(reader.result); updateView(); alert("Dados carregados!"); } 
-            catch(err) { alert("Erro no JSON."); }
-        };
-        reader.readAsText(e.target.files[0]);
-    });
-
-    function showTab(tab, event) {
-        currentTab = tab;
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        if(event) event.target.classList.add('active');
-        document.getElementById('select-row').style.display = (tab === 'add') ? 'none' : 'block';
-        document.getElementById('mainBtn').textContent = tab === 'add' ? 'Adicionar' : (tab === 'edit' ? 'Atualizar' : 'Remover');
-        clearForm();
-        updateSelect();
-    }
-
-    function clearForm() {
-        fieldIds.forEach(id => document.getElementById(id).value = '');
-        document.getElementById('f_img').value = '';
-    }
-
-    function updateSelect() {
-        const sel = document.getElementById('recordSelect');
-        sel.innerHTML = '<option value="">Selecione...</option>';
-        [...db].sort((a,b) => a.nome.localeCompare(b.nome)).forEach(item => {
-            let opt = document.createElement('option');
-            opt.value = item.nome; opt.textContent = item.nome;
-            sel.appendChild(opt);
-        });
-    }
-
-    function loadRecord(nome) {
-        const item = db.find(x => x.nome === nome);
-        if(!item) return;
-        document.getElementById('f_id').value = item.id || "";
-        document.getElementById('f_data_inc').value = item.data_inclusao || "";
-        document.getElementById('f_nome').value = item.nome || "";
-        document.getElementById('f_sexo').value = item.sexo || "";
-        document.getElementById('f_familia').value = item.familia || "";
-        document.getElementById('f_nasc').value = item.nascimento || "";
-        document.getElementById('f_fale').value = item.falecimento || "";
-        document.getElementById('f_pai').value = item.pai || "";
-        document.getElementById('f_mae').value = item.mae || "";
-        document.getElementById('f_conjuge').value = item.conjuge || "";
+    <!-- SISTEMA PRINCIPAL (Oculto inicialmente) -->
+    <div class="container" id="mainApp">
+        <h1>📅 Manutenção Aniversariantes</h1>
+        <div class="record-count">📊 Total de Registros: <span id="totalRecords">0</span></div>
         
-        // Arrays
-        document.getElementById('f_filhos').value = (item.filhos || []).join(', ');
-        document.getElementById('f_netos').value = (item.netos || []).join(', ');
-        document.getElementById('f_bisnetos').value = (item.bisnetos || []).join(', ');
-        document.getElementById('f_trinetos').value = (item.trinetos || []).join(', ');
-        document.getElementById('f_tetranetos').value = (item.tetranetos || []).join(', ');
-        document.getElementById('f_irmaos').value = (item.irmaos || []).join(', ');
-        document.getElementById('f_tios').value = (item.tios || []).join(', ');
-        document.getElementById('f_sobrinhos').value = (item.sobrinhos || []).join(', ');
-        document.getElementById('f_primos').value = (item.primos || []).join(', ');
-        document.getElementById('f_avos').value = (item.avos || []).join(', ');
-        document.getElementById('f_bisavos').value = (item.bisavos || []).join(', ');
-        document.getElementById('f_trisavos').value = (item.trisavos || []).join(', ');
+        <div class="toolbar">
+            <input type="file" id="fileInput" accept=".json" style="display:none" onchange="loadJSONFromFile(this)">
+            <button class="btn-load" onclick="document.getElementById('fileInput').click()">📂 Carregar dados.json</button>
+            <select id="selectRecord" onchange="loadFormFromSelect()"><option value="">Selecione um registro...</option></select>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn-add" onclick="addRecord()">➕ Adicionar</button>
+                <button class="btn-save" onclick="saveRecord()">💾 Salvar</button>
+                <button class="btn-del" onclick="deleteRecord()">🗑️ Excluir</button>
+                <button class="btn-exp" onclick="exportJSON()">📥 Exportar & Baixar</button>
+            </div>
+        </div>
 
-        document.getElementById('f_i01').value = item.Info01 || "";
-        document.getElementById('f_i02').value = item.Info02 || "";
-        document.getElementById('f_i03').value = item.Info03 || "";
-        document.getElementById('f_i04').value = item.Info04 || "";
-        document.getElementById('f_i05').value = item.Info05 || "";
-        document.getElementById('f_i06').value = item.Info06 || "";
-        document.getElementById('f_i07').value = item.Info07 || "";
-        document.getElementById('f_i08').value = item.Info08 || "";
-        document.getElementById('f_i09').value = item.Info09 || "";
-        document.getElementById('f_i10').value = item.Info10 || "";
-    }
+        <form id="mainForm" onsubmit="return false;">
+            <fieldset>
+                <legend>Dados Básicos</legend>
+                <div class="form-row">
+                    <div class="form-group"><label>ID:</label><input type="number" id="id" disabled></div>
+                    <div class="form-group"><label>Data Inclusão:</label><input type="text" id="data_inclusao" placeholder="DD/MM/AAAA" maxlength="10" class="date-mask"></div>
+                    <div class="form-group"><label>Nome:</label><input type="text" id="nome"></div>
+                    <div class="form-group"><label>Sexo:</label><input type="text" id="sexo" placeholder="M ou F"></div>
+                    <div class="form-group"><label>Família:</label><input type="text" id="familia"></div>
+                    <div class="form-group"><label>Nascimento:</label><input type="text" id="nascimento" placeholder="DD/MM/AAAA" maxlength="10" class="date-mask"></div>
+                    <div class="form-group"><label>Falecimento:</label><input type="text" id="falecimento" placeholder="DD/MM/AAAA" maxlength="10" class="date-mask"></div>
+                    <div class="form-group"><label>Imagem (.jpg):</label><input type="text" id="imagem"></div>
+                </div>
+            </fieldset>
 
-    function parseList(id) {
-        const val = document.getElementById(id).value;
-        return val ? val.split(',').map(s => s.trim()).filter(s => s !== "") : [];
-    }
+            <fieldset>
+                <legend>Genealogia (Pai/Mãe/Cônjuge)</legend>
+                <div class="form-row">
+                    <div class="form-group"><label>Pai:</label><input type="text" id="pai"></div>
+                    <div class="form-group"><label>Mãe:</label><input type="text" id="mae"></div>
+                    <div class="form-group"><label>Cônjuge:</label><input type="text" id="conjuge"></div>
+                </div>
+            </fieldset>
 
-    function processData() {
-        const nome = document.getElementById('f_nome').value.trim();
-        if(!nome && currentTab !== 'del') return alert("Nome é obrigatório");
+            <fieldset>
+                <legend>Parentes (separar por vírgula)</legend>
+                <div class="form-row">
+                    <div class="form-group"><label>Filhos:</label><input type="text" id="filhos"></div>
+                    <div class="form-group"><label>Netos:</label><input type="text" id="netos"></div>
+                    <div class="form-group"><label>Bisnetos:</label><input type="text" id="bisnetos"></div>
+                    <div class="form-group"><label>Trinetos:</label><input type="text" id="trinetos"></div>
+                    <div class="form-group"><label>Tetranetos:</label><input type="text" id="tetranetos"></div>
+                    <div class="form-group"><label>Irmãos:</label><input type="text" id="irmaos"></div>
+                    <div class="form-group"><label>Tios:</label><input type="text" id="tios"></div>
+                    <div class="form-group"><label>Sobrinhos:</label><input type="text" id="sobrinhos"></div>
+                    <div class="form-group"><label>Primos:</label><input type="text" id="primos"></div>
+                    <div class="form-group"><label>Avós:</label><input type="text" id="avos"></div>
+                    <div class="form-group"><label>Bisavós:</label><input type="text" id="bisavos"></div>
+                    <div class="form-group"><label>Trisavós:</label><input type="text" id="trisavos"></div>
+                </div>
+            </fieldset>
 
-        const dataObj = {
-            id: document.getElementById('f_id').value,
-            data_inclusao: document.getElementById('f_data_inc').value,
-            nome: nome,
-            sexo: document.getElementById('f_sexo').value,
-            familia: document.getElementById('f_familia').value,
-            nascimento: document.getElementById('f_nasc').value,
-            falecimento: document.getElementById('f_fale').value,
-            imagem: document.getElementById('f_img').files[0] ? document.getElementById('f_img').files[0].name : (currentTab === 'add' ? "default.jpg" : ""),
-            pai: document.getElementById('f_pai').value,
-            mae: document.getElementById('f_mae').value,
-            conjuge: document.getElementById('f_conjuge').value,
-            filhos: parseList('f_filhos'),
-            netos: parseList('f_netos'),
-            bisnetos: parseList('f_bisnetos'),
-            trinetos: parseList('f_trinetos'),
-            tetranetos: parseList('f_tetranetos'),
-            irmaos: parseList('f_irmaos'),
-            tios: parseList('f_tios'),
-            sobrinhos: parseList('f_sobrinhos'),
-            primos: parseList('f_primos'),
-            avos: parseList('f_avos'),
-            bisavos: parseList('f_bisavos'),
-            trisavos: parseList('f_trisavos'),
-            info: "|||||",
-            Info01: document.getElementById('f_i01').value,
-            Info02: document.getElementById('f_i02').value,
-            Info03: document.getElementById('f_i03').value,
-            Info04: document.getElementById('f_i04').value,
-            Info05: document.getElementById('f_i05').value,
-            Info06: document.getElementById('f_i06').value,
-            Info07: document.getElementById('f_i07').value,
-            Info08: document.getElementById('f_i08').value,
-            Info09: document.getElementById('f_i09').value,
-            Info10: document.getElementById('f_i10').value
-        };
+            <fieldset>
+                <legend>Informações Extras</legend>
+                <div class="form-row" id="infoFields"></div>
+            </fieldset>
+        </form>
+        <div id="status"></div>
+    </div>
 
-        if(currentTab === 'add') {
-            db.push(dataObj);
-        } else if (currentTab === 'edit') {
-            const index = db.findIndex(x => x.nome === document.getElementById('recordSelect').value);
-            if(index > -1) {
-                if(!dataObj.imagem || dataObj.imagem === "default.jpg") dataObj.imagem = db[index].imagem;
-                db[index] = dataObj;
+    <script>
+        // --- LÓGICA DE LOGIN ---
+        function checkLogin() {
+            const pass = document.getElementById('passInput').value;
+            if (pass === '100941291137') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+            } else {
+                const err = document.getElementById('loginError');
+                err.style.display = 'block';
+                document.getElementById('passInput').value = '';
+                document.getElementById('passInput').focus();
+                setTimeout(() => { err.style.display = 'none'; }, 3000);
             }
-        } else if (currentTab === 'del') {
-            const nomeSel = document.getElementById('recordSelect').value;
-            db = db.filter(x => x.nome !== nomeSel);
         }
-        updateView(); clearForm(); updateSelect(); alert("Operação realizada.");
-    }
 
-    function exportJSON() {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
-        const a = document.createElement('a'); a.href = dataStr; a.download = "dados.json";
-        document.body.appendChild(a); a.click(); a.remove();
-    }
+        // --- LÓGICA DO SISTEMA ---
+        let records = [];
+        let mode = 'view';
+        const arrayFields = ['filhos','netos','bisnetos','trinetos','tetranetos','irmaos','tios','sobrinhos','primos','avos','bisavos','trisavos'];
+        
+        const infoContainer = document.getElementById('infoFields');
+        for(let i=1; i<=10; i++) {
+            infoContainer.innerHTML += `<div class="form-group"><label>Info ${String(i).padStart(2,'0')}:</label><input type="text" id="info${i}"></div>`;
+        }
 
-    function updateView() {
-        const tbody = document.querySelector('#dataTable tbody');
-        tbody.innerHTML = '';
-        document.getElementById('totalRegistros').textContent = `Total de Registros: ${db.length}`;
-        db.forEach(item => {
-            let row = tbody.insertRow();
-            row.insertCell(0).textContent = item.nome;
-            row.insertCell(1).textContent = item.nascimento;
-            row.insertCell(2).textContent = item.falecimento || "---";
+        // Máscara de Data Automática
+        document.addEventListener('input', function (e) {
+            if (e.target.classList.contains('date-mask')) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 8) value = value.substring(0, 8);
+                if (value.length > 6) {
+                    value = value.replace(/(\d{2})(\d{2})(\d{0,4})/, '$1/$2/$3');
+                } else if (value.length > 2) {
+                    value = value.replace(/(\d{2})(\d{0,4})/, '$1/$2');
+                }
+                e.target.value = value;
+            }
         });
-    }
-</script>
 
+        function updateTotalRecords() {
+            document.getElementById('totalRecords').textContent = records.length;
+        }
+
+        function loadJSONFromFile(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                try {
+                    const raw = JSON.parse(e.target.result);
+                    records = raw.map(item => {
+                        const norm = {};
+                        for (const key in item) norm[key.trim()] = typeof item[key] === 'string' ? item[key].trim() : item[key];
+                        return norm;
+                    });
+                    updateTotalRecords();
+                    populateDropdown();
+                    showStatus(`✅ ${records.length} registros carregados com sucesso.`);
+                } catch(err) { showStatus('❌ Erro ao ler JSON: ' + err.message, true); }
+            };
+            reader.readAsText(file);
+        }
+
+        function populateDropdown() {
+            const sel = document.getElementById('selectRecord');
+            sel.innerHTML = '<option value="">Selecione um registro...</option>';
+            const indices = records.map((r, i) => i);
+            indices.sort((a, b) => {
+                const nameA = (records[a].nome || '').toLowerCase().trim();
+                const nameB = (records[b].nome || '').toLowerCase().trim();
+                return nameA.localeCompare(nameB, 'pt-BR');
+            });
+            indices.forEach(idx => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.textContent = `ID: ${records[idx].id} - ${records[idx].nome}`;
+                sel.appendChild(opt);
+            });
+        }
+
+        function loadFormFromSelect() {
+            const idx = document.getElementById('selectRecord').value;
+            clearForm();
+            mode = 'view';
+            document.getElementById('id').disabled = false;
+            if (idx === '') return;
+            fillForm(records[idx]);
+            mode = 'edit';
+        }
+
+        function fillForm(rec) {
+            document.querySelectorAll('#mainForm input').forEach(input => {
+                const key = input.id;
+                if (arrayFields.includes(key)) {
+                    input.value = Array.isArray(rec[key]) ? rec[key].join(', ') : '';
+                } else {
+                    input.value = rec[key] !== undefined ? rec[key] : '';
+                }
+            });
+        }
+
+        function clearForm() {
+            document.querySelectorAll('#mainForm input').forEach(i => i.value = '');
+        }
+
+        function addRecord() {
+            mode = 'add';
+            clearForm();
+            const maxId = records.length ? Math.max(...records.map(r => parseInt(r.id) || 0)) : 0;
+            document.getElementById('id').value = maxId + 1;
+            document.getElementById('id').disabled = true;
+            document.getElementById('data_inclusao').value = new Date().toLocaleDateString('pt-BR');
+            document.getElementById('selectRecord').value = '';
+            showStatus('🆕 Modo ADICIONAR ativado. Preencha os dados e clique em Salvar.');
+        }
+
+        function getFormData() {
+            const data = {};
+            document.querySelectorAll('#mainForm input').forEach(input => {
+                const key = input.id;
+                const val = input.value.trim();
+                if (key === 'id') { data.id = parseInt(val) || 0; return; }
+                if (arrayFields.includes(key)) {
+                    data[key] = val ? val.split(',').map(s => s.trim()).filter(s => s !== '') : [];
+                } else {
+                    data[key] = val;
+                }
+            });
+            return data;
+        }
+
+        function saveRecord() {
+            const formData = getFormData();
+            if (!formData.id || !formData.nome) return showStatus('⚠️ ID e Nome são obrigatórios.', true);
+
+            if (mode === 'add') {
+                if (records.some(r => r.id === formData.id)) return showStatus('❌ ID já existe no sistema.', true);
+                records.push(formData);
+                showStatus('✅ Registro adicionado com sucesso!');
+            } else {
+                const idx = records.findIndex(r => r.id === formData.id);
+                if (idx !== -1) {
+                    records[idx] = formData;
+                    showStatus('✅ Registro atualizado com sucesso!');
+                } else {
+                    return showStatus('❌ Registro não encontrado para edição.', true);
+                }
+            }
+            mode = 'view';
+            document.getElementById('id').disabled = false;
+            updateTotalRecords();
+            populateDropdown();
+            document.getElementById('selectRecord').value = records.indexOf(formData);
+        }
+
+        function deleteRecord() {
+            const idx = document.getElementById('selectRecord').value;
+            if (idx === '') return showStatus('⚠️ Selecione um registro para excluir.', true);
+            if (!confirm('Tem certeza que deseja excluir este registro permanentemente?')) return;
+            
+            records.splice(idx, 1);
+            updateTotalRecords();
+            populateDropdown();
+            clearForm();
+            showStatus('🗑️ Registro excluído com sucesso.');
+        }
+
+        function exportJSON() {
+            if (!records.length) return showStatus('⚠️ Nenhum registro para exportar.', true);
+            
+            const sorted = [...records].sort((a, b) => {
+                const dA = parseDate(a.nascimento);
+                const dB = parseDate(b.nascimento);
+                if (dA.month !== dB.month) return dA.month - dB.month;
+                if (dA.day !== dB.day) return dA.day - dB.day;
+                return dA.year - dB.year;
+            });
+
+            const jsonStr = JSON.stringify(sorted, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'dados.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showStatus('📥 dados.json ordenado, exportado e baixado!');
+        }
+
+        function parseDate(dateStr) {
+            if (!dateStr || typeof dateStr !== 'string') return { day: 0, month: 0, year: 0 };
+            const parts = dateStr.split('/').map(Number);
+            if (parts.length !== 3) return { day: 0, month: 0, year: 0 };
+            return { day: parts[0] || 0, month: parts[1] || 0, year: parts[2] || 0 };
+        }
+
+        function showStatus(msg, isError = false) {
+            const el = document.getElementById('status');
+            el.textContent = msg;
+            el.className = isError ? 'status-err' : 'status-ok';
+            setTimeout(() => { el.textContent = ''; el.className = ''; }, 4000);
+        }
+    </script>
 </body>
 </html>
