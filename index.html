@@ -445,7 +445,6 @@ function gerarPDF(id) {
     const getDetalhesData = (dataStr) => {
         if (!dataStr) return { diaSemana: '', signo: '' };
         
-        // Assume formato DD/MM/AAAA
         const partes = dataStr.split('/');
         const data = new Date(partes[2], partes[1] - 1, partes[0]);
         
@@ -496,7 +495,9 @@ function gerarPDF(id) {
             .titulo-topo { font-size: 1.5em; margin: 0; color: #2c3e50; }
             .centro { text-align: center; margin-bottom: 30px; }
             .foto { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc; margin-bottom: 10px; }
+            /* Nome maior e em negrito */
             .nome-destaque { font-size: 1.8em; font-weight: bold; margin-bottom: 5px; color: #000; }
+            /* Campo Família dinâmico em negrito */
             .familia-destaque { font-weight: bold; font-size: 1.2em; margin-top: 5px; }
             .signo-texto { font-style: italic; color: #666; margin-bottom: 15px; }
             .dados { text-align: left; margin-top: 20px; }
@@ -515,7 +516,7 @@ function gerarPDF(id) {
             <div class="nome-destaque">${p.nome.toUpperCase()}</div>
             <div class="signo-texto">Signo: ${detalhesNasc.signo}</div>
             <img src="${BASE_URL}${p.imagem}" class="foto">
-            <div class="familia-destaque">Família Anerão</div>
+            <div class="familia-destaque">Família: ${p.familia || ''}</div>
         </div>
         
         <div class="dados">
