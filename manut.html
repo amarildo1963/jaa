@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manutenção Aniversariantes - Protegido</title>
+    <title>Manutenção Aniversariantes - GitHub Sync</title>
     <style>
         :root { --primary: #2563eb; --danger: #dc2626; --success: #16a34a; --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0; }
         * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
         body { background: var(--bg); color: #1e293b; padding: 0; margin: 0; }
         
-        /* Estilos da Tela de Login */
+        /* Tela de Login */
         #loginScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, #0f172a, #334155);
@@ -32,18 +32,25 @@
         .btn-login:hover { background: #1d4ed8; }
         #loginError { color: var(--danger); margin-top: 10px; font-size: 14px; display: none; }
 
-        /* Estilos do Sistema Principal */
+        /* Sistema Principal */
         .container { max-width: 950px; margin: 20px auto; background: var(--card); padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: none; }
         h1 { text-align: center; color: #0f172a; margin-top: 0; margin-bottom: 5px; }
         .record-count { text-align: center; font-size: 1.1rem; font-weight: bold; color: var(--primary); margin-bottom: 15px; background: #eff6ff; padding: 10px; border-radius: 8px; }
+        .github-status { text-align: center; font-size: 0.9rem; color: #64748b; margin-bottom: 10px; }
+        .github-status.loading { color: var(--primary); }
+        .github-status.error { color: var(--danger); }
+        .github-status.success { color: var(--success); }
+        
         .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; justify-content: space-between; background: #f1f5f9; padding: 10px; border-radius: 8px; }
         .toolbar button, .toolbar input[type="file"] { padding: 9px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; transition: 0.2s; font-size: 0.9rem; }
         .btn-load { background: #0ea5e9; color: white; }
+        .btn-sync { background: #8b5cf6; color: white; }
         .btn-add { background: var(--success); color: white; }
         .btn-save { background: var(--primary); color: white; }
         .btn-del { background: var(--danger); color: white; }
         .btn-exp { background: #475569; color: white; }
         button:hover { opacity: 0.9; transform: translateY(-1px); }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
         select { padding: 8px; border: 1px solid var(--border); border-radius: 6px; flex: 1; min-width: 200px; }
         .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
         .form-group { display: flex; flex-direction: column; }
@@ -56,6 +63,7 @@
         #status { text-align: center; margin-top: 15px; padding: 12px; border-radius: 6px; font-weight: 500; min-height: 20px; transition: 0.3s; }
         .status-ok { background: #dcfce7; color: #166534; }
         .status-err { background: #fee2e2; color: #991b1b; }
+        .sync-note { font-size: 0.85rem; color: #64748b; text-align: center; margin-top: 10px; background: #f8fafc; padding: 8px; border-radius: 6px; border-left: 3px solid var(--primary); }
     </style>
 </head>
 <body>
@@ -71,14 +79,16 @@
         </div>
     </div>
 
-    <!-- SISTEMA PRINCIPAL (Oculto inicialmente) -->
+    <!-- SISTEMA PRINCIPAL -->
     <div class="container" id="mainApp">
         <h1>📅 Manutenção Aniversariantes</h1>
         <div class="record-count">📊 Total de Registros: <span id="totalRecords">0</span></div>
+        <div id="githubStatus" class="github-status">⏳ Conectando ao GitHub...</div>
         
         <div class="toolbar">
             <input type="file" id="fileInput" accept=".json" style="display:none" onchange="loadJSONFromFile(this)">
-            <button class="btn-load" onclick="document.getElementById('fileInput').click()">📂 Carregar dados.json</button>
+            <button class="btn-load" onclick="document.getElementById('fileInput').click()">📂 Carregar Local</button>
+            <button class="btn-sync" onclick="fetchFromGitHub()" id="btnSync">🔄 Sincronizar GitHub</button>
             <select id="selectRecord" onchange="loadFormFromSelect()"><option value="">Selecione um registro...</option></select>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
                 <button class="btn-add" onclick="addRecord()">➕ Adicionar</button>
@@ -136,21 +146,77 @@
             </fieldset>
         </form>
         <div id="status"></div>
+        <div class="sync-note">
+            💡 <strong>Dica:</strong> Após exportar o arquivo <code>dados.json</code>, faça o upload manual para o repositório 
+            <a href="https://github.com/amarildo1963/jaa" target="_blank">github.com/amarildo1963/jaa</a> para sincronizar as alterações.
+        </div>
     </div>
 
     <script>
+        // --- CONFIGURAÇÃO GITHUB ---
+        const GITHUB_REPO = 'amarildo1963/jaa';
+        const GITHUB_BRANCH = 'main'; // ou 'master' se for o caso
+        const GITHUB_RAW_URL = `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/dados.json`;
+
         // --- LÓGICA DE LOGIN ---
         function checkLogin() {
             const pass = document.getElementById('passInput').value;
             if (pass === '100941291137') {
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
+                // Inicia carregamento automático após login
+                fetchFromGitHub();
             } else {
                 const err = document.getElementById('loginError');
                 err.style.display = 'block';
                 document.getElementById('passInput').value = '';
                 document.getElementById('passInput').focus();
                 setTimeout(() => { err.style.display = 'none'; }, 3000);
+            }
+        }
+
+        // --- BUSCA AUTOMÁTICA DO GITHUB ---
+        async function fetchFromGitHub() {
+            const statusEl = document.getElementById('githubStatus');
+            const btnSync = document.getElementById('btnSync');
+            
+            statusEl.textContent = '⏳ Carregando dados do GitHub...';
+            statusEl.className = 'github-status loading';
+            btnSync.disabled = true;
+
+            try {
+                const response = await fetch(GITHUB_RAW_URL, {
+                    cache: 'no-cache',
+                    headers: { 'Cache-Control': 'no-cache' }
+                });
+                
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const rawData = await response.json();
+                
+                // Normaliza os dados (remove espaços extras nas chaves)
+                records = rawData.map(item => {
+                    const norm = {};
+                    for (const key in item) {
+                        const cleanKey = key.trim();
+                        norm[cleanKey] = typeof item[key] === 'string' ? item[key].trim() : item[key];
+                    }
+                    return norm;
+                });
+                
+                updateTotalRecords();
+                populateDropdown();
+                statusEl.textContent = `✅ Dados sincronizados do GitHub! (${records.length} registros)`;
+                statusEl.className = 'github-status success';
+                showStatus('📡 Dados carregados automaticamente do repositório GitHub.', false);
+                
+            } catch (error) {
+                console.error('Erro ao buscar do GitHub:', error);
+                statusEl.textContent = `⚠️ Falha ao carregar do GitHub. Use "Carregar Local".`;
+                statusEl.className = 'github-status error';
+                showStatus('⚠️ Não foi possível conectar ao GitHub. Verifique sua internet ou use o carregamento manual.', true);
+            } finally {
+                btnSync.disabled = false;
             }
         }
 
@@ -196,6 +262,8 @@
                     });
                     updateTotalRecords();
                     populateDropdown();
+                    document.getElementById('githubStatus').textContent = `📁 Dados carregados localmente (${records.length} registros)`;
+                    document.getElementById('githubStatus').className = 'github-status success';
                     showStatus(`✅ ${records.length} registros carregados com sucesso.`);
                 } catch(err) { showStatus('❌ Erro ao ler JSON: ' + err.message, true); }
             };
@@ -309,6 +377,7 @@
         function exportJSON() {
             if (!records.length) return showStatus('⚠️ Nenhum registro para exportar.', true);
             
+            // Ordenação: Mês ASC -> Dia ASC -> Ano ASC
             const sorted = [...records].sort((a, b) => {
                 const dA = parseDate(a.nascimento);
                 const dB = parseDate(b.nascimento);
@@ -327,7 +396,7 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            showStatus('📥 dados.json ordenado, exportado e baixado!');
+            showStatus('📥 dados.json baixado! 📤 Envie-o manualmente ao GitHub para sincronizar.');
         }
 
         function parseDate(dateStr) {
@@ -341,7 +410,7 @@
             const el = document.getElementById('status');
             el.textContent = msg;
             el.className = isError ? 'status-err' : 'status-ok';
-            setTimeout(() => { el.textContent = ''; el.className = ''; }, 4000);
+            setTimeout(() => { el.textContent = ''; el.className = ''; }, 5000);
         }
     </script>
 </body>
