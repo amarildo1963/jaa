@@ -438,15 +438,44 @@ function gerarPDF(id) {
     const p = pessoas.find(x => x.id === id);
     if (!p) return;
 
-    // Define o local base das imagens
     const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/"; 
-
     const dataAtual = new Date().toLocaleDateString('pt-BR');
 
-    const criarLinha = (label, valor) => {
+    // Função para obter dia da semana e signo
+    const getDetalhesData = (dataStr) => {
+        if (!dataStr) return { diaSemana: '', signo: '' };
+        
+        // Assume formato DD/MM/AAAA
+        const partes = dataStr.split('/');
+        const data = new Date(partes[2], partes[1] - 1, partes[0]);
+        
+        if (isNaN(data)) return { diaSemana: '', signo: '' };
+
+        const dias = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+        const diaSemana = `(${dias[data.getDay()]})`;
+
+        const dia = parseInt(partes[0]);
+        const mes = parseInt(partes[1]);
+        const signos = [
+            { nome: 'Capricórnio', d: 20, m: 1 }, { nome: 'Aquário', d: 18, m: 2 },
+            { nome: 'Peixes', d: 20, m: 3 }, { nome: 'Áries', d: 19, m: 4 },
+            { nome: 'Touro', d: 20, m: 5 }, { nome: 'Gêmeos', d: 20, m: 6 },
+            { nome: 'Câncer', d: 22, m: 7 }, { nome: 'Leão', d: 22, m: 8 },
+            { nome: 'Virgem', d: 22, m: 9 }, { nome: 'Libra', d: 22, m: 10 },
+            { nome: 'Escorpião', d: 21, m: 11 }, { nome: 'Sagitário', d: 21, m: 12 }
+        ];
+        const signo = (dia > signos[mes - 1].d) ? signos[mes % 12].nome : signos[mes - 1].nome;
+
+        return { diaSemana, signo };
+    };
+
+    const detalhesNasc = getDetalhesData(p.nascimento);
+    const detalhesFalec = getDetalhesData(p.falecimento);
+
+    const criarLinha = (label, valor, extra = '') => {
         if (!valor || (Array.isArray(valor) && valor.length === 0)) return '';
         const conteudo = Array.isArray(valor) ? valor.join(', ') : valor;
-        return `<p><strong>${label}:</strong> ${conteudo}</p>`;
+        return `<p><strong>${label}:</strong> ${conteudo} ${extra}</p>`;
     };
 
     const conteudo = `
@@ -466,7 +495,10 @@ function gerarPDF(id) {
             .img-topo { width: 80px; height: auto; }
             .titulo-topo { font-size: 1.5em; margin: 0; color: #2c3e50; }
             .centro { text-align: center; margin-bottom: 30px; }
-            .foto { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc; }
+            .foto { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc; margin-bottom: 10px; }
+            .nome-destaque { font-size: 1.8em; font-weight: bold; margin-bottom: 5px; color: #000; }
+            .familia-destaque { font-weight: bold; font-size: 1.2em; margin-top: 5px; }
+            .signo-texto { font-style: italic; color: #666; margin-bottom: 15px; }
             .dados { text-align: left; margin-top: 20px; }
             .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
             p { margin: 5px 0; }
@@ -480,13 +512,15 @@ function gerarPDF(id) {
         </div>
 
         <div class="centro">
+            <div class="nome-destaque">${p.nome.toUpperCase()}</div>
+            <div class="signo-texto">Signo: ${detalhesNasc.signo}</div>
             <img src="${BASE_URL}${p.imagem}" class="foto">
+            <div class="familia-destaque">Família Anerão</div>
         </div>
         
         <div class="dados">
-            ${criarLinha('Nome', p.nome)}
-            ${criarLinha('Nascimento', p.nascimento)}
-            ${criarLinha('Falecimento', p.falecimento)}
+            ${criarLinha('Nascimento', p.nascimento, detalhesNasc.diaSemana)}
+            ${criarLinha('Falecimento', p.falecimento, detalhesFalec.diaSemana)}
             
             ${criarLinha('Pai', p.pai)}
             ${criarLinha('Mãe', p.mae)}
@@ -523,7 +557,6 @@ function gerarPDF(id) {
         win.print();
     }, 1000);
 }
-
 carregarDados();
 </script>
 </body>
