@@ -1935,6 +1935,48 @@
     "info10": ""
   },
   {
+    "id": 126,
+    "data_inclusao": "22/04/2026",
+    "nome": "Oldith Ferreira Pessoa Aneron",
+    "sexo": "F",
+    "familia": "Anerão",
+    "nascimento": "30/05/12929",
+    "falecimento": "02/07/1998",
+    "imagem": "falta_a_imagem.jpg",
+    "pai": "",
+    "mae": "",
+    "conjuge": "Herminio Aneron",
+    "filhos": [
+      "Aparecida",
+      "Rosa",
+      "Benedito",
+      "Lucia",
+      "Antonio Roberto"
+    ],
+    "netos": [],
+    "bisnetos": [],
+    "trinetos": [],
+    "tetranetos": [],
+    "irmaos": [],
+    "tios": [],
+    "sobrinhos": [],
+    "primos": [],
+    "avos": [],
+    "bisavos": [],
+    "trisavos": [],
+    "info": "|||||",
+    "info01": "",
+    "info02": "",
+    "info03": "",
+    "info04": "",
+    "info05": "",
+    "info06": "",
+    "info07": "",
+    "info08": "",
+    "info09": "",
+    "info10": ""
+  },
+  {
     "id": 49,
     "data_inclusao": "21/04/2026",
     "nome": "Karina Kristina Lima Anerão",
@@ -2785,6 +2827,7 @@
     "tetranetos": [],
     "irmaos": [
       "Aparecida",
+      "Lucia",
       "Benedito",
       "Rosa"
     ],
@@ -3463,6 +3506,7 @@
     "irmaos": [
       "Aparecida",
       "Benedito",
+      "Lucia",
       "Antonio Roberto"
     ],
     "tios": [],
