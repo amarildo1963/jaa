@@ -1711,18 +1711,18 @@
     "data_inclusao": "22/04/2026",
     "nome": "Herminio Aneron",
     "sexo": "M",
-    "familia": "Anerão",
+    "familia": "Aneron",
     "nascimento": "21/05/1921",
     "falecimento": "15/05/1998",
-    "imagem": "falta_a_imagem.jpg",
+    "imagem": "herminio_aneron.jpg",
     "pai": "José Anerão",
     "mae": "Rosa Frachelli Anerão",
     "conjuge": "Oldith Ferreira Pessoa Aneron",
     "filhos": [
       "Aparecida",
-      "Rosa",
-      "Benedito",
       "Lucia",
+      "Benedito",
+      "Rosa",
       "Antonio Roberto"
     ],
     "netos": [],
@@ -1748,7 +1748,7 @@
     "info09": "",
     "info10": ""
   },
-    {
+  {
     "id": 45,
     "data_inclusao": "21/04/2026",
     "nome": "Marta Anerão",
@@ -2987,7 +2987,12 @@
     "bisnetos": [],
     "trinetos": [],
     "tetranetos": [],
-    "irmaos": ["Lucia","Benedito","Rosa","Antonio Roberto"],
+    "irmaos": [
+      "Lucia",
+      "Benedito",
+      "Rosa",
+      "Antonio Roberto"
+    ],
     "tios": [],
     "sobrinhos": [],
     "primos": [
