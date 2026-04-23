@@ -92,9 +92,13 @@
     </style>
 </head>
 <body>
+    html {
+        scroll-behavior: smooth;
+    }
 
-    <a href="#" class="scroll-top" id="backToTop">▲</a>
-    <a href="#footer" class="scroll-bottom" id="goToBottom">▼</a>
+    <body id="top">
+    <a href="javascript:void(0)" class="scroll-top" id="backToTop">▲</a>
+    <a href="javascript:void(0)" class="scroll-bottom" id="goToBottom">▼</a>
 
     <div class="header-container">
         <a href="index.html">
@@ -120,7 +124,7 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 22/04/2026<br>
+        Atualizado: 23/04/2026<br>
 		Versão 1.06<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -165,6 +169,32 @@ function toggleHelp() {
     bubble.style.display = 'block';
     setTimeout(() => { bubble.style.display = 'none'; }, 8000);
 }
+
+document.getElementById('backToTop').addEventListener('click', function() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+document.getElementById('goToBottom').addEventListener('click', function() {
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth'
+    });
+});
+
+const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+const scrollToBottom = () => {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+};
+
+document.getElementById('backToTop').onclick = scrollToTop;
+document.getElementById('goToBottom').onclick = scrollToBottom;
+
 
 function getSigno(dia, mes) {
     if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) return ["♒", "Aquário"];
@@ -558,6 +588,22 @@ function gerarPDF(id) {
         win.print();
     }, 1000);
 }
+
+// Scroll compatível com Chrome
+document.getElementById('backToTop').addEventListener('click', function() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+document.getElementById('goToBottom').addEventListener('click', function() {
+    window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+    });
+});
+
 carregarDados();
 </script>
 </body>
