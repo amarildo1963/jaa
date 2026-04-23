@@ -496,6 +496,10 @@ function gerarPDF(id) {
 
     const detalhesNasc = getDetalhesData(p.nascimento);
     const detalhesFalec = getDetalhesData(p.falecimento);
+	
+	const dNasc = parsingDatas(p.nascimento);
+    const dFalec = parsingDatas(p.falecimento);
+    const idade = calcularIdade(dNasc, dFalec);
 
     const criarLinha = (label, valor, extra = '') => {
         if (!valor || (Array.isArray(valor) && valor.length === 0)) return '';
@@ -523,6 +527,7 @@ function gerarPDF(id) {
             .foto { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc; margin-bottom: 10px; }
             /* Nome maior e em negrito */
             .nome-destaque { font-size: 1.8em; font-weight: bold; margin-bottom: 5px; color: #000; }
+			
             /* Campo Família dinâmico em negrito */
             .familia-destaque { font-weight: bold; font-size: 1.2em; margin-top: 5px; }
             .signo-texto { font-style: italic; color: #666; margin-bottom: 15px; }
@@ -547,6 +552,8 @@ function gerarPDF(id) {
         
         <div class="dados">
             ${criarLinha('Nascimento', p.nascimento, detalhesNasc.diaSemana)}
+            <p><strong>Idade:</strong> <b>${idade.anos} anos</b></p>
+			
             ${criarLinha('Falecimento', p.falecimento, detalhesFalec.diaSemana)}
             
             ${criarLinha('Pai', p.pai)}
