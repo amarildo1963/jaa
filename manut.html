@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manutenção Aniversariantes - Família Anerão</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manutenção Aniversariantes - Família Anerão</title>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -391,285 +392,260 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Login Screen -->
-        <div id="loginScreen" class="login-screen">
-            <div class="login-box">
-                <h1>🔐 Família Anerão</h1>
-                <div id="loginMessage" class="message"></div>
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="username">Usuário</label>
-                        <input type="text" id="username" required autocomplete="username">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Senha</label>
-                        <input type="password" id="password" required autocomplete="current-password">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Entrar</button>
-                </form>
-                <div style="margin-top: 20px; text-align: center;">
-                    <button class="btn btn-secondary" onclick="showRegisterUser()" style="width: 100%;">Cadastrar Novo Usuário</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Register User Screen -->
-        <div id="registerUserScreen" class="login-screen hidden">
-            <div class="login-box">
-                <h1>👤 Cadastrar Usuário</h1>
-                <div id="registerMessage" class="message"></div>
-                <form id="registerForm">
-                    <div class="form-group">
-                        <label for="newUsername">Novo Usuário</label>
-                        <input type="text" id="newUsername" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="newPassword">Senha</label>
-                        <input type="password" id="newPassword" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirmar Senha</label>
-                        <input type="password" id="confirmPassword" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Cadastrar</button>
-                    <button type="button" class="btn btn-secondary" onclick="showLogin()" style="margin-top: 10px; width: 100%;">Voltar</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Main Panel -->
-        <div id="mainPanel" class="main-panel">
-            <div class="header">
-                <h1>
-                    <img src="manut.png" alt="Manutenção" onerror="this.style.display='none'">
+<div class="container">
+<!-- Login Screen -->
+<div class="login-screen" id="loginScreen">
+<div class="login-box">
+<h1>🔐 Família Anerão</h1>
+<div class="message" id="loginMessage"></div>
+<form id="loginForm">
+<div class="form-group">
+<label for="username">Usuário</label>
+<input autocomplete="username" id="username" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="password">Senha</label>
+<input autocomplete="current-password" id="password" required="" type="password"/>
+</div>
+<button class="btn btn-primary" type="submit">Entrar</button>
+</form>
+<div style="margin-top: 20px; text-align: center;">
+<button class="btn btn-secondary" onclick="showRegisterUser()" style="width: 100%;">Cadastrar Novo Usuário</button>
+</div>
+</div>
+</div>
+<!-- Register User Screen -->
+<div class="login-screen hidden" id="registerUserScreen">
+<div class="login-box">
+<h1>👤 Cadastrar Usuário</h1>
+<div class="message" id="registerMessage"></div>
+<form id="registerForm">
+<div class="form-group">
+<label for="newUsername">Novo Usuário</label>
+<input id="newUsername" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="newPassword">Senha</label>
+<input id="newPassword" required="" type="password"/>
+</div>
+<div class="form-group">
+<label for="confirmPassword">Confirmar Senha</label>
+<input id="confirmPassword" required="" type="password"/>
+</div>
+<button class="btn btn-primary" type="submit">Cadastrar</button>
+<button class="btn btn-secondary" onclick="showLogin()" style="margin-top: 10px; width: 100%;" type="button">Voltar</button>
+</form>
+</div>
+</div>
+<!-- Main Panel -->
+<div class="main-panel" id="mainPanel">
+<div class="header">
+<h1>
+<img alt="Manutenção" onerror="this.style.display='none'" src="manut.png"/>
                     Manutenção Aniversariantes
                 </h1>
-                <div class="stats">
-                    <div class="stat-box">
-                        <div class="number" id="totalRecords">0</div>
-                        <div class="label">Total de Registros</div>
-                    </div>
-                    <button class="logout-btn" onclick="logout()">Sair</button>
-                </div>
-            </div>
-
-            <div class="content">
-                <div id="formMessage" class="message"></div>
-
-                <!-- Form Section -->
-                <div class="form-section">
-                    <h2 id="formTitle">Adicionar Registro</h2>
-                    <form id="recordForm">
-                        <input type="hidden" id="id">
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="idDisplay" class="required">ID</label>
-                                <input type="text" id="idDisplay" readonly class="readonly-field">
-                            </div>
-                            <div class="form-group">
-                                <label for="data_inclusao">Data de Inclusão</label>
-                                <input type="text" id="data_inclusao" readonly class="readonly-field">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="nome" class="required">Nome</label>
-                                <input type="text" id="nome" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="sexo" class="required">Sexo</label>
-                                <select id="sexo" required>
-                                    <option value="">Selecione...</option>
-                                    <option value="M">Masculino</option>
-                                    <option value="F">Feminino</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="familia">Família</label>
-                                <input type="text" id="familia" value="Anerão">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="nascimento" class="required">Data de Nascimento</label>
-                                <input type="text" id="nascimento" required placeholder="DDMMAAAA ou DD/MM/AAAA">
-                                <div class="date-input-hint">Digite sem barras: DDMMYYYY (ex: 01011990)</div>
-                            </div>
-                            <div class="form-group">
-                                <label for="falecimento">Data de Falecimento</label>
-                                <input type="text" id="falecimento" placeholder="DDMMAAAA ou DD/MM/AAAA">
-                                <div class="date-input-hint">Digite sem barras: DDMMYYYY (ex: 01011990)</div>
-                            </div>
-                            <div class="form-group">
-                                <label for="imagem">Imagem</label>
-                                <input type="text" id="imagem" value="falta_a_imagem.jpg">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="pai">Pai</label>
-                                <input type="text" id="pai">
-                            </div>
-                            <div class="form-group">
-                                <label for="mae">Mãe</label>
-                                <input type="text" id="mae">
-                            </div>
-                            <div class="form-group">
-                                <label for="conjuge">Cônjuge</label>
-                                <input type="text" id="conjuge">
-                            </div>
-                        </div>
-
-                        <!-- Relationship Fields -->
-                        <div class="form-section" style="margin-top: 20px;">
-                            <h2>👨‍👩‍‍ Relacionamentos Familiares</h2>
-                            <div class="field-hint">Separe os nomes por vírgula (ex: João, Maria, José)</div>
-                            
-                            <div class="form-row full-width">
-                                <div class="form-group">
-                                    <label for="filhos">Filhos</label>
-                                    <textarea id="filhos" placeholder="Nome dos filhos separados por vírgula"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-row full-width">
-                                <div class="form-group">
-                                    <label for="netos">Netos</label>
-                                    <textarea id="netos" placeholder="Nome dos netos separados por vírgula"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-row full-width">
-                                <div class="form-group">
-                                    <label for="bisnetos">Bisnetos</label>
-                                    <textarea id="bisnetos" placeholder="Nome dos bisnetos separados por vírgula"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-row full-width">
-                                <div class="form-group">
-                                    <label for="trinetos">Trinetos</label>
-                                    <textarea id="trinetos" placeholder="Nome dos trinetos separados por vírgula"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-row full-width">
-                                <div class="form-group">
-                                    <label for="tetranetos">Tetranetos</label>
-                                    <textarea id="tetranetos" placeholder="Nome dos tetranetos separados por vírgula"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-row full-width">
-                                <div class="form-group">
-                                    <label for="irmaos">Irmãos</label>
-                                    <textarea id="irmaos" placeholder="Nome dos irmãos separados por vírgula"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-row full-width">
-                                <div class="form-group">
-                                    <label for="tios">Tios</label>
-                                    <textarea id="tios" placeholder="Nome dos tios separados por vírgula"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-row full-width">
-                                <div class="form-group">
-                                    <label for="sobrinhos">Sobrinhos</label>
-                                    <textarea id="sobrinhos" placeholder="Nome dos sobrinhos separados por vírgula"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-row full-width">
-                                <div class="form-group">
-                                    <label for="primos">Primos</label>
-                                    <textarea id="primos" placeholder="Nome dos primos separados por vírgula"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-row full-width">
-                                <div class="form-group">
-                                    <label for="avos">Avós</label>
-                                    <textarea id="avos" placeholder="Nome dos avós separados por vírgula"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-row full-width">
-                                <div class="form-group">
-                                    <label for="bisavos">Bisavós</label>
-                                    <textarea id="bisavos" placeholder="Nome dos bisavós separados por vírgula"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-row full-width">
-                                <div class="form-group">
-                                    <label for="trisavos">Trisavós</label>
-                                    <textarea id="trisavos" placeholder="Nome dos trisavós separados por vírgula"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row full-width" style="margin-top: 20px;">
-                            <div class="form-group">
-                                <label>Informações Adicionais</label>
-                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                                    <input type="text" id="info01" placeholder="Info 01">
-                                    <input type="text" id="info02" placeholder="Info 02">
-                                    <input type="text" id="info03" placeholder="Info 03">
-                                    <input type="text" id="info04" placeholder="Info 04">
-                                    <input type="text" id="info05" placeholder="Info 05">
-                                </div>
-                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 10px;">
-                                    <input type="text" id="info06" placeholder="Info 06">
-                                    <input type="text" id="info07" placeholder="Info 07">
-                                    <input type="text" id="info08" placeholder="Info 08">
-                                    <input type="text" id="info09" placeholder="Info 09">
-                                    <input type="text" id="info10" placeholder="Info 10">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="button-group">
-                            <button type="button" class="btn btn-success" onclick="addRecord()">
-                                <span id="addBtnText">➕ Adicionar</span>
-                            </button>
-                            <button type="button" class="btn btn-warning" onclick="updateRecord()" id="updateBtn" style="display:none;">
+<div class="stats">
+<div class="stat-box">
+<div class="number" id="totalRecords">0</div>
+<div class="label">Total de Registros</div>
+</div>
+<button class="logout-btn" onclick="logout()">Sair</button>
+</div>
+</div>
+<div class="content">
+<div class="message" id="formMessage"></div>
+<!-- Form Section -->
+<div class="form-section">
+<h2 id="formTitle">Adicionar Registro</h2>
+<form id="recordForm">
+<input id="id" type="hidden"/>
+<div class="form-row">
+<div class="form-group">
+<label class="required" for="idDisplay">ID</label>
+<input class="readonly-field" id="idDisplay" readonly="" type="text"/>
+</div>
+<div class="form-group">
+<label for="data_inclusao">Data de Inclusão</label>
+<input class="readonly-field" id="data_inclusao" readonly="" type="text"/>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="required" for="nome">Nome</label>
+<input id="nome" required="" type="text"/>
+</div>
+<div class="form-group">
+<label class="required" for="sexo">Sexo</label>
+<select id="sexo" required="">
+<option value="">Selecione...</option>
+<option value="M">Masculino</option>
+<option value="F">Feminino</option>
+</select>
+</div>
+<div class="form-group">
+<label for="familia">Família</label>
+<input id="familia" type="text" value="Anerão"/>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="required" for="nascimento">Data de Nascimento</label>
+<input id="nascimento" inputmode="numeric" maxlength="10" oninput="formatDateInput(this)" placeholder="DDMMAAAA" required="" type="text"/>
+<div class="date-input-hint">Digite sem barras: DDMMAAAA (ex: 01011990)</div>
+</div>
+<div class="form-group">
+<label for="falecimento">Data de Falecimento</label>
+<input id="falecimento" inputmode="numeric" maxlength="10" oninput="formatDateInput(this)" placeholder="DDMMAAAA" type="text"/>
+<div class="date-input-hint">Digite sem barras: DDMMAAAA (ex: 01011990)</div>
+</div>
+<div class="form-group">
+<label for="imagem">Imagem</label>
+<input id="imagem" type="text" value="falta_a_imagem.jpg"/>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="pai">Pai</label>
+<input id="pai" type="text"/>
+</div>
+<div class="form-group">
+<label for="mae">Mãe</label>
+<input id="mae" type="text"/>
+</div>
+<div class="form-group">
+<label for="conjuge">Cônjuge</label>
+<input id="conjuge" type="text"/>
+</div>
+</div>
+<!-- Relationship Fields -->
+<div class="form-section" style="margin-top: 20px;">
+<h2>👨‍👩‍‍ Relacionamentos Familiares</h2>
+<div class="field-hint">Separe os nomes por vírgula (ex: João, Maria, José)</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="filhos">Filhos</label>
+<textarea id="filhos" placeholder="Nome dos filhos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="netos">Netos</label>
+<textarea id="netos" placeholder="Nome dos netos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="bisnetos">Bisnetos</label>
+<textarea id="bisnetos" placeholder="Nome dos bisnetos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="trinetos">Trinetos</label>
+<textarea id="trinetos" placeholder="Nome dos trinetos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="tetranetos">Tetranetos</label>
+<textarea id="tetranetos" placeholder="Nome dos tetranetos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="irmaos">Irmãos</label>
+<textarea id="irmaos" placeholder="Nome dos irmãos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="tios">Tios</label>
+<textarea id="tios" placeholder="Nome dos tios separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="sobrinhos">Sobrinhos</label>
+<textarea id="sobrinhos" placeholder="Nome dos sobrinhos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="primos">Primos</label>
+<textarea id="primos" placeholder="Nome dos primos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="avos">Avós</label>
+<textarea id="avos" placeholder="Nome dos avós separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="bisavos">Bisavós</label>
+<textarea id="bisavos" placeholder="Nome dos bisavós separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="trisavos">Trisavós</label>
+<textarea id="trisavos" placeholder="Nome dos trisavós separados por vírgula"></textarea>
+</div>
+</div>
+</div>
+<div class="form-row full-width" style="margin-top: 20px;">
+<div class="form-group">
+<label>Informações Adicionais</label>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+<input id="info01" placeholder="Info 01" type="text"/>
+<input id="info02" placeholder="Info 02" type="text"/>
+<input id="info03" placeholder="Info 03" type="text"/>
+<input id="info04" placeholder="Info 04" type="text"/>
+<input id="info05" placeholder="Info 05" type="text"/>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 10px;">
+<input id="info06" placeholder="Info 06" type="text"/>
+<input id="info07" placeholder="Info 07" type="text"/>
+<input id="info08" placeholder="Info 08" type="text"/>
+<input id="info09" placeholder="Info 09" type="text"/>
+<input id="info10" placeholder="Info 10" type="text"/>
+</div>
+</div>
+</div>
+<div class="button-group">
+<button class="btn btn-success" onclick="addRecord()" type="button">
+<span id="addBtnText">➕ Adicionar</span>
+</button>
+<button class="btn btn-warning" id="updateBtn" onclick="updateRecord()" style="display:none;" type="button">
                                 ✏️ Alterar
                             </button>
-                            <button type="button" class="btn btn-danger" onclick="deleteRecord()" id="deleteBtn" style="display:none;">
+<button class="btn btn-danger" id="deleteBtn" onclick="deleteRecord()" style="display:none;" type="button">
                                 🗑️ Excluir
                             </button>
-                            <button type="button" class="btn btn-secondary" onclick="clearForm()">
+<button class="btn btn-secondary" onclick="clearForm()" type="button">
                                 🔄 Limpar
                             </button>
-                            <button type="button" class="btn btn-primary" onclick="exportData()">
+<button class="btn btn-primary" onclick="exportData()" type="button">
                                 💾 Exportar dados.json
                             </button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Records List -->
-                <div class="records-section">
-                    <h2>📋 Registros Cadastrados</h2>
-                    <div class="search-box">
-                        <input type="text" id="searchInput" placeholder="🔍 Buscar por nome..." onkeyup="searchRecords()">
-                    </div>
-                    <div id="recordsList" class="records-list">
-                        <!-- Records will be loaded here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
+</div>
+</form>
+</div>
+<!-- Records List -->
+<div class="records-section">
+<h2>📋 Registros Cadastrados</h2>
+<div class="search-box">
+<input id="searchInput" onkeyup="searchRecords()" placeholder="🔍 Buscar por nome..." type="text"/>
+</div>
+<div class="records-list" id="recordsList">
+<!-- Records will be loaded here -->
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
         // Global variables
         let records = [];
         let currentUser = null;
@@ -1139,6 +1115,70 @@
 
         // Initialize
         loadUsers();
-    </script>
+    
+// Auto format date input (DD/MM/YYYY) allowing only numbers
+function formatDateInput(el) {
+    let value = el.value.replace(/\D/g, '');
+
+    if (value.length > 8) value = value.slice(0,8);
+
+    if (value.length >= 5) {
+        el.value = value.replace(/(\d{2})(\d{2})(\d{0,4})/, function(_, d, m, y){
+            return y ? `${d}/${m}/${y}` : `${d}/${m}`;
+        });
+    } else if (value.length >= 3) {
+        el.value = value.replace(/(\d{2})(\d{0,2})/, function(_, d, m){
+            return `${d}/${m}`;
+        });
+    } else {
+        el.value = value;
+    }
+}
+
+// Validate date (DD/MM/YYYY)
+function isValidDate(dateStr){
+    if(!dateStr) return true; // allow empty (for falecimento)
+    const parts=dateStr.split('/');
+    if(parts.length!==3) return false;
+    let [d,m,y]=parts.map(n=>parseInt(n,10));
+    if(y<1000||y>3000) return false;
+    if(m<1||m>12) return false;
+    const days=[31,(y%4===0&&y%100!==0)||y%400===0?29:28,31,30,31,30,31,31,30,31,30,31];
+    if(d<1||d>days[m-1]) return false;
+    return true;
+}
+
+// Attach validation on blur
+document.addEventListener("DOMContentLoaded", ()=>{
+    ["nascimento","falecimento"].forEach(id=>{
+        const el=document.getElementById(id);
+        if(el){
+            el.addEventListener("blur", ()=>{
+                if(!isValidDate(el.value)){
+                    alert("Data inválida! Use formato DD/MM/AAAA");
+                    el.focus();
+                }
+            });
+        }
+    });
+});
+
+// Enhance form validation
+const oldValidateForm = validateForm;
+validateForm = function(){
+    if(!oldValidateForm()) return false;
+    const nasc=document.getElementById('nascimento').value;
+    const fal=document.getElementById('falecimento').value;
+    if(!isValidDate(nasc)){
+        showMessage('formMessage','Data de nascimento inválida!','error');
+        return false;
+    }
+    if(fal && !isValidDate(fal)){
+        showMessage('formMessage','Data de falecimento inválida!','error');
+        return false;
+    }
+    return true;
+}
+</script>
 </body>
 </html>
