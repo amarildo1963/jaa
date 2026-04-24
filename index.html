@@ -36,7 +36,7 @@
         
         .icon-luto { width: 15px; height: auto; margin-left: 2px; }
         .icon-action { width: 30px; height: 30px; cursor: pointer; transition: opacity 0.2s; }
-        .icon-pdf-mini { width: 25px; height: 25px; cursor: pointer; vertical-align: middle; margin-right: 2px; }
+        .icon-pdf-mini { width: 25px; height: 25px; cursor: pointer; vertical-align: middle; }
         
         /* Classe específica para genealogia aumentada em 50% */
         .icon-genealogia { width: 65px; height: 65px; cursor: pointer; transition: opacity 0.2s; }
@@ -121,8 +121,8 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 23/04/2026<br>
-		Versão 1.06<br>
+        Atualizado: 24/04/2026<br>
+		Versão 1.07<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -352,10 +352,15 @@ function render(filtro = "") {
 
                 card.innerHTML = `
                     <div class="photo-wrapper">
-                        <img src="info.png" class="icon-action" onclick="mostrarInfo('${p.id}')" alt="Info">
+                        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+                            <img src="info.png" class="icon-action" onclick="mostrarInfo('${p.id}')" alt="Info">
+                            <img src="pdf-print.png" class="icon-pdf-mini" onclick="gerarPDF('${p.id}')" alt="PDF">
+                        </div>
+                        
                         <div class="img-container" ondblclick="voltarParaLista()">
                             <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
                         </div>
+                        
                         <div style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
                             <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
                         </div>
@@ -376,7 +381,7 @@ function render(filtro = "") {
                             <div class="info-idade-viva">${dadosIdade.anos} anos</div>
                             <div class="info-idade-viva" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
                         `}
-                        <div>${destacar(p.signo, termo)} <img src="pdf-print.png" class="icon-pdf-mini" onclick="gerarPDF('${p.id}')" alt="PDF"></div>
+                        <div>${destacar(p.signo, termo)}</div>
                     ` : ''}
                     ${isToday ? `<div class="bday-msg">${p.dFalec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>` : ''}
                 `;
