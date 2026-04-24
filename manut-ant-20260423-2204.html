@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manutenção Aniversariantes - Família Anerão</title>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .login-screen { display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .login-box { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); width: 100%; max-width: 400px; }
+        .login-box h1 { text-align: center; color: #667eea; margin-bottom: 30px; font-size: 28px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #333; font-weight: 600; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; transition: border-color 0.3s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #667eea; }
+        .btn { padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: all 0.3s; font-weight: 600; }
+        .btn-primary { background: #667eea; color: white; width: 100%; }
+        .btn-primary:hover { background: #5568d3; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+        .main-panel { display: none; }
+        .header { background: white; padding: 20px 30px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .header h1 { color: #667eea; font-size: 32px; display: flex; align-items: center; gap: 15px; }
+        .header img { width: 50px; height: 50px; }
+        .stats { display: flex; gap: 20px; align-items: center; }
+        .stat-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 25px; border-radius: 10px; text-align: center; }
+        .stat-box .number { font-size: 28px; font-weight: bold; }
+        .stat-box .label { font-size: 14px; opacity: 0.9; }
+        .logout-btn { background: #f44336; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .logout-btn:hover { background: #da190b; }
+        .content { background: white; border-radius: 15px; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .form-section { margin-bottom: 30px; padding: 25px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #667eea; }
+        .form-section h2 { color: #667eea; margin-bottom: 20px; font-size: 22px; }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .form-row.full-width { grid-template-columns: 1fr; }
+        .required::after { content: " *"; color: #f44336; }
+        .button-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+        .button-group .btn { flex: 1; min-width: 150px; }
+        .records-section { margin-top: 30px; }
+        .records-section h2 { color: #667eea; margin-bottom: 20px; font-size: 22px; }
+        .search-box { margin-bottom: 20px; }
+        .search-box input { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px; }
+        .records-list { max-height: 500px; overflow-y: auto; border: 2px solid #e0e0e0; border-radius: 8px; }
+        .record-item { padding: 15px; border-bottom: 1px solid #e0e0e0; cursor: pointer; transition: background 0.3s; display: flex; justify-content: space-between; align-items: center; }
+        .record-item:hover { background: #f0f4ff; }
+        .record-item.selected { background: #667eea; color: white; }
+        .record-info h3 { font-size: 16px; margin-bottom: 5px; }
+        .record-info p { font-size: 14px; opacity: 0.8; }
+        .record-actions { display: flex; gap: 10px; }
+        .record-actions .btn { padding: 5px 15px; font-size: 14px; }
+        .message { padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; }
+        .message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .message.show { display: block; }
+        .hidden { display: none !important; }
+        .readonly-field { background: #e9ecef; cursor: not-allowed; }
+        .date-input-hint { font-size: 12px; color: #666; margin-top: 5px; }
+        .field-hint { font-size: 12px; color: #666; margin-top: 5px; font-style: italic; }
+        /* Nova classe para preview */
+        .preview-img { max-width: 150px; max-height: 150px; object-fit: cover; border: 2px solid #ddd; border-radius: 8px; margin-top: 10px; display: block; }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="login-screen" id="loginScreen">
+<div class="login-box">
+<h1>🔐 Família Anerão</h1>
+<div class="message" id="loginMessage"></div>
+<form id="loginForm">
+<div class="form-group">
+<label for="username">Usuário</label>
+<input autocomplete="username" id="username" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="password">Senha</label>
+<input autocomplete="current-password" id="password" required="" type="password"/>
+</div>
+<button class="btn btn-primary" type="submit">Entrar</button>
+</form>
+</div>
+</div>
+
+<div class="main-panel" id="mainPanel">
+<div class="header">
+<h1>
+<img alt="Manutenção" onerror="this.style.display='none'" src="manut.png"/>
+                    Manutenção Aniversariantes
+                </h1>
+<div class="stats">
+<div class="stat-box">
+<div class="number" id="totalRecords">0</div>
+<div class="label">Total de Registros</div>
+</div>
+<button class="logout-btn" onclick="logout()">Sair</button>
+</div>
+</div>
+<div class="content">
+<div class="message" id="formMessage"></div>
+<div class="form-section">
+<h2 id="formTitle">Adicionar Registro</h2>
+<form id="recordForm">
+<input id="id" type="hidden"/>
+<div class="form-row">
+<div class="form-group">
+<label class="required" for="idDisplay">ID</label>
+<input class="readonly-field" id="idDisplay" readonly="" type="text"/>
+</div>
+<div class="form-group">
+<label for="data_inclusao">Data de Inclusão</label>
+<input class="readonly-field" id="data_inclusao" readonly="" type="text"/>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="required" for="nome">Nome</label>
+<input id="nome" required="" type="text"/>
+</div>
+<div class="form-group">
+<label class="required" for="sexo">Sexo</label>
+<select id="sexo" required="">
+<option value="">Selecione...</option>
+<option value="M">Masculino</option>
+<option value="F">Feminino</option>
+</select>
+</div>
+<div class="form-group">
+<label for="familia">Família</label>
+<input id="familia" type="text" value="Anerão"/>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="required" for="nascimento">Data de Nascimento</label>
+<input id="nascimento" inputmode="numeric" maxlength="10" oninput="formatDateInput(this)" placeholder="DDMMAAAA" required="" type="text"/>
+<div class="date-input-hint">Digite sem barras: DDMMAAAA (ex: 01011990)</div>
+</div>
+<div class="form-group">
+<label for="falecimento">Data de Falecimento</label>
+<input id="falecimento" inputmode="numeric" maxlength="10" oninput="formatDateInput(this)" placeholder="DDMMAAAA" type="text"/>
+<div class="date-input-hint">Digite sem barras: DDMMAAAA (ex: 01011990)</div>
+</div>
+<div class="form-group">
+<label for="imagem">Imagem</label>
+<input id="imagem" type="text" value="falta_a_imagem.jpg"/>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="pai">Pai</label>
+<input id="pai" type="text"/>
+</div>
+<div class="form-group">
+<label for="mae">Mãe</label>
+<input id="mae" type="text"/>
+</div>
+<div class="form-group">
+<label for="conjuge">Cônjuge</label>
+<input id="conjuge" type="text"/>
+</div>
+</div>
+<div class="form-section" style="margin-top: 20px;">
+<h2>👨‍👩‍‍ Relacionamentos Familiares</h2>
+<div class="field-hint">Separe os nomes por vírgula (ex: João, Maria, José)</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="filhos">Filhos</label>
+<textarea id="filhos" placeholder="Nome dos filhos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="netos">Netos</label>
+<textarea id="netos" placeholder="Nome dos netos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="bisnetos">Bisnetos</label>
+<textarea id="bisnetos" placeholder="Nome dos bisnetos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="trinetos">Trinetos</label>
+<textarea id="trinetos" placeholder="Nome dos trinetos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="tetranetos">Tetranetos</label>
+<textarea id="tetranetos" placeholder="Nome dos tetranetos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="irmaos">Irmãos</label>
+<textarea id="irmaos" placeholder="Nome dos irmãos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="tios">Tios</label>
+<textarea id="tios" placeholder="Nome dos tios separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="sobrinhos">Sobrinhos</label>
+<textarea id="sobrinhos" placeholder="Nome dos sobrinhos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="primos">Primos</label>
+<textarea id="primos" placeholder="Nome dos primos separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="avos">Avós</label>
+<textarea id="avos" placeholder="Nome dos avós separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="bisavos">Bisavós</label>
+<textarea id="bisavos" placeholder="Nome dos bisavós separados por vírgula"></textarea>
+</div>
+</div>
+<div class="form-row full-width">
+<div class="form-group">
+<label for="trisavos">Trisavós</label>
+<textarea id="trisavos" placeholder="Nome dos trisavós separados por vírgula"></textarea>
+</div>
+</div>
+</div>
+<div class="form-row full-width" style="margin-top: 20px;">
+<div class="form-group">
+<label>Informações Adicionais</label>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+<input id="info01" placeholder="Info 01" type="text"/>
+<input id="info02" placeholder="Info 02" type="text"/>
+<input id="info03" placeholder="Info 03" type="text"/>
+<input id="info04" placeholder="Info 04" type="text"/>
+<input id="info05" placeholder="Info 05" type="text"/>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 10px;">
+<input id="info06" placeholder="Info 06" type="text"/>
+<input id="info07" placeholder="Info 07" type="text"/>
+<input id="info08" placeholder="Info 08" type="text"/>
+<input id="info09" placeholder="Info 09" type="text"/>
+<input id="info10" placeholder="Info 10" type="text"/>
+</div>
+</div>
+</div>
+<div class="button-group">
+<button class="btn btn-success" onclick="addRecord()" type="button">
+<span id="addBtnText">➕ Adicionar</span>
+</button>
+<button class="btn btn-warning" id="updateBtn" onclick="updateRecord()" style="display:none;" type="button">
+                                ✏️ Alterar
+                            </button>
+<button class="btn btn-danger" id="deleteBtn" onclick="deleteRecord()" style="display:none;" type="button">
+                                🗑️ Excluir
+                            </button>
+<button class="btn btn-secondary" onclick="clearForm()" type="button">
+                                🔄 Limpar
+                            </button>
+<button class="btn btn-primary" onclick="exportData()" type="button">
+                                💾 Exportar dados.json
+                            </button>
+</div>
+</form>
+</div>
+<div class="records-section">
+<h2>📋 Registros Cadastrados</h2>
+<div class="search-box">
+<input id="searchInput" onkeyup="searchRecords()" placeholder="🔍 Buscar por nome..." type="text"/>
+</div>
+<div class="records-list" id="recordsList">
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+        // Global variables
+        let records = [];
+        let currentUser = null;
+        let users = { '100941291137': '100941291137', 'amarildo': '100941291137', 'amarilza': '100941291137', 'amauri': '100941291137' };
+
+        // Função para atualizar a imagem de preview
+        function updateImagePreview() {
+            const imgInput = document.getElementById('imagem');
+            const imgPreview = document.getElementById('imagePreview');
+            const baseUrl = 'https://amarildo1963.github.io/jaa/';
+            const filename = imgInput.value.trim() || 'falta_a_imagem.jpg';
+            imgPreview.src = baseUrl + filename;
+        }
+
+        // Load users from localStorage
+        function loadUsers() {
+            const savedUsers = localStorage.getItem('anerao_users');
+            if (savedUsers) { users = JSON.parse(savedUsers); }
+        }
+
+        // Login functions
+        function showLogin() {
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('mainPanel').style.display = 'none';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            loadUsers();
+            
+            if (users[username] && users[username] === password) {
+                currentUser = username;
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainPanel').style.display = 'block';
+                loadRecords();
+                showMessage('loginMessage', `Bem-vindo, ${username}!`, 'success');
+            } else {
+                showMessage('loginMessage', 'Usuário ou senha incorretos!', 'error');
+            }
+        });
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            showLogin();
+        }
+
+        // Message functions
+        function showMessage(elementId, message, type) {
+            const msgEl = document.getElementById(elementId);
+            msgEl.textContent = message;
+            msgEl.className = `message ${type} show`;
+            setTimeout(() => { msgEl.classList.remove('show'); }, 5000);
+        }
+
+        // Date formatting functions
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const digits = dateStr.replace(/\D/g, '');
+            if (digits.length === 8) { return `${digits.substr(0,2)}/${digits.substr(2,2)}/${digits.substr(4,4)}`; }
+            else if (digits.length === 6) { return `${digits.substr(0,2)}/${digits.substr(2,2)}/${digits.substr(4,2)}`; }
+            return dateStr;
+        }
+
+        function getCurrentDate() {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        function parseArrayField(value) {
+            if (!value || value.trim() === '') return [];
+            return value.split(',').map(item => item.trim()).filter(item => item !== '');
+        }
+
+        function arrayToString(arr) {
+            if (!arr || !Array.isArray(arr)) return '';
+            return arr.join(', ');
+        }
+
+        // Records functions
+        async function loadRecords() {
+            try {
+                const response = await fetch('https://amarildo1963.github.io/jaa/dados.json');
+                records = await response.json();
+                displayRecords();
+                updateTotalRecords();
+                generateNextId();
+            } catch (error) {
+                console.error('Error loading records:', error);
+                showMessage('formMessage', 'Erro ao carregar registros. Usando dados locais.', 'error');
+                records = [];
+                displayRecords();
+                updateTotalRecords();
+                generateNextId();
+            }
+        }
+
+        function displayRecords(filteredRecords = null) {
+            const listEl = document.getElementById('recordsList');
+            const recordsToDisplay = filteredRecords || records;
+            recordsToDisplay.sort((a, b) => (a.nome || '').localeCompare(b.nome || ''));
+            
+            if (recordsToDisplay.length === 0) {
+                listEl.innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">Nenhum registro encontrado</div>';
+                return;
+            }
+            
+            listEl.innerHTML = recordsToDisplay.map(record => `
+                <div class="record-item" onclick="selectRecord(${record.id})" data-id="${record.id}">
+                    <div class="record-info">
+                        <h3>${record.nome || 'Sem nome'}</h3>
+                        <p>Nascimento: ${record.nascimento || 'N/A'} | ID: ${record.id}</p>
+                    </div>
+                    <div class="record-actions">
+                        <button class="btn btn-warning" onclick="event.stopPropagation(); editRecord(${record.id})">Editar</button>
+                        <button class="btn btn-danger" onclick="event.stopPropagation(); deleteRecordById(${record.id})">Excluir</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function searchRecords() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (!searchTerm) { displayRecords(); return; }
+            const filtered = records.filter(record => (record.nome || '').toLowerCase().includes(searchTerm));
+            displayRecords(filtered);
+        }
+
+        function generateNextId() {
+            const maxId = records.reduce((max, record) => Math.max(max, record.id || 0), 0);
+            const nextId = maxId + 1;
+            document.getElementById('idDisplay').value = nextId;
+            document.getElementById('id').value = nextId;
+        }
+
+        function updateTotalRecords() { document.getElementById('totalRecords').textContent = records.length; }
+
+        function selectRecord(id) {
+            const record = records.find(r => r.id === id);
+            if (!record) return;
+            document.querySelectorAll('.record-item').forEach(item => {
+                item.classList.remove('selected');
+                if (parseInt(item.dataset.id) === id) { item.classList.add('selected'); }
+            });
+            document.getElementById('id').value = record.id;
+            document.getElementById('idDisplay').value = record.id;
+            document.getElementById('data_inclusao').value = record.data_inclusao || '';
+            document.getElementById('nome').value = record.nome || '';
+            document.getElementById('sexo').value = record.sexo || '';
+            document.getElementById('familia').value = record.familia || 'Anerão';
+            document.getElementById('nascimento').value = record.nascimento || '';
+            document.getElementById('falecimento').value = record.falecimento || '';
+            document.getElementById('imagem').value = record.imagem || 'falta_a_imagem.jpg';
+            document.getElementById('pai').value = record.pai || '';
+            document.getElementById('mae').value = record.mae || '';
+            document.getElementById('conjuge').value = record.conjuge || '';
+            document.getElementById('filhos').value = arrayToString(record.filhos);
+            document.getElementById('netos').value = arrayToString(record.netos);
+            document.getElementById('bisnetos').value = arrayToString(record.bisnetos);
+            document.getElementById('trinetos').value = arrayToString(record.trinetos);
+            document.getElementById('tetranetos').value = arrayToString(record.tetranetos);
+            document.getElementById('irmaos').value = arrayToString(record.irmaos);
+            document.getElementById('tios').value = arrayToString(record.tios);
+            document.getElementById('sobrinhos').value = arrayToString(record.sobrinhos);
+            document.getElementById('primos').value = arrayToString(record.primos);
+            document.getElementById('avos').value = arrayToString(record.avos);
+            document.getElementById('bisavos').value = arrayToString(record.bisavos);
+            document.getElementById('trisavos').value = arrayToString(record.trisavos);
+            for (let i = 1; i <= 10; i++) {
+                const infoField = document.getElementById(`info0${i}`);
+                if (infoField) { infoField.value = record[`info0${i}`] || record[`info${i}`] || record[`Info0${i}`] || record[`Info${i}`] || ''; }
+            }
+            updateImagePreview(); // Atualiza a imagem ao selecionar
+            document.getElementById('formTitle').textContent = 'Alterar Registro';
+            document.getElementById('addBtnText').textContent = '➕ Adicionar';
+            document.getElementById('updateBtn').style.display = 'inline-block';
+            document.getElementById('deleteBtn').style.display = 'inline-block';
+        }
+
+        function editRecord(id) { selectRecord(id); document.getElementById('nome').focus(); }
+
+        function clearForm() {
+            document.getElementById('recordForm').reset();
+            document.getElementById('familia').value = 'Anerão';
+            document.getElementById('imagem').value = 'falta_a_imagem.jpg';
+            document.getElementById('data_inclusao').value = '';
+            ['filhos', 'netos', 'bisnetos', 'trinetos', 'tetranetos', 'irmaos', 'tios', 'sobrinhos', 'primos', 'avos', 'bisavos', 'trisavos'].forEach(field => { document.getElementById(field).value = ''; });
+            document.getElementById('formTitle').textContent = 'Adicionar Registro';
+            document.getElementById('updateBtn').style.display = 'none';
+            document.getElementById('deleteBtn').style.display = 'none';
+            generateNextId();
+            updateImagePreview(); // Reseta a imagem
+            document.querySelectorAll('.record-item').forEach(item => { item.classList.remove('selected'); });
+        }
+
+        function validateForm() {
+            const nome = document.getElementById('nome').value.trim();
+            const nascimento = document.getElementById('nascimento').value.trim();
+            if (!nome) { showMessage('formMessage', 'Campo "Nome" é obrigatório!', 'error'); return false; }
+            if (!nascimento) { showMessage('formMessage', 'Campo "Data de Nascimento" é obrigatório!', 'error'); return false; }
+            return true;
+        }
+
+        function addRecord() {
+            if (!validateForm()) return;
+            const newRecord = {
+                id: parseInt(document.getElementById('id').value),
+                data_inclusao: getCurrentDate(),
+                nome: document.getElementById('nome').value.trim(),
+                sexo: document.getElementById('sexo').value,
+                familia: document.getElementById('familia').value.trim() || 'Anerão',
+                nascimento: formatDate(document.getElementById('nascimento').value),
+                falecimento: formatDate(document.getElementById('falecimento').value),
+                imagem: document.getElementById('imagem').value.trim() || 'falta_a_imagem.jpg',
+                pai: document.getElementById('pai').value.trim(),
+                mae: document.getElementById('mae').value.trim(),
+                conjuge: document.getElementById('conjuge').value.trim(),
+                filhos: parseArrayField(document.getElementById('filhos').value),
+                netos: parseArrayField(document.getElementById('netos').value),
+                bisnetos: parseArrayField(document.getElementById('bisnetos').value),
+                trinetos: parseArrayField(document.getElementById('trinetos').value),
+                tetranetos: parseArrayField(document.getElementById('tetranetos').value),
+                irmaos: parseArrayField(document.getElementById('irmaos').value),
+                tios: parseArrayField(document.getElementById('tios').value),
+                sobrinhos: parseArrayField(document.getElementById('sobrinhos').value),
+                primos: parseArrayField(document.getElementById('primos').value),
+                avos: parseArrayField(document.getElementById('avos').value),
+                bisavos: parseArrayField(document.getElementById('bisavos').value),
+                trisavos: parseArrayField(document.getElementById('trisavos').value),
+                info: "|||||",
+                info01: document.getElementById('info01').value.trim(),
+                info02: document.getElementById('info02').value.trim(),
+                info03: document.getElementById('info03').value.trim(),
+                info04: document.getElementById('info04').value.trim(),
+                info05: document.getElementById('info05').value.trim(),
+                info06: document.getElementById('info06').value.trim(),
+                info07: document.getElementById('info07').value.trim(),
+                info08: document.getElementById('info08').value.trim(),
+                info09: document.getElementById('info09').value.trim(),
+                info10: document.getElementById('info10').value.trim()
+            };
+            records.push(newRecord);
+            showMessage('formMessage', 'Registro adicionado com sucesso!', 'success');
+            clearForm();
+            displayRecords();
+            updateTotalRecords();
+        }
+
+        function updateRecord() {
+            if (!validateForm()) return;
+            const id = parseInt(document.getElementById('id').value);
+            const index = records.findIndex(r => r.id === id);
+            if (index === -1) { showMessage('formMessage', 'Registro não encontrado!', 'error'); return; }
+            records[index] = {
+                ...records[index],
+                nome: document.getElementById('nome').value.trim(),
+                sexo: document.getElementById('sexo').value,
+                familia: document.getElementById('familia').value.trim() || 'Anerão',
+                nascimento: formatDate(document.getElementById('nascimento').value),
+                falecimento: formatDate(document.getElementById('falecimento').value),
+                imagem: document.getElementById('imagem').value.trim() || 'falta_a_imagem.jpg',
+                pai: document.getElementById('pai').value.trim(),
+                mae: document.getElementById('mae').value.trim(),
+                conjuge: document.getElementById('conjuge').value.trim(),
+                filhos: parseArrayField(document.getElementById('filhos').value),
+                netos: parseArrayField(document.getElementById('netos').value),
+                bisnetos: parseArrayField(document.getElementById('bisnetos').value),
+                trinetos: parseArrayField(document.getElementById('trinetos').value),
+                tetranetos: parseArrayField(document.getElementById('tetranetos').value),
+                irmaos: parseArrayField(document.getElementById('irmaos').value),
+                tios: parseArrayField(document.getElementById('tios').value),
+                sobrinhos: parseArrayField(document.getElementById('sobrinhos').value),
+                primos: parseArrayField(document.getElementById('primos').value),
+                avos: parseArrayField(document.getElementById('avos').value),
+                bisavos: parseArrayField(document.getElementById('bisavos').value),
+                trisavos: parseArrayField(document.getElementById('trisavos').value),
+                info01: document.getElementById('info01').value.trim(),
+                info02: document.getElementById('info02').value.trim(),
+                info03: document.getElementById('info03').value.trim(),
+                info04: document.getElementById('info04').value.trim(),
+                info05: document.getElementById('info05').value.trim(),
+                info06: document.getElementById('info06').value.trim(),
+                info07: document.getElementById('info07').value.trim(),
+                info08: document.getElementById('info08').value.trim(),
+                info09: document.getElementById('info09').value.trim(),
+                info10: document.getElementById('info10').value.trim()
+            };
+            showMessage('formMessage', 'Registro alterado com sucesso!', 'success');
+            clearForm();
+            displayRecords();
+        }
+
+        function deleteRecord() { const id = parseInt(document.getElementById('id').value); deleteRecordById(id); }
+
+        function deleteRecordById(id) {
+            if (!confirm('Tem certeza que deseja excluir este registro?')) return;
+            const index = records.findIndex(r => r.id === id);
+            if (index === -1) { showMessage('formMessage', 'Registro não encontrado!', 'error'); return; }
+            records.splice(index, 1);
+            showMessage('formMessage', 'Registro excluído com sucesso!', 'success');
+            clearForm();
+            displayRecords();
+            updateTotalRecords();
+        }
+
+        function exportData() {
+            const sortedRecords = [...records].sort((a, b) => {
+                const dateA = parseDate(a.nascimento);
+                const dateB = parseDate(b.nascimento);
+                if (!dateA && !dateB) return 0;
+                if (!dateA) return 1;
+                if (!dateB) return -1;
+                if (dateA.month !== dateB.month) return dateA.month - dateB.month;
+                if (dateA.day !== dateB.day) return dateA.day - dateB.day;
+                return dateA.year - dateB.year;
+            });
+            const dataStr = JSON.stringify(sortedRecords, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'dados.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            showMessage('formMessage', 'Arquivo dados.json exportado com sucesso!', 'success');
+        }
+
+        function parseDate(dateStr) {
+            if (!dateStr) return null;
+            const digits = dateStr.replace(/\D/g, '');
+            if (digits.length < 8) return null;
+            return { day: parseInt(digits.substr(0, 2)), month: parseInt(digits.substr(2, 2)), year: parseInt(digits.substr(4, 4)) };
+        }
+
+        loadUsers();
+
+        function formatDateInput(el) {
+            let value = el.value.replace(/\D/g, '');
+            if (value.length > 8) value = value.slice(0,8);
+            if (value.length >= 5) { el.value = value.replace(/(\d{2})(\d{2})(\d{0,4})/, (match, d, m, y) => y ? `${d}/${m}/${y}` : `${d}/${m}`); }
+            else if (value.length >= 3) { el.value = value.replace(/(\d{2})(\d{0,2})/, (match, d, m) => `${d}/${m}`); }
+            else { el.value = value; }
+        }
+
+        function isValidDate(dateStr){
+            if(!dateStr) return true;
+            const parts=dateStr.split('/');
+            if(parts.length!==3) return false;
+            let [d,m,y]=parts.map(n=>parseInt(n,10));
+            if(y<1000||y>3000) return false;
+            if(m<1||m>12) return false;
+            const days=[31,(y%4===0&&y%100!==0)||y%400===0?29:28,31,30,31,30,31,31,30,31,30,31];
+            if(d<1||d>days[m-1]) return false;
+            return true;
+        }
+
+        document.addEventListener("DOMContentLoaded", ()=>{
+            ["nascimento","falecimento"].forEach(id=>{
+                const el=document.getElementById(id);
+                if(el){
+                    el.addEventListener("blur", ()=>{
+                        if(!isValidDate(el.value)){ alert("Data inválida! Use formato DD/MM/AAAA"); el.focus(); }
+                    });
+                }
+            });
+        });
+        
+        // Sobrescrita da validação original para incluir a validação de data
+        const oldValidateForm = validateForm;
+        validateForm = function(){
+            if(!oldValidateForm()) return false;
+            const nasc=document.getElementById('nascimento').value;
+            const fal=document.getElementById('falecimento').value;
+            if(!isValidDate(nasc)){ showMessage('formMessage','Data de nascimento inválida!','error'); return false; }
+            if(fal && !isValidDate(fal)){ showMessage('formMessage','Data de falecimento inválida!','error'); return false; }
+            return true;
+        }
+</script>
+</body>
+</html>
