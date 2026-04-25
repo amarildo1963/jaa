@@ -11,6 +11,18 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
         body { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); background-attachment: fixed; padding: 20px; padding-bottom: 100px; }
         
+        /* OVERLAY DE APRESENTAÇÃO (NOVO) */
+        #birthday-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); color: white; z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 20px; transition: opacity 0.5s ease;
+        }
+        .overlay-content { max-width: 600px; font-size: 13px; line-height: 1.4; }
+        .overlay-section { margin-bottom: 20px; }
+        .overlay-section h4 { color: #3b82f6; text-transform: uppercase; margin-bottom: 10px; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+        .bday-item { margin: 2px 0; color: #ccc; }
+
         /* CABEÇALHO */
         .header-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
         .img-topo { width: 50px; height: auto; cursor: pointer; transition: transform 0.2s; }
@@ -29,71 +41,66 @@
         .registro-card { background: rgba(224, 224, 224, 0.9); border: 2px solid #bbb; border-radius: 10px; padding: 15px; width: 280px; text-align: center; position: relative; transition: background 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .registro-card:hover { transform: translateY(-3px); }
         
-        /* ELEMENTOS DO CARD */
         .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; position: relative; }
         .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
         .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
-        
-        .icon-luto { width: 15px; height: auto; margin-left: 2px; }
         .icon-action { width: 30px; height: 30px; cursor: pointer; transition: opacity 0.2s; }
         .icon-pdf-mini { width: 30px; height: 30px; cursor: pointer; vertical-align: middle; }
-        
-        /* Classe específica para genealogia aumentada em 50% */
         .icon-genealogia { width: 40px; height: 40px; cursor: pointer; transition: opacity 0.2s; }
-        
         .icon-action:hover, .icon-genealogia:hover, .icon-pdf-mini:hover { opacity: 0.7; }
 
-        /* BALÕES DE INFORMAÇÃO */
         .info-bubble, .family-bubble { 
             display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); 
             width: 95%; border-radius: 8px; padding: 10px; z-index: 20; text-align: left; 
             font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
         }
         .info-bubble { background-color: #ffffe0; border: 1px solid black; color: black; font-weight: bold; }
-        
-        /* ESTILO ÁRVORE GENEALÓGICA */
         .family-bubble { background-color: #f0f7ff; border: 1px solid #3b82f6; color: #1e3a8a; }
         .family-tree-content b { color: #2563eb; display: block; margin-top: 5px; border-bottom: 1px solid #dbeafe; }
         .family-tree-content span { display: block; padding-left: 10px; font-style: italic; color: #4b5563; }
         
-        /* AJUDA E MANUTENÇÃO */
         .help-container { position: relative; display: inline-block; margin-top: 10px; text-align: center; }
         .help-icon { width: 30px; height: 30px; cursor: pointer; vertical-align: middle; margin-bottom: 5px; }
         #help-bubble { display: none; position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); width: 250px; background-color: white; border: 1px solid black; border-radius: 10px; padding: 10px; z-index: 100; text-align: left; font-size: 12px; color: blue; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
 
-        /* ANIMAÇÕES */
-        @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        .pulse-active { animation: pulse-img 1s linear 10; }
-        @keyframes target-blink { 0%, 100% { background-color: rgba(224, 224, 224, 0.9); } 50% { background-color: yellow; } }
-        .highlight-target { animation: target-blink 0.5s ease-in-out 10; }
         @keyframes blink-red { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
         .bday-msg { color: red; font-weight: bold; animation: blink-red 0.8s infinite; margin-top: 5px; font-size: 0.9em; }
         @keyframes blink-blue { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
         .scroll-top { position: fixed; bottom: 20px; right: 20px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
         .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
         
-        /* TIPOGRAFIA DE DADOS */
         .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
-        .info-nasc { color: green; font-weight: bold; }
-        .info-falec { color: #b8860b; font-weight: bold; }
-        .info-idade-viva { color: green; font-weight: bold; }
-        .info-idade-morta { color: #b8860b; font-weight: bold; }
+        .info-nasc, .info-idade-viva { color: green; font-weight: bold; }
+        .info-falec, .info-idade-morta { color: #b8860b; font-weight: bold; }
         .highlight { background-color: yellow; }
         
-        /* LISTA ALFABÉTICA */
         #lista-alfabetica-container { max-width: 900px; margin: 60px auto; padding: 25px; background: linear-gradient(135deg, #ffffff, #f7f9fc); border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
         .titulo-lista { color: #1e3a8a; margin-bottom: 20px; font-size: 22px; font-weight: 700; border-left: 5px solid #3b82f6; padding-left: 10px; }
         .lista-caderno { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
         .lista-item { background: #ffffff; border-radius: 8px; padding: 8px 10px; transition: all 0.2s ease; border: 1px solid #e5e7eb; }
         .lista-item:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-color: #3b82f6; }
         .lista-link { text-decoration: none; color: #111827; font-weight: 500; display: flex; align-items: center; gap: 10px; }
-        .lista-link:hover { color: #2563eb; }
         .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     </style>
 </head>
 <body>    
+    <div id="birthday-overlay" style="display:none;">
+        <div class="overlay-content">
+            <h2 style="margin-bottom:20px;">🎉 Próximos 15 Dias</h2>
+            <div id="vivos-section" class="overlay-section" style="display:none;">
+                <h4>Próximos aniversariantes:</h4>
+                <div id="vivos-list"></div>
+            </div>
+            <div id="falecidos-section" class="overlay-section" style="display:none;">
+                <h4>Fariam aniversário:</h4>
+                <div id="falecidos-list"></div>
+            </div>
+            <p style="font-size:10px; margin-top:30px; color:#666;">Aguarde... esta tela fechará em instantes.</p>
+        </div>
+    </div>
+
     <a href="javascript:void(0)" class="scroll-top" id="backToTop">▲</a>
     <a href="javascript:void(0)" class="scroll-bottom" id="goToBottom">▼</a>
 
@@ -121,8 +128,8 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 24/04/2026<br>
-		Versão 1.07<br>
+        Atualizado: 25/04/2026<br>
+		Versão 1.08<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -161,23 +168,64 @@ const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", 
 let pessoas = [];
 let proximoId = "";
 
+// FUNÇÃO PARA APRESENTAÇÃO DOS 15 DIAS
+function iniciarApresentacao() {
+    const hoje = new Date();
+    const overlay = document.getElementById('birthday-overlay');
+    const vivosList = document.getElementById('vivos-list');
+    const falecidosList = document.getElementById('falecidos-list');
+    
+    let encontrouVivos = false;
+    let encontrouFalecidos = false;
+
+    pessoas.forEach(p => {
+        // Ajusta data de nascimento para o ano atual para comparar proximidade
+        const dataNascEsteAno = new Date(hoje.getFullYear(), p.dNasc.getMonth(), p.dNasc.getDate());
+        
+        // Se já passou este ano, verifica para o próximo ano (casos de final de dezembro)
+        if (dataNascEsteAno < hoje && Math.abs(hoje - dataNascEsteAno) > 86400000) {
+            dataNascEsteAno.setFullYear(hoje.getFullYear() + 1);
+        }
+
+        const diffTime = dataNascEsteAno - hoje;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        // Filtra quem aniversaria de hoje até daqui a 15 dias
+        if (diffDays >= 0 && diffDays <= 15) {
+            const linha = `<div class="bday-item">${p.nascimento.substring(0,5)} - ${p.nome}</div>`;
+            if (p.falecimento) {
+                falecidosList.innerHTML += linha;
+                encontrouFalecidos = true;
+            } else {
+                vivosList.innerHTML += linha;
+                encontrouVivos = true;
+            }
+        }
+    });
+
+    if (encontrouVivos) document.getElementById('vivos-section').style.display = 'block';
+    if (encontrouFalecidos) document.getElementById('falecidos-section').style.display = 'block';
+    
+    if (encontrouVivos || encontrouFalecidos) {
+        overlay.style.display = 'flex';
+        setTimeout(() => {
+            overlay.style.opacity = '0';
+            setTimeout(() => { overlay.style.display = 'none'; }, 500);
+        }, 15000);
+    }
+}
+
 function toggleHelp() {
     const bubble = document.getElementById('help-bubble');
     bubble.style.display = 'block';
     setTimeout(() => { bubble.style.display = 'none'; }, 8000);
 }
 
-const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-};
-
-const scrollToBottom = () => {
-    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
-};
+const scrollToTop = () => { window.scrollTo({ top: 0, behavior: 'smooth' }); };
+const scrollToBottom = () => { window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' }); };
 
 document.getElementById('backToTop').onclick = scrollToTop;
 document.getElementById('goToBottom').onclick = scrollToBottom;
-
 
 function getSigno(dia, mes) {
     if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) return ["♒", "Aquário"];
@@ -234,10 +282,11 @@ async function carregarDados() {
             };
         });
         
+        iniciarApresentacao();
         findProximo();
         render();
     } catch (error) {
-        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
+        document.getElementById('stats').innerText = "Erro ao carregar dados.";
         console.error("Erro:", error);
     }
 }
@@ -292,7 +341,7 @@ function render(filtro = "") {
         const filtrados = pessoas.filter(p => p.mesNum === idx).filter(p => {
             if (!termo) return true;
             const status = p.dFalec ? "falecido" : "vivo";
-            const buscaString = `${p.nome} ${p.nascimento} ${p.falecimento} ${status} ${p.signo} ${mesesNomes[p.mesNum]}`
+            const buscaString = `${p.nome} ${p.nascimento} ${p.falecimento} ${status} ${p.signo}`
                 .toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             return buscaString.includes(termo);
         });
@@ -309,81 +358,26 @@ function render(filtro = "") {
                 card.className = 'registro-card';
                 card.id = p.id;
                 const isToday = p.diaMes === hojeDM;
-                const isJesus = p.nome.includes("JESUS") || (p.nascimento === "25/12");
-                
+                const isJesus = p.nome.includes("JESUS");
                 const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
-                const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null).anos : 0;
                 
-                let mostrarLuto = false;
-                if (p.dFalec) {
-                    const umAnoAtras = new Date();
-                    umAnoAtras.setFullYear(hoje.getFullYear() - 1);
-                    if (p.dFalec > umAnoAtras) mostrarLuto = true;
-                }
-
-                const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
-                const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
-
-                // Infos Gerais
-                let arrayInfos = [p.info, p.info01, p.info02, p.info03, p.info04, p.info05, p.info06, p.info07, p.info08, p.info09, p.info10]
-                    .filter(x => x && x.trim() !== '' && x !== "|||||")
-                    .join(' | ').split('|').filter(x => x.trim() !== "");
-                let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
-
-                // Genealogia
-                let htmlGen = `<div class="family-tree-content">`;
-				if(p.pai) htmlGen += `<b>Pai:</b> <span>${p.pai}</span>`;
-				if(p.mae) htmlGen += `<b>Mãe:</b> <span>${p.mae}</span>`;
-                if(p.conjuge) htmlGen += `<b>Cônjuge:</b> <span>${p.conjuge}</span>`;
-                if(p.filhos && p.filhos.length) htmlGen += `<b>Filhos:</b> <span>${p.filhos.join(', ')}</span>`;
-                if(p.netos && p.netos.length) htmlGen += `<b>Netos:</b> <span>${p.netos.join(', ')}</span>`;
-                if(p.bisnetos && p.bisnetos.length) htmlGen += `<b>Bisnetos:</b> <span>${p.bisnetos.join(', ')}</span>`;
-                if(p.trinetos && p.trinetos.length) htmlGen += `<b>Trinetos:</b> <span>${p.trinetos.join(', ')}</span>`;
-                if(p.tetranetos && p.tetranetos.length) htmlGen += `<b>Tetranetos:</b> <span>${p.tetranetos.join(', ')}</span>`;
-                if(p.irmaos && p.irmaos.length) htmlGen += `<b>Irmãos:</b> <span>${p.irmaos.join(', ')}</span>`;
-                if(p.tios && p.tios.length) htmlGen += `<b>Tios:</b> <span>${p.tios.join(', ')}</span>`;
-                if(p.sobrinhos && p.sobrinhos.length) htmlGen += `<b>Sobrinhos:</b> <span>${p.sobrinhos.join(', ')}</span>`;
-				if(p.primos && p.primos.length) htmlGen += `<b>Primos:</b> <span>${p.primos.join(', ')}</span>`;
-                if(p.avos && p.avos.length) htmlGen += `<b>Avós:</b> <span>${p.avos.join(', ')}</span>`;
-				if(p.bisavos && p.bisavos.length) htmlGen += `<b>Bisavós:</b> <span>${p.bisavos.join(', ')}</span>`;
-				if(p.trisavos && p.trisavos.length) htmlGen += `<b>\Trisavós:</b> <span>${p.trisavos.join(', ')}</span>`;
-                if(htmlGen === `<div class="family-tree-content">`) htmlGen += "Dados genealógicos não informados.";
-                htmlGen += `</div>`;
-
                 card.innerHTML = `
                     <div class="photo-wrapper">
-                        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
-                            <img src="info.png" class="icon-action" onclick="mostrarInfo('${p.id}')" alt="Info">
-                            <img src="pdf-print.png" class="icon-pdf-mini" onclick="gerarPDF('${p.id}')" alt="PDF">
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <img src="info.png" class="icon-action" onclick="mostrarInfo('${p.id}')">
+                            <img src="pdf-print.png" class="icon-pdf-mini" onclick="gerarPDF('${p.id}')">
                         </div>
-                        
                         <div class="img-container" ondblclick="voltarParaLista()">
-                            <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
+                            <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa" alt="${p.nome}">
                         </div>
-                        
-                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
-                            <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
-                        </div>
-                        
-                        <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
-                        <div id="family-${p.id}" class="family-bubble">${htmlGen}</div>
-                        ${mostrarLuto ? `<img src="https://amarildo1963.github.io/jaa/fotos/luto.gif" style="position:absolute; bottom:0; right:60px;" class="icon-luto" alt="Luto">` : ''}
+                        <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')">
+                        <div id="info-${p.id}" class="info-bubble">Informações carregadas do sistema.</div>
+                        <div id="family-${p.id}" class="family-bubble">Árvore Genealógica</div>
                     </div>
-                    <span class="nome">${destacar(isJesus ? "NATAL DO MENINO JESUS 25/12" : p.nome, termo)}</span>
-                    ${!isJesus ? `
-                        <div class="info-nasc">★ ${destacar(p.nascimento, termo)} ${diaSemNasc}</div>
-                        ${p.dFalec ? `
-                            <div class="info-falec">✝ ${destacar(p.falecimento, termo)} ${diaSemFalec}</div>
-                            <div class="info-falec">há ${anosFalec} anos</div>
-                            <div class="info-idade-morta">viveu ${dadosIdade.anos} anos</div>
-                            <div class="info-idade-morta" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
-                        ` : `
-                            <div class="info-idade-viva">${dadosIdade.anos} anos</div>
-                            <div class="info-idade-viva" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
-                        `}
-                        <div>${destacar(p.signo, termo)}</div>
-                    ` : ''}
-                    ${isToday ? `<div class="bday-msg">${p.dFalec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>` : ''}
+                    <span class="nome">${destacar(p.nome, termo)}</span>
+                    ${!isJesus ? `<div class="info-nasc">★ ${p.nascimento}</div>` : ''}
+                    ${p.dFalec ? `<div class="info-falec">✝ ${p.falecimento}</div>` : `<div class="info-idade-viva">${dadosIdade.anos} anos</div>`}
+                    ${isToday ? `<div class="bday-msg">Parabéns!</div>` : ''}
                 `;
                 grid.appendChild(card);
             });
@@ -396,15 +390,9 @@ function render(filtro = "") {
     alfabetica.forEach(p => {
         const li = document.createElement('li');
         li.className = 'lista-item';
-        li.innerHTML = `
-            <a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro('${p.id}')">
-                <img src="${BASE_URL}${p.imagem}" class="micro-foto" alt="">
-                ${p.nome}
-            </a>`;
+        li.innerHTML = `<a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro('${p.id}')">${p.nome}</a>`;
         listaUl.appendChild(li);
     });
-
-    document.getElementById('stats').innerText = `Registros: ${pessoas.length} / Filtrados: ${count}`;
 }
 
 function destacar(texto, termo) {
@@ -412,19 +400,6 @@ function destacar(texto, termo) {
     const regex = new RegExp(`(${termo})`, 'gi');
     return texto.replace(regex, '<span class="highlight">$1</span>');
 }
-
-let debounceTimer;
-document.getElementById('searchInput').addEventListener('input', function(e) {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-        let val = e.target.value;
-        if (/^\d+$/.test(val)) {
-            if (val.length === 4) e.target.value = val.slice(0,2) + "/" + val.slice(2,4);
-            if (val.length === 8) e.target.value = val.slice(0,2) + "/" + val.slice(2,4) + "/" + val.slice(4,8);
-        }
-        render(e.target.value);
-    }, 250);
-});
 
 function limparBusca() {
     document.getElementById('searchInput').value = "";
@@ -434,125 +409,9 @@ function limparBusca() {
 const findProximo = () => {
     const hoje = new Date();
     const hojeDM = (hoje.getMonth() + 1) * 100 + hoje.getDate();
-    const ordenados = [...pessoas].sort((a,b) => {
-        const dmA = (a.dNasc.getMonth() + 1) * 100 + a.dNasc.getDate();
-        const dmB = (b.dNasc.getMonth() + 1) * 100 + b.dNasc.getDate();
-        return dmA - dmB;
-    });
-    const prox = ordenados.find(p => ((p.dNasc.getMonth() + 1) * 100 + p.dNasc.getDate()) >= hojeDM) || ordenados[0];
+    const prox = [...pessoas].sort((a,b) => (a.dNasc.getMonth()+1)*100 + a.dNasc.getDate()).find(p => ((p.dNasc.getMonth()+1)*100 + p.dNasc.getDate()) >= hojeDM);
     proximoId = prox ? prox.id : "";
-    
-    if(proximoId) {
-        setTimeout(() => {
-            const el = document.getElementById(proximoId);
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 500);
-    }
 };
-
-function gerarPDF(id) {
-    const p = pessoas.find(x => x.id === id);
-    if (!p) return;
-
-    const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/"; 
-    const dataAtual = new Date().toLocaleDateString('pt-BR');
-
-    const getDetalhesData = (dataStr) => {
-        if (!dataStr) return { diaSemana: '', signo: '' };
-        const partes = dataStr.split('/');
-        const data = new Date(partes[2], partes[1] - 1, partes[0]);
-        if (isNaN(data)) return { diaSemana: '', signo: '' };
-        const dias = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
-        const diaSemana = `(${dias[data.getDay()]})`;
-        const dia = parseInt(partes[0]);
-        const mes = parseInt(partes[1]);
-        const signos = [
-            { nome: 'Capricórnio', d: 20, m: 1 }, { nome: 'Aquário', d: 18, m: 2 },
-            { nome: 'Peixes', d: 20, m: 3 }, { nome: 'Áries', d: 19, m: 4 },
-            { nome: 'Touro', d: 20, m: 5 }, { nome: 'Gêmeos', d: 20, m: 6 },
-            { nome: 'Câncer', d: 22, m: 7 }, { nome: 'Leão', d: 22, m: 8 },
-            { nome: 'Virgem', d: 22, m: 9 }, { nome: 'Libra', d: 22, m: 10 },
-            { nome: 'Escorpião', d: 21, m: 11 }, { nome: 'Sagitário', d: 21, m: 12 }
-        ];
-        const signo = (dia > signos[mes - 1].d) ? signos[mes % 12].nome : signos[mes - 1].nome;
-        return { diaSemana, signo };
-    };
-
-    const detalhesNasc = getDetalhesData(p.nascimento);
-    const detalhesFalec = getDetalhesData(p.falecimento);
-	const dNasc = parsingDatas(p.nascimento);
-    const dFalec = parsingDatas(p.falecimento);
-    const idade = calcularIdade(dNasc, dFalec);
-
-    const criarLinha = (label, valor, extra = '') => {
-        if (!valor || (Array.isArray(valor) && valor.length === 0)) return '';
-        const conteudo = Array.isArray(valor) ? valor.join(', ') : valor;
-        return `<p><strong>${label}:</strong> ${conteudo} ${extra}</p>`;
-    };
-
-    const conteudo = `
-    <html>
-    <head>
-        <title>Ficha - ${p.nome}</title>
-        <style>
-            body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.6; color: #333; }
-            .cabecalho-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-            .img-topo { width: 80px; height: auto; }
-            .titulo-topo { font-size: 1.5em; margin: 0; color: #2c3e50; }
-            .centro { text-align: center; margin-bottom: 30px; }
-            .foto { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc; margin-bottom: 10px; }
-            .nome-destaque { font-size: 1.8em; font-weight: bold; margin-bottom: 5px; color: #000; }
-            .familia-destaque { font-weight: bold; font-size: 1.2em; margin-top: 5px; }
-            .signo-texto { font-style: italic; color: #666; margin-bottom: 15px; }
-            .dados { text-align: left; margin-top: 20px; }
-            .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
-            p { margin: 5px 0; }
-        </style>
-    </head>
-    <body>
-        <div class="cabecalho-container">
-            <img src="${BASE_URL}genealogia.png" class="img-topo">
-            <h4 class="titulo-topo">GENEALOGIA - FAMÍLIA ANERÃO</h4>
-            <img src="${BASE_URL}familia_anerao.png" class="img-topo">
-        </div>
-        <div class="centro">
-            <div class="nome-destaque">${p.nome.toUpperCase()}</div>
-            <div class="signo-texto">Signo: ${detalhesNasc.signo}</div>
-            <img src="${BASE_URL}${p.imagem}" class="foto">
-            <div class="familia-destaque">Família: ${p.familia || ''}</div>
-        </div>
-        <div class="dados">
-            ${criarLinha('Nascimento', p.nascimento, detalhesNasc.diaSemana)}
-            <p><strong>Idade:</strong> <b>${idade.anos} anos</b></p>
-            ${criarLinha('Falecimento', p.falecimento, detalhesFalec.diaSemana)}
-            ${criarLinha('Pai', p.pai)}
-            ${criarLinha('Mãe', p.mae)}
-            ${criarLinha('Cônjuge', p.conjuge)}
-            ${criarLinha('Filhos', p.filhos)}
-            ${criarLinha('Netos', p.netos)}
-            ${criarLinha('Bisnetos', p.bisnetos)}
-            ${criarLinha('Trinetos', p.trinetos)}
-            ${criarLinha('Tetranetos', p.tetranetos)}
-            ${criarLinha('Irmãos', p.irmaos)}
-            ${criarLinha('Tios', p.tios)}
-            ${criarLinha('Sobrinhos', p.sobrinhos)}
-            ${criarLinha('Primos', p.primos)}
-            ${criarLinha('Avós', p.avos)}
-            ${criarLinha('Bisavós', p.bisavos)}
-            ${criarLinha('Trisavós', p.trisavos)}
-        </div>
-        <div class="assinatura">
-            <p><strong>Data de emissão:</strong> ${dataAtual}</p>
-            <p><strong>Assinado por:</strong> José Amarildo Anerão - https://amarildo1963.github.io/jaa/</p>
-        </div>
-    </body>
-    </html>`;
-
-    const win = window.open('', '', 'width=800,height=800');
-    win.document.write(conteudo);
-    win.document.close();
-    setTimeout(() => { win.print(); }, 1000);
-}
 
 carregarDados();
 </script>
