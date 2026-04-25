@@ -93,42 +93,7 @@
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     </style>
 </head>
-<body>
-
-<style>
-#apresentacao {
-    position: fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background: rgba(0,0,0,0.85);
-    color: #fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
-    text-align:center;
-    padding:20px;
-}
-#apresentacao-box {
-    background:#111;
-    border-radius:12px;
-    padding:30px;
-    max-width:600px;
-    width:100%;
-    box-shadow:0 0 20px rgba(0,0,0,0.5);
-}
-#apresentacao h2 { margin-bottom:15px; color:#00ffcc; }
-#apresentacao .sec { margin:15px 0; }
-</style>
-
-<div id="apresentacao" style="display:none;">
-    <div id="apresentacao-box">
-        <h2>🎉 Próximos Aniversariantes</h2>
-        <div class="sec" id="prox-vivos"></div>
-        <div class="sec" id="prox-falecidos"></div>
-    </div>
-</div>
-    
+<body>    
     <a href="javascript:void(0)" class="scroll-top" id="backToTop">▲</a>
     <a href="javascript:void(0)" class="scroll-bottom" id="goToBottom">▼</a>
 
@@ -156,8 +121,8 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 25/04/2026<br>
-		Versão 1.08<br>
+        Atualizado: 24/04/2026<br>
+		Versão 1.07<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -545,41 +510,6 @@ function gerarPDF(id) {
         </style>
     </head>
     <body>
-
-<style>
-#apresentacao {
-    position: fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background: rgba(0,0,0,0.85);
-    color: #fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
-    text-align:center;
-    padding:20px;
-}
-#apresentacao-box {
-    background:#111;
-    border-radius:12px;
-    padding:30px;
-    max-width:600px;
-    width:100%;
-    box-shadow:0 0 20px rgba(0,0,0,0.5);
-}
-#apresentacao h2 { margin-bottom:15px; color:#00ffcc; }
-#apresentacao .sec { margin:15px 0; }
-</style>
-
-<div id="apresentacao" style="display:none;">
-    <div id="apresentacao-box">
-        <h2>🎉 Próximos Aniversariantes</h2>
-        <div class="sec" id="prox-vivos"></div>
-        <div class="sec" id="prox-falecidos"></div>
-    </div>
-</div>
-
         <div class="cabecalho-container">
             <img src="${BASE_URL}genealogia.png" class="img-topo">
             <h4 class="titulo-topo">GENEALOGIA - FAMÍLIA ANERÃO</h4>
@@ -624,46 +554,7 @@ function gerarPDF(id) {
     setTimeout(() => { win.print(); }, 1000);
 }
 
-
-function mostrarApresentacao() {
-    const hoje = new Date();
-    const seteDias = new Date();
-    seteDias.setDate(hoje.getDate() + 7);
-
-    const vivos = [];
-    const falecidos = [];
-
-    pessoas.forEach(p => {
-        if (!p.dNasc) return;
-
-        const data = new Date(hoje.getFullYear(), p.dNasc.getMonth(), p.dNasc.getDate());
-
-        if (data >= hoje && data <= seteDias) {
-            const dd = String(p.dNasc.getDate()).padStart(2,'0');
-            const mm = String(p.dNasc.getMonth()+1).padStart(2,'0');
-            const linha = `${dd}/${mm} - ${p.nome}`;
-
-            if (p.dFalec) falecidos.push(linha);
-            else vivos.push(linha);
-        }
-    });
-
-    document.getElementById("prox-vivos").innerHTML =
-        "<b>Próximos aniversariantes:</b><br>" + (vivos.join("<br>") || "Nenhum");
-
-    document.getElementById("prox-falecidos").innerHTML =
-        "<b>Fariam aniversário (Falecidas):</b><br>" + (falecidos.join("<br>") || "Nenhum");
-
-    const el = document.getElementById("apresentacao");
-    el.style.display = "flex";
-
-    setTimeout(() => {
-        el.style.display = "none";
-    }, 15000);
-}
-
 carregarDados();
-setTimeout(mostrarApresentacao, 1000);
 </script>
 </body>
 </html>
