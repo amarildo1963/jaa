@@ -7,6 +7,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
     <style>
+        /* ESTILIZAÇÃO DO OVERLAY DE ABERTURA */
+        #birthday-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .overlay-content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 600px;
+        }
+        .overlay-title { font-size: 14px; color: #4da6ff; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; }
+        .overlay-list { font-size: 11px; margin-bottom: 20px; list-style: none; padding: 0; }
+        .overlay-item { margin-bottom: 4px; }
+        .overlay-deceased-title { font-size: 14px; color: #ffcc00; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; }
+
         /* ESTILIZAÇÃO GLOBAL E LAYOUT */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
         body { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); background-attachment: fixed; padding: 20px; padding-bottom: 100px; }
@@ -94,6 +122,19 @@
     </style>
 </head>
 <body>    
+    <div id="birthday-overlay" style="display:none;">
+        <div class="overlay-content">
+            <div id="section-vivos">
+                <div class="overlay-title">Próximos aniversariantes:</div>
+                <ul class="overlay-list" id="list-vivos"></ul>
+            </div>
+            <div id="section-falecidos" style="display:none;">
+                <div class="overlay-deceased-title">Fariam aniversário:</div>
+                <ul class="overlay-list" id="list-falecidos"></ul>
+            </div>
+        </div>
+    </div>
+
     <a href="javascript:void(0)" class="scroll-top" id="backToTop">▲</a>
     <a href="javascript:void(0)" class="scroll-bottom" id="goToBottom">▼</a>
 
@@ -121,8 +162,8 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 24/04/2026<br>
-		Versão 1.07<br>
+        Atualizado: 25/04/2026<br>
+		Versão 1.08<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -234,12 +275,50 @@ async function carregarDados() {
             };
         });
         
+        mostrarApresentacao(); // CHAMA A APRESENTAÇÃO DE ABERTURA
         findProximo();
         render();
     } catch (error) {
         document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
         console.error("Erro:", error);
     }
+}
+
+function mostrarApresentacao() {
+    const hoje = new Date();
+    const overlay = document.getElementById('birthday-overlay');
+    const listVivos = document.getElementById('list-vivos');
+    const listFalecidos = document.getElementById('list-falecidos');
+    const secFalecidos = document.getElementById('section-falecidos');
+    
+    const futuros = pessoas.filter(p => {
+        if (p.nome.includes("JESUS")) return false;
+        
+        const bdayEsteAno = new Date(hoje.getFullYear(), p.dNasc.getMonth(), p.dNasc.getDate());
+        const diff = (bdayEsteAno - hoje) / (1000 * 60 * 60 * 24);
+        
+        // Verifica se o aniversário é nos próximos 15 dias (incluindo hoje)
+        return diff >= 0 && diff <= 15;
+    }).sort((a,b) => a.diaMes.localeCompare(b.diaMes));
+
+    if (futuros.length === 0) return;
+
+    let temFalecido = false;
+    futuros.forEach(p => {
+        const item = `<li class="overlay-item">${p.nascimento.substring(0,5)} - ${p.nome}</li>`;
+        if (p.dFalec) {
+            listFalecidos.innerHTML += item;
+            temFalecido = true;
+        } else {
+            listVivos.innerHTML += item;
+        }
+    });
+
+    if (temFalecido) secFalecidos.style.display = 'block';
+    if (listVivos.innerHTML === "") document.getElementById('section-vivos').style.display = 'none';
+
+    overlay.style.display = 'flex';
+    setTimeout(() => { overlay.style.display = 'none'; }, 15000);
 }
 
 function mostrarInfo(id) {
