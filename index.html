@@ -92,19 +92,6 @@
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     </style>
-
-<style>
-@keyframes destaque-zoom {
-    0% { transform: scale(1); box-shadow: 0 0 0px yellow; }
-    50% { transform: scale(1.08); box-shadow: 0 0 25px yellow; }
-    100% { transform: scale(1); box-shadow: 0 0 0px yellow; }
-}
-.card-destaque {
-    animation: destaque-zoom 1s ease-in-out 6;
-    border: 3px solid yellow !important;
-}
-</style>
-
 </head>
 <body>
 
@@ -556,20 +543,7 @@ function gerarPDF(id) {
             .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
             p { margin: 5px 0; }
         </style>
-    
-<style>
-@keyframes destaque-zoom {
-    0% { transform: scale(1); box-shadow: 0 0 0px yellow; }
-    50% { transform: scale(1.08); box-shadow: 0 0 25px yellow; }
-    100% { transform: scale(1); box-shadow: 0 0 0px yellow; }
-}
-.card-destaque {
-    animation: destaque-zoom 1s ease-in-out 6;
-    border: 3px solid yellow !important;
-}
-</style>
-
-</head>
+    </head>
     <body>
 
 <style>
@@ -651,20 +625,6 @@ function gerarPDF(id) {
 }
 
 
-
-function destacarProximoAniversariante() {
-    if (!proximoId) return;
-    const el = document.getElementById(proximoId);
-    if (el) {
-        el.classList.add("card-destaque");
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-        setTimeout(() => {
-            el.classList.remove("card-destaque");
-        }, 6000);
-    }
-}
-
 function mostrarApresentacao() {
     const hoje = new Date();
     const seteDias = new Date();
@@ -703,7 +663,7 @@ function mostrarApresentacao() {
 }
 
 carregarDados();
-setTimeout(() => { mostrarApresentacao(); destacarProximoAniversariante(); }, 1000);
+setTimeout(mostrarApresentacao, 1000);
 </script>
 </body>
 </html>
