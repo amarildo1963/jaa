@@ -54,49 +54,46 @@
         /* CARDS E GRID */
         .mes-titulo { color: red; font-weight: bold; font-size: 28px; text-align: center; margin: 40px 0 20px; text-transform: uppercase; }
         .grid-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .registro-card { background: rgba(224, 224, 224, 0.9); border: 2px solid #bbb; border-radius: 10px; padding: 15px; width: 280px; text-align: center; position: relative; transition: background 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .registro-card:hover { transform: translateY(-3px); }
         
-        .pesq-dados-wrapper {
+        /* PASTA DE FERRAMENTAS (NOVO) */
+        .tools-folder {
             position: absolute;
             top: 5px;
             right: 5px;
-            width: 50px;
-            height: 50px;
-            background-image: url('pesq-dados.png');
+            width: 70px;
+            height: 70px;
+            background-image: url('pesq-dados.jpg');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
             display: flex;
             flex-wrap: wrap;
+            align-content: center;
             justify-content: center;
-            align-items: center;
-            padding: 4px;
+            gap: 2px;
+            padding: 5px;
             z-index: 10;
         }
-        .icon-small {
-            width: 14px;
-            height: 14px;
-            margin: 1px;
+
+        .tools-folder .icon-action, 
+        .tools-folder .icon-pdf-mini, 
+        .tools-folder .icon-genealogia {
+            width: 18px;
+            height: 18px;
             cursor: pointer;
             transition: transform 0.1s;
         }
-        .icon-small:hover { transform: scale(1.2); }
 
-        .registro-card { background: rgba(224, 224, 224, 0.9); border: 2px solid #bbb; border-radius: 10px; padding: 15px; width: 280px; text-align: center; position: relative; transition: background 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .registro-card:hover { transform: translateY(-3px); }
-        
         /* ELEMENTOS DO CARD */
         .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; position: relative; }
         .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
         .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
         
         .icon-luto { width: 15px; height: auto; margin-left: 2px; }
-        .icon-action { width: 30px; height: 30px; cursor: pointer; transition: opacity 0.2s; }
-        .icon-pdf-mini { width: 30px; height: 30px; cursor: pointer; vertical-align: middle; }
         
-        /* Classe específica para genealogia aumentada em 50% */
-        .icon-genealogia { width: 40px; height: 40px; cursor: pointer; transition: opacity 0.2s; }
-        
-        .icon-action:hover, .icon-genealogia:hover, .icon-pdf-mini:hover { opacity: 0.7; }
+        .icon-action:hover, .icon-genealogia:hover, .icon-pdf-mini:hover { transform: scale(1.2); opacity: 0.8; }
 
         /* BALÕES DE INFORMAÇÃO */
         .info-bubble, .family-bubble { 
@@ -457,18 +454,15 @@ function render(filtro = "") {
                 htmlGen += `</div>`;
 
                 card.innerHTML = `
+                    <div class="tools-folder">
+                        <img src="info.png" class="icon-action" onclick="mostrarInfo('${p.id}')" alt="Info">
+                        <img src="pdf-print.png" class="icon-pdf-mini" onclick="gerarPDF('${p.id}')" alt="PDF">
+                        <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                    </div>
+
                     <div class="photo-wrapper">
-                        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
-                            <img src="info.png" class="icon-action" onclick="mostrarInfo('${p.id}')" alt="Info">
-                            <img src="pdf-print.png" class="icon-pdf-mini" onclick="gerarPDF('${p.id}')" alt="PDF">
-                        </div>
-                        
                         <div class="img-container" ondblclick="voltarParaLista()">
                             <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
-                        </div>
-                        
-                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
-                            <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
                         </div>
                         
                         <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
