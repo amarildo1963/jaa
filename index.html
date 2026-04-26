@@ -57,38 +57,31 @@
         .registro-card { background: rgba(224, 224, 224, 0.9); border: 2px solid #bbb; border-radius: 10px; padding: 15px; width: 280px; text-align: center; position: relative; transition: background 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .registro-card:hover { transform: translateY(-3px); }
         
-        /* PASTA DE ÍCONES (STACKED ICONS) */
-        .tools-folder {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 80px;
-            height: 60px;
-            background-image: url('pesq-dados.jpg');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-content: center;
-            gap: 2px;
-            padding: 5px;
-            z-index: 10;
-        }
-        .tools-folder img {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .tools-folder img:hover { transform: scale(1.2); }
-        
         /* ELEMENTOS DO CARD */
         .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; position: relative; }
         .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
         .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
         
+        /* COLUNA DE ÍCONES LADO DIREITO */
+        .card-actions-right {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            z-index: 10;
+        }
+
+        /* PADRONIZAÇÃO DOS ÍCONES PARA 40PX */
+        .icon-action-card {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .icon-action-card:hover { opacity: 0.7; }
+
         .icon-luto { width: 15px; height: auto; margin-left: 2px; }
         
         /* BALÕES DE INFORMAÇÃO */
@@ -183,7 +176,7 @@
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
         Atualizado: 26/04/2026<br>
-		Versão 1.10<br>
+		Versão 1.09<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -450,10 +443,10 @@ function render(filtro = "") {
                 htmlGen += `</div>`;
 
                 card.innerHTML = `
-                    <div class="tools-folder">
-                        <img src="info.png" onclick="mostrarInfo('${p.id}')" alt="Info">
-                        <img src="pdf-print.png" onclick="gerarPDF('${p.id}')" alt="PDF">
-                        <img src="genealogia.png" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                    <div class="card-actions-right">
+                        <img src="info.png" class="icon-action-card" onclick="mostrarInfo('${p.id}')" alt="Info">
+                        <img src="pdf-print.png" class="icon-action-card" onclick="gerarPDF('${p.id}')" alt="PDF">
+                        <img src="genealogia.png" class="icon-action-card" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
                     </div>
 
                     <div class="photo-wrapper">
