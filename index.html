@@ -59,17 +59,31 @@
         
         /* ELEMENTOS DO CARD */
         .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; position: relative; }
+        
+        /* CONTAINER DE AÇÕES (ÍCONES DENTRO DO PESQ-DADOS) */
+        .menu-container {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 50px;
+            height: 50px;
+            background-image: url('pesq-dados.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 10;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 2px;
+            cursor: default;
+        }
+        .menu-icon { width: 18px !important; height: 18px !important; margin: 1px; cursor: pointer; transition: opacity 0.2s; }
+        .menu-icon:hover { opacity: 0.7; }
+        
         .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
         .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
-        
         .icon-luto { width: 15px; height: auto; margin-left: 2px; }
-        .icon-action { width: 30px; height: 30px; cursor: pointer; transition: opacity 0.2s; }
-        .icon-pdf-mini { width: 30px; height: 30px; cursor: pointer; vertical-align: middle; }
-        
-        /* Classe específica para genealogia aumentada em 50% */
-        .icon-genealogia { width: 40px; height: 40px; cursor: pointer; transition: opacity 0.2s; }
-        
-        .icon-action:hover, .icon-genealogia:hover, .icon-pdf-mini:hover { opacity: 0.7; }
 
         /* BALÕES DE INFORMAÇÃO */
         .info-bubble, .family-bubble { 
@@ -162,8 +176,8 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 25/04/2026<br>
-		Versão 1.08<br>
+        Atualizado: 26/04/2026<br>
+		Versão 1.09<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -431,17 +445,14 @@ function render(filtro = "") {
 
                 card.innerHTML = `
                     <div class="photo-wrapper">
-                        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
-                            <img src="info.png" class="icon-action" onclick="mostrarInfo('${p.id}')" alt="Info">
-                            <img src="pdf-print.png" class="icon-pdf-mini" onclick="gerarPDF('${p.id}')" alt="PDF">
+                        <div class="menu-container">
+                            <img src="info.png" class="menu-icon" onclick="mostrarInfo('${p.id}')" alt="Info">
+                            <img src="genealogia.png" class="menu-icon" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                            <img src="pdf-print.png" class="menu-icon" onclick="gerarPDF('${p.id}')" alt="PDF">
                         </div>
                         
                         <div class="img-container" ondblclick="voltarParaLista()">
                             <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
-                        </div>
-                        
-                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
-                            <img src="genealogia.png" class="icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
                         </div>
                         
                         <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
