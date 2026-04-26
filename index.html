@@ -185,7 +185,7 @@
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
         Atualizado: 26/04/2026<br>
-		Versão 1.11<br>
+		Versão 1.10<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -456,9 +456,9 @@ function render(filtro = "") {
                         <img src="pesq-dados.png" class="icon-action-card" onclick="console.log('Pesquisar ${p.id}')" alt="Pesquisar">
                     </div>
                     <div class="card-actions-right">
-                        <img src="info.png" class="icon-action-card" onclick="mostrarInfo('${p.id}')" alt="Info">
-                        <img src="pdf-print.png" class="icon-action-card" onclick="gerarPDF('${p.id}')" alt="PDF">
-                        <img src="genealogia.png" class="icon-action-card" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                        <img src="pesq-png/info.png" class="icon-action-card" onclick="mostrarInfo('${p.id}')" alt="Info">
+                        <img src="pesq-png/pdf-print.png" class="icon-action-card" onclick="gerarPDF('${p.id}')" alt="PDF">
+                        <img src="pesq-png/genealogia.png" class="icon-action-card" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
                     </div>
 
                     <div class="photo-wrapper">
@@ -612,7 +612,7 @@ function gerarPDF(id) {
     </head>
     <body>
         <div class="cabecalho-container">
-            <img src="${BASE_URL}genealogia.png" class="img-topo">
+            <img src="pesq-png/genealogia.png" class="img-topo">
             <h4 class="titulo-topo">GENEALOGIA - FAMÍLIA ANERÃO</h4>
             <img src="${BASE_URL}familia_anerao.png" class="img-topo">
         </div>
@@ -659,3 +659,4 @@ carregarDados();
 </script>
 </body>
 </html>
+
