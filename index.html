@@ -57,37 +57,33 @@
         .registro-card { background: rgba(224, 224, 224, 0.9); border: 2px solid #bbb; border-radius: 10px; padding: 15px; width: 280px; text-align: center; position: relative; transition: background 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .registro-card:hover { transform: translateY(-3px); }
         
-        /* PASTA DE FERRAMENTAS (PESQ-DADOS) */
+        /* PASTA DE ÍCONES (STACKED ICONS) */
         .tools-folder {
             position: absolute;
             top: 10px;
             right: 10px;
-            width: 65px;
-            height: 65px;
+            width: 60px;
+            height: 60px;
             background-image: url('pesq-dados.jpg');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
             display: flex;
             flex-wrap: wrap;
-            align-content: center;
             justify-content: center;
-            gap: 4px;
+            align-content: center;
+            gap: 2px;
             padding: 5px;
             z-index: 10;
         }
-
         .tools-folder img {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             cursor: pointer;
-            transition: transform 0.1s;
+            transition: transform 0.2s;
         }
-
-        .tools-folder img:hover {
-            transform: scale(1.2);
-        }
-
+        .tools-folder img:hover { transform: scale(1.2); }
+        
         /* ELEMENTOS DO CARD */
         .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; position: relative; }
         .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
@@ -187,7 +183,7 @@
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
         Atualizado: 26/04/2026<br>
-		Versão 1.10<br>
+		Versão 2.08<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
