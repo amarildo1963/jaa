@@ -132,23 +132,6 @@
         .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
-    
-        /* Estilo para o ícone de filtro da família */
-        .icon-familia-filtro {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            z-index: 100;
-            transition: transform 0.2s;
-        }
-        .icon-familia-filtro:hover {
-            transform: scale(1.1);
-        }
-        .card { position: relative; } /* Garante que o ícone fique posicionado em relação ao card */
-
     </style>
 </head>
 <body>     
@@ -192,8 +175,8 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 27/04/2026<br>
-		Versão 1.10<br>
+        Atualizado: 26/04/2026<br>
+		Versão 1.09<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -464,7 +447,6 @@ function render(filtro = "") {
                         <img src="info.png" class="icon-action-card" onclick="mostrarInfo('${p.id}')" alt="Info">
                         <img src="pdf-print.png" class="icon-action-card" onclick="gerarPDF('${p.id}')" alt="PDF">
                         <img src="genealogia.png" class="icon-action-card" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
-						<img src="familia_anerao.png" class="icon-action-card" onclick="mostrarfamilia('${p.id}')" alt="familia">
                     </div>
 
                     <div class="photo-wrapper">
@@ -614,24 +596,7 @@ function gerarPDF(id) {
             .dados { text-align: left; margin-top: 20px; }
             .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
             p { margin: 5px 0; }
-        
-        /* Estilo para o ícone de filtro da família */
-        .icon-familia-filtro {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            z-index: 100;
-            transition: transform 0.2s;
-        }
-        .icon-familia-filtro:hover {
-            transform: scale(1.1);
-        }
-        .card { position: relative; } /* Garante que o ícone fique posicionado em relação ao card */
-
-    </style>
+        </style>
     </head>
     <body>
         <div class="cabecalho-container">
@@ -679,22 +644,6 @@ function gerarPDF(id) {
 }
 
 carregarDados();
-
-    function filtrarFamiliaAnerao() {
-        if (confirm("Quer filtrar a família?")) {
-            // Filtra os dados onde a família é Anerão ou Aneron
-            const filtrados = dadosGerais.filter(p => 
-                p.familia === "Anerão" || p.familia === "Aneron" || p.familia === "Anerão/Aneron"
-            );
-            // Chama a função de renderização (ajustar conforme o nome no arquivo original, ex: renderizar)
-            if (typeof renderizar === 'function') {
-                renderizar(filtrados);
-            } else if (typeof exibirDados === 'function') {
-                exibirDados(filtrados);
-            }
-        }
-    }
-
 </script>
 </body>
 </html>
