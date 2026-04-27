@@ -175,8 +175,8 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 26/04/2026<br>
-		Versão 1.09<br>
+        Atualizado: 27/04/2026<br>
+		Versão 1.10<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -634,7 +634,138 @@ function gerarPDF(id) {
             <p><strong>Data de emissão:</strong> ${dataAtual}</p>
             <p><strong>Assinado por:</strong> José Amarildo Anerão - https://amarildo1963.github.io/jaa/</p>
         </div>
-    </body>
+    
+<script>
+// Aguarda o carregamento completo do DOM
+document.addEventListener('DOMContentLoaded', function() {
+    // Localiza o card principal - tenta alguns seletores comuns
+    const card = document.querySelector('.card') || document.querySelector('#card') || document.querySelector('main') || document.body;
+    
+    // Cria o container do ícone no canto superior direito
+    const iconContainer = document.createElement('div');
+    iconContainer.style.position = 'absolute';
+    iconContainer.style.top = '10px';
+    iconContainer.style.right = '10px';
+    iconContainer.style.cursor = 'pointer';
+    iconContainer.style.zIndex = '1000';
+    
+    // Cria o ícone
+    const icon = document.createElement('img');
+    icon.src = 'familia_anerao.png';
+    icon.alt = 'Filtrar Família Anerão';
+    icon.style.width = '40px';
+    icon.style.height = '40px';
+    icon.style.borderRadius = '50%';
+    
+    iconContainer.appendChild(icon);
+    
+    // Garante que o card tenha position relative para o absolute funcionar
+    if (getComputedStyle(card).position === 'static') {
+        card.style.position = 'relative';
+    }
+    
+    card.appendChild(iconContainer);
+    
+    // Função para carregar dados.json
+    async function carregarDados() {
+        try {
+            const response = await fetch('dados.json');
+            const dados = await response.json();
+            return dados;
+        } catch (error) {
+            console.error('Erro ao carregar dados.json:', error);
+            alert('Erro ao carregar dados.json');
+            return [];
+        }
+    }
+    
+    // Função para renderizar dados - precisa ser adaptada ao HTML existente
+    function renderizarDados(dados) {
+        // Tenta encontrar um container de dados comum
+        let container = document.querySelector('#dados-container') || document.querySelector('.dados') || document.querySelector('#lista');
+        
+        // Se não existir, cria um container básico
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'dados-container';
+            card.appendChild(container);
+        }
+        
+        container.innerHTML = '';
+        
+        if (dados.length === 0) {
+            container.innerHTML = '<p>Nenhum registro encontrado.</p>';
+            return;
+        }
+        
+        // Cria uma tabela simples para exibir os dados
+        const table = document.createElement('table');
+        table.style.width = '100%';
+        table.style.borderCollapse = 'collapse';
+        
+        // Cabeçalho
+        if (dados.length > 0) {
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            Object.keys(dados[0]).forEach(key => {
+                const th = document.createElement('th');
+                th.textContent = key;
+                th.style.border = '1px solid #ddd';
+                th.style.padding = '8px';
+                th.style.backgroundColor = '#f2f2f2';
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+        }
+        
+        // Corpo
+        const tbody = document.createElement('tbody');
+        dados.forEach(item => {
+            const row = document.createElement('tr');
+            Object.values(item).forEach(value => {
+                const td = document.createElement('td');
+                td.textContent = value;
+                td.style.border = '1px solid #ddd';
+                td.style.padding = '8px';
+                row.appendChild(td);
+            });
+            tbody.appendChild(row);
+        });
+        table.appendChild(tbody);
+        container.appendChild(table);
+    }
+    
+    let dadosOriginais = [];
+    
+    // Carrega dados iniciais
+    carregarDados().then(dados => {
+        dadosOriginais = dados;
+        renderizarDados(dados);
+    });
+    
+    // Evento de clique no ícone
+    iconContainer.addEventListener('click', async function() {
+        const confirmar = confirm('Quer filtrar a família?');
+        
+        if (confirmar) {
+            if (dadosOriginais.length === 0) {
+                dadosOriginais = await carregarDados();
+            }
+            
+            // Filtra registros onde familia = "Anerão/Aneron" ou variações
+            const dadosFiltrados = dadosOriginais.filter(item => {
+                const familia = item.familia || item.Familia || item.FAMILIA || '';
+                return familia.toLowerCase().includes('anerão') || familia.toLowerCase().includes('aneron');
+            });
+            
+            renderizarDados(dadosFiltrados);
+        }
+    });
+});
+</script>
+
+</body>
     </html>`;
 
     const win = window.open('', '', 'width=800,height=800');
@@ -645,5 +776,136 @@ function gerarPDF(id) {
 
 carregarDados();
 </script>
+
+<script>
+// Aguarda o carregamento completo do DOM
+document.addEventListener('DOMContentLoaded', function() {
+    // Localiza o card principal - tenta alguns seletores comuns
+    const card = document.querySelector('.card') || document.querySelector('#card') || document.querySelector('main') || document.body;
+    
+    // Cria o container do ícone no canto superior direito
+    const iconContainer = document.createElement('div');
+    iconContainer.style.position = 'absolute';
+    iconContainer.style.top = '10px';
+    iconContainer.style.right = '10px';
+    iconContainer.style.cursor = 'pointer';
+    iconContainer.style.zIndex = '1000';
+    
+    // Cria o ícone
+    const icon = document.createElement('img');
+    icon.src = 'familia_anerao.png';
+    icon.alt = 'Filtrar Família Anerão';
+    icon.style.width = '40px';
+    icon.style.height = '40px';
+    icon.style.borderRadius = '50%';
+    
+    iconContainer.appendChild(icon);
+    
+    // Garante que o card tenha position relative para o absolute funcionar
+    if (getComputedStyle(card).position === 'static') {
+        card.style.position = 'relative';
+    }
+    
+    card.appendChild(iconContainer);
+    
+    // Função para carregar dados.json
+    async function carregarDados() {
+        try {
+            const response = await fetch('dados.json');
+            const dados = await response.json();
+            return dados;
+        } catch (error) {
+            console.error('Erro ao carregar dados.json:', error);
+            alert('Erro ao carregar dados.json');
+            return [];
+        }
+    }
+    
+    // Função para renderizar dados - precisa ser adaptada ao HTML existente
+    function renderizarDados(dados) {
+        // Tenta encontrar um container de dados comum
+        let container = document.querySelector('#dados-container') || document.querySelector('.dados') || document.querySelector('#lista');
+        
+        // Se não existir, cria um container básico
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'dados-container';
+            card.appendChild(container);
+        }
+        
+        container.innerHTML = '';
+        
+        if (dados.length === 0) {
+            container.innerHTML = '<p>Nenhum registro encontrado.</p>';
+            return;
+        }
+        
+        // Cria uma tabela simples para exibir os dados
+        const table = document.createElement('table');
+        table.style.width = '100%';
+        table.style.borderCollapse = 'collapse';
+        
+        // Cabeçalho
+        if (dados.length > 0) {
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            Object.keys(dados[0]).forEach(key => {
+                const th = document.createElement('th');
+                th.textContent = key;
+                th.style.border = '1px solid #ddd';
+                th.style.padding = '8px';
+                th.style.backgroundColor = '#f2f2f2';
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+        }
+        
+        // Corpo
+        const tbody = document.createElement('tbody');
+        dados.forEach(item => {
+            const row = document.createElement('tr');
+            Object.values(item).forEach(value => {
+                const td = document.createElement('td');
+                td.textContent = value;
+                td.style.border = '1px solid #ddd';
+                td.style.padding = '8px';
+                row.appendChild(td);
+            });
+            tbody.appendChild(row);
+        });
+        table.appendChild(tbody);
+        container.appendChild(table);
+    }
+    
+    let dadosOriginais = [];
+    
+    // Carrega dados iniciais
+    carregarDados().then(dados => {
+        dadosOriginais = dados;
+        renderizarDados(dados);
+    });
+    
+    // Evento de clique no ícone
+    iconContainer.addEventListener('click', async function() {
+        const confirmar = confirm('Quer filtrar a família?');
+        
+        if (confirmar) {
+            if (dadosOriginais.length === 0) {
+                dadosOriginais = await carregarDados();
+            }
+            
+            // Filtra registros onde familia = "Anerão/Aneron" ou variações
+            const dadosFiltrados = dadosOriginais.filter(item => {
+                const familia = item.familia || item.Familia || item.FAMILIA || '';
+                return familia.toLowerCase().includes('anerão') || familia.toLowerCase().includes('aneron');
+            });
+            
+            renderizarDados(dadosFiltrados);
+        }
+    });
+});
+</script>
+
 </body>
 </html>
