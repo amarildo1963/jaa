@@ -72,7 +72,17 @@
             top: 10px;
             z-index: 10;
         }
-
+		
+		<div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+           <div class="familia-destaque">Família: ${p.familia || ''}</div>
+    
+           <img src="familia_anerao.png" 
+            alt="Filtrar Anerão" 
+            width="40px" 
+            style="cursor: pointer;" 
+            onclick="filtrarFamiliaAnerao()">
+        </div>
+								
         /* PADRONIZAÇÃO DOS ÍCONES PARA 40PX */
         .icon-action-card {
             width: 40px;
@@ -171,7 +181,7 @@
         <h4 class="titulo-lista">LISTA ALFABÉTICA</h4>
         <ul id="listaAlfabetica" class="lista-caderno"></ul>
     </div>
-
+		
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
