@@ -133,82 +133,6 @@
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     </style>
-
-<style>
-    .familia-anerao-btn {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        width: 40px;
-        height: 40px;
-        cursor: pointer;
-        border-radius: 50%;
-        transition: transform 0.2s;
-        z-index: 1000;
-    }
-    .familia-anerao-btn:hover {
-        transform: scale(1.1);
-    }
-    .card-header {
-        position: relative;
-    }
-</style>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Criar o botão com ícone
-        const header = document.querySelector('.card-header') || document.querySelector('.card') || document.body;
-        const iconBtn = document.createElement('img');
-        iconBtn.src = 'familia_anerao.png';
-        iconBtn.alt = 'Filtrar Família Anerão';
-        iconBtn.className = 'familia-anerao-btn';
-        iconBtn.title = 'Filtrar Família Anerão/Aneron';
-        
-        // Adicionar evento de clique
-        iconBtn.addEventListener('click', function() {
-            const confirmar = confirm('Quer filtrar a família?');
-            if (confirmar) {
-                filtrarFamiliaAnerao();
-            }
-        });
-        
-        // Inserir no header do card
-        if (header) {
-            header.style.position = 'relative';
-            header.appendChild(iconBtn);
-        }
-        
-        // Função para filtrar os dados
-        async function filtrarFamiliaAnerao() {
-            try {
-                const response = await fetch('dados.json');
-                const dados = await response.json();
-                
-                // Filtra registros onde familia = "Anerão" ou "Aneron"
-                const dadosFiltrados = dados.filter(item => {
-                    const familia = item.familia || item.Familia || item.FAMILIA;
-                    return familia === 'Anerão' || familia === 'Aneron' || familia === 'Anerão/Aneron';
-                });
-                
-                console.log('Dados filtrados:', dadosFiltrados);
-                
-                // Aqui você pode atualizar sua tabela/lista com dadosFiltrados
-                // Exemplo: renderizarTabela(dadosFiltrados);
-                if (typeof renderizarTabela === 'function') {
-                    renderizarTabela(dadosFiltrados);
-                } else if (typeof atualizarDados === 'function') {
-                    atualizarDados(dadosFiltrados);
-                } else {
-                    alert(`Filtro aplicado! Encontrados ${dadosFiltrados.length} registros da família Anerão/Aneron.`);
-                }
-                
-            } catch (error) {
-                console.error('Erro ao filtrar dados:', error);
-                alert('Erro ao carregar dados.json para filtrar.');
-            }
-        }
-    });
-</script>
-
 </head>
 <body>     
     <div id="birthday-overlay" style="display:none;">
@@ -251,8 +175,8 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 27/04/2026<br>
-		Versão 1.10<br>
+        Atualizado: 26/04/2026<br>
+		Versão 1.09<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -673,83 +597,7 @@ function gerarPDF(id) {
             .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
             p { margin: 5px 0; }
         </style>
-    
-<style>
-    .familia-anerao-btn {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        width: 40px;
-        height: 40px;
-        cursor: pointer;
-        border-radius: 50%;
-        transition: transform 0.2s;
-        z-index: 1000;
-    }
-    .familia-anerao-btn:hover {
-        transform: scale(1.1);
-    }
-    .card-header {
-        position: relative;
-    }
-</style>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Criar o botão com ícone
-        const header = document.querySelector('.card-header') || document.querySelector('.card') || document.body;
-        const iconBtn = document.createElement('img');
-        iconBtn.src = 'familia_anerao.png';
-        iconBtn.alt = 'Filtrar Família Anerão';
-        iconBtn.className = 'familia-anerao-btn';
-        iconBtn.title = 'Filtrar Família Anerão/Aneron';
-        
-        // Adicionar evento de clique
-        iconBtn.addEventListener('click', function() {
-            const confirmar = confirm('Quer filtrar a família?');
-            if (confirmar) {
-                filtrarFamiliaAnerao();
-            }
-        });
-        
-        // Inserir no header do card
-        if (header) {
-            header.style.position = 'relative';
-            header.appendChild(iconBtn);
-        }
-        
-        // Função para filtrar os dados
-        async function filtrarFamiliaAnerao() {
-            try {
-                const response = await fetch('dados.json');
-                const dados = await response.json();
-                
-                // Filtra registros onde familia = "Anerão" ou "Aneron"
-                const dadosFiltrados = dados.filter(item => {
-                    const familia = item.familia || item.Familia || item.FAMILIA;
-                    return familia === 'Anerão' || familia === 'Aneron' || familia === 'Anerão/Aneron';
-                });
-                
-                console.log('Dados filtrados:', dadosFiltrados);
-                
-                // Aqui você pode atualizar sua tabela/lista com dadosFiltrados
-                // Exemplo: renderizarTabela(dadosFiltrados);
-                if (typeof renderizarTabela === 'function') {
-                    renderizarTabela(dadosFiltrados);
-                } else if (typeof atualizarDados === 'function') {
-                    atualizarDados(dadosFiltrados);
-                } else {
-                    alert(`Filtro aplicado! Encontrados ${dadosFiltrados.length} registros da família Anerão/Aneron.`);
-                }
-                
-            } catch (error) {
-                console.error('Erro ao filtrar dados:', error);
-                alert('Erro ao carregar dados.json para filtrar.');
-            }
-        }
-    });
-</script>
-
-</head>
+    </head>
     <body>
         <div class="cabecalho-container">
             <img src="${BASE_URL}genealogia.png" class="img-topo">
