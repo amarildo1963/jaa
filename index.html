@@ -132,6 +132,23 @@
         .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
+    
+        /* Estilo para o ícone de filtro da família */
+        .card { position: relative; }
+        .filtro-familia-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            z-index: 100;
+        }
+        .filtro-familia-icon:hover {
+            transform: scale(1.1);
+        }
+
     </style>
 </head>
 <body>     
@@ -175,8 +192,8 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 26/04/2026<br>
-		Versão 1.09<br>
+        Atualizado: 27/04/2026<br>
+		Versão 1.11<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -596,7 +613,24 @@ function gerarPDF(id) {
             .dados { text-align: left; margin-top: 20px; }
             .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
             p { margin: 5px 0; }
-        </style>
+        
+        /* Estilo para o ícone de filtro da família */
+        .card { position: relative; }
+        .filtro-familia-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            z-index: 100;
+        }
+        .filtro-familia-icon:hover {
+            transform: scale(1.1);
+        }
+
+    </style>
     </head>
     <body>
         <div class="cabecalho-container">
@@ -634,7 +668,54 @@ function gerarPDF(id) {
             <p><strong>Data de emissão:</strong> ${dataAtual}</p>
             <p><strong>Assinado por:</strong> José Amarildo Anerão - https://amarildo1963.github.io/jaa/</p>
         </div>
-    </body>
+    <script>
+    function filtrarFamiliaAnerao() {
+        if (confirm("Filtrar a família?")) {
+            const cards = document.querySelectorAll('.card');
+            let encontrou = false;
+            
+            cards.forEach(card => {
+                const textoFamilia = card.querySelector('.familia-destaque')?.textContent || "";
+                // Verifica se o texto contém "Anerão" ou "Aneron" (case-insensitive para maior segurança)
+                const regex = /Anerão|Aneron/i;
+                
+                if (regex.test(textoFamilia)) {
+                    card.style.display = 'block';
+                    encontrou = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            if (!encontrou) {
+                alert("Nenhum registro da família Anerão/Aneron encontrado.");
+            }
+        }
+    }
+
+    // Função para adicionar o ícone aos cards dinamicamente
+    function inserirIconeFiltro() {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            if (!card.querySelector('.filtro-familia-icon')) {
+                const img = document.createElement('img');
+                img.src = 'familia_anerao.png';
+                img.className = 'filtro-familia-icon';
+                img.alt = 'Filtrar Família';
+                img.title = 'Clique para filtrar a família Anerão/Aneron';
+                img.onclick = function(e) {
+                    e.stopPropagation();
+                    filtrarFamiliaAnerao();
+                };
+                card.appendChild(img);
+            }
+        });
+    }
+
+    // Monitora a renderização dos cards (caso sejam carregados via fetch do dados.json)
+    setInterval(inserirIconeFiltro, 1000);
+</script>
+</body>
     </html>`;
 
     const win = window.open('', '', 'width=800,height=800');
@@ -644,6 +725,53 @@ function gerarPDF(id) {
 }
 
 carregarDados();
+</script>
+<script>
+    function filtrarFamiliaAnerao() {
+        if (confirm("Filtrar a família?")) {
+            const cards = document.querySelectorAll('.card');
+            let encontrou = false;
+            
+            cards.forEach(card => {
+                const textoFamilia = card.querySelector('.familia-destaque')?.textContent || "";
+                // Verifica se o texto contém "Anerão" ou "Aneron" (case-insensitive para maior segurança)
+                const regex = /Anerão|Aneron/i;
+                
+                if (regex.test(textoFamilia)) {
+                    card.style.display = 'block';
+                    encontrou = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            if (!encontrou) {
+                alert("Nenhum registro da família Anerão/Aneron encontrado.");
+            }
+        }
+    }
+
+    // Função para adicionar o ícone aos cards dinamicamente
+    function inserirIconeFiltro() {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            if (!card.querySelector('.filtro-familia-icon')) {
+                const img = document.createElement('img');
+                img.src = 'familia_anerao.png';
+                img.className = 'filtro-familia-icon';
+                img.alt = 'Filtrar Família';
+                img.title = 'Clique para filtrar a família Anerão/Aneron';
+                img.onclick = function(e) {
+                    e.stopPropagation();
+                    filtrarFamiliaAnerao();
+                };
+                card.appendChild(img);
+            }
+        });
+    }
+
+    // Monitora a renderização dos cards (caso sejam carregados via fetch do dados.json)
+    setInterval(inserirIconeFiltro, 1000);
 </script>
 </body>
 </html>
