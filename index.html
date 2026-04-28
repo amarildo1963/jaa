@@ -46,7 +46,7 @@
         h3 { color: blue; font-size: 24px; margin-bottom: 0; }
         
         /* CONTROLES */
-        .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
         input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.8); }
         .btn-limpar { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; }
         .stats { text-align: center; margin-bottom: 10px; font-weight: bold; }
@@ -69,16 +69,6 @@
             gap: 5px;
             position: absolute;
             left: 10px;
-            top: 10px;
-            z-index: 10;
-        }
-
-        .card-actions-right {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            position: absolute;
-            right: 10px;
             top: 10px;
             z-index: 10;
         }
@@ -171,6 +161,7 @@
     <div class="controls">
         <input type="text" id="searchInput" placeholder="Buscar (nome, data, mês, signo, etc...)">
         <button class="btn-limpar" onclick="limparBusca()">Limpar 🧹</button>
+        <img src="familia_anerao.png" style="width: 30px; height: 30px; cursor: pointer; vertical-align: middle; margin-left: 10px;" onclick="filtrarFamiliaAnerao()" alt="Filtrar Família">
     </div>
 
     <div class="stats" id="stats">Carregando dados...</div>
@@ -379,13 +370,11 @@ function voltarParaLista() {
     document.getElementById('lista-alfabetica-container').scrollIntoView({ behavior: 'smooth' });
 }
 
-function filtrarFamilia() {
-    if (confirm("Filtrar família?")) {
-        const searchInput = document.getElementById('searchInput');
-        searchInput.value = "Anerão";
-        render("Anerão");
-        scrollToTop();
-    }
+function filtrarFamiliaAnerao() {
+    const searchInput = document.getElementById('searchInput');
+    searchInput.value = "Anerão";
+    render("Anerão");
+    scrollToTop();
 }
 
 function render(filtro = "") {
@@ -466,10 +455,6 @@ function render(filtro = "") {
                         <img src="info.png" class="icon-action-card" onclick="mostrarInfo('${p.id}')" alt="Info">
                         <img src="pdf-print.png" class="icon-action-card" onclick="gerarPDF('${p.id}')" alt="PDF">
                         <img src="genealogia.png" class="icon-action-card" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
-                    </div>
-
-                    <div class="card-actions-right">
-                        <img src="familia_anerao.png" class="icon-action-card" onclick="filtrarFamilia()" alt="Filtrar Família Anerão">
                     </div>
 
                     <div class="photo-wrapper">
