@@ -62,53 +62,21 @@
         .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
         .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
         
-        /* NOVO CONTÊINER DE AÇÕES (SUPERIOR ESQUERDO) */
+        /* COLUNAS DE ÍCONES */
         .card-actions-left {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
             position: absolute;
             left: 10px;
             top: 10px;
-            z-index: 100;
+            z-index: 10;
         }
 
-        .search-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .icon-search-master {
+        /* PADRONIZAÇÃO DOS ÍCONES PARA 40PX */
+        .icon-action-card {
             width: 40px;
             height: 40px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        /* Sub-ícones escondidos por padrão */
-        .sub-icons {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-        }
-
-        /* Mostrar ao passar o mouse */
-        .search-group:hover .sub-icons {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .search-group:hover .icon-search-master {
-            transform: scale(1.1);
-        }
-
-        .icon-action-card {
-            width: 38px;
-            height: 38px;
             cursor: pointer;
             transition: opacity 0.2s;
         }
@@ -208,8 +176,8 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 28/04/2026<br>
-		Versão 1.11 (Icons Update)<br>
+        Atualizado: 27/04/2026<br>
+		Versão 1.10<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -220,7 +188,7 @@
                 seta azul ▲, vai no início da página<br>
 				ícone árvore 🌳 exibe genealogia<br>
 				ícone 📑 gera PDF da genealogia<br>
-				ícone 🔎 informações gerais<br>
+				ícone (i) ⓘ exibe informações<br>
 				<br> 
                 ( DIGITAR NO CAMPO DE BUSCA )<br>
 				<br>
@@ -321,11 +289,11 @@ async function carregarDados() {
             };
         });
         
-        mostrarApresentacao(); 
+        mostrarApresentacao(); // CHAMA A APRESENTAÇÃO DE ABERTURA
         findProximo();
         render();
     } catch (error) {
-        document.getElementById('stats').innerText = "Erro ao carregar dados.";
+        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
         console.error("Erro:", error);
     }
 }
@@ -339,8 +307,11 @@ function mostrarApresentacao() {
     
     const futuros = pessoas.filter(p => {
         if (p.nome.includes("JESUS")) return false;
+        
         const bdayEsteAno = new Date(hoje.getFullYear(), p.dNasc.getMonth(), p.dNasc.getDate());
         const diff = (bdayEsteAno - hoje) / (1000 * 60 * 60 * 24);
+        
+        // Verifica se o aniversário é nos próximos 15 dias (incluindo hoje)
         return diff >= 0 && diff <= 15;
     }).sort((a,b) => a.diaMes.localeCompare(b.diaMes));
 
@@ -439,6 +410,7 @@ function render(filtro = "") {
                 card.id = p.id;
                 const isToday = p.diaMes === hojeDM;
                 const isJesus = p.nome.includes("JESUS") || (p.nascimento === "25/12");
+                
                 const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
                 const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null).anos : 0;
                 
@@ -452,31 +424,37 @@ function render(filtro = "") {
                 const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
                 const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
 
+                // Infos Gerais
                 let arrayInfos = [p.info, p.info01, p.info02, p.info03, p.info04, p.info05, p.info06, p.info07, p.info08, p.info09, p.info10]
                     .filter(x => x && x.trim() !== '' && x !== "|||||")
                     .join(' | ').split('|').filter(x => x.trim() !== "");
                 let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
 
+                // Genealogia
                 let htmlGen = `<div class="family-tree-content">`;
 				if(p.pai) htmlGen += `<b>Pai:</b> <span>${p.pai}</span>`;
 				if(p.mae) htmlGen += `<b>Mãe:</b> <span>${p.mae}</span>`;
                 if(p.conjuge) htmlGen += `<b>Cônjuge:</b> <span>${p.conjuge}</span>`;
                 if(p.filhos && p.filhos.length) htmlGen += `<b>Filhos:</b> <span>${p.filhos.join(', ')}</span>`;
                 if(p.netos && p.netos.length) htmlGen += `<b>Netos:</b> <span>${p.netos.join(', ')}</span>`;
+                if(p.bisnetos && p.bisnetos.length) htmlGen += `<b>Bisnetos:</b> <span>${p.bisnetos.join(', ')}</span>`;
+                if(p.trinetos && p.trinetos.length) htmlGen += `<b>Trinetos:</b> <span>${p.trinetos.join(', ')}</span>`;
+                if(p.tetranetos && p.tetranetos.length) htmlGen += `<b>Tetranetos:</b> <span>${p.tetranetos.join(', ')}</span>`;
                 if(p.irmaos && p.irmaos.length) htmlGen += `<b>Irmãos:</b> <span>${p.irmaos.join(', ')}</span>`;
+                if(p.tios && p.tios.length) htmlGen += `<b>Tios:</b> <span>${p.tios.join(', ')}</span>`;
+                if(p.sobrinhos && p.sobrinhos.length) htmlGen += `<b>Sobrinhos:</b> <span>${p.sobrinhos.join(', ')}</span>`;
+				if(p.primos && p.primos.length) htmlGen += `<b>Primos:</b> <span>${p.primos.join(', ')}</span>`;
+                if(p.avos && p.avos.length) htmlGen += `<b>Avós:</b> <span>${p.avos.join(', ')}</span>`;
+				if(p.bisavos && p.bisavos.length) htmlGen += `<b>Bisavós:</b> <span>${p.bisavos.join(', ')}</span>`;
+				if(p.trisavos && p.trisavos.length) htmlGen += `<b>\Trisavós:</b> <span>${p.trisavos.join(', ')}</span>`;
                 if(htmlGen === `<div class="family-tree-content">`) htmlGen += "Dados genealógicos não informados.";
                 htmlGen += `</div>`;
 
                 card.innerHTML = `
-                    <div class="card-actions-right">
-                        <div class="search-group">
-                            <img src="${BASE_URL}inf-pesq.jpg" class="icon-search-master" alt="Mais opções">
-                            <div class="sub-icons">
-                                <img src="${BASE_URL}info.png" class="icon-action-card" onclick="mostrarInfo('${p.id}')" alt="Info">
-                                <img src="${BASE_URL}pdf-print.png" class="icon-action-card" onclick="gerarPDF('${p.id}')" alt="PDF">
-                                <img src="${BASE_URL}genealogia.png" class="icon-action-card" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
-                            </div>
-                        </div>
+                    <div class="card-actions-left">
+                        <img src="info.png" class="icon-action-card" onclick="mostrarInfo('${p.id}')" alt="Info">
+                        <img src="pdf-print.png" class="icon-action-card" onclick="gerarPDF('${p.id}')" alt="PDF">
+                        <img src="genealogia.png" class="icon-action-card" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
                     </div>
 
                     <div class="photo-wrapper">
@@ -495,6 +473,7 @@ function render(filtro = "") {
                             <div class="info-falec">✝ ${destacar(p.falecimento, termo)} ${diaSemFalec}</div>
                             <div class="info-falec">há ${anosFalec} anos</div>
                             <div class="info-idade-morta">viveu ${dadosIdade.anos} anos</div>
+                            <div class="info-idade-morta" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
                         ` : `
                             <div class="info-idade-viva">${dadosIdade.anos} anos</div>
                             <div class="info-idade-viva" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
@@ -571,44 +550,97 @@ const findProximo = () => {
 function gerarPDF(id) {
     const p = pessoas.find(x => x.id === id);
     if (!p) return;
+
+    const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/"; 
     const dataAtual = new Date().toLocaleDateString('pt-BR');
 
     const getDetalhesData = (dataStr) => {
         if (!dataStr) return { diaSemana: '', signo: '' };
         const partes = dataStr.split('/');
         const data = new Date(partes[2], partes[1] - 1, partes[0]);
+        if (isNaN(data)) return { diaSemana: '', signo: '' };
         const dias = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
-        return { diaSemana: `(${dias[data.getDay()]})`, signo: '' };
+        const diaSemana = `(${dias[data.getDay()]})`;
+        const dia = parseInt(partes[0]);
+        const mes = parseInt(partes[1]);
+        const signos = [
+            { nome: 'Capricórnio', d: 20, m: 1 }, { nome: 'Aquário', d: 18, m: 2 },
+            { nome: 'Peixes', d: 20, m: 3 }, { nome: 'Áries', d: 19, m: 4 },
+            { nome: 'Touro', d: 20, m: 5 }, { nome: 'Gêmeos', d: 20, m: 6 },
+            { nome: 'Câncer', d: 22, m: 7 }, { nome: 'Leão', d: 22, m: 8 },
+            { nome: 'Virgem', d: 22, m: 9 }, { nome: 'Libra', d: 22, m: 10 },
+            { nome: 'Escorpião', d: 21, m: 11 }, { nome: 'Sagitário', d: 21, m: 12 }
+        ];
+        const signo = (dia > signos[mes - 1].d) ? signos[mes % 12].nome : signos[mes - 1].nome;
+        return { diaSemana, signo };
     };
 
-    const dNasc = parsingDatas(p.nascimento);
+    const detalhesNasc = getDetalhesData(p.nascimento);
+    const detalhesFalec = getDetalhesData(p.falecimento);
+	const dNasc = parsingDatas(p.nascimento);
     const dFalec = parsingDatas(p.falecimento);
     const idade = calcularIdade(dNasc, dFalec);
+
+    const criarLinha = (label, valor, extra = '') => {
+        if (!valor || (Array.isArray(valor) && valor.length === 0)) return '';
+        const conteudo = Array.isArray(valor) ? valor.join(', ') : valor;
+        return `<p><strong>${label}:</strong> ${conteudo} ${extra}</p>`;
+    };
 
     const conteudo = `
     <html>
     <head>
         <title>Ficha - ${p.nome}</title>
         <style>
-            body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.6; }
-            .centro { text-align: center; }
-            .foto { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; }
-            .dados { margin-top: 20px; }
+            body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.6; color: #333; }
+            .cabecalho-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+            .img-topo { width: 80px; height: auto; }
+            .titulo-topo { font-size: 1.5em; margin: 0; color: #2c3e50; }
+            .centro { text-align: center; margin-bottom: 30px; }
+            .foto { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc; margin-bottom: 10px; }
+            .nome-destaque { font-size: 1.8em; font-weight: bold; margin-bottom: 5px; color: #000; }
+            .familia-destaque { font-weight: bold; font-size: 1.2em; margin-top: 5px; }
+            .signo-texto { font-style: italic; color: #666; margin-bottom: 15px; }
+            .dados { text-align: left; margin-top: 20px; }
+            .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
+            p { margin: 5px 0; }
         </style>
     </head>
     <body>
+        <div class="cabecalho-container">
+            <img src="${BASE_URL}genealogia.png" class="img-topo">
+            <h4 class="titulo-topo">GENEALOGIA - FAMÍLIA ANERÃO</h4>
+            <img src="${BASE_URL}familia_anerao.png" class="img-topo">
+        </div>
         <div class="centro">
-            <h2>GENEALOGIA - FAMÍLIA ANERÃO</h2>
+            <div class="nome-destaque">${p.nome.toUpperCase()}</div>
+            <div class="signo-texto">Signo: ${detalhesNasc.signo}</div>
             <img src="${BASE_URL}${p.imagem}" class="foto">
-            <h3>${p.nome.toUpperCase()}</h3>
+            <div class="familia-destaque">Família: ${p.familia || ''}</div>
         </div>
         <div class="dados">
-            <p><strong>Nascimento:</strong> ${p.nascimento}</p>
-            <p><strong>Idade:</strong> ${idade.anos} anos</p>
-            ${p.falecimento ? `<p><strong>Falecimento:</strong> ${p.falecimento}</p>` : ''}
-            <p><strong>Pai:</strong> ${p.pai || '---'}</p>
-            <p><strong>Mãe:</strong> ${p.mae || '---'}</p>
-            <p><strong>Filhos:</strong> ${p.filhos ? p.filhos.join(', ') : '---'}</p>
+            ${criarLinha('Nascimento', p.nascimento, detalhesNasc.diaSemana)}
+            <p><strong>Idade:</strong> <b>${idade.anos} anos</b></p>
+            ${criarLinha('Falecimento', p.falecimento, detalhesFalec.diaSemana)}
+            ${criarLinha('Pai', p.pai)}
+            ${criarLinha('Mãe', p.mae)}
+            ${criarLinha('Cônjuge', p.conjuge)}
+            ${criarLinha('Filhos', p.filhos)}
+            ${criarLinha('Netos', p.netos)}
+            ${criarLinha('Bisnetos', p.bisnetos)}
+            ${criarLinha('Trinetos', p.trinetos)}
+            ${criarLinha('Tetranetos', p.tetranetos)}
+            ${criarLinha('Irmãos', p.irmaos)}
+            ${criarLinha('Tios', p.tios)}
+            ${criarLinha('Sobrinhos', p.sobrinhos)}
+            ${criarLinha('Primos', p.primos)}
+            ${criarLinha('Avós', p.avos)}
+            ${criarLinha('Bisavós', p.bisavos)}
+            ${criarLinha('Trisavós', p.trisavos)}
+        </div>
+        <div class="assinatura">
+            <p><strong>Data de emissão:</strong> ${dataAtual}</p>
+            <p><strong>Assinado por:</strong> José Amarildo Anerão - https://amarildo1963.github.io/jaa/</p>
         </div>
     </body>
     </html>`;
