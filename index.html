@@ -355,7 +355,7 @@ function mostrarApresentacao() {
     if (listVivos.innerHTML === "") document.getElementById('section-vivos').style.display = 'none';
 
     overlay.style.display = 'flex';
-    setTimeout(() => { overlay.style.display = 'none'; }, 15000);
+    setTimeout(() => { overlay.style.display = 'none'; }, 10000);
 }
 
 function mostrarInfo(id) {
@@ -372,7 +372,7 @@ function mostrarGenealogia(id) {
     const el = document.getElementById('family-' + id);
     if (el) {
         el.style.display = 'block';
-        setTimeout(() => { el.style.display = 'none'; }, 15000);
+        setTimeout(() => { el.style.display = 'none'; }, 10000);
     }
 }
 
