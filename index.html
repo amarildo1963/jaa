@@ -200,7 +200,7 @@
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
         Atualizado: 28/04/2026<br>
-		Versão 1.11<br>
+		Versão 1.12<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -475,16 +475,16 @@ function render(filtro = "") {
 
                 card.innerHTML = `
                     <div class="card-actions-left">
-    <div class="menu-container">
-        <img src="i.png" class="icon-action-card menu-main" alt="Menu">
-        <div class="menu-items">
-            <img src="info.png" class="icon-action-card" onclick="mostrarInfo('${p.id}')" alt="Info">
-            <img src="pdf-print.png" class="icon-action-card" onclick="gerarPDF('${p.id}')" alt="PDF">
-            <img src="genealogia.png" class="icon-action-card" style="margin-top: 40px;" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
-</div>
-        </div>
-    </div>
-</div>
+                        <div class="menu-container">
+                            <img src="i.png" class="icon-action-card menu-main" alt="Menu">
+                            <div class="menu-items">
+                                <img src="info.png" class="icon-action-card" onclick="mostrarInfo('${p.id}')" alt="Info">
+                                <img src="pdf-print.png" class="icon-action-card" onclick="gerarPDF('${p.id}')" alt="PDF">
+                                <img src="genealogia.png" class="icon-action-card" style="margin-top: 40px; width: 100px; height: 100px;" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                     <div class="photo-wrapper">
                         <div class="img-container" ondblclick="voltarParaLista()">
