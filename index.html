@@ -6,139 +6,156 @@
     <title>Aniversariantes - Anerão</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
+    <style>
+        /* ESTILIZAÇÃO DO OVERLAY DE ABERTURA */
+        #birthday-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .overlay-content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 600px;
+        }
+        .overlay-title { font-size: 14px; color: #4da6ff; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; }
+        .overlay-list { font-size: 11px; margin-bottom: 20px; list-style: none; padding: 0; }
+        .overlay-item { margin-bottom: 4px; }
+        .overlay-deceased-title { font-size: 14px; color: #ffcc00; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; }
+
+        /* ESTILIZAÇÃO GLOBAL E LAYOUT */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
+        body { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); background-attachment: fixed; padding: 20px; padding-bottom: 100px; }
+        
+        /* CABEÇALHO */
+        .header-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
+        .img-topo { width: 50px; height: auto; cursor: pointer; transition: transform 0.2s; }
+        .img-topo:hover { transform: scale(1.1); }
+        h3 { color: blue; font-size: 24px; margin-bottom: 0; }
+        
+        /* CONTROLES */
+        .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
+        input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.8); }
+        .btn-limpar { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; }
+        .stats { text-align: center; margin-bottom: 10px; font-weight: bold; }
+        
+        /* CARDS E GRID */
+        .mes-titulo { color: red; font-weight: bold; font-size: 28px; text-align: center; margin: 40px 0 20px; text-transform: uppercase; }
+        .grid-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .registro-card { background: rgba(224, 224, 224, 0.9); border: 2px solid #bbb; border-radius: 10px; padding: 15px; width: 280px; text-align: center; position: relative; transition: background 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .registro-card:hover { transform: translateY(-3px); }
+        
+        /* ELEMENTOS DO CARD */
+        .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; position: relative; }
+        .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
+        .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
+        
+        /* COLUNAS DE ÍCONES */
+        .card-actions-left {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            z-index: 10;
+        }
+
+        /* PADRONIZAÇÃO DOS ÍCONES PARA 35PX */
+        .icon-action-card {
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .icon-action-card:hover { opacity: 0.7; }
+
+        .icon-luto { width: 15px; height: auto; margin-left: 2px; }
+        
+        /* BALÕES DE INFORMAÇÃO */
+        .info-bubble, .family-bubble { 
+            display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); 
+            width: 95%; border-radius: 8px; padding: 10px; z-index: 20; text-align: left; 
+            font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+        }
+        .info-bubble { background-color: #ffffe0; border: 1px solid black; color: black; font-weight: bold; }
+        
+        /* ESTILO ÁRVORE GENEALÓGICA */
+        .family-bubble { background-color: #f0f7ff; border: 1px solid #3b82f6; color: #1e3a8a; }
+        .family-tree-content b { color: #2563eb; display: block; margin-top: 5px; border-bottom: 1px solid #dbeafe; }
+        .family-tree-content span { display: block; padding-left: 10px; font-style: italic; color: #4b5563; }
+        
+        /* AJUDA E MANUTENÇÃO */
+        .help-container { position: relative; display: inline-block; margin-top: 10px; text-align: center; }
+        .help-icon { width: 30px; height: 30px; cursor: pointer; vertical-align: middle; margin-bottom: 5px; }
+        #help-bubble { display: none; position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); width: 250px; background-color: white; border: 1px solid black; border-radius: 10px; padding: 10px; z-index: 100; text-align: left; font-size: 12px; color: blue; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+
+        /* ANIMAÇÕES */
+        @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .pulse-active { animation: pulse-img 1s linear 10; }
+        @keyframes target-blink { 0%, 100% { background-color: rgba(224, 224, 224, 0.9); } 50% { background-color: yellow; } }
+        .highlight-target { animation: target-blink 0.5s ease-in-out 10; }
+        @keyframes blink-red { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+        .bday-msg { color: red; font-weight: bold; animation: blink-red 0.8s infinite; margin-top: 5px; font-size: 0.9em; }
+        @keyframes blink-blue { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+        .scroll-top { position: fixed; bottom: 20px; right: 20px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
+        .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
+        
+        /* TIPOGRAFIA DE DADOS */
+        .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
+        .info-nasc { color: green; font-weight: bold; }
+        .info-falec { color: #b8860b; font-weight: bold; }
+        .info-idade-viva { color: green; font-weight: bold; }
+        .info-idade-morta { color: #b8860b; font-weight: bold; }
+        .highlight { background-color: yellow; }
+        
+        /* LISTA ALFABÉTICA */
+        #lista-alfabetica-container { max-width: 900px; margin: 60px auto; padding: 25px; background: linear-gradient(135deg, #ffffff, #f7f9fc); border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .titulo-lista { color: #1e3a8a; margin-bottom: 20px; font-size: 22px; font-weight: 700; border-left: 5px solid #3b82f6; padding-left: 10px; }
+        .lista-caderno { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+        .lista-item { background: #ffffff; border-radius: 8px; padding: 8px 10px; transition: all 0.2s ease; border: 1px solid #e5e7eb; }
+        .lista-item:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-color: #3b82f6; }
+        .lista-link { text-decoration: none; color: #111827; font-weight: 500; display: flex; align-items: center; gap: 10px; }
+        .lista-link:hover { color: #2563eb; }
+        .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
+        
+        footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-}
-
-body {
-    background: #f5f7fa;
-    padding: 10px;
-}
-
-/* HEADER */
-.header-container {
-    position: sticky;
-    top: 0;
-    background: white;
-    z-index: 1000;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-h3 {
-    font-size: 18px;
-}
-
-/* CONTROLES */
-.controls {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 15px 0;
-}
-
-.controls input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-}
-
-.btn-limpar {
-    padding: 12px;
-    border-radius: 10px;
-}
-
-/* GRID RESPONSIVO */
-.grid-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 15px;
-}
-
-@media(min-width:600px){
-    .grid-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media(min-width:900px){
-    .grid-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-/* CARD */
-.registro-card {
-    background: white;
-    border-radius: 16px;
-    padding: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    position: relative;
-}
-
-/* FOTO */
-.img-container {
-    width: 100px;
-    height: 100px;
-    margin: auto;
-}
-
-.img-pessoa {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-}
-
-/* MENU MOBILE */
 .menu-container {
-    position: absolute;
-    top: 10px;
-    left: 10px;
+    position: relative;
+    display: inline-block;
+}
+
+.menu-main {
+    z-index: 2;
 }
 
 .menu-items {
     display: none;
+    position: absolute;
+    top: 45px;
+    left: 0;
     flex-direction: column;
-    gap: 8px;
-    margin-top: 5px;
+    gap: 5px;
 }
 
-.menu-items.active {
+.menu-container:hover .menu-items {
     display: flex;
 }
 
-.icon-action-card {
-    width: 40px;
-}
-
-/* TEXTO */
-.nome {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-/* BOTÕES FIXOS */
-.scroll-top, .scroll-bottom {
-    font-size: 30px;
-    bottom: 10px;
-}
-
-/* LISTA */
-#lista-alfabetica-container {
-    margin-top: 30px;
-}
 </style>
-
 </head>
 <body>     
     <div id="birthday-overlay" style="display:none;" onclick="this.style.display='none'">
@@ -183,8 +200,8 @@ h3 {
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 29/04/2026<br>
-		Versão 1.12a<br>
+        Atualizado: 28/04/2026<br>
+		Versão 1.12<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -460,7 +477,7 @@ function render(filtro = "") {
                 card.innerHTML = `
                     <div class="card-actions-left">
                         <div class="menu-container">
-                            <img src="i.png" class="icon-action-card menu-main" onclick="toggleMenu(this)" alt="Menu">
+                            <img src="i.png" class="icon-action-card menu-main" alt="Menu">
                             <div class="menu-items">
                                 <img src="info.png" class="icon-action-card" onclick="mostrarInfo('${p.id}')" alt="Info">
                                 <img src="pdf-print.png" class="icon-action-card" onclick="gerarPDF('${p.id}')" alt="PDF">
@@ -688,20 +705,6 @@ function gerarPDF(id) {
 }
 
 carregarDados();
-
-document.addEventListener("click", function(e) {
-    document.querySelectorAll(".menu-items").forEach(m => {
-        if (!m.contains(e.target)) {
-            m.classList.remove("active");
-        }
-    });
-});
-
-function toggleMenu(el){
-    const menu = el.nextElementSibling;
-    menu.classList.toggle("active");
-}
-
 </script>
 </body>
 </html>
