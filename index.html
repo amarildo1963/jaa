@@ -158,16 +158,17 @@
 </style>
 </head>
 <body>     
-    <div id="birthday-overlay" style="display:none;">
+    <div id="birthday-overlay" style="display:none;" onclick="this.style.display='none'">
         <div class="overlay-content">
             <div id="section-vivos">
                 <div class="overlay-title">🎂 Próximos aniversariantes:</div>
                 <ul class="overlay-list" id="list-vivos"></ul>
             </div>
             <div id="section-falecidos" style="display:none;">
-                <div class="overlay-deceased-title">🎂 Fariam aniversário:</div>
+                <div class="overlay-deceased-title">🕯️ Fariam aniversário:</div>
                 <ul class="overlay-list" id="list-falecidos"></ul>
             </div>
+            <p style="font-size: 10px; opacity: 0.7;">(Toque para fechar)</p>
         </div>
     </div>
 
