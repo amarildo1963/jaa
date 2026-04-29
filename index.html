@@ -1,382 +1,709 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aniversariantes & Genealogia - Família Anerão</title>
-  <style>
-    :root {
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #1e293b;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --success: #10b981;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-      --radius: 12px;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { background: var(--bg); color: var(--text); line-height: 1.5; padding-bottom: 80px; }
-
-    header { background: var(--primary); color: white; padding: 1.5rem 1rem; text-align: center; }
-    header h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
-    .version { font-size: 0.85rem; opacity: 0.9; }
-
-    .container { max-width: 1000px; margin: 0 auto; padding: 1rem; }
-
-    .controls { background: var(--card-bg); padding: 1rem; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
-    .controls input { flex: 1; min-width: 200px; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
-    .btn { padding: 0.75rem 1rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; transition: 0.2s; background: var(--border); color: var(--text); }
-    .btn:hover { background: #cbd5e1; }
-    .btn-primary { background: var(--primary); color: white; }
-    .btn-primary:hover { background: var(--primary-dark); }
-
-    .filters-info { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; width: 100%; }
-
-    .section-title { font-size: 1.3rem; margin: 1.5rem 0 0.75rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
-
-    .card { background: var(--card-bg); border-radius: var(--radius); padding: 1rem; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 0.5rem; position: relative; transition: transform 0.2s; cursor: pointer; }
-    .card:hover { transform: translateY(-3px); }
-    .card-img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; background: #e2e8f0; }
-    .card-name { font-weight: 700; font-size: 1.1rem; }
-    .card-meta { font-size: 0.85rem; color: var(--text-muted); display: flex; justify-content: space-between; }
-    .badge { font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 20px; background: #e2e8f0; }
-    .badge.vivo { background: #dcfce7; color: #166534; }
-    .badge.falecido { background: #fee2e2; color: #991b1b; }
-
-    /* Modal */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
-    .modal-overlay.active { display: flex; }
-    .modal { background: var(--card-bg); width: 100%; max-width: 600px; border-radius: var(--radius); padding: 1.5rem; max-height: 90vh; overflow-y: auto; position: relative; }
-    .modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
-    .modal-img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; background: #e2e8f0; }
-    .modal h2 { margin-bottom: 0.5rem; }
-    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1rem 0; }
-    .detail-item label { display: block; font-size: 0.8rem; color: var(--text-muted); }
-    .detail-item span { font-weight: 500; }
-    .info-box { background: #f1f5f9; padding: 0.75rem; border-radius: 8px; margin-top: 0.5rem; white-space: pre-line; }
-
-    /* Scroll buttons */
-    .scroll-btn { position: fixed; right: 20px; width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; border: none; cursor: pointer; box-shadow: var(--shadow); z-index: 99; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-    .scroll-btn.top { bottom: 70px; }
-    .scroll-btn.bottom { bottom: 20px; }
-
-    footer { text-align: center; padding: 2rem 1rem; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--border); margin-top: 2rem; }
-    footer a { color: var(--primary); text-decoration: none; }
-
-    @media print {
-      .controls, .scroll-btn, footer, .badge { display: none; }
-      .grid { display: block; }
-      .card { break-inside: avoid; margin-bottom: 1rem; box-shadow: none; border: 1px solid #ccc; }
-      body { background: white; }
-    }
-
-    @media (max-width: 600px) {
-      .controls { flex-direction: column; align-items: stretch; }
-      .detail-grid { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
-
-<header>
-  <h1>🎂 Aniversariantes & Genealogia Anerão</h1>
-  <span class="version">Versão 2.0 | Atualizado: <span id="last-update"></span></span>
-</header>
-
-<main class="container">
-  <section class="controls">
-    <input type="text" id="search" placeholder="🔍 Buscar nome, família, mês, signo, vivo/falecido..." autocomplete="off">
-    <button class="btn btn-primary" id="btn-search">Filtrar</button>
-    <button class="btn" id="btn-clear">Limpar 🧹</button>
-    <button class="btn" id="btn-pdf">📑 PDF</button>
-    <div class="filters-info">
-      💡 Ex: <code>janeiro</code> | <code>29/11</code> | <code>/03/1963</code> | <code>aries</code> | <code>vivo</code> | <code>falecido</code> | Digite um nome
-    </div>
-  </section>
-
-  <section id="upcoming" style="display:none;">
-    <h2 class="section-title">🎉 Próximos Aniversariantes (30 dias)</h2>
-    <div class="grid" id="upcoming-grid"></div>
-  </section>
-
-  <section id="posthumous" style="display:none;">
-    <h2 class="section-title">🕊️ Fariam Aniversário (Falecidos)</h2>
-    <div class="grid" id="posthumous-grid"></div>
-  </section>
-
-  <h2 class="section-title">📖 Lista Geral</h2>
-  <div class="grid" id="main-grid"></div>
-</main>
-
-<div class="modal-overlay" id="modal">
-  <div class="modal">
-    <button class="modal-close" id="modal-close">&times;</button>
-    <img src="" alt="Foto" class="modal-img" id="modal-img">
-    <h2 id="modal-name"></h2>
-    <div id="modal-status" class="badge"></div>
-    <div class="detail-grid">
-      <div class="detail-item"><label>Nascimento</label><span id="modal-birth"></span></div>
-      <div class="detail-item"><label>Falecimento</label><span id="modal-death">-</span></div>
-      <div class="detail-item"><label>Sexo</label><span id="modal-sex"></span></div>
-      <div class="detail-item"><label>Família</label><span id="modal-family"></span></div>
-      <div class="detail-item"><label>Pai</label><span id="modal-father"></span></div>
-      <div class="detail-item"><label>Mãe</label><span id="modal-mother"></span></div>
-      <div class="detail-item"><label>Cônjuge</label><span id="modal-spouse"></span></div>
-      <div class="detail-item"><label>Idade</label><span id="modal-age"></span></div>
-      <div class="detail-item"><label>Signo</label><span id="modal-zodiac"></span></div>
-    </div>
-    <h3>Informações Adicionais</h3>
-    <div class="info-box" id="modal-info"></div>
-  </div>
-</div>
-
-<button class="scroll-btn top" id="scroll-top" title="Ir ao início">▲</button>
-<button class="scroll-btn bottom" id="scroll-bottom" title="Ir ao final">▼</button>
-
-<footer>
-  <p>© 2016-2026 JAAnerão | <a href="mailto:jaanerao@hotmail.com">jaanerao@hotmail.com</a></p>
-  <p>💡 1 clique no nome/foto abre detalhes. 2 cliques na foto volta para a lista. Ícones funcionais.</p>
-</footer>
-
-<script>
-  // --- Utilitários ---
-  const clean = (str) => typeof str === 'string' ? str.trim() : '';
-  const parseDate = (str) => {
-    const c = clean(str);
-    if (!c || c === ' ') return null;
-    const [d, m, y] = c.split('/').map(Number);
-    return new Date(y, m - 1, d);
-  };
-  const formatDate = (date) => date ? date.toLocaleDateString('pt-BR') : '-';
-  
-  function getZodiac(day, month) {
-    if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return 'Áries';
-    if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return 'Touro';
-    if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return 'Gêmeos';
-    if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return 'Câncer';
-    if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return 'Leão';
-    if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return 'Virgem';
-    if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return 'Libra';
-    if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return 'Escorpião';
-    if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return 'Sagitário';
-    if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return 'Capricórnio';
-    if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return 'Aquário';
-    return 'Peixes';
-  }
-
-  function calculateAge(birthStr, deathStr) {
-    const b = parseDate(birthStr), d = parseDate(deathStr);
-    if (!b) return '-';
-    const end = d || new Date();
-    let age = end.getFullYear() - b.getFullYear();
-    const m = end.getMonth() - b.getMonth();
-    if (m < 0 || (m === 0 && end.getDate() < b.getDate())) age--;
-    return age > 0 ? `${age} anos` : `Menos de 1 ano`;
-  }
-
-  // --- Estado ---
-  let rawData = [];
-  let filteredData = [];
-
-  // --- UI ---
-  const els = {
-    grid: document.getElementById('main-grid'),
-    upcomingGrid: document.getElementById('upcoming-grid'),
-    posthumousGrid: document.getElementById('posthumous-grid'),
-    search: document.getElementById('search'),
-    modal: document.getElementById('modal'),
-    modalClose: document.getElementById('modal-close'),
-    lastUpdate: document.getElementById('last-update')
-  };
-
-  // --- Render ---
-  function renderCard(person) {
-    const imgSrc = clean(person.imagem) && clean(person.imagem) !== 'falta_a_imagem.jpg' ? clean(person.imagem) : '📷';
-    const isAlive = !clean(person.falecimento);
-    const statusClass = isAlive ? 'vivo' : 'falecido';
-    const statusText = isAlive ? 'Vivo(a)' : 'Falecido(a)';
-    
-    return `
-      <div class="card" data-id="${clean(person.id)}" onclick="openModal(${clean(person.id)})">
-        <div class="card-img" style="display:flex;align-items:center;justify-content:center;font-size:3rem;background:#e2e8f0;color:#64748b;">
-          ${imgSrc === '📷' ? imgSrc : `<img src="${imgSrc}" alt="${clean(person.nome)}" onerror="this.parentElement.innerHTML='📷'">`}
-        </div>
-        <div class="card-name">${clean(person.nome)}</div>
-        <div class="card-meta">
-          <span>${formatDate(parseDate(person.nascimento))}</span>
-          <span class="badge ${statusClass}">${statusText}</span>
-        </div>
-      </div>
-    `;
-  }
-
-  function render(data) {
-    els.grid.innerHTML = data.map(renderCard).join('');
-  }
-
-  function checkUpcoming() {
-    const today = new Date();
-    const upcoming = [];
-    const posthumous = [];
-    
-    rawData.forEach(p => {
-      const b = parseDate(p.nascimento);
-      if (!b) return;
-      const d = parseDate(p.falecimento);
-      
-      // Próximo aniversário
-      let next = new Date(today.getFullYear(), b.getMonth(), b.getDate());
-      if (next < today) next.setFullYear(today.getFullYear() + 1);
-      const diffDays = Math.ceil((next - today) / (1000 * 60 * 60 * 24));
-      
-      if (diffDays <= 30) {
-        const targetList = d ? posthumous : upcoming;
-        targetList.push({ ...p, daysUntil: diffDays, nextDate: next });
-      }
-    });
-
-    upcoming.sort((a, b) => a.daysUntil - b.daysUntil);
-    posthumous.sort((a, b) => a.daysUntil - b.daysUntil);
-
-    document.getElementById('upcoming').style.display = upcoming.length ? 'block' : 'none';
-    document.getElementById('posthumous').style.display = posthumous.length ? 'block' : 'none';
-    
-    els.upcomingGrid.innerHTML = upcoming.map(renderCard).join('');
-    els.posthumousGrid.innerHTML = posthumous.map(renderCard).join('');
-  }
-
-  // --- Filtro ---
-  function applyFilter(query = '') {
-    const q = clean(query).toLowerCase();
-    const today = new Date();
-    
-    filteredData = rawData.filter(p => {
-      if (!q) return true;
-      
-      const nome = clean(p.nome).toLowerCase();
-      const fam = clean(p.familia).toLowerCase();
-      const nasc = clean(p.nascimento);
-      const falec = clean(p.falecimento);
-      const isAlive = !falec;
-      
-      if (q.includes('vivo') && !isAlive) return false;
-      if (q.includes('falecido') && isAlive) return false;
-      
-      if (['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'].some(m => q.includes(m))) {
-        const monthNames = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-        const b = parseDate(nasc);
-        if (!b || !monthNames.includes(q)) return nome.includes(q) || fam.includes(q);
-        return b.getMonth() === monthNames.indexOf(q);
-      }
-      
-      if (/\/\d{2}\//.test(q) || /^\d{4}$/.test(q)) {
-        const parts = q.replace(/\//g,'').match(/(\d{2})(\d{4})/);
-        if (parts) {
-          const b = parseDate(nasc);
-          if (!b) return false;
-          return `${b.getMonth()+1}`.padStart(2,'0') === parts[1] && b.getFullYear() === parseInt(parts[2]);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aniversariantes - Anerão</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
+    <style>
+        /* ESTILIZAÇÃO DO OVERLAY DE ABERTURA */
+        #birthday-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
         }
-      }
+        .overlay-content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 600px;
+        }
+        .overlay-title { font-size: 14px; color: #4da6ff; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; }
+        .overlay-list { font-size: 11px; margin-bottom: 20px; list-style: none; padding: 0; }
+        .overlay-item { margin-bottom: 4px; }
+        .overlay-deceased-title { font-size: 14px; color: #ffcc00; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; }
 
-      const b = parseDate(nasc);
-      if (b) {
-        const sign = getZodiac(b.getDate(), b.getMonth()+1).toLowerCase();
-        if (q === sign) return true;
-        if (`${b.getDate()}/${b.getMonth()+1}`.padStart(5,'0') === q || nasc.includes(q)) return true;
-      }
+        /* ESTILIZAÇÃO GLOBAL E LAYOUT */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
+        body { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); background-attachment: fixed; padding: 20px; padding-bottom: 100px; }
+        
+        /* CABEÇALHO */
+        .header-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
+        .img-topo { width: 50px; height: auto; cursor: pointer; transition: transform 0.2s; }
+        .img-topo:hover { transform: scale(1.1); }
+        h3 { color: blue; font-size: 24px; margin-bottom: 0; }
+        
+        /* CONTROLES */
+        .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
+        input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.8); }
+        .btn-limpar { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; }
+        .stats { text-align: center; margin-bottom: 10px; font-weight: bold; }
+        
+        /* CARDS E GRID */
+        .mes-titulo { color: red; font-weight: bold; font-size: 28px; text-align: center; margin: 40px 0 20px; text-transform: uppercase; }
+        .grid-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .registro-card { background: rgba(224, 224, 224, 0.9); border: 2px solid #bbb; border-radius: 10px; padding: 15px; width: 280px; text-align: center; position: relative; transition: background 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .registro-card:hover { transform: translateY(-3px); }
+        
+        /* ELEMENTOS DO CARD */
+        .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; position: relative; }
+        .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
+        .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
+        
+        /* COLUNAS DE ÍCONES */
+        .card-actions-left {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            z-index: 10;
+        }
 
-      return nome.includes(q) || fam.includes(q) || clean(p.info).toLowerCase().includes(q) || 
-             Object.values(p).some(v => typeof v === 'string' && v.toLowerCase().includes(q));
+        /* PADRONIZAÇÃO DOS ÍCONES PARA 35PX */
+        .icon-action-card {
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .icon-action-card:hover { opacity: 0.7; }
+
+        .icon-luto { width: 15px; height: auto; margin-left: 2px; }
+        
+        /* BALÕES DE INFORMAÇÃO */
+        .info-bubble, .family-bubble { 
+            display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); 
+            width: 95%; border-radius: 8px; padding: 10px; z-index: 20; text-align: left; 
+            font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+        }
+        .info-bubble { background-color: #ffffe0; border: 1px solid black; color: black; font-weight: bold; }
+        
+        /* ESTILO ÁRVORE GENEALÓGICA */
+        .family-bubble { background-color: #f0f7ff; border: 1px solid #3b82f6; color: #1e3a8a; }
+        .family-tree-content b { color: #2563eb; display: block; margin-top: 5px; border-bottom: 1px solid #dbeafe; }
+        .family-tree-content span { display: block; padding-left: 10px; font-style: italic; color: #4b5563; }
+        
+        /* AJUDA E MANUTENÇÃO */
+        .help-container { position: relative; display: inline-block; margin-top: 10px; text-align: center; }
+        .help-icon { width: 30px; height: 30px; cursor: pointer; vertical-align: middle; margin-bottom: 5px; }
+        #help-bubble { display: none; position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); width: 250px; background-color: white; border: 1px solid black; border-radius: 10px; padding: 10px; z-index: 100; text-align: left; font-size: 12px; color: blue; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+
+        /* ANIMAÇÕES */
+        @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .pulse-active { animation: pulse-img 1s linear 10; }
+        @keyframes target-blink { 0%, 100% { background-color: rgba(224, 224, 224, 0.9); } 50% { background-color: yellow; } }
+        .highlight-target { animation: target-blink 0.5s ease-in-out 10; }
+        @keyframes blink-red { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+        .bday-msg { color: red; font-weight: bold; animation: blink-red 0.8s infinite; margin-top: 5px; font-size: 0.9em; }
+        @keyframes blink-blue { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+        .scroll-top { position: fixed; bottom: 20px; right: 20px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
+        .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
+        
+        /* TIPOGRAFIA DE DADOS */
+        .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
+        .info-nasc { color: green; font-weight: bold; }
+        .info-falec { color: #b8860b; font-weight: bold; }
+        .info-idade-viva { color: green; font-weight: bold; }
+        .info-idade-morta { color: #b8860b; font-weight: bold; }
+        .highlight { background-color: yellow; }
+        
+        /* LISTA ALFABÉTICA */
+        #lista-alfabetica-container { max-width: 900px; margin: 60px auto; padding: 25px; background: linear-gradient(135deg, #ffffff, #f7f9fc); border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .titulo-lista { color: #1e3a8a; margin-bottom: 20px; font-size: 22px; font-weight: 700; border-left: 5px solid #3b82f6; padding-left: 10px; }
+        .lista-caderno { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+        .lista-item { background: #ffffff; border-radius: 8px; padding: 8px 10px; transition: all 0.2s ease; border: 1px solid #e5e7eb; }
+        .lista-item:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-color: #3b82f6; }
+        .lista-link { text-decoration: none; color: #111827; font-weight: 500; display: flex; align-items: center; gap: 10px; }
+        .lista-link:hover { color: #2563eb; }
+        .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
+        
+        footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
+    
+.menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+.menu-main {
+    z-index: 2;
+}
+
+.menu-items {
+    display: none;
+    position: absolute;
+    top: 45px;
+    left: 0;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.menu-container:hover .menu-items {
+    display: flex;
+}
+
+</style>
+</head>
+<body>     
+    <div id="birthday-overlay" style="display:none;">
+        <div class="overlay-content">
+            <div id="section-vivos">
+                <div class="overlay-title">🎂 Próximos aniversariantes:</div>
+                <ul class="overlay-list" id="list-vivos"></ul>
+            </div>
+            <div id="section-falecidos" style="display:none;">
+                <div class="overlay-deceased-title">🎂 Fariam aniversário:</div>
+                <ul class="overlay-list" id="list-falecidos"></ul>
+            </div>
+        </div>
+    </div>
+
+    <a href="javascript:void(0)" class="scroll-top" id="backToTop">▲</a>
+    <a href="javascript:void(0)" class="scroll-bottom" id="goToBottom">▼</a>
+
+    <div class="header-container">
+        <a href="index.html">
+            <img src="aniver.png" alt="Ícone Aniversário" class="img-topo">
+        </a>
+        <h3>ANIVERSARIANTES</h3>
+    </div>
+
+    <div class="controls">
+        <input type="text" id="searchInput" placeholder="Buscar (nome, data, mês, signo, etc...)">
+        <button class="btn-limpar" onclick="limparBusca()">Limpar 🧹</button>
+        <img src="familia_anerao.png" style="width: 60px; height: 60px; cursor: pointer; vertical-align: middle; margin-left: 1px;" onclick="filtrarFamiliaAnerao()" alt="Filtrar Família">
+    </div>
+
+    <div class="stats" id="stats">Carregando dados...</div>
+
+    <div id="conteudo"></div>
+
+    <div id="lista-alfabetica-container">
+        <h4 class="titulo-lista">LISTA ALFABÉTICA</h4>
+        <ul id="listaAlfabetica" class="lista-caderno"></ul>
+    </div>
+
+    <footer id="footer">
+        ©2016-2026 JAAnerão<br>
+        jaanerao@hotmail.com<br>
+        Atualizado: 28/04/2026<br>
+		Versão 1.12<br>
+        <div class="help-container">
+            <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
+            <div id="help-bubble">
+                Clicar no ícone bolo, indexa a página<br>
+                2 cliques na foto, vai para a lista<br>
+                1 clique nome da lista, vai ao registro<br>
+                seta azul ▼, vai no final da página<br>
+                seta azul ▲, vai no início da página<br>
+				ícone árvore 🌳 exibe genealogia<br>
+				ícone 📑 gera PDF da genealogia<br>
+				ícone (i) ⓘ exibe informações<br>
+				<br> 
+                ( DIGITAR NO CAMPO DE BUSCA )<br>
+				<br>
+                Exemplos de filtros e procura:<br>
+				janeiro = filtra pessoas de janeiro<br>
+				setemb = filtra pessoas de setembro<br>
+				2911 = filtra pessoas de 29/11<br>
+				/12/ = filtra pessoas do mês 12<br>
+				/03/1963 = filtra mês/ano 03/1963<br>
+				aries = filtra signos de áries<br>
+				vivo = filtra pessoas vivas<br>
+				falecido = filtra pessoas falecidas<br>
+				ou digite o nome para procurar<br>
+            </div>
+            <br>
+            <a href="manut.html">
+                <img src="manut.png" class="help-icon" alt="Manutenção" title="Acessar Manutenção">
+            </a>
+        </div>
+    </footer>
+
+<script> 
+const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
+const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+let pessoas = [];
+let proximoId = "";
+
+function toggleHelp() {
+    const bubble = document.getElementById('help-bubble');
+    bubble.style.display = 'block';
+    setTimeout(() => { bubble.style.display = 'none'; }, 8000);
+}
+
+const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+const scrollToBottom = () => {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+};
+
+document.getElementById('backToTop').onclick = scrollToTop;
+document.getElementById('goToBottom').onclick = scrollToBottom;
+
+
+function getSigno(dia, mes) {
+    if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) return ["♒", "Aquário"];
+    if ((mes == 2 && dia >= 19) || (mes == 3 && dia <= 20)) return ["♓", "Peixes"];
+    if ((mes == 3 && dia >= 21) || (mes == 4 && dia <= 19)) return ["♈", "Áries"];
+    if ((mes == 4 && dia >= 20) || (mes == 5 && dia <= 20)) return ["♉", "Touro"];
+    if ((mes == 5 && dia >= 21) || (mes == 6 && dia <= 20)) return ["♊", "Gêmeos"];
+    if ((mes == 6 && dia >= 21) || (mes == 7 && dia <= 22)) return ["♋", "Câncer"];
+    if ((mes == 7 && dia >= 23) || (mes == 8 && dia <= 22)) return ["♌", "Leão"];
+    if ((mes == 8 && dia >= 23) || (mes == 9 && dia <= 22)) return ["♍", "Virgem"];
+    if ((mes == 9 && dia >= 23) || (mes == 10 && dia <= 22)) return ["♎", "Libra"];
+    if ((mes == 10 && dia >= 23) || (mes == 11 && dia <= 21)) return ["♏", "Escorpião"];
+    if ((mes == 11 && dia >= 22) || (mes == 12 && dia <= 21)) return ["♐", "Sagitário"];
+    return ["♑", "Capricórnio"];
+}
+
+function calcularIdade(nasc, falec) {
+    const hoje = new Date();
+    const fim = falec ? new Date(falec) : hoje;
+    const inicio = new Date(nasc);
+    let idade = fim.getFullYear() - inicio.getFullYear();
+    const m = fim.getMonth() - inicio.getMonth();
+    if (m < 0 || (m === 0 && fim.getDate() < inicio.getDate())) idade--;
+    const diffTime = Math.abs(fim - inicio);
+    const diasVividos = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    return { anos: idade, dias: diasVividos };
+}
+
+function parsingDatas(str) {
+    if (!str) return null;
+    const [d, m, y] = str.split('/');
+    return new Date(y || new Date().getFullYear(), m - 1, d);
+}
+
+async function carregarDados() {
+    try {
+        const response = await fetch('dados.json');
+        const data = await response.json();
+        
+        pessoas = data.map((p, index) => {
+            const dNasc = parsingDatas(p.nascimento);
+            const dFalec = parsingDatas(p.falecimento);
+            let signo = ["✨", "Divino"];
+            if (p.nome && p.nome.indexOf("JESUS") === -1) {
+                signo = getSigno(dNasc.getDate(), dNasc.getMonth() + 1);
+            }
+            return {
+                ...p,
+                id: 'p' + index,
+                dNasc, dFalec, 
+                signo: signo[0] + " " + signo[1],
+                mesNum: dNasc.getMonth(),
+                diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0')
+            };
+        });
+        
+        mostrarApresentacao(); // CHAMA A APRESENTAÇÃO DE ABERTURA
+        findProximo();
+        render();
+    } catch (error) {
+        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
+        console.error("Erro:", error);
+    }
+}
+
+function mostrarApresentacao() {
+    const hoje = new Date();
+    const overlay = document.getElementById('birthday-overlay');
+    const listVivos = document.getElementById('list-vivos');
+    const listFalecidos = document.getElementById('list-falecidos');
+    const secFalecidos = document.getElementById('section-falecidos');
+    
+    const futuros = pessoas.filter(p => {
+        if (p.nome.includes("JESUS")) return false;
+        
+        const bdayEsteAno = new Date(hoje.getFullYear(), p.dNasc.getMonth(), p.dNasc.getDate());
+        const diff = (bdayEsteAno - hoje) / (1000 * 60 * 60 * 24);
+        
+        // Verifica se o aniversário é nos próximos 15 dias (incluindo hoje)
+        return diff >= 0 && diff <= 15;
+    }).sort((a,b) => a.diaMes.localeCompare(b.diaMes));
+
+    if (futuros.length === 0) return;
+
+    let temFalecido = false;
+    futuros.forEach(p => {
+        const item = `<li class="overlay-item">${p.nascimento.substring(0,5)} - ${p.nome}</li>`;
+        if (p.dFalec) {
+            listFalecidos.innerHTML += item;
+            temFalecido = true;
+        } else {
+            listVivos.innerHTML += item;
+        }
     });
 
-    render(filteredData);
-  }
+    if (temFalecido) secFalecidos.style.display = 'block';
+    if (listVivos.innerHTML === "") document.getElementById('section-vivos').style.display = 'none';
 
-  // --- Modal ---
-  function openModal(id) {
-    const p = rawData.find(x => clean(x.id) == id);
+    overlay.style.display = 'flex';
+    setTimeout(() => { overlay.style.display = 'none'; }, 10000);
+}
+
+function mostrarInfo(id) {
+    fecharBalores();
+    const el = document.getElementById('info-' + id);
+    if (el) {
+        el.style.display = 'block';
+        setTimeout(() => { el.style.display = 'none'; }, 10000);
+    }
+}
+
+function mostrarGenealogia(id) {
+    fecharBalores();
+    const el = document.getElementById('family-' + id);
+    if (el) {
+        el.style.display = 'block';
+        setTimeout(() => { el.style.display = 'none'; }, 10000);
+    }
+}
+
+function fecharBalores() {
+    document.querySelectorAll('.info-bubble, .family-bubble').forEach(b => b.style.display = 'none');
+}
+
+function irParaRegistro(id) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('highlight-target');
+        setTimeout(() => el.classList.remove('highlight-target'), 10000);
+    }
+}
+
+function voltarParaLista() {
+    document.getElementById('lista-alfabetica-container').scrollIntoView({ behavior: 'smooth' });
+}
+
+function filtrarFamiliaAnerao() {
+    const searchInput = document.getElementById('searchInput');
+    searchInput.value = "Anerão";
+    render("Anerão");
+    scrollToTop();
+}
+
+function render(filtro = "") {
+    const container = document.getElementById('conteudo');
+    const listaUl = document.getElementById('listaAlfabetica');
+    container.innerHTML = "";
+    listaUl.innerHTML = "";
+    
+    let count = 0;
+    const hoje = new Date();
+    const hojeDM = hoje.getDate().toString().padStart(2,'0') + (hoje.getMonth()+1).toString().padStart(2,'0');
+    const termo = filtro.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
+
+    mesesNomes.forEach((mes, idx) => {
+        const filtrados = pessoas.filter(p => p.mesNum === idx).filter(p => {
+            if (!termo) return true;
+            const status = p.dFalec ? "falecido" : "vivo";
+            const buscaString = `${p.nome} ${p.nascimento} ${p.falecimento} ${status} ${p.signo} ${mesesNomes[p.mesNum]} ${p.familia || ''}`
+                .toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+            return buscaString.includes(termo);
+        });
+
+        if (filtrados.length > 0) {
+            const mesDiv = document.createElement('div');
+            mesDiv.innerHTML = `<div class="mes-titulo">${mes}</div>`;
+            const grid = document.createElement('div');
+            grid.className = 'grid-container';
+
+            filtrados.forEach(p => {
+                count++;
+                const card = document.createElement('div');
+                card.className = 'registro-card';
+                card.id = p.id;
+                const isToday = p.diaMes === hojeDM;
+                const isJesus = p.nome.includes("JESUS") || (p.nascimento === "25/12");
+                
+                const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
+                const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null).anos : 0;
+                
+                let mostrarLuto = false;
+                if (p.dFalec) {
+                    const umAnoAtras = new Date();
+                    umAnoAtras.setFullYear(hoje.getFullYear() - 1);
+                    if (p.dFalec > umAnoAtras) mostrarLuto = true;
+                }
+
+                const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
+                const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
+
+                // Infos Gerais
+                let arrayInfos = [p.info, p.info01, p.info02, p.info03, p.info04, p.info05, p.info06, p.info07, p.info08, p.info09, p.info10]
+                    .filter(x => x && x.trim() !== '' && x !== "|||||")
+                    .join(' | ').split('|').filter(x => x.trim() !== "");
+                let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
+
+                // Genealogia
+                let htmlGen = `<div class="family-tree-content">`;
+				if(p.pai) htmlGen += `<b>Pai:</b> <span>${p.pai}</span>`;
+				if(p.mae) htmlGen += `<b>Mãe:</b> <span>${p.mae}</span>`;
+                if(p.conjuge) htmlGen += `<b>Cônjuge:</b> <span>${p.conjuge}</span>`;
+                if(p.filhos && p.filhos.length) htmlGen += `<b>Filhos:</b> <span>${p.filhos.join(', ')}</span>`;
+                if(p.netos && p.netos.length) htmlGen += `<b>Netos:</b> <span>${p.netos.join(', ')}</span>`;
+                if(p.bisnetos && p.bisnetos.length) htmlGen += `<b>Bisnetos:</b> <span>${p.bisnetos.join(', ')}</span>`;
+                if(p.trinetos && p.trinetos.length) htmlGen += `<b>Trinetos:</b> <span>${p.trinetos.join(', ')}</span>`;
+                if(p.tetranetos && p.tetranetos.length) htmlGen += `<b>Tetranetos:</b> <span>${p.tetranetos.join(', ')}</span>`;
+                if(p.irmaos && p.irmaos.length) htmlGen += `<b>Irmãos:</b> <span>${p.irmaos.join(', ')}</span>`;
+                if(p.tios && p.tios.length) htmlGen += `<b>Tios:</b> <span>${p.tios.join(', ')}</span>`;
+                if(p.sobrinhos && p.sobrinhos.length) htmlGen += `<b>Sobrinhos:</b> <span>${p.sobrinhos.join(', ')}</span>`;
+				if(p.primos && p.primos.length) htmlGen += `<b>Primos:</b> <span>${p.primos.join(', ')}</span>`;
+                if(p.avos && p.avos.length) htmlGen += `<b>Avós:</b> <span>${p.avos.join(', ')}</span>`;
+				if(p.bisavos && p.bisavos.length) htmlGen += `<b>Bisavós:</b> <span>${p.bisavos.join(', ')}</span>`;
+				if(p.trisavos && p.trisavos.length) htmlGen += `<b>\Trisavós:</b> <span>${p.trisavos.join(', ')}</span>`;
+                if(htmlGen === `<div class="family-tree-content">`) htmlGen += "Dados genealógicos não informados.";
+                htmlGen += `</div>`;
+
+                card.innerHTML = `
+                    <div class="card-actions-left">
+                        <div class="menu-container">
+                            <img src="i.png" class="icon-action-card menu-main" alt="Menu">
+                            <div class="menu-items">
+                                <img src="info.png" class="icon-action-card" onclick="mostrarInfo('${p.id}')" alt="Info">
+                                <img src="pdf-print.png" class="icon-action-card" onclick="gerarPDF('${p.id}')" alt="PDF">
+                                <img src="genealogia.png" class="icon-action-card" style="margin-top: 50px; width: 50px; height: 50px;" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="photo-wrapper">
+                        <div class="img-container" ondblclick="voltarParaLista()">
+                            <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
+                        </div>
+                        
+                        <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
+                        <div id="family-${p.id}" class="family-bubble">${htmlGen}</div>
+                        ${mostrarLuto ? `<img src="https://amarildo1963.github.io/jaa/fotos/luto.gif" style="position:absolute; bottom:0; right:60px;" class="icon-luto" alt="Luto">` : ''}
+                    </div>
+                    <span class="nome">${destacar(isJesus ? "NATAL DO MENINO JESUS 25/12" : p.nome, termo)}</span>
+                    ${!isJesus ? `
+                        <div class="info-nasc">★ ${destacar(p.nascimento, termo)} ${diaSemNasc}</div>
+                        ${p.dFalec ? `
+                            <div class="info-falec">✝ ${destacar(p.falecimento, termo)} ${diaSemFalec}</div>
+                            <div class="info-falec">há ${anosFalec} anos</div>
+                            <div class="info-idade-morta">viveu ${dadosIdade.anos} anos</div>
+                            <div class="info-idade-morta" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
+                        ` : `
+                            <div class="info-idade-viva">${dadosIdade.anos} anos</div>
+                            <div class="info-idade-viva" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
+                        `}
+                        <div>${destacar(p.signo, termo)}</div>
+                    ` : ''}
+                    ${isToday ? `<div class="bday-msg">${p.dFalec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>` : ''}
+                `;
+                grid.appendChild(card);
+            });
+            mesDiv.appendChild(grid);
+            container.appendChild(mesDiv);
+        }
+    });
+
+    const alfabetica = [...pessoas].sort((a, b) => (a.nome || "").localeCompare(b.nome || ""));
+    alfabetica.forEach(p => {
+        const li = document.createElement('li');
+        li.className = 'lista-item';
+        li.innerHTML = `
+            <a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro('${p.id}')">
+                <img src="${BASE_URL}${p.imagem}" class="micro-foto" alt="">
+                ${p.nome}
+            </a>`;
+        listaUl.appendChild(li);
+    });
+
+    document.getElementById('stats').innerText = `Registros: ${pessoas.length} / Filtrados: ${count}`;
+}
+
+function destacar(texto, termo) {
+    if (!termo || !texto) return texto;
+    const regex = new RegExp(`(${termo})`, 'gi');
+    return texto.replace(regex, '<span class="highlight">$1</span>');
+}
+
+let debounceTimer;
+document.getElementById('searchInput').addEventListener('input', function(e) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        let val = e.target.value;
+        if (/^\d+$/.test(val)) {
+            if (val.length === 4) e.target.value = val.slice(0,2) + "/" + val.slice(2,4);
+            if (val.length === 8) e.target.value = val.slice(0,2) + "/" + val.slice(2,4) + "/" + val.slice(4,8);
+        }
+        render(e.target.value);
+    }, 250);
+});
+
+function limparBusca() {
+    document.getElementById('searchInput').value = "";
+    render();
+}
+
+const findProximo = () => {
+    const hoje = new Date();
+    const hojeDM = (hoje.getMonth() + 1) * 100 + hoje.getDate();
+    const ordenados = [...pessoas].sort((a,b) => {
+        const dmA = (a.dNasc.getMonth() + 1) * 100 + a.dNasc.getDate();
+        const dmB = (b.dNasc.getMonth() + 1) * 100 + b.dNasc.getDate();
+        return dmA - dmB;
+    });
+    const prox = ordenados.find(p => ((p.dNasc.getMonth() + 1) * 100 + p.dNasc.getDate()) >= hojeDM) || ordenados[0];
+    proximoId = prox ? prox.id : "";
+    
+    if(proximoId) {
+        setTimeout(() => {
+            const el = document.getElementById(proximoId);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 500);
+    }
+};
+
+function gerarPDF(id) {
+    const p = pessoas.find(x => x.id === id);
     if (!p) return;
-    
-    const b = parseDate(p.nascimento), d = parseDate(p.falecimento);
-    const imgSrc = clean(p.imagem) && clean(p.imagem) !== 'falta_a_imagem.jpg' ? clean(p.imagem) : null;
-    
-    document.getElementById('modal-img').src = imgSrc || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LXNpemU9IjIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNjQ3NDhiIj7wn5O3PC90ZXh0Pjwvc3ZnPg==';
-    document.getElementById('modal-name').textContent = clean(p.nome);
-    document.getElementById('modal-status').textContent = d ? 'Falecido(a)' : 'Vivo(a)';
-    document.getElementById('modal-status').className = `badge ${d ? 'falecido' : 'vivo'}`;
-    document.getElementById('modal-birth').textContent = formatDate(b);
-    document.getElementById('modal-death').textContent = formatDate(d);
-    document.getElementById('modal-sex').textContent = clean(p.sexo);
-    document.getElementById('modal-family').textContent = clean(p.familia);
-    document.getElementById('modal-father').textContent = clean(p.pai) || '-';
-    document.getElementById('modal-mother').textContent = clean(p.mae) || '-';
-    document.getElementById('modal-spouse').textContent = clean(p.conjuge) || '-';
-    document.getElementById('modal-age').textContent = calculateAge(p.nascimento, p.falecimento);
-    document.getElementById('modal-zodiac').textContent = b ? getZodiac(b.getDate(), b.getMonth()+1) : '-';
-    
-    let infoText = '';
-    for (let key in p) {
-      if (key.startsWith('info') && clean(p[key])) infoText += `• ${clean(p[key])}\n`;
-    }
-    document.getElementById('modal-info').textContent = infoText || 'Nenhuma informação adicional cadastrada.';
-    
-    els.modal.classList.add('active');
-  }
 
-  // --- Inicialização ---
-  async function init() {
-    try {
-      const res = await fetch('dados.json');
-      rawData = await res.json();
-      
-      // Normalizar dados (remover espaços em chaves/valores)
-      rawData = rawData.map(p => {
-        const cleanP = {};
-        for (let k in p) cleanP[k.trim()] = clean(p[k]);
-        return cleanP;
-      });
+    const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/"; 
+    const dataAtual = new Date().toLocaleDateString('pt-BR');
 
-      els.lastUpdate.textContent = '28/04/2026';
-      render(rawData);
-      checkUpcoming();
-    } catch (e) {
-      els.grid.innerHTML = '<p style="color:red; padding:20px;">Erro ao carregar dados.json. Verifique se o arquivo está na mesma pasta e se há um servidor local rodando.</p>';
-      console.error(e);
-    }
-  }
+    const getDetalhesData = (dataStr) => {
+        if (!dataStr) return { diaSemana: '', signo: '' };
+        const partes = dataStr.split('/');
+        const data = new Date(partes[2], partes[1] - 1, partes[0]);
+        if (isNaN(data)) return { diaSemana: '', signo: '' };
+        const dias = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+        const diaSemana = `(${dias[data.getDay()]})`;
+        const dia = parseInt(partes[0]);
+        const mes = parseInt(partes[1]);
+        const signos = [
+            { nome: 'Capricórnio', d: 20, m: 1 }, { nome: 'Aquário', d: 18, m: 2 },
+            { nome: 'Peixes', d: 20, m: 3 }, { nome: 'Áries', d: 19, m: 4 },
+            { nome: 'Touro', d: 20, m: 5 }, { nome: 'Gêmeos', d: 20, m: 6 },
+            { nome: 'Câncer', d: 22, m: 7 }, { nome: 'Leão', d: 22, m: 8 },
+            { nome: 'Virgem', d: 22, m: 9 }, { nome: 'Libra', d: 22, m: 10 },
+            { nome: 'Escorpião', d: 21, m: 11 }, { nome: 'Sagitário', d: 21, m: 12 }
+        ];
+        const signo = (dia > signos[mes - 1].d) ? signos[mes % 12].nome : signos[mes - 1].nome;
+        return { diaSemana, signo };
+    };
 
-  // --- Eventos ---
-  els.search.addEventListener('input', (e) => applyFilter(e.target.value));
-  document.getElementById('btn-search').addEventListener('click', () => applyFilter(els.search.value));
-  document.getElementById('btn-clear').addEventListener('click', () => {
-    els.search.value = '';
-    render(rawData);
-  });
-  document.getElementById('btn-pdf').addEventListener('click', () => window.print());
-  els.modalClose.addEventListener('click', () => els.modal.classList.remove('active'));
-  els.modal.addEventListener('click', (e) => e.target === els.modal && els.modal.classList.remove('active'));
-  
-  document.getElementById('scroll-top').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-  document.getElementById('scroll-bottom').addEventListener('click', () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
+    const detalhesNasc = getDetalhesData(p.nascimento);
+    const detalhesFalec = getDetalhesData(p.falecimento);
+	const dNasc = parsingDatas(p.nascimento);
+    const dFalec = parsingDatas(p.falecimento);
+    const idade = calcularIdade(dNasc, dFalec);
 
-  // Duplo clique na foto volta para lista
-  document.addEventListener('dblclick', (e) => {
-    if (e.target.classList.contains('card-img') || e.target.closest('.card')) {
-      els.search.value = '';
-      render(rawData);
-      window.scrollTo({ top: els.grid.offsetTop - 100, behavior: 'smooth' });
-    }
-  });
+    const criarLinha = (label, valor, extra = '') => {
+        if (!valor || (Array.isArray(valor) && valor.length === 0)) return '';
+        const conteudo = Array.isArray(valor) ? valor.join(', ') : valor;
+        return `<p><strong>${label}:</strong> ${conteudo} ${extra}</p>`;
+    };
 
-  init();
+    const conteudo = `
+    <html>
+    <head>
+        <title>Ficha - ${p.nome}</title>
+        <style>
+            body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.6; color: #333; }
+            .cabecalho-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+            .img-topo { width: 80px; height: auto; }
+            .titulo-topo { font-size: 1.5em; margin: 0; color: #2c3e50; }
+            .centro { text-align: center; margin-bottom: 30px; }
+            .foto { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc; margin-bottom: 10px; }
+            .nome-destaque { font-size: 1.8em; font-weight: bold; margin-bottom: 5px; color: #000; }
+            .familia-destaque { font-weight: bold; font-size: 1.2em; margin-top: 5px; }
+            .signo-texto { font-style: italic; color: #666; margin-bottom: 15px; }
+            .dados { text-align: left; margin-top: 20px; }
+            .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
+            p { margin: 5px 0; }
+        
+.menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+.menu-main {
+    z-index: 2;
+}
+
+.menu-items {
+    display: none;
+    position: absolute;
+    top: 45px;
+    left: 0;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.menu-container:hover .menu-items {
+    display: flex;
+}
+
+</style>
+    </head>
+    <body>
+        <div class="cabecalho-container">
+            <img src="${BASE_URL}genealogia.png" class="img-topo">
+            <h4 class="titulo-topo">GENEALOGIA - FAMÍLIA ANERÃO</h4>
+            <img src="${BASE_URL}familia_anerao.png" class="img-topo">
+        </div>
+        <div class="centro">
+            <div class="nome-destaque">${p.nome.toUpperCase()}</div>
+            <div class="signo-texto">Signo: ${detalhesNasc.signo}</div>
+            <img src="${BASE_URL}${p.imagem}" class="foto">
+            <div class="familia-destaque">Família: ${p.familia || ''}</div>
+        </div>
+        <div class="dados">
+            ${criarLinha('Nascimento', p.nascimento, detalhesNasc.diaSemana)}
+            <p><strong>Idade:</strong> <b>${idade.anos} anos</b></p>
+            ${criarLinha('Falecimento', p.falecimento, detalhesFalec.diaSemana)}
+            ${criarLinha('Pai', p.pai)}
+            ${criarLinha('Mãe', p.mae)}
+            ${criarLinha('Cônjuge', p.conjuge)}
+            ${criarLinha('Filhos', p.filhos)}
+            ${criarLinha('Netos', p.netos)}
+            ${criarLinha('Bisnetos', p.bisnetos)}
+            ${criarLinha('Trinetos', p.trinetos)}
+            ${criarLinha('Tetranetos', p.tetranetos)}
+            ${criarLinha('Irmãos', p.irmaos)}
+            ${criarLinha('Tios', p.tios)}
+            ${criarLinha('Sobrinhos', p.sobrinhos)}
+            ${criarLinha('Primos', p.primos)}
+            ${criarLinha('Avós', p.avos)}
+            ${criarLinha('Bisavós', p.bisavos)}
+            ${criarLinha('Trisavós', p.trisavos)}
+        </div>
+        <div class="assinatura">
+            <p><strong>Data de emissão:</strong> ${dataAtual}</p>
+            <p><strong>Assinado por:</strong> José Amarildo Anerão - https://amarildo1963.github.io/jaa/</p>
+        </div>
+    </body>
+    </html>`;
+
+    const win = window.open('', '', 'width=800,height=800');
+    win.document.write(conteudo);
+    win.document.close();
+    setTimeout(() => { win.print(); }, 1000);
+}
+
+carregarDados();
 </script>
-
 </body>
 </html>
