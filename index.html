@@ -62,39 +62,31 @@
         .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
         .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
         
-        /* POSICIONAMENTO DOS ÍCONES SOLICITADOS */
-        .card-actions-left {
+        /* NOVA ÁREA DE BOTÕES ABAIXO DO SIGNO */
+        .card-footer-actions {
             display: flex;
-            flex-direction: column;
-            gap: 5px;
-            position: absolute;
-            left: 10px;
-            top: 10px;
-            z-index: 10;
-        }
-        .card-actions-right {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            z-index: 10;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0,0,0,0.1);
         }
 
         .icon-action-card {
-            width: 35px;
-            height: 35px;
+            width: 30px;
+            height: 30px;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: transform 0.2s;
         }
-        .icon-action-card:hover { opacity: 0.7; }
-        .icon-genealogia { width: 60px; height: 60px; }
+        .icon-action-card:hover { transform: scale(1.2); }
 
         .icon-luto { width: 15px; height: auto; margin-left: 2px; }
         
         /* BALÕES DE INFORMAÇÃO */
         .info-bubble, .family-bubble { 
-            display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); 
+            display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); 
             width: 95%; border-radius: 8px; padding: 10px; z-index: 20; text-align: left; 
-            font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+            font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); margin-bottom: 10px;
         }
         .info-bubble { background-color: #ffffe0; border: 1px solid black; color: black; font-weight: bold; }
         
@@ -184,7 +176,7 @@
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
         Atualizado: 02/05/2026<br>
-		Versão 1.13<br>
+		Versão 1.14<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -453,14 +445,6 @@ function render(filtro = "") {
                 htmlGen += `</div>`;
 
                 card.innerHTML = `
-                    <div class="card-actions-left">
-                        <img src="info.png" class="icon-action-card" onclick="mostrarInfo('${p.id}')" alt="Info">
-                        <img src="pdf-print.png" class="icon-action-card" onclick="gerarPDF('${p.id}')" alt="PDF">
-                    </div>
-                    <div class="card-actions-right">
-                        <img src="genealogia.png" class="icon-action-card icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
-                    </div>
-
                     <div class="photo-wrapper">
                         <div class="img-container" ondblclick="voltarParaLista()">
                             <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}">
@@ -483,6 +467,13 @@ function render(filtro = "") {
                         `}
                         <div>${destacar(p.signo, termo)}</div>
                     ` : ''}
+                    
+                    <div class="card-footer-actions">
+                        <img src="info.png" class="icon-action-card" onclick="mostrarInfo('${p.id}')" alt="Info">
+                        <img src="pdf-print.png" class="icon-action-card" onclick="gerarPDF('${p.id}')" alt="PDF">
+                        <img src="genealogia.png" class="icon-action-card" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                    </div>
+
                     ${isToday ? `<div class="bday-msg">${p.dFalec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>` : ''}
                 `;
                 grid.appendChild(card);
