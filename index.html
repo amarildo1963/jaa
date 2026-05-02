@@ -62,18 +62,23 @@
         .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
         .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
         
-        /* COLUNAS DE ÍCONES */
+        /* POSICIONAMENTO DOS ÍCONES SOLICITADOS */
         .card-actions-left {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 5px;
             position: absolute;
             left: 10px;
             top: 10px;
             z-index: 10;
         }
+        .card-actions-right {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            z-index: 10;
+        }
 
-        /* PADRONIZAÇÃO DOS ÍCONES PARA 35PX */
         .icon-action-card {
             width: 35px;
             height: 35px;
@@ -81,6 +86,7 @@
             transition: opacity 0.2s;
         }
         .icon-action-card:hover { opacity: 0.7; }
+        .icon-genealogia { width: 40px; height: 40px; }
 
         .icon-luto { width: 15px; height: auto; margin-left: 2px; }
         
@@ -132,30 +138,7 @@
         .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
-    
-.menu-container {
-    position: relative;
-    display: inline-block;
-}
-
-.menu-main {
-    z-index: 2;
-}
-
-.menu-items {
-    display: none;
-    position: absolute;
-    top: 45px;
-    left: 0;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.menu-container:hover .menu-items {
-    display: flex;
-}
-
-</style>
+    </style>
 </head>
 <body>     
     <div id="birthday-overlay" style="display:none;" onclick="this.style.display='none'">
@@ -200,8 +183,8 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 28/04/2026<br>
-		Versão 1.12<br>
+        Atualizado: 02/05/2026<br>
+		Versão 1.13<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -313,7 +296,7 @@ async function carregarDados() {
             };
         });
         
-        mostrarApresentacao(); // CHAMA A APRESENTAÇÃO DE ABERTURA
+        mostrarApresentacao(); 
         findProximo();
         render();
     } catch (error) {
@@ -331,11 +314,8 @@ function mostrarApresentacao() {
     
     const futuros = pessoas.filter(p => {
         if (p.nome.includes("JESUS")) return false;
-        
         const bdayEsteAno = new Date(hoje.getFullYear(), p.dNasc.getMonth(), p.dNasc.getDate());
         const diff = (bdayEsteAno - hoje) / (1000 * 60 * 60 * 24);
-        
-        // Verifica se o aniversário é nos próximos 15 dias (incluindo hoje)
         return diff >= 0 && diff <= 15;
     }).sort((a,b) => a.diaMes.localeCompare(b.diaMes));
 
@@ -448,13 +428,11 @@ function render(filtro = "") {
                 const diaSemNasc = p.dNasc.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase();
                 const diaSemFalec = p.dFalec ? p.dFalec.toLocaleDateString('pt-BR', {weekday: 'short'}).toLowerCase() : '';
 
-                // Infos Gerais
                 let arrayInfos = [p.info, p.info01, p.info02, p.info03, p.info04, p.info05, p.info06, p.info07, p.info08, p.info09, p.info10]
                     .filter(x => x && x.trim() !== '' && x !== "|||||")
                     .join(' | ').split('|').filter(x => x.trim() !== "");
                 let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
 
-                // Genealogia
                 let htmlGen = `<div class="family-tree-content">`;
 				if(p.pai) htmlGen += `<b>Pai:</b> <span>${p.pai}</span>`;
 				if(p.mae) htmlGen += `<b>Mãe:</b> <span>${p.mae}</span>`;
@@ -470,28 +448,23 @@ function render(filtro = "") {
 				if(p.primos && p.primos.length) htmlGen += `<b>Primos:</b> <span>${p.primos.join(', ')}</span>`;
                 if(p.avos && p.avos.length) htmlGen += `<b>Avós:</b> <span>${p.avos.join(', ')}</span>`;
 				if(p.bisavos && p.bisavos.length) htmlGen += `<b>Bisavós:</b> <span>${p.bisavos.join(', ')}</span>`;
-				if(p.trisavos && p.trisavos.length) htmlGen += `<b>\Trisavós:</b> <span>${p.trisavos.join(', ')}</span>`;
+				if(p.trisavos && p.trisavos.length) htmlGen += `<b>Trisavós:</b> <span>${p.trisavos.join(', ')}</span>`;
                 if(htmlGen === `<div class="family-tree-content">`) htmlGen += "Dados genealógicos não informados.";
                 htmlGen += `</div>`;
 
                 card.innerHTML = `
                     <div class="card-actions-left">
-                        <div class="menu-container">
-                            <img src="i.png" class="icon-action-card menu-main" alt="Menu">
-                            <div class="menu-items">
-                                <img src="info.png" class="icon-action-card" onclick="mostrarInfo('${p.id}')" alt="Info">
-                                <img src="pdf-print.png" class="icon-action-card" onclick="gerarPDF('${p.id}')" alt="PDF">
-                                <img src="genealogia.png" class="icon-action-card" style="margin-top: 50px; width: 50px; height: 50px;" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
-                            </div>
-                        </div>
+                        <img src="info.png" class="icon-action-card" onclick="mostrarInfo('${p.id}')" alt="Info">
+                        <img src="pdf-print.png" class="icon-action-card" onclick="gerarPDF('${p.id}')" alt="PDF">
                     </div>
-                </div>
+                    <div class="card-actions-right">
+                        <img src="genealogia.png" class="icon-action-card icon-genealogia" onclick="mostrarGenealogia('${p.id}')" alt="Genealogia">
+                    </div>
 
                     <div class="photo-wrapper">
                         <div class="img-container" ondblclick="voltarParaLista()">
-                            <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}" title="Duplo clique para voltar à lista">
+                            <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}">
                         </div>
-                        
                         <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
                         <div id="family-${p.id}" class="family-bubble">${htmlGen}</div>
                         ${mostrarLuto ? `<img src="https://amarildo1963.github.io/jaa/fotos/luto.gif" style="position:absolute; bottom:0; right:60px;" class="icon-luto" alt="Luto">` : ''}
@@ -580,8 +553,6 @@ const findProximo = () => {
 function gerarPDF(id) {
     const p = pessoas.find(x => x.id === id);
     if (!p) return;
-
-    const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/"; 
     const dataAtual = new Date().toLocaleDateString('pt-BR');
 
     const getDetalhesData = (dataStr) => {
@@ -634,30 +605,7 @@ function gerarPDF(id) {
             .dados { text-align: left; margin-top: 20px; }
             .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
             p { margin: 5px 0; }
-        
-.menu-container {
-    position: relative;
-    display: inline-block;
-}
-
-.menu-main {
-    z-index: 2;
-}
-
-.menu-items {
-    display: none;
-    position: absolute;
-    top: 45px;
-    left: 0;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.menu-container:hover .menu-items {
-    display: flex;
-}
-
-</style>
+        </style>
     </head>
     <body>
         <div class="cabecalho-container">
