@@ -14,7 +14,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.7);
             color: white;
             z-index: 9999;
             display: flex;
@@ -28,162 +28,116 @@
             background: rgba(255, 255, 255, 0.1);
             padding: 20px;
             border-radius: 15px;
-            max-width: 90% ;
-            width: 400px;
+            max-width: 600px;
         }
         .overlay-title { font-size: 14px; color: #4da6ff; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; }
-        .overlay-list { font-size: 12px; margin-bottom: 20px; list-style: none; padding: 0; }
-        .overlay-item { margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2px; }
+        .overlay-list { font-size: 11px; margin-bottom: 20px; list-style: none; padding: 0; }
+        .overlay-item { margin-bottom: 4px; }
         .overlay-deceased-title { font-size: 14px; color: #ffcc00; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; }
 
         /* ESTILIZAÇÃO GLOBAL E LAYOUT */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
-        body { 
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); 
-            background-attachment: fixed; 
-            padding: 10px; 
-            padding-bottom: 100px; 
-            overflow-x: hidden;
-        }
+        body { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); background-attachment: fixed; padding: 20px; padding-bottom: 100px; }
         
         /* CABEÇALHO */
-        .header-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; margin-top: 10px; }
-        .img-topo { width: 45px; height: auto; cursor: pointer; transition: transform 0.2s; }
+        .header-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
+        .img-topo { width: 50px; height: auto; cursor: pointer; transition: transform 0.2s; }
         .img-topo:hover { transform: scale(1.1); }
-        h3 { color: blue; font-size: 1.5rem; margin-bottom: 0; text-align: center; }
+        h3 { color: blue; font-size: 24px; margin-bottom: 0; }
         
-        /* CONTROLES RESPONSIVOS */
-        .controls { 
-            max-width: 800px; 
-            margin: 0 auto 20px; 
-            display: flex; 
-            gap: 10px; 
-            flex-wrap: wrap; 
-            justify-content: center; 
-            align-items: center; 
-        }
-        input[type="text"] { 
-            padding: 12px; 
-            width: 100%; 
-            max-width: 350px; 
-            border-radius: 8px; 
-            border: 1px solid #ccc; 
-            background-color: rgba(255,255,255,0.9); 
-            font-size: 16px; /* Evita zoom automático no iOS */
-        }
-        .btn-limpar { 
-            padding: 10px 15px; 
-            cursor: pointer; 
-            background: #eee; 
-            border: 1px solid #ccc; 
-            border-radius: 8px; 
-            font-weight: 500;
-        }
-        .stats { text-align: center; margin-bottom: 15px; font-weight: bold; font-size: 0.9rem; }
+        /* CONTROLES */
+        .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
+        input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.8); }
+        .btn-limpar { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; }
+        .stats { text-align: center; margin-bottom: 10px; font-weight: bold; }
         
-        /* CARDS E GRID RESPONSIVO */
-        .mes-titulo { 
-            color: red; 
-            font-weight: bold; 
-            font-size: 22px; 
-            text-align: center; 
-            margin: 30px 0 15px; 
-            text-transform: uppercase;
-            border-bottom: 2px solid rgba(255,0,0,0.1);
-            display: block;
-            width: 100%;
-        }
-        .grid-container { 
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            justify-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        /* CARDS E GRID */
+        .mes-titulo { color: red; font-weight: bold; font-size: 28px; text-align: center; margin: 40px 0 20px; text-transform: uppercase; }
+        .grid-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .registro-card { background: rgba(224, 224, 224, 0.9); border: 2px solid #bbb; border-radius: 10px; padding: 15px; width: 280px; text-align: center; position: relative; transition: background 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .registro-card:hover { transform: translateY(-3px); }
         
-        .registro-card { 
-            background: rgba(240, 240, 240, 0.95); 
-            border: 1px solid #ccc; 
-            border-radius: 12px; 
-            padding: 15px; 
-            width: 100%;
-            max-width: 320px; 
-            text-align: center; 
-            position: relative; 
-            transition: transform 0.2s; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08); 
-        }
-
         /* ELEMENTOS DO CARD */
         .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; position: relative; }
-        .img-container { position: relative; width: 110px; height: 110px; cursor: pointer; }
-        .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid #B8860B; box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
+        .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
         
-        /* ÍCONES DE AÇÃO */
-        .card-actions-left { display: flex; flex-direction: column; gap: 8px; position: absolute; left: 10px; top: 10px; z-index: 10; }
-        .card-actions-right { position: absolute; right: 10px; top: 10px; z-index: 10; }
-        .icon-action-card { width: 32px; height: 32px; cursor: pointer; }
-        .icon-genealogia { width: 50px; height: 50px; }
-        .icon-luto { width: 18px; height: auto; }
+        /* POSICIONAMENTO DOS ÍCONES SOLICITADOS */
+        .card-actions-left {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            z-index: 10;
+        }
+        .card-actions-right {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            z-index: 10;
+        }
+
+        .icon-action-card {
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .icon-action-card:hover { opacity: 0.7; }
+        .icon-genealogia { width: 60px; height: 60px; }
+
+        .icon-luto { width: 15px; height: auto; margin-left: 2px; }
         
-        /* BALÕES DE INFORMAÇÃO AJUSTADOS PARA MOBILE */
+        /* BALÕES DE INFORMAÇÃO */
         .info-bubble, .family-bubble { 
-            display: none; position: absolute; top: 120px; left: 50%; transform: translateX(-50%); 
-            width: 90%; border-radius: 8px; padding: 12px; z-index: 25; text-align: left; 
-            font-size: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.4); 
+            display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); 
+            width: 95%; border-radius: 8px; padding: 10px; z-index: 20; text-align: left; 
+            font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
         }
-        .info-bubble { background-color: #fffde7; border: 1px solid #fbc02d; color: #000; font-weight: 500; }
-        .family-bubble { background-color: #f0f7ff; border: 1px solid #3b82f6; color: #1e3a8a; overflow-y: auto; max-height: 250px; }
+        .info-bubble { background-color: #ffffe0; border: 1px solid black; color: black; font-weight: bold; }
         
-        /* AJUDA E FOOTER */
-        #help-bubble { 
-            display: none; position: absolute; bottom: 85px; left: 50%; transform: translateX(-50%); 
-            width: 280px; background-color: white; border: 2px solid blue; border-radius: 12px; 
-            padding: 15px; z-index: 100; text-align: left; font-size: 13px; color: blue; 
-            font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
-        }
+        /* ESTILO ÁRVORE GENEALÓGICA */
+        .family-bubble { background-color: #f0f7ff; border: 1px solid #3b82f6; color: #1e3a8a; }
+        .family-tree-content b { color: #2563eb; display: block; margin-top: 5px; border-bottom: 1px solid #dbeafe; }
+        .family-tree-content span { display: block; padding-left: 10px; font-style: italic; color: #4b5563; }
+        
+        /* AJUDA E MANUTENÇÃO */
+        .help-container { position: relative; display: inline-block; margin-top: 10px; text-align: center; }
+        .help-icon { width: 30px; height: 30px; cursor: pointer; vertical-align: middle; margin-bottom: 5px; }
+        #help-bubble { display: none; position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); width: 250px; background-color: white; border: 1px solid black; border-radius: 10px; padding: 10px; z-index: 100; text-align: left; font-size: 12px; color: blue; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
 
-        /* BOTÕES DE NAVEGAÇÃO FIXOS */
-        .scroll-top, .scroll-bottom { 
-            position: fixed; bottom: 20px; width: 50px; height: 50px; 
-            background: rgba(0, 0, 255, 0.8); color: white; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 24px; text-decoration: none; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        .scroll-top { right: 15px; }
-        .scroll-bottom { right: 75px; }
-        
-        /* TIPOGRAFIA DE DADOS */
-        .nome { color: blue; font-weight: bold; font-size: 1.1rem; margin-bottom: 5px; display: block; line-height: 1.2; }
-        .info-nasc, .info-falec, .info-idade-viva, .info-idade-morta { font-size: 0.9rem; margin-bottom: 2px; }
-        .highlight { background-color: yellow; padding: 0 2px; }
-        
-        /* LISTA ALFABÉTICA RESPONSIVA */
-        #lista-alfabetica-container { max-width: 95%; margin: 40px auto; padding: 15px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .lista-caderno { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
-        .lista-item { padding: 5px; border-bottom: 1px solid #f0f0f0; }
-        .lista-link { text-decoration: none; color: #333; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; }
-        .micro-foto { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
-        
-        footer { text-align: center; padding: 20px 10px; font-size: 13px; background: rgba(255,255,255,0.7); }
-
-        /* MEDIA QUERIES ESPECÍFICAS PARA CELULARES PEQUENOS */
-        @media (max-width: 480px) {
-            h3 { font-size: 1.2rem; }
-            .grid-container { grid-template-columns: 1fr; }
-            .registro-card { max-width: 100%; }
-            .scroll-bottom { right: auto; left: 15px; }
-            .lista-caderno { grid-template-columns: 1fr 1fr; }
-        }
-
-        /* ANIMAÇÕES MANTIDAS */
+        /* ANIMAÇÕES */
         @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
         .pulse-active { animation: pulse-img 1s linear 10; }
-        @keyframes target-blink { 0%, 100% { background-color: transparent; } 50% { background-color: rgba(255, 255, 0, 0.4); } }
-        .highlight-target { animation: target-blink 0.5s ease-in-out 10; border: 2px solid orange !important; }
-        .bday-msg { color: red; font-weight: bold; animation: blink-red 0.8s infinite; margin-top: 8px; font-size: 0.85rem; }
-        @keyframes blink-red { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        @keyframes target-blink { 0%, 100% { background-color: rgba(224, 224, 224, 0.9); } 50% { background-color: yellow; } }
+        .highlight-target { animation: target-blink 0.5s ease-in-out 10; }
+        @keyframes blink-red { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+        .bday-msg { color: red; font-weight: bold; animation: blink-red 0.8s infinite; margin-top: 5px; font-size: 0.9em; }
+        @keyframes blink-blue { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+        .scroll-top { position: fixed; bottom: 20px; right: 20px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
+        .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
+        
+        /* TIPOGRAFIA DE DADOS */
+        .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
+        .info-nasc { color: green; font-weight: bold; }
+        .info-falec { color: #b8860b; font-weight: bold; }
+        .info-idade-viva { color: green; font-weight: bold; }
+        .info-idade-morta { color: #b8860b; font-weight: bold; }
+        .highlight { background-color: yellow; }
+        
+        /* LISTA ALFABÉTICA */
+        #lista-alfabetica-container { max-width: 900px; margin: 60px auto; padding: 25px; background: linear-gradient(135deg, #ffffff, #f7f9fc); border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .titulo-lista { color: #1e3a8a; margin-bottom: 20px; font-size: 22px; font-weight: 700; border-left: 5px solid #3b82f6; padding-left: 10px; }
+        .lista-caderno { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+        .lista-item { background: #ffffff; border-radius: 8px; padding: 8px 10px; transition: all 0.2s ease; border: 1px solid #e5e7eb; }
+        .lista-item:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-color: #3b82f6; }
+        .lista-link { text-decoration: none; color: #111827; font-weight: 500; display: flex; align-items: center; gap: 10px; }
+        .lista-link:hover { color: #2563eb; }
+        .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
+        
+        footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     </style>
 </head>
 <body>     
@@ -197,7 +151,7 @@
                 <div class="overlay-deceased-title">🕯️ Fariam aniversário:</div>
                 <ul class="overlay-list" id="list-falecidos"></ul>
             </div>
-            <p style="font-size: 11px; color: #aaa; margin-top: 10px;">(Toque para fechar)</p>
+            <p style="font-size: 10px; opacity: 0.7;">(Toque para fechar)</p>
         </div>
     </div>
 
@@ -212,37 +166,53 @@
     </div>
 
     <div class="controls">
-        <input type="text" id="searchInput" placeholder="Buscar nome, mês, signo...">
-        <div style="display: flex; gap: 8px;">
-            <button class="btn-limpar" onclick="limparBusca()">Limpar 🧹</button>
-            <img src="familia_anerao.png" style="width: 50px; height: 50px; cursor: pointer;" onclick="filtrarFamiliaAnerao()" alt="Filtrar Família">
-        </div>
+        <input type="text" id="searchInput" placeholder="Buscar (nome, data, mês, signo, etc...)">
+        <button class="btn-limpar" onclick="limparBusca()">Limpar 🧹</button>
+        <img src="familia_anerao.png" style="width: 60px; height: 60px; cursor: pointer; vertical-align: middle; margin-left: 1px;" onclick="filtrarFamiliaAnerao()" alt="Filtrar Família">
     </div>
 
-    <div class="stats" id="stats">Buscando parentes...</div>
+    <div class="stats" id="stats">Carregando dados...</div>
 
     <div id="conteudo"></div>
 
     <div id="lista-alfabetica-container">
-        <h4 class="titulo-lista" style="color: #1e3a8a; margin-bottom: 15px; border-left: 4px solid blue; padding-left: 8px;">LISTA ALFABÉTICA</h4>
+        <h4 class="titulo-lista">LISTA ALFABÉTICA</h4>
         <ul id="listaAlfabetica" class="lista-caderno"></ul>
     </div>
 
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 02/05/2026 | Versão 1.13a<br>
-        <div class="help-container" style="margin-top: 15px;">
-            <img src="help.png" class="help-icon" style="width: 35px; cursor: pointer;" onclick="toggleHelp()" alt="Ajuda">
+        Atualizado: 02/05/2026<br>
+		Versão 1.13<br>
+        <div class="help-container">
+            <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
-                • 1 toque (i) ou 🌳: Ver detalhes<br>
-                • 2 toques na foto: Vai para a lista<br>
-                • Use a busca para filtrar por mês (ex: 'janeiro') ou signo (ex: 'aries').<br>
-                • Digite a data como '2512' para achar 25/12.
+                Clicar no ícone bolo, indexa a página<br>
+                2 cliques na foto, vai para a lista<br>
+                1 clique nome da lista, vai ao registro<br>
+                seta azul ▼, vai no final da página<br>
+                seta azul ▲, vai no início da página<br>
+				ícone árvore 🌳 exibe genealogia<br>
+				ícone 📑 gera PDF da genealogia<br>
+				ícone (i) ⓘ exibe informações<br>
+				<br> 
+                ( DIGITAR NO CAMPO DE BUSCA )<br>
+				<br>
+                Exemplos de filtros e procura:<br>
+				janeiro = filtra pessoas de janeiro<br>
+				setemb = filtra pessoas de setembro<br>
+				2911 = filtra pessoas de 29/11<br>
+				/12/ = filtra pessoas do mês 12<br>
+				/03/1963 = filtra mês/ano 03/1963<br>
+				aries = filtra signos de áries<br>
+				vivo = filtra pessoas vivas<br>
+				falecido = filtra pessoas falecidas<br>
+				ou digite o nome para procurar<br>
             </div>
-            <br><br>
+            <br>
             <a href="manut.html">
-                <img src="manut.png" style="width: 35px;" alt="Manutenção">
+                <img src="manut.png" class="help-icon" alt="Manutenção" title="Acessar Manutenção">
             </a>
         </div>
     </footer>
@@ -255,15 +225,21 @@ let proximoId = "";
 
 function toggleHelp() {
     const bubble = document.getElementById('help-bubble');
-    bubble.style.display = (bubble.style.display === 'block') ? 'none' : 'block';
-    if(bubble.style.display === 'block') setTimeout(() => { bubble.style.display = 'none'; }, 8000);
+    bubble.style.display = 'block';
+    setTimeout(() => { bubble.style.display = 'none'; }, 8000);
 }
 
-const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-const scrollToBottom = () => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+const scrollToBottom = () => {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+};
 
 document.getElementById('backToTop').onclick = scrollToTop;
 document.getElementById('goToBottom').onclick = scrollToBottom;
+
 
 function getSigno(dia, mes) {
     if ((mes == 1 && dia >= 20) || (mes == 2 && dia <= 18)) return ["♒", "Aquário"];
@@ -324,7 +300,7 @@ async function carregarDados() {
         findProximo();
         render();
     } catch (error) {
-        document.getElementById('stats').innerText = "Erro ao carregar dados.";
+        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
         console.error("Erro:", error);
     }
 }
@@ -364,17 +340,21 @@ function mostrarApresentacao() {
 }
 
 function mostrarInfo(id) {
-    const el = document.getElementById('info-' + id);
-    const visivel = el.style.display === 'block';
     fecharBalores();
-    if (!visivel) el.style.display = 'block';
+    const el = document.getElementById('info-' + id);
+    if (el) {
+        el.style.display = 'block';
+        setTimeout(() => { el.style.display = 'none'; }, 10000);
+    }
 }
 
 function mostrarGenealogia(id) {
-    const el = document.getElementById('family-' + id);
-    const visivel = el.style.display === 'block';
     fecharBalores();
-    if (!visivel) el.style.display = 'block';
+    const el = document.getElementById('family-' + id);
+    if (el) {
+        el.style.display = 'block';
+        setTimeout(() => { el.style.display = 'none'; }, 10000);
+    }
 }
 
 function fecharBalores() {
@@ -386,7 +366,7 @@ function irParaRegistro(id) {
     if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         el.classList.add('highlight-target');
-        setTimeout(() => el.classList.remove('highlight-target'), 5000);
+        setTimeout(() => el.classList.remove('highlight-target'), 10000);
     }
 }
 
@@ -395,8 +375,8 @@ function voltarParaLista() {
 }
 
 function filtrarFamiliaAnerao() {
-    const input = document.getElementById('searchInput');
-    input.value = "Anerão";
+    const searchInput = document.getElementById('searchInput');
+    searchInput.value = "Anerão";
     render("Anerão");
     scrollToTop();
 }
@@ -451,17 +431,25 @@ function render(filtro = "") {
                 let arrayInfos = [p.info, p.info01, p.info02, p.info03, p.info04, p.info05, p.info06, p.info07, p.info08, p.info09, p.info10]
                     .filter(x => x && x.trim() !== '' && x !== "|||||")
                     .join(' | ').split('|').filter(x => x.trim() !== "");
-                let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>• ${t}</div>`).join('') : "Nenhuma informação extra.";
+                let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
 
-                let htmlGen = `<div class="family-tree-content" onclick="fecharBalores()">`;
+                let htmlGen = `<div class="family-tree-content">`;
 				if(p.pai) htmlGen += `<b>Pai:</b> <span>${p.pai}</span>`;
 				if(p.mae) htmlGen += `<b>Mãe:</b> <span>${p.mae}</span>`;
                 if(p.conjuge) htmlGen += `<b>Cônjuge:</b> <span>${p.conjuge}</span>`;
                 if(p.filhos && p.filhos.length) htmlGen += `<b>Filhos:</b> <span>${p.filhos.join(', ')}</span>`;
                 if(p.netos && p.netos.length) htmlGen += `<b>Netos:</b> <span>${p.netos.join(', ')}</span>`;
+                if(p.bisnetos && p.bisnetos.length) htmlGen += `<b>Bisnetos:</b> <span>${p.bisnetos.join(', ')}</span>`;
+                if(p.trinetos && p.trinetos.length) htmlGen += `<b>Trinetos:</b> <span>${p.trinetos.join(', ')}</span>`;
+                if(p.tetranetos && p.tetranetos.length) htmlGen += `<b>Tetranetos:</b> <span>${p.tetranetos.join(', ')}</span>`;
                 if(p.irmaos && p.irmaos.length) htmlGen += `<b>Irmãos:</b> <span>${p.irmaos.join(', ')}</span>`;
+                if(p.tios && p.tios.length) htmlGen += `<b>Tios:</b> <span>${p.tios.join(', ')}</span>`;
+                if(p.sobrinhos && p.sobrinhos.length) htmlGen += `<b>Sobrinhos:</b> <span>${p.sobrinhos.join(', ')}</span>`;
+				if(p.primos && p.primos.length) htmlGen += `<b>Primos:</b> <span>${p.primos.join(', ')}</span>`;
                 if(p.avos && p.avos.length) htmlGen += `<b>Avós:</b> <span>${p.avos.join(', ')}</span>`;
-                if(htmlGen === `<div class="family-tree-content" onclick="fecharBalores()">`) htmlGen += "Dados genealógicos não informados.";
+				if(p.bisavos && p.bisavos.length) htmlGen += `<b>Bisavós:</b> <span>${p.bisavos.join(', ')}</span>`;
+				if(p.trisavos && p.trisavos.length) htmlGen += `<b>Trisavós:</b> <span>${p.trisavos.join(', ')}</span>`;
+                if(htmlGen === `<div class="family-tree-content">`) htmlGen += "Dados genealógicos não informados.";
                 htmlGen += `</div>`;
 
                 card.innerHTML = `
@@ -477,21 +465,23 @@ function render(filtro = "") {
                         <div class="img-container" ondblclick="voltarParaLista()">
                             <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}">
                         </div>
-                        <div id="info-${p.id}" class="info-bubble" onclick="fecharBalores()">${htmlInfos}</div>
+                        <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
                         <div id="family-${p.id}" class="family-bubble">${htmlGen}</div>
-                        ${mostrarLuto ? `<img src="https://amarildo1963.github.io/jaa/fotos/luto.gif" style="position:absolute; bottom:0; right:15px;" class="icon-luto" alt="Luto">` : ''}
+                        ${mostrarLuto ? `<img src="https://amarildo1963.github.io/jaa/fotos/luto.gif" style="position:absolute; bottom:0; right:60px;" class="icon-luto" alt="Luto">` : ''}
                     </div>
                     <span class="nome">${destacar(isJesus ? "NATAL DO MENINO JESUS 25/12" : p.nome, termo)}</span>
                     ${!isJesus ? `
-                        <div class="info-nasc">★ ${destacar(p.nascimento, termo)} (${diaSemNasc})</div>
+                        <div class="info-nasc">★ ${destacar(p.nascimento, termo)} ${diaSemNasc}</div>
                         ${p.dFalec ? `
-                            <div class="info-falec">✝ ${destacar(p.falecimento, termo)} (${diaSemFalec})</div>
-                            <div class="info-falec" style="color: #888">há ${anosFalec} anos</div>
-                            <div class="info-idade-morta">Viveu ${dadosIdade.anos} anos</div>
+                            <div class="info-falec">✝ ${destacar(p.falecimento, termo)} ${diaSemFalec}</div>
+                            <div class="info-falec">há ${anosFalec} anos</div>
+                            <div class="info-idade-morta">viveu ${dadosIdade.anos} anos</div>
+                            <div class="info-idade-morta" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
                         ` : `
-                            <div class="info-idade-viva" style="color: green">${dadosIdade.anos} anos</div>
+                            <div class="info-idade-viva">${dadosIdade.anos} anos</div>
+                            <div class="info-idade-viva" style="font-size: 0.85em;">( ${dadosIdade.dias.toLocaleString()} dias )</div>
                         `}
-                        <div style="font-size: 0.8rem; margin-top:3px">${destacar(p.signo, termo)}</div>
+                        <div>${destacar(p.signo, termo)}</div>
                     ` : ''}
                     ${isToday ? `<div class="bday-msg">${p.dFalec ? 'Faria aniversário hoje!' : 'Parabéns, Feliz Aniversário!'}</div>` : ''}
                 `;
@@ -509,12 +499,12 @@ function render(filtro = "") {
         li.innerHTML = `
             <a href="javascript:void(0)" class="lista-link" onclick="irParaRegistro('${p.id}')">
                 <img src="${BASE_URL}${p.imagem}" class="micro-foto" alt="">
-                <span>${p.nome.split(' ')[0]}</span>
+                ${p.nome}
             </a>`;
         listaUl.appendChild(li);
     });
 
-    document.getElementById('stats').innerText = `Total: ${pessoas.length} | Filtrados: ${count}`;
+    document.getElementById('stats').innerText = `Registros: ${pessoas.length} / Filtrados: ${count}`;
 }
 
 function destacar(texto, termo) {
@@ -533,7 +523,7 @@ document.getElementById('searchInput').addEventListener('input', function(e) {
             if (val.length === 8) e.target.value = val.slice(0,2) + "/" + val.slice(2,4) + "/" + val.slice(4,8);
         }
         render(e.target.value);
-    }, 300);
+    }, 250);
 });
 
 function limparBusca() {
@@ -556,7 +546,7 @@ const findProximo = () => {
         setTimeout(() => {
             const el = document.getElementById(proximoId);
             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 800);
+        }, 500);
     }
 };
 
@@ -564,31 +554,100 @@ function gerarPDF(id) {
     const p = pessoas.find(x => x.id === id);
     if (!p) return;
     const dataAtual = new Date().toLocaleDateString('pt-BR');
-    const dNasc = parsingDatas(p.nascimento);
+
+    const getDetalhesData = (dataStr) => {
+        if (!dataStr) return { diaSemana: '', signo: '' };
+        const partes = dataStr.split('/');
+        const data = new Date(partes[2], partes[1] - 1, partes[0]);
+        if (isNaN(data)) return { diaSemana: '', signo: '' };
+        const dias = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+        const diaSemana = `(${dias[data.getDay()]})`;
+        const dia = parseInt(partes[0]);
+        const mes = parseInt(partes[1]);
+        const signos = [
+            { nome: 'Capricórnio', d: 20, m: 1 }, { nome: 'Aquário', d: 18, m: 2 },
+            { nome: 'Peixes', d: 20, m: 3 }, { nome: 'Áries', d: 19, m: 4 },
+            { nome: 'Touro', d: 20, m: 5 }, { nome: 'Gêmeos', d: 20, m: 6 },
+            { nome: 'Câncer', d: 22, m: 7 }, { nome: 'Leão', d: 22, m: 8 },
+            { nome: 'Virgem', d: 22, m: 9 }, { nome: 'Libra', d: 22, m: 10 },
+            { nome: 'Escorpião', d: 21, m: 11 }, { nome: 'Sagitário', d: 21, m: 12 }
+        ];
+        const signo = (dia > signos[mes - 1].d) ? signos[mes % 12].nome : signos[mes - 1].nome;
+        return { diaSemana, signo };
+    };
+
+    const detalhesNasc = getDetalhesData(p.nascimento);
+    const detalhesFalec = getDetalhesData(p.falecimento);
+	const dNasc = parsingDatas(p.nascimento);
     const dFalec = parsingDatas(p.falecimento);
     const idade = calcularIdade(dNasc, dFalec);
 
-    const win = window.open('', '', 'width=800,height=800');
-    win.document.write(`
-        <html><head><title>${p.nome}</title>
-        <style>body{font-family:sans-serif;padding:20px;text-align:center;} .foto{width:150px;height:150px;border-radius:50%;object-fit:cover;border:2px solid #333;}</style>
-        </head><body>
-        <h2>FICHA GENEALÓGICA</h2>
-        <img src="${BASE_URL}${p.imagem}" class="foto">
-        <h3>${p.nome.toUpperCase()}</h3>
-        <p><b>Nascimento:</b> ${p.nascimento}</p>
-        <p><b>Idade:</b> ${idade.anos} anos</p>
-        ${p.falecimento ? `<p><b>Falecimento:</b> ${p.falecimento}</p>` : ''}
-        <hr>
-        <div style="text-align:left; max-width:500px; margin:0 auto;">
-            <p><b>Pai:</b> ${p.pai || '---'}</p>
-            <p><b>Mãe:</b> ${p.mae || '---'}</p>
-            <p><b>Cônjuge:</b> ${p.conjuge || '---'}</p>
-            <p><b>Filhos:</b> ${(p.filhos || []).join(', ') || '---'}</p>
+    const criarLinha = (label, valor, extra = '') => {
+        if (!valor || (Array.isArray(valor) && valor.length === 0)) return '';
+        const conteudo = Array.isArray(valor) ? valor.join(', ') : valor;
+        return `<p><strong>${label}:</strong> ${conteudo} ${extra}</p>`;
+    };
+
+    const conteudo = `
+    <html>
+    <head>
+        <title>Ficha - ${p.nome}</title>
+        <style>
+            body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.6; color: #333; }
+            .cabecalho-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+            .img-topo { width: 80px; height: auto; }
+            .titulo-topo { font-size: 1.5em; margin: 0; color: #2c3e50; }
+            .centro { text-align: center; margin-bottom: 30px; }
+            .foto { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc; margin-bottom: 10px; }
+            .nome-destaque { font-size: 1.8em; font-weight: bold; margin-bottom: 5px; color: #000; }
+            .familia-destaque { font-weight: bold; font-size: 1.2em; margin-top: 5px; }
+            .signo-texto { font-style: italic; color: #666; margin-bottom: 15px; }
+            .dados { text-align: left; margin-top: 20px; }
+            .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
+            p { margin: 5px 0; }
+        </style>
+    </head>
+    <body>
+        <div class="cabecalho-container">
+            <img src="${BASE_URL}genealogia.png" class="img-topo">
+            <h4 class="titulo-topo">GENEALOGIA - FAMÍLIA ANERÃO</h4>
+            <img src="${BASE_URL}familia_anerao.png" class="img-topo">
         </div>
-        <footer style="margin-top:40px; font-size:10px;">Gerado em ${dataAtual} - Projeto Anerão</footer>
-        </body></html>
-    `);
+        <div class="centro">
+            <div class="nome-destaque">${p.nome.toUpperCase()}</div>
+            <div class="signo-texto">Signo: ${detalhesNasc.signo}</div>
+            <img src="${BASE_URL}${p.imagem}" class="foto">
+            <div class="familia-destaque">Família: ${p.familia || ''}</div>
+        </div>
+        <div class="dados">
+            ${criarLinha('Nascimento', p.nascimento, detalhesNasc.diaSemana)}
+            <p><strong>Idade:</strong> <b>${idade.anos} anos</b></p>
+            ${criarLinha('Falecimento', p.falecimento, detalhesFalec.diaSemana)}
+            ${criarLinha('Pai', p.pai)}
+            ${criarLinha('Mãe', p.mae)}
+            ${criarLinha('Cônjuge', p.conjuge)}
+            ${criarLinha('Filhos', p.filhos)}
+            ${criarLinha('Netos', p.netos)}
+            ${criarLinha('Bisnetos', p.bisnetos)}
+            ${criarLinha('Trinetos', p.trinetos)}
+            ${criarLinha('Tetranetos', p.tetranetos)}
+            ${criarLinha('Irmãos', p.irmaos)}
+            ${criarLinha('Tios', p.tios)}
+            ${criarLinha('Sobrinhos', p.sobrinhos)}
+            ${criarLinha('Primos', p.primos)}
+            ${criarLinha('Avós', p.avos)}
+            ${criarLinha('Bisavós', p.bisavos)}
+            ${criarLinha('Trisavós', p.trisavos)}
+        </div>
+        <div class="assinatura">
+            <p><strong>Data de emissão:</strong> ${dataAtual}</p>
+            <p><strong>Assinado por:</strong> José Amarildo Anerão - https://amarildo1963.github.io/jaa/</p>
+        </div>
+    </body>
+    </html>`;
+
+    const win = window.open('', '', 'width=800,height=800');
+    win.document.write(conteudo);
     win.document.close();
     setTimeout(() => { win.print(); }, 1000);
 }
