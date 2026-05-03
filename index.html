@@ -138,7 +138,30 @@
         .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
-    </style>
+    
+.filtros-rapidos {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    margin-bottom:15px;
+}
+.filtros-rapidos button,
+.filtros-rapidos select {
+    padding:8px 12px;
+    border-radius:20px;
+    border:1px solid #ccc;
+    background:white;
+    cursor:pointer;
+    font-size:13px;
+}
+.filtros-rapidos button:hover,
+.filtros-rapidos select:hover {
+    background:#3b82f6;
+    color:white;
+}
+
+</style>
 </head>
 <body>     
     <div id="birthday-overlay" style="display:none;" onclick="this.style.display='none'">
@@ -170,6 +193,27 @@
         <button class="btn-limpar" onclick="limparBusca()">Limpar 🧹</button>
         <img src="familia_anerao.png" style="width: 60px; height: 60px; cursor: pointer; vertical-align: middle; margin-left: 1px;" onclick="filtrarFamiliaAnerao()" alt="Filtrar Família">
     </div>
+    <div class="filtros-rapidos">
+        <button onclick="aplicarFiltro('')">Todos</button>
+        <button onclick="aplicarFiltro('vivo')">Vivos</button>
+        <button onclick="aplicarFiltro('falecido')">Falecidos</button>
+        <select onchange="filtrarSigno(this.value)">
+            <option value="">Signo</option>
+            <option value="Áries">Áries</option>
+            <option value="Touro">Touro</option>
+            <option value="Gêmeos">Gêmeos</option>
+            <option value="Câncer">Câncer</option>
+            <option value="Leão">Leão</option>
+            <option value="Virgem">Virgem</option>
+            <option value="Libra">Libra</option>
+            <option value="Escorpião">Escorpião</option>
+            <option value="Sagitário">Sagitário</option>
+            <option value="Capricórnio">Capricórnio</option>
+            <option value="Aquário">Aquário</option>
+            <option value="Peixes">Peixes</option>
+        </select>
+    </div>
+
 
     <div class="stats" id="stats">Carregando dados...</div>
 
@@ -183,8 +227,8 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 02/05/2026<br>
-		Versão 1.13<br>
+        Atualizado: 03/05/2026<br>
+		Versão 1.14<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -605,7 +649,30 @@ function gerarPDF(id) {
             .dados { text-align: left; margin-top: 20px; }
             .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
             p { margin: 5px 0; }
-        </style>
+        
+.filtros-rapidos {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    margin-bottom:15px;
+}
+.filtros-rapidos button,
+.filtros-rapidos select {
+    padding:8px 12px;
+    border-radius:20px;
+    border:1px solid #ccc;
+    background:white;
+    cursor:pointer;
+    font-size:13px;
+}
+.filtros-rapidos button:hover,
+.filtros-rapidos select:hover {
+    background:#3b82f6;
+    color:white;
+}
+
+</style>
     </head>
     <body>
         <div class="cabecalho-container">
@@ -650,6 +717,20 @@ function gerarPDF(id) {
     win.document.write(conteudo);
     win.document.close();
     setTimeout(() => { win.print(); }, 1000);
+}
+
+
+function aplicarFiltro(valor){
+ const input=document.getElementById('searchInput');
+ input.value=valor;
+ render(valor);
+ scrollToTop();
+}
+function filtrarSigno(signo){
+ const input=document.getElementById('searchInput');
+ input.value=signo;
+ render(signo);
+ scrollToTop();
 }
 
 carregarDados();
