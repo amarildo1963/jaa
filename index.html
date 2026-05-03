@@ -139,29 +139,40 @@
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     
-.filtros-rapidos {
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:8px;
-    margin-bottom:15px;
-}
-.filtros-rapidos button,
-.filtros-rapidos select {
-    padding:8px 12px;
-    border-radius:20px;
-    border:1px solid #ccc;
-    background:white;
-    cursor:pointer;
-    font-size:13px;
-}
-.filtros-rapidos button:hover,
-.filtros-rapidos select:hover {
-    background:#3b82f6;
-    color:white;
-}
+        .filtros-rapidos {
+            display:flex;
+            flex-wrap:wrap;
+            justify-content:center;
+            gap:8px;
+            margin-bottom:15px;
+            align-items: center;
+        }
+        .filtros-rapidos button,
+        .filtros-rapidos select {
+            padding:8px 12px;
+            border-radius:20px;
+            border:1px solid #ccc;
+            background:white;
+            cursor:pointer;
+            font-size:13px;
+            height: 36px;
+        }
+        .filtros-rapidos button:hover,
+        .filtros-rapidos select:hover {
+            background:#3b82f6;
+            color:white;
+        }
+        .img-filtro-familia {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .img-filtro-familia:hover {
+            transform: scale(1.1);
+        }
 
-</style>
+    </style>
 </head>
 <body>     
     <div id="birthday-overlay" style="display:none;" onclick="this.style.display='none'">
@@ -191,8 +202,8 @@
     <div class="controls">
         <input type="text" id="searchInput" placeholder="Buscar (nome, data, mês, signo, etc...)">
         <button class="btn-limpar" onclick="limparBusca()">Limpar 🧹</button>
-        <img src="familia_anerao.png" style="width: 60px; height: 60px; cursor: pointer; vertical-align: middle; margin-left: 1px;" onclick="filtrarFamiliaAnerao()" alt="Filtrar Família">
     </div>
+
     <div class="filtros-rapidos">
         <button onclick="aplicarFiltro('')">Todos</button>
         <button onclick="aplicarFiltro('vivo')">Vivos</button>
@@ -212,6 +223,7 @@
             <option value="Aquário">Aquário</option>
             <option value="Peixes">Peixes</option>
         </select>
+        <img src="familia_anerao.png" class="img-filtro-familia" onclick="filtrarFamiliaAnerao()" alt="Filtrar Família Anerão" title="Filtrar Família Anerão">
     </div>
 
 
@@ -649,30 +661,7 @@ function gerarPDF(id) {
             .dados { text-align: left; margin-top: 20px; }
             .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
             p { margin: 5px 0; }
-        
-.filtros-rapidos {
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:8px;
-    margin-bottom:15px;
-}
-.filtros-rapidos button,
-.filtros-rapidos select {
-    padding:8px 12px;
-    border-radius:20px;
-    border:1px solid #ccc;
-    background:white;
-    cursor:pointer;
-    font-size:13px;
-}
-.filtros-rapidos button:hover,
-.filtros-rapidos select:hover {
-    background:#3b82f6;
-    color:white;
-}
-
-</style>
+        </style>
     </head>
     <body>
         <div class="cabecalho-container">
