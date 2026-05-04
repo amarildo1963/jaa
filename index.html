@@ -339,7 +339,7 @@ async function carregarDados() {
             const dNasc = parsingDatas(p.nascimento);
             const dFalec = parsingDatas(p.falecimento);
             let signo = ["✨", "Divino"];
-            if (p.nome && p.nome.indexOf("JESUS") === -1) {
+            if (p.nome && p.nome.indexOf("NATAL DO MENINO JESUS 25/12") === -1) {
                 signo = getSigno(dNasc.getDate(), dNasc.getMonth() + 1);
             }
             return {
@@ -369,7 +369,7 @@ function mostrarApresentacao() {
     const secFalecidos = document.getElementById('section-falecidos');
     
     const futuros = pessoas.filter(p => {
-        if (p.nome.includes("JESUS")) return false;
+        if (p.nome.includes("NATAL DO MENINO JESUS 25/12")) return false;
         const bdayEsteAno = new Date(hoje.getFullYear(), p.dNasc.getMonth(), p.dNasc.getDate());
         const diff = (bdayEsteAno - hoje) / (1000 * 60 * 60 * 24);
         return diff >= 0 && diff <= 15;
@@ -469,7 +469,7 @@ function render(filtro = "") {
                 card.className = 'registro-card';
                 card.id = p.id;
                 const isToday = p.diaMes === hojeDM;
-                const isJesus = p.nome.includes("JESUS") || (p.nascimento === "25/12");
+                const isJesus = p.nome.includes("NATAL DO MENINO JESUS 25/12") || (p.nascimento === "25/12");
                 
                 const dadosIdade = calcularIdade(p.dNasc, p.dFalec);
                 const anosFalec = p.dFalec ? calcularIdade(p.dFalec, null).anos : 0;
