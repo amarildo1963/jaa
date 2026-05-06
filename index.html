@@ -240,7 +240,7 @@
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
         Atualizado: 05/05/2026<br>
-		Versão 1.15<br>
+		Versão 1.15a<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -321,7 +321,7 @@ function calcularIdade(nasc, falec) {
     if (m < 0 || (m === 0 && fim.getDate() < inicio.getDate())) idade--;
     const diffTime = Math.abs(fim - inicio);
     const diasVividos = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    const base = { anos: idade, dias: diasVividos };
+    return { anos: idade, dias: diasVividos };
 }
 
 function parsingDatas(str) {
@@ -342,26 +342,21 @@ async function carregarDados() {
             if (p.nome && p.nome.indexOf("NATAL DO MENINO JESUS 25/12") === -1) {
                 signo = getSigno(dNasc.getDate(), dNasc.getMonth() + 1);
             }
-            const base = {
+            return {
                 ...p,
                 id: 'p' + index,
                 dNasc, dFalec, 
                 signo: signo[0] + " " + signo[1],
                 mesNum: dNasc.getMonth(),
                 diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0')
-            ;
-            // Pré-calcular string de busca (otimização principal)
-            const buscaString = `${p.nome} ${p.nascimento} ${p.falecimento} ${p.familia || ''}`
-                .toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-            return { ...base, buscaString };
+            };
         });
         
         mostrarApresentacao(); 
         findProximo();
         render();
     } catch (error) {
-        container.appendChild(fragment);
-    document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
+        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
         console.error("Erro:", error);
     }
 }
@@ -444,7 +439,6 @@ function filtrarFamiliaAnerao() {
 
 function render(filtro = "") {
     const container = document.getElementById('conteudo');
-    const fragment = document.createDocumentFragment();
     const listaUl = document.getElementById('listaAlfabetica');
     container.innerHTML = "";
     listaUl.innerHTML = "";
@@ -458,7 +452,9 @@ function render(filtro = "") {
         const filtrados = pessoas.filter(p => p.mesNum === idx).filter(p => {
             if (!termo) return true;
             const status = p.dFalec ? "falecido" : "vivo";
-            return (p.buscaString + ' ' + status + ' ' + p.signo + ' ' + mesesNomes[p.mesNum]).includes(termo);
+            const buscaString = `${p.nome} ${p.nascimento} ${p.falecimento} ${status} ${p.signo} ${mesesNomes[p.mesNum]} ${p.familia || ''}`
+                .toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+            return buscaString.includes(termo);
         });
 
         if (filtrados.length > 0) {
@@ -548,7 +544,7 @@ function render(filtro = "") {
                 grid.appendChild(card);
             });
             mesDiv.appendChild(grid);
-            fragment.appendChild(mesDiv);
+            container.appendChild(mesDiv);
         }
     });
 
@@ -564,7 +560,6 @@ function render(filtro = "") {
         listaUl.appendChild(li);
     });
 
-    container.appendChild(fragment);
     document.getElementById('stats').innerText = `Registros: ${pessoas.length} / Filtrados: ${count}`;
 }
 
@@ -617,10 +612,10 @@ function gerarPDF(id) {
     const dataAtual = new Date().toLocaleDateString('pt-BR');
 
     const getDetalhesData = (dataStr) => {
-        if (!dataStr) const base = { diaSemana: '', signo: '' };
+        if (!dataStr) return { diaSemana: '', signo: '' };
         const partes = dataStr.split('/');
         const data = new Date(partes[2], partes[1] - 1, partes[0]);
-        if (isNaN(data)) const base = { diaSemana: '', signo: '' };
+        if (isNaN(data)) return { diaSemana: '', signo: '' };
         const dias = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
         const diaSemana = `(${dias[data.getDay()]})`;
         const dia = parseInt(partes[0]);
@@ -634,7 +629,7 @@ function gerarPDF(id) {
             { nome: 'Escorpião', d: 21, m: 11 }, { nome: 'Sagitário', d: 21, m: 12 }
         ];
         const signo = (dia > signos[mes - 1].d) ? signos[mes % 12].nome : signos[mes - 1].nome;
-        const base = { diaSemana, signo };
+        return { diaSemana, signo };
     };
 
     const detalhesNasc = getDetalhesData(p.nascimento);
