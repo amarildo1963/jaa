@@ -239,8 +239,8 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 05/05/2026<br>
-		Versão 1.15<br>
+        Atualizado: 03/05/2026<br>
+		Versão 1.14<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -332,52 +332,32 @@ function parsingDatas(str) {
 
 async function carregarDados() {
     try {
-        let data;
-
-        // 🔥 CACHE LOCAL (localStorage)
-        const cache = localStorage.getItem('dados_cache');
-        if (cache) {
-            data = JSON.parse(cache);
-        } else {
-            const response = await fetch('dados.json', { cache: "force-cache" });
-            data = await response.json();
-            localStorage.setItem('dados_cache', JSON.stringify(data));
-        }
-
-        // 🔥 PRÉ-PROCESSAMENTO OTIMIZADO
+        const response = await fetch('dados.json');
+        const data = await response.json();
+        
         pessoas = data.map((p, index) => {
             const dNasc = parsingDatas(p.nascimento);
             const dFalec = parsingDatas(p.falecimento);
-
             let signo = ["✨", "Divino"];
             if (p.nome && p.nome.indexOf("NATAL DO MENINO JESUS 25/12") === -1) {
                 signo = getSigno(dNasc.getDate(), dNasc.getMonth() + 1);
             }
-
-            // 🔥 STRING DE BUSCA PRÉ-CALCULADA (evita recalcular sempre)
-            const busca = `${p.nome} ${p.nascimento} ${p.falecimento} ${p.familia || ''}`
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[̀-ͯ]/g, "");
-
             return {
                 ...p,
                 id: 'p' + index,
-                dNasc,
-                dFalec,
+                dNasc, dFalec, 
                 signo: signo[0] + " " + signo[1],
                 mesNum: dNasc.getMonth(),
-                diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0'),
-                busca
+                diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0')
             };
         });
-
-        mostrarApresentacao();
+        
+        mostrarApresentacao(); 
         findProximo();
         render();
     } catch (error) {
-        document.getElementById('stats').innerText = "Erro ao carregar dados.";
-        console.error(error);
+        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
+        console.error("Erro:", error);
     }
 }
 
@@ -472,7 +452,9 @@ function render(filtro = "") {
         const filtrados = pessoas.filter(p => p.mesNum === idx).filter(p => {
             if (!termo) return true;
             const status = p.dFalec ? "falecido" : "vivo";
-            return p.busca.includes(termo);
+            const buscaString = `${p.nome} ${p.nascimento} ${p.falecimento} ${status} ${p.signo} ${mesesNomes[p.mesNum]} ${p.familia || ''}`
+                .toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+            return buscaString.includes(termo);
         });
 
         if (filtrados.length > 0) {
