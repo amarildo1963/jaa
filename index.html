@@ -196,7 +196,15 @@
         .info-bubble { background-color: #ffffe0; border: 1px solid black; color: black; font-weight: bold; }
         
         /* ESTILO ÁRVORE GENEALÓGICA */
-        .family-bubble { background-color: #f0f7ff; border: 1px solid #3b82f6; color: #1e3a8a; }
+        .family-bubble { 
+            background-color: #f0f7ff; 
+            border: 1px solid #3b82f6; 
+            color: #1e3a8a;
+            max-height: 75vh;
+            overflow-y: auto;
+            padding-right: 8px;
+            cursor: pointer;
+        }
         .family-tree-content b { color: #2563eb; display: block; margin-top: 5px; border-bottom: 1px solid #dbeafe; }
         .family-tree-content span { display: block; padding-left: 10px; font-style: italic; color: #4b5563; }
         
@@ -381,7 +389,7 @@ html {
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
         Atualizado: 07/05/2026<br>
-		Versão 1.15c<br>
+		Versão 1.15d<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -550,13 +558,27 @@ function mostrarGenealogia(id) {
     const el = document.getElementById('family-' + id);
     if (el) {
         el.style.display = 'block';
-        setTimeout(() => { el.style.display = 'none'; }, 10000);
+        el.scrollTop = 0;
+
+        el.onclick = function(event) {
+            event.stopPropagation();
+            el.style.display = 'none';
+        };
     }
 }
 
 function fecharBalores() {
     document.querySelectorAll('.info-bubble, .family-bubble').forEach(b => b.style.display = 'none');
 }
+
+document.addEventListener('click', function(event) {
+    const genealogyBox = event.target.closest('.family-bubble');
+    const genealogyButton = event.target.closest('.icon-genealogia');
+
+    if (!genealogyBox && !genealogyButton) {
+        fecharBalores();
+    }
+});
 
 function irParaRegistro(id) {
     const el = document.getElementById(id);
