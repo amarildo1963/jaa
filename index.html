@@ -514,7 +514,7 @@ function render(filtro = "") {
                 let htmlInfos = arrayInfos.length > 0 ? arrayInfos.map(t => `<div>${t}</div>`).join('') : "Nenhuma informação!";
 
                 let htmlGen = `<div class="family-tree-content">`;
-				(p.nome) htmlGen += `<b>Nome:</b> <span>${p.nome}</span>`;
+				if(p.nome) htmlGen += `<b>Nome:</b> <span>${p.nome}</span>`;
 				if(p.pai) htmlGen += `<b>Pai:</b> <span>${p.pai}</span>`;
 				if(p.mae) htmlGen += `<b>Mãe:</b> <span>${p.mae}</span>`;
                 if(p.conjuge) htmlGen += `<b>Cônjuge:</b> <span>${p.conjuge}</span>`;
