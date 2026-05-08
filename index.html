@@ -48,7 +48,6 @@
         /* CONTROLES */
         .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
         input[type="text"] { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.8); }
-        .btn-limpar { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; }
         .stats { text-align: center; margin-bottom: 10px; font-weight: bold; }
         
         /* CARDS E GRID */
@@ -189,6 +188,18 @@
         .img-filtro-familia:hover {
             transform: scale(1.1);
         }
+        .btn-limpar-icone {
+            padding: 8px 12px;
+            cursor: pointer;
+            background: #eee;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            font-size: 18px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
     </style>
 </head>
@@ -219,7 +230,6 @@
 
     <div class="controls">
         <input type="text" id="searchInput" placeholder="Buscar (nome, data, mês, signo, etc...)">
-        <button class="btn-limpar" onclick="limparBusca()">🧹</button>
     </div>
 
     <div class="filtros-rapidos">
@@ -242,6 +252,7 @@
             <option value="Peixes">Peixes</option>
         </select>
         <img src="familia_anerao.png" class="img-filtro-familia" onclick="filtrarFamiliaAnerao()" alt="Filtrar Família ANERAO" title="Filtrar Família ANERAO">
+        <button class="btn-limpar-icone" onclick="limparBusca()" title="Limpar">🧹</button>
     </div>
 
 
@@ -257,8 +268,8 @@
     <footer id="footer">
         ©2016-2026 JAAnerão<br>
         jaanerao@hotmail.com<br>
-        Atualizado: 07/05/2026<br>
-		Versão 1.15b<br>
+        Atualizado: 08/05/2026<br>
+		Versão 1.15c<br>
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
