@@ -40,10 +40,10 @@
         body { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); background-attachment: fixed; padding: 20px; padding-bottom: 100px; }
         
         /* CABEÇALHO */
-        .header-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
+        header.header-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
         .img-topo { width: 50px; height: auto; cursor: pointer; transition: transform 0.2s; }
         .img-topo:hover { transform: scale(1.1); }
-        h3 { color: blue; font-size: 24px; margin-bottom: 0; }
+        h1 { color: blue; font-size: 24px; margin-bottom: 0; }
         
         /* CONTROLES */
         .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
@@ -61,62 +61,19 @@
         .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
         .img-pessoa { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #B8860B; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
         
-        /* POSICIONAMENTO DOS ÍCONES SOLICITADOS */
-        .card-actions-left {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            position: absolute;
-            left: 10px;
-            top: 10px;
-            z-index: 10;
-        }
-        .card-actions-right {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            z-index: 10;
-        }
-
-        .icon-action-card {
-            width: 35px;
-            height: 35px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
+        .card-actions-left { display: flex; flex-direction: column; gap: 5px; position: absolute; left: 10px; top: 10px; z-index: 10; }
+        .card-actions-right { position: absolute; right: 10px; top: 10px; z-index: 10; }
+        .icon-action-card { width: 35px; height: 35px; cursor: pointer; transition: opacity 0.2s; }
         .icon-action-card:hover { opacity: 0.7; }
         .icon-genealogia { width: 60px; height: 60px; }
-
         .icon-luto { width: 15px; height: auto; margin-left: 2px; }
         
         /* BALÕES DE INFORMAÇÃO */
-        .info-bubble, .family-bubble { 
-            display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); 
-            width: 95%; border-radius: 8px; padding: 10px; z-index: 20; text-align: left; 
-            font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
-        }
+        .info-bubble, .family-bubble { display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); width: 95%; border-radius: 8px; padding: 10px; z-index: 20; text-align: left; font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .info-bubble { background-color: #ffffe0; border: 1px solid black; color: black; font-weight: bold; }
         
-        /* ESTILO ÁRVORE GENEALÓGICA */
-        .family-bubble { 
-            background-color: rgba(240, 247, 255, 0.98); 
-            border: 2px solid #3b82f6; 
-            color: #1e3a8a;
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 108%;
-            max-height: 520px;
-            overflow-y: auto;
-            z-index: 999;
-            padding: 14px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-        }
-        .family-tree-content {
-            text-align: left;
-        }
+        .family-bubble { background-color: rgba(240, 247, 255, 0.98); border: 2px solid #3b82f6; color: #1e3a8a; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 108%; max-height: 520px; overflow-y: auto; z-index: 999; padding: 14px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.35); }
+        .family-tree-content { text-align: left; }
         .family-tree-content b { color: #2563eb; display: block; margin-top: 8px; border-bottom: 1px solid #dbeafe; }
         .family-tree-content span { display: block; padding-left: 10px; font-style: italic; color: #4b5563; line-height: 1.5; }
         
@@ -136,7 +93,6 @@
         .scroll-top { position: fixed; bottom: 20px; right: 20px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
         .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
         
-        /* TIPOGRAFIA DE DADOS */
         .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
         .info-nasc { color: green; font-weight: bold; }
         .info-falec { color: #b8860b; font-weight: bold; }
@@ -144,7 +100,6 @@
         .info-idade-morta { color: #b8860b; font-weight: bold; }
         .highlight { background-color: yellow; }
         
-        /* LISTA ALFABÉTICA */
         #lista-alfabetica-container { max-width: 900px; margin: 60px auto; padding: 25px; background: linear-gradient(135deg, #ffffff, #f7f9fc); border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
         .titulo-lista { color: #1e3a8a; margin-bottom: 20px; font-size: 22px; font-weight: 700; border-left: 5px solid #3b82f6; padding-left: 10px; }
         .lista-caderno { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
@@ -156,51 +111,12 @@
         
         footer { text-align: center; margin-top: 50px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 20px; background: rgba(235, 237, 238, 0.8); padding-bottom: 20px;}
     
-        .filtros-rapidos {
-            display:flex;
-            flex-wrap:wrap;
-            justify-content:center;
-            gap:8px;
-            margin-bottom:15px;
-            align-items: center;
-        }
-        .filtros-rapidos button,
-        .filtros-rapidos select {
-            padding:8px 12px;
-            border-radius:20px;
-            border:1px solid #ccc;
-            background:white;
-            cursor:pointer;
-            font-size:13px;
-            height: 36px;
-        }
-        .filtros-rapidos button:hover,
-        .filtros-rapidos select:hover {
-            background:#3b82f6;
-            color:white;
-        }
-        .img-filtro-familia {
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .img-filtro-familia:hover {
-            transform: scale(1.1);
-        }
-        .btn-limpar-icone {
-            padding: 8px 12px;
-            cursor: pointer;
-            background: #eee;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-            font-size: 18px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
+        .filtros-rapidos { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:15px; align-items: center; }
+        .filtros-rapidos button, .filtros-rapidos select { padding:8px 12px; border-radius:20px; border:1px solid #ccc; background:white; cursor:pointer; font-size:13px; height: 36px; }
+        .filtros-rapidos button:hover, .filtros-rapidos select:hover { background:#3b82f6; color:white; }
+        .img-filtro-familia { width: 40px; height: 40px; cursor: pointer; transition: transform 0.2s; }
+        .img-filtro-familia:hover { transform: scale(1.1); }
+        .btn-limpar-icone { padding: 8px 12px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 20px; font-size: 18px; height: 36px; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>     
@@ -218,58 +134,63 @@
         </div>
     </div>
 
-    <a href="javascript:void(0)" class="scroll-top" id="backToTop">▲</a>
-    <a href="javascript:void(0)" class="scroll-bottom" id="goToBottom">▼</a>
+    <nav aria-label="Navegação rápida">
+        <a href="javascript:void(0)" class="scroll-top" id="backToTop" title="Voltar ao topo">▲</a>
+        <a href="javascript:void(0)" class="scroll-bottom" id="goToBottom" title="Ir para o final">▼</a>
+    </nav>
 
-    <div class="header-container">
+    <header class="header-container">
         <a href="index.html">
             <img src="aniver.png" alt="Ícone Aniversário" class="img-topo">
         </a>
-        <h3>ANIVERSARIANTES</h3>
-    </div>
+        <h1>ANIVERSARIANTES</h1>
+    </header>
 
-    <div class="controls">
-        <input type="text" id="searchInput" placeholder="Buscar (nome, data, mês, signo, etc...)">
-    </div>
+    <main>
+        <section class="search-area" aria-label="Busca e Filtros">
+            <div class="controls">
+                <input type="text" id="searchInput" placeholder="Buscar (nome, data, mês, signo, etc...)">
+            </div>
 
-    <div class="filtros-rapidos">
-        <button onclick="aplicarFiltro('')">Todos</button>
-        <button onclick="aplicarFiltro('vivo')">Vivos</button>
-        <button onclick="aplicarFiltro('falecido')">Falecidos</button>
-        <select onchange="filtrarSigno(this.value)">
-            <option value="">Signo</option>
-            <option value="Áries">Áries</option>
-            <option value="Touro">Touro</option>
-            <option value="Gêmeos">Gêmeos</option>
-            <option value="Câncer">Câncer</option>
-            <option value="Leão">Leão</option>
-            <option value="Virgem">Virgem</option>
-            <option value="Libra">Libra</option>
-            <option value="Escorpião">Escorpião</option>
-            <option value="Sagitário">Sagitário</option>
-            <option value="Capricórnio">Capricórnio</option>
-            <option value="Aquário">Aquário</option>
-            <option value="Peixes">Peixes</option>
-        </select>
-        <img src="familia_anerao.png" class="img-filtro-familia" onclick="filtrarFamiliaAnerao()" alt="Filtrar Família ANERAO" title="Filtrar Família ANERAO">
-        <button class="btn-limpar-icone" onclick="limparBusca()" title="Limpar">🆑</button>
-    </div>
+            <div class="filtros-rapidos">
+                <button onclick="aplicarFiltro('')">Todos</button>
+                <button onclick="aplicarFiltro('vivo')">Vivos</button>
+                <button onclick="aplicarFiltro('falecido')">Falecidos</button>
+                <select onchange="filtrarSigno(this.value)" aria-label="Filtrar por signo">
+                    <option value="">Signo</option>
+                    <option value="Áries">Áries</option>
+                    <option value="Touro">Touro</option>
+                    <option value="Gêmeos">Gêmeos</option>
+                    <option value="Câncer">Câncer</option>
+                    <option value="Leão">Leão</option>
+                    <option value="Virgem">Virgem</option>
+                    <option value="Libra">Libra</option>
+                    <option value="Escorpião">Escorpião</option>
+                    <option value="Sagitário">Sagitário</option>
+                    <option value="Capricórnio">Capricórnio</option>
+                    <option value="Aquário">Aquário</option>
+                    <option value="Peixes">Peixes</option>
+                </select>
+                <img src="familia_anerao.png" class="img-filtro-familia" onclick="filtrarFamiliaAnerao()" alt="Filtrar Família ANERAO" title="Filtrar Família ANERAO">
+                <button class="btn-limpar-icone" onclick="limparBusca()" title="Limpar">🆑</button>
+            </div>
 
+            <div class="stats" id="stats">Carregando dados...</div>
+        </section>
 
-    <div class="stats" id="stats">Carregando dados...</div>
+        <section id="conteudo" aria-label="Lista de aniversariantes por mês"></section>
 
-    <div id="conteudo"></div>
-
-    <div id="lista-alfabetica-container">
-        <h4 class="titulo-lista">LISTA ALFABÉTICA</h4>
-        <ul id="listaAlfabetica" class="lista-caderno"></ul>
-    </div>
+        <section id="lista-alfabetica-container">
+            <h2 class="titulo-lista">LISTA ALFABÉTICA</h2>
+            <ul id="listaAlfabetica" class="lista-caderno"></ul>
+        </section>
+    </main>
 
     <footer id="footer">
-        ©2016-2026 JAAnerão<br>
-        jaanerao@hotmail.com<br>
-        Atualizado: 08/05/2026<br>
-		Versão 1.15c<br>
+        <p>©2016-2026 JAAnerão</p>
+        <p>jaanerao@hotmail.com</p>
+        <p>Atualizado: 08/05/2026 | Versão 1.20</p>
+        
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
             <div id="help-bubble">
@@ -435,13 +356,9 @@ function mostrarInfo(id) {
 
 function mostrarGenealogia(id) {
     const el = document.getElementById('family-' + id);
-
     if (!el) return;
-
     const jaAberto = el.style.display === 'block';
-
     fecharBalores();
-
     if (!jaAberto) {
         el.style.display = 'block';
         el.scrollTop = 0;
@@ -494,13 +411,13 @@ function render(filtro = "") {
 
         if (filtrados.length > 0) {
             const mesDiv = document.createElement('div');
-            mesDiv.innerHTML = `<div class="mes-titulo">${mes}</div>`;
+            mesDiv.innerHTML = `<h2 class="mes-titulo">${mes}</h2>`;
             const grid = document.createElement('div');
             grid.className = 'grid-container';
 
             filtrados.forEach(p => {
                 count++;
-                const card = document.createElement('div');
+                const card = document.createElement('article');
                 card.className = 'registro-card';
                 card.id = p.id;
                 const isToday = p.diaMes === hojeDM;
@@ -700,41 +617,41 @@ function gerarPDF(id) {
         </style>
     </head>
     <body>
-        <div class="cabecalho-container">
-            <img src="${BASE_URL}genealogia.png" class="img-topo">
-            <h4 class="titulo-topo">GENEALOGIA - FAMÍLIA ANERÃO</h4>
-            <img src="${BASE_URL}familia_anerao.png" class="img-topo">
-        </div>
-        <div class="centro">
+        <header class="cabecalho-container">
+            <img src="${BASE_URL}genealogia.png" class="img-topo" alt="">
+            <h1 class="titulo-topo">GENEALOGIA - FAMÍLIA ANERÃO</h1>
+            <img src="${BASE_URL}familia_anerao.png" class="img-topo" alt="">
+        </header>
+        <main class="centro">
             <div class="nome-destaque">${p.nome.toUpperCase()}</div>
             <div class="signo-texto">Signo: ${detalhesNasc.signo}</div>
-            <img src="${BASE_URL}${p.imagem}" class="foto">
+            <img src="${BASE_URL}${p.imagem}" class="foto" alt="">
             <div class="familia-destaque">Família: ${p.familia || ''}</div>
-        </div>
-        <div class="dados">
-            ${criarLinha('Nascimento', p.nascimento, detalhesNasc.diaSemana)}
-            <p><strong>Idade:</strong> <b>${idade.anos} anos</b></p>
-            ${criarLinha('Falecimento', p.falecimento, detalhesFalec.diaSemana)}
-            ${criarLinha('Pai', p.pai)}
-            ${criarLinha('Mãe', p.mae)}
-            ${criarLinha('Cônjuge', p.conjuge)}
-            ${criarLinha('Filhos', p.filhos)}
-            ${criarLinha('Netos', p.netos)}
-            ${criarLinha('Bisnetos', p.bisnetos)}
-            ${criarLinha('Trinetos', p.trinetos)}
-            ${criarLinha('Tetranetos', p.tetranetos)}
-            ${criarLinha('Irmãos', p.irmaos)}
-            ${criarLinha('Tios', p.tios)}
-            ${criarLinha('Sobrinhos', p.sobrinhos)}
-            ${criarLinha('Primos', p.primos)}
-            ${criarLinha('Avós', p.avos)}
-            ${criarLinha('Bisavós', p.bisavos)}
-            ${criarLinha('Trisavós', p.trisavos)}
-        </div>
-        <div class="assinatura">
+            <section class="dados">
+                ${criarLinha('Nascimento', p.nascimento, detalhesNasc.diaSemana)}
+                <p><strong>Idade:</strong> <b>${idade.anos} anos</b></p>
+                ${criarLinha('Falecimento', p.falecimento, detalhesFalec.diaSemana)}
+                ${criarLinha('Pai', p.pai)}
+                ${criarLinha('Mãe', p.mae)}
+                ${criarLinha('Cônjuge', p.conjuge)}
+                ${criarLinha('Filhos', p.filhos)}
+                ${criarLinha('Netos', p.netos)}
+                ${criarLinha('Bisnetos', p.bisnetos)}
+                ${criarLinha('Trinetos', p.trinetos)}
+                ${criarLinha('Tetranetos', p.tetranetos)}
+                ${criarLinha('Irmãos', p.irmaos)}
+                ${criarLinha('Tios', p.tios)}
+                ${criarLinha('Sobrinhos', p.sobrinhos)}
+                ${criarLinha('Primos', p.primos)}
+                ${criarLinha('Avós', p.avos)}
+                ${criarLinha('Bisavós', p.bisavos)}
+                ${criarLinha('Trisavós', p.trisavos)}
+            </section>
+        </main>
+        <footer class="assinatura">
             <p><strong>Data de emissão:</strong> ${dataAtual}</p>
             <p><strong>Assinado por:</strong> José Amarildo Anerão - https://amarildo1963.github.io/jaa/</p>
-        </div>
+        </footer>
     </body>
     </html>`;
 
