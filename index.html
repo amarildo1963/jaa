@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aniversariantes - Anerão</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
     <style>
         /* ESTILIZAÇÃO DO OVERLAY DE ABERTURA */
@@ -14,7 +14,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.95) 0%, rgba(59, 130, 246, 0.95) 100%);
             color: white;
             z-index: 9999;
             display: flex;
@@ -23,365 +23,396 @@
             justify-content: center;
             text-align: center;
             padding: 20px;
+            backdrop-filter: blur(10px);
         }
         .overlay-content {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            max-width: 600px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 35px;
+            border-radius: 20px;
+            max-width: 650px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        .overlay-title { font-size: 14px; color: #4da6ff; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; }
-        .overlay-list { font-size: 11px; margin-bottom: 20px; list-style: none; padding: 0; }
-        .overlay-item { margin-bottom: 4px; }
-        .overlay-deceased-title { font-size: 14px; color: #ffcc00; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; }
+        .overlay-title { 
+            font-size: 16px; 
+            color: #fff; 
+            margin-bottom: 15px; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .overlay-list { 
+            font-size: 13px; 
+            margin-bottom: 25px; 
+            list-style: none; 
+            padding: 0; 
+            line-height: 1.8;
+        }
+        .overlay-item { 
+            margin-bottom: 6px; 
+            opacity: 0.95;
+        }
+        .overlay-deceased-title { 
+            font-size: 16px; 
+            color: #ffd700; 
+            margin-bottom: 15px; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px;
+            font-family: 'Poppins', sans-serif;
+        }
 
         /* ESTILIZAÇÃO GLOBAL E LAYOUT */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
-        body {
-        background:
-            radial-gradient(circle at top left, rgba(59,130,246,0.12), transparent 25%),
-            radial-gradient(circle at top right, rgba(37,99,235,0.10), transparent 20%),
-            linear-gradient(135deg, #f4f7fb 0%, #e9eef5 100%);
-        background-attachment: fixed;
-        padding: 20px;
-        padding-bottom: 100px;
-        color: #1f2937;
-    }
-        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Inter', sans-serif; 
+        }
+        body { 
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); 
+            background-attachment: fixed; 
+            padding: 20px; 
+            padding-bottom: 100px;
+            min-height: 100vh;
+        }
+
         /* CABEÇALHO */
-        header.header-container {
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        gap:18px;
-        margin:0 auto 24px;
-        padding:18px 24px;
-        max-width:980px;
-        border-radius:26px;
-        background:rgba(255,255,255,0.82);
-        backdrop-filter: blur(14px);
-        box-shadow:0 10px 35px rgba(15,23,42,0.08);
-        border:1px solid rgba(255,255,255,0.6);
-    }
-        .img-topo { width: 50px; height: auto; cursor: pointer; transition: transform 0.2s; }
-        .img-topo:hover { transform: scale(1.1); }
-        h1 {
-        color:#1d4ed8;
-        font-size:32px;
-        margin-bottom:0;
-        font-weight:800;
-        letter-spacing:1px;
-        text-shadow:0 1px 0 rgba(255,255,255,.8);
-    }
-        
-        /* CONTROLES */
-        .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
-        input[type="text"] {
-        padding:14px 18px;
-        width:min(100%, 420px);
-        border-radius:18px;
-        border:1px solid #d1d5db;
-        background:rgba(255,255,255,0.95);
-        box-shadow:0 6px 16px rgba(0,0,0,0.05);
-        font-size:15px;
-        transition:all .25s ease;
-        outline:none;
-    }
-    input[type="text"]:focus{
-        border-color:#3b82f6;
-        box-shadow:0 0 0 4px rgba(59,130,246,0.15);
-    }
-        .stats {
-        text-align:center;
-        margin:18px auto;
-        font-weight:700;
-        max-width:340px;
-        padding:10px 18px;
-        border-radius:16px;
-        background:rgba(255,255,255,0.90);
-        box-shadow:0 4px 14px rgba(0,0,0,0.06);
-    }
-        
-        /* CARDS E GRID */
-        .mes-titulo {
-        color:#1e40af;
-        font-weight:800;
-        font-size:30px;
-        text-align:center;
-        margin:42px 0 24px;
-        text-transform:uppercase;
-        letter-spacing:2px;
-    }
-        .grid-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-        .registro-card {
-        background:rgba(255,255,255,0.92);
-        border:1px solid rgba(226,232,240,0.95);
-        border-radius:26px;
-        padding:18px;
-        width:290px;
-        text-align:center;
-        position:relative;
-        overflow:visible;
-        transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-        box-shadow:0 12px 30px rgba(15,23,42,0.08);
-        backdrop-filter: blur(12px);
-    }
-        .registro-card:hover {
-        transform:translateY(-6px);
-        box-shadow:0 20px 42px rgba(15,23,42,0.14);
-        border-color:#93c5fd;
-    }
-        
-        /* ELEMENTOS DO CARD */
-        .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; position: relative; }
-        .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
-        .img-pessoa {
-        width:100%;
-        height:100%;
-        object-fit:cover;
-        border-radius:50%;
-        border:4px solid #fff;
-        box-shadow:0 12px 26px rgba(0,0,0,0.18);
-    }
-        
-        .card-actions-left { display: flex; flex-direction: column; gap: 5px; position: absolute; left: 10px; top: 10px; z-index: 10; }
-        .card-actions-right { position: absolute; right: 10px; top: 10px; z-index: 10; }
-        .icon-action-card {
-        width:38px;
-        height:38px;
-        cursor:pointer;
-        transition:all .2s ease;
-        background:rgba(255,255,255,0.95);
-        border-radius:12px;
-        padding:6px;
-        box-shadow:0 6px 16px rgba(0,0,0,0.10);
-    }
-        .icon-action-card:hover {
-        opacity:1;
-        transform:scale(1.08);
-    }
-        .icon-genealogia { width: 60px; height: 60px; }
-        .icon-luto { width: 15px; height: auto; margin-left: 2px; }
-        
-        /* BALÕES DE INFORMAÇÃO */
-        .info-bubble, .family-bubble { display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); width: 95%; border-radius: 8px; padding: 10px; z-index: 20; text-align: left; font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .info-bubble { background-color: #ffffe0; border: 1px solid black; color: black; font-weight: bold; }
-        
-        .family-bubble { background-color: rgba(240, 247, 255, 0.98); border: 2px solid #3b82f6; color: #1e3a8a; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 108%; max-height: 520px; overflow-y: auto; z-index: 999; padding: 14px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.35); }
-        .family-tree-content { text-align: left; }
-        .family-tree-content b { color: #2563eb; display: block; margin-top: 8px; border-bottom: 1px solid #dbeafe; }
-        .family-tree-content span { display: block; padding-left: 10px; font-style: italic; color: #4b5563; line-height: 1.5; }
-        
-        /* AJUDA E MANUTENÇÃO */
-        .help-container { position: relative; display: inline-block; margin-top: 10px; text-align: center; }
-        .help-icon { width: 30px; height: 30px; cursor: pointer; vertical-align: middle; margin-bottom: 5px; }
-        #help-bubble { display: none; position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); width: 250px; background-color: white; border: 1px solid black; border-radius: 10px; padding: 10px; z-index: 100; text-align: left; font-size: 12px; color: blue; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        header.header-container { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 20px; 
+            margin-bottom: 30px; 
+        }
+        .img-topo { 
+            width: 60px; 
+            height: auto; 
+            cursor: pointer; 
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+        }
+        .img-topo:hover {
+            transform: scale(1.1);
+        }
+        .title-container { 
+            text-align: center; 
+        }
+        .title-container h1 { 
+            font-size: 32px; 
+            font-weight: 700; 
+            color: #1e293b;
+            margin-bottom: 5px;
+            font-family: 'Poppins', sans-serif;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .title-container p { 
+            font-size: 14px; 
+            color: #64748b; 
+            font-weight: 500;
+        }
 
-        /* ANIMAÇÕES */
-        @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        .pulse-active { animation: pulse-img 1s linear 10; }
-        @keyframes target-blink { 0%, 100% { background-color: rgba(224, 224, 224, 0.9); } 50% { background-color: yellow; } }
-        .highlight-target { animation: target-blink 0.5s ease-in-out 10; }
-        @keyframes blink-red { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
-        .bday-msg { color: red; font-weight: bold; animation: blink-red 0.8s infinite; margin-top: 5px; font-size: 0.9em; }
-        @keyframes blink-blue { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
-        .scroll-top { position: fixed; bottom: 20px; right: 20px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
-        .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
-        
-        .nome { color: blue; font-weight: bold; font-size: 18px; margin-bottom: 8px; display: block; }
-        .info-nasc { color: green; font-weight: bold; }
-        .info-falec { color: #b8860b; font-weight: bold; }
-        .info-idade-viva { color: green; font-weight: bold; }
-        .info-idade-morta { color: #b8860b; font-weight: bold; }
-        .highlight { background-color: yellow; }
-        
-        #lista-alfabetica-container {
-        max-width:950px;
-        margin:60px auto;
-        padding:28px;
-        background:rgba(255,255,255,0.90);
-        border-radius:28px;
-        backdrop-filter: blur(12px);
-        box-shadow:0 14px 36px rgba(0,0,0,0.08);
-    }
-        .titulo-lista { color: #1e3a8a; margin-bottom: 20px; font-size: 22px; font-weight: 700; border-left: 5px solid #3b82f6; padding-left: 10px; }
-        .lista-caderno { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
-        .lista-item { background: #ffffff; border-radius: 8px; padding: 8px 10px; transition: all 0.2s ease; border: 1px solid #e5e7eb; }
-        .lista-item:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-color: #3b82f6; }
-        .lista-link { text-decoration: none; color: #111827; font-weight: 500; display: flex; align-items: center; gap: 10px; }
-        .lista-link:hover { color: #2563eb; }
-        .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
-        
-        footer {
-        text-align:center;
-        margin-top:60px;
-        font-size:14px;
-        border-top:1px solid rgba(203,213,225,0.7);
-        padding-top:28px;
-        background:rgba(255,255,255,0.80);
-        padding-bottom:28px;
-        border-radius:28px 28px 0 0;
-        backdrop-filter: blur(12px);
-    }
-    
-        .filtros-rapidos { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:15px; align-items: center; }
-        .filtros-rapidos button, .filtros-rapidos select {
-        padding:10px 16px;
-        border-radius:999px;
-        border:1px solid #dbeafe;
-        background:rgba(255,255,255,0.95);
-        cursor:pointer;
-        font-size:13px;
-        font-weight:600;
-        height:40px;
-        transition:all .25s ease;
-        box-shadow:0 4px 12px rgba(0,0,0,0.05);
-    }
-        .filtros-rapidos button:hover, .filtros-rapidos select:hover { background:#3b82f6; color:white; }
-        .img-filtro-familia { width: 40px; height: 40px; cursor: pointer; transition: transform 0.2s; }
-        .img-filtro-familia:hover { transform: scale(1.1); }
-        .btn-limpar-icone { padding: 8px 12px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 20px; font-size: 18px; height: 36px; display: flex; align-items: center; justify-content: center; }
-    
-@media (max-width: 768px){
-    body{
-        padding:14px;
-        padding-bottom:90px;
-    }
+        /* FILTROS */
+        .filters { 
+            display: flex; 
+            justify-content: center; 
+            gap: 12px; 
+            margin-bottom: 30px; 
+            flex-wrap: wrap; 
+        }
+        .filters button { 
+            padding: 12px 24px; 
+            font-size: 14px; 
+            font-weight: 500; 
+            border: 2px solid #e2e8f0; 
+            background: white; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .filters button:hover { 
+            background: #f8fafc; 
+            border-color: #6366f1; 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+        .filters button.active { 
+            background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%); 
+            color: white; 
+            border-color: #6366f1;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
 
-    header.header-container{
-        flex-direction:column;
-        text-align:center;
-        border-radius:22px;
-    }
+        /* DROPDOWN DE SIGNOS */
+        .sign-dropdown { 
+            position: relative; 
+            display: inline-block; 
+        }
+        .sign-dropdown > button { 
+            padding: 12px 24px; 
+            font-size: 14px; 
+            font-weight: 500; 
+            border: 2px solid #e2e8f0; 
+            background: white; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .sign-dropdown > button:hover { 
+            background: #f8fafc; 
+            border-color: #6366f1; 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+        .sign-options { 
+            display: none; 
+            position: absolute; 
+            top: 100%; 
+            left: 0; 
+            background: white; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 12px; 
+            margin-top: 8px; 
+            z-index: 1000; 
+            min-width: 180px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .sign-options.active { 
+            display: block; 
+        }
+        .sign-options button { 
+            display: block; 
+            width: 100%; 
+            text-align: left; 
+            padding: 12px 20px; 
+            border: none; 
+            background: white; 
+            cursor: pointer; 
+            font-size: 14px; 
+            transition: background 0.2s ease;
+            font-weight: 400;
+        }
+        .sign-options button:hover { 
+            background: #f8fafc;
+            color: #6366f1;
+        }
 
-    h1{
-        font-size:25px;
-    }
+        /* CARTÕES */
+        #cards { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 20px; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+        }
+        .card { 
+            background: white; 
+            border-radius: 16px; 
+            padding: 24px; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
+            text-align: center; 
+            transition: all 0.3s ease;
+            border: 1px solid #f1f5f9;
+        }
+        .card:hover { 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12); 
+            transform: translateY(-5px);
+        }
+        .card img { 
+            width: 120px; 
+            height: 120px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            margin-bottom: 16px; 
+            border: 4px solid #f8fafc;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .card h2 { 
+            font-size: 20px; 
+            margin-bottom: 8px; 
+            color: #1e293b;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+        }
+        .card .info { 
+            font-size: 14px; 
+            color: #64748b; 
+            margin: 6px 0;
+            line-height: 1.6;
+        }
+        .card .info strong { 
+            color: #334155;
+            font-weight: 600;
+        }
+        .card.deceased { 
+            opacity: 0.75; 
+            border: 2px solid #fbbf24;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        }
 
-    .registro-card{
-        width:100%;
-        max-width:340px;
-    }
+        /* LISTA ALFABÉTICA */
+        .alphabetical-list { 
+            max-width: 1400px; 
+            margin: 40px auto; 
+            padding: 30px; 
+            background: white; 
+            border-radius: 16px; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        .alphabetical-list h2 { 
+            text-align: center; 
+            font-size: 26px; 
+            margin-bottom: 25px; 
+            color: #1e293b;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+        }
+        .alpha-section { 
+            margin-bottom: 30px; 
+        }
+        .alpha-section h3 { 
+            font-size: 22px; 
+            margin-bottom: 12px; 
+            color: #6366f1; 
+            border-bottom: 3px solid #6366f1; 
+            padding-bottom: 8px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+        }
+        .alpha-section ul { 
+            list-style: none; 
+            padding-left: 0; 
+        }
+        .alpha-section li { 
+            padding: 12px; 
+            margin-bottom: 8px; 
+            background: #f8fafc; 
+            border-radius: 8px; 
+            font-size: 15px; 
+            color: #334155;
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
+        }
+        .alpha-section li:hover {
+            background: #f1f5f9;
+            border-left-color: #6366f1;
+            transform: translateX(5px);
+        }
+        .alpha-section li.deceased { 
+            color: #92400e; 
+            background: #fef3c7;
+            border-left-color: #fbbf24;
+        }
 
-    .family-bubble{
-        width:100%;
-        left:0;
-        transform:none;
-    }
-}
+        /* RODAPÉ */
+        footer { 
+            text-align: center; 
+            padding: 25px; 
+            background: white; 
+            border-radius: 16px; 
+            margin: 40px auto 0; 
+            max-width: 1400px; 
+            font-size: 14px; 
+            color: #64748b;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        footer a { 
+            color: #6366f1; 
+            text-decoration: none; 
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+        footer a:hover { 
+            color: #3b82f6;
+            text-decoration: underline;
+        }
 
-</style>
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            header.header-container h1 { 
+                font-size: 24px; 
+            }
+            .filters { 
+                gap: 8px; 
+            }
+            .filters button { 
+                padding: 10px 18px; 
+                font-size: 13px; 
+            }
+            #cards { 
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+                gap: 15px; 
+            }
+            .card img { 
+                width: 100px; 
+                height: 100px; 
+            }
+        }
+    </style>
 </head>
-<body>     
-    <div id="birthday-overlay" style="display:none;" onclick="this.style.display='none'">
+<body>
+
+    <div id="birthday-overlay">
         <div class="overlay-content">
-            <div id="section-vivos">
-                <div class="overlay-title">🎂 Próximos aniversariantes:</div>
-                <ul class="overlay-list" id="list-vivos"></ul>
-            </div>
-            <div id="section-falecidos" style="display:none;">
-                <div class="overlay-deceased-title">🕯️ Fariam aniversário:</div>
-                <ul class="overlay-list" id="list-falecidos"></ul>
-            </div>
-            <p style="font-size: 10px; opacity: 0.7;">(Toque para fechar)</p>
+            <div class="overlay-title">🎂 Próximos aniversariantes:</div>
+            <ul id="upcoming-list" class="overlay-list"></ul>
+            <div class="overlay-deceased-title">🕯️ Fariam aniversário:</div>
+            <ul id="deceased-list" class="overlay-list"></ul>
+            <p style="margin-top: 20px; font-size: 12px; opacity: 0.8;">(Toque para fechar)</p>
         </div>
     </div>
 
-    <nav aria-label="Navegação rápida">
-        <a href="javascript:void(0)" class="scroll-top" id="backToTop" title="Voltar ao topo">▲</a>
-        <a href="javascript:void(0)" class="scroll-bottom" id="goToBottom" title="Ir para o final">▼</a>
-    </nav>
-
-    
-<div style="max-width:980px;margin:0 auto 18px;padding:12px 20px;border-radius:18px;background:linear-gradient(135deg,#1d4ed8,#2563eb);color:white;text-align:center;font-weight:700;letter-spacing:.5px;box-shadow:0 12px 28px rgba(37,99,235,.25);">
-    SISTEMA GENEALÓGICO • FAMÍLIA ANERÃO 
-</div>
-
-<header class="header-container">
-        <a href="index.html">
-            <img src="aniver.png" alt="Ícone Aniversário" class="img-topo">
-        </a>
-        <h1>ANIVERSARIANTES</h1>
+    <header class="header-container">
+        <img src="https://amarildo1963.github.io/jaa/fotos/favicon.png" alt="Logo" class="img-topo" id="logo-topo">
+        <div class="title-container">
+            <h1>Aniversariantes - Anerão</h1>
+            <p>Celebrando momentos especiais</p>
+        </div>
+        <img src="https://amarildo1963.github.io/jaa/fotos/favicon.png" alt="Logo" class="img-topo" id="logo-topo-2">
     </header>
 
-    <main>
-        <section class="search-area" aria-label="Busca e Filtros">
-            <div class="controls">
-                <input type="text" id="searchInput" placeholder="Buscar (nome, data, mês, signo, etc...)">
+    <div class="filters">
+        <button id="all-filter" class="active" onclick="filterCards('all')">Todos</button>
+        <button id="alive-filter" onclick="filterCards('alive')">Vivos</button>
+        <button id="deceased-filter" onclick="filterCards('deceased')">Falecidos</button>
+
+        <div class="sign-dropdown">
+            <button onclick="toggleSignDropdown()">Signo ▼</button>
+            <div id="sign-options" class="sign-options">
+                <button onclick="filterBySign('Áries')">Áries</button>
+                <button onclick="filterBySign('Touro')">Touro</button>
+                <button onclick="filterBySign('Gêmeos')">Gêmeos</button>
+                <button onclick="filterBySign('Câncer')">Câncer</button>
+                <button onclick="filterBySign('Leão')">Leão</button>
+                <button onclick="filterBySign('Virgem')">Virgem</button>
+                <button onclick="filterBySign('Libra')">Libra</button>
+                <button onclick="filterBySign('Escorpião')">Escorpião</button>
+                <button onclick="filterBySign('Sagitário')">Sagitário</button>
+                <button onclick="filterBySign('Capricórnio')">Capricórnio</button>
+                <button onclick="filterBySign('Aquário')">Aquário</button>
+                <button onclick="filterBySign('Peixes')">Peixes</button>
             </div>
-
-            <div class="filtros-rapidos">
-                <button onclick="aplicarFiltro('')">Todos</button>
-                <button onclick="aplicarFiltro('vivo')">Vivos</button>
-                <button onclick="aplicarFiltro('falecido')">Falecidos</button>
-                <select onchange="filtrarSigno(this.value)" aria-label="Filtrar por signo">
-                    <option value="">Signo</option>
-                    <option value="Áries">Áries</option>
-                    <option value="Touro">Touro</option>
-                    <option value="Gêmeos">Gêmeos</option>
-                    <option value="Câncer">Câncer</option>
-                    <option value="Leão">Leão</option>
-                    <option value="Virgem">Virgem</option>
-                    <option value="Libra">Libra</option>
-                    <option value="Escorpião">Escorpião</option>
-                    <option value="Sagitário">Sagitário</option>
-                    <option value="Capricórnio">Capricórnio</option>
-                    <option value="Aquário">Aquário</option>
-                    <option value="Peixes">Peixes</option>
-                </select>
-                <img src="familia_anerao.png" class="img-filtro-familia" onclick="filtrarFamiliaAnerao()" alt="Filtrar Família ANERAO" title="Filtrar Família ANERAO">
-                <button class="btn-limpar-icone" onclick="limparBusca()" title="Limpar">🆑</button>
-            </div>
-
-            <div class="stats" id="stats">Carregando dados...</div>
-        </section>
-
-        <section id="conteudo" aria-label="Lista de aniversariantes por mês"></section>
-
-        <section id="lista-alfabetica-container">
-            <h2 class="titulo-lista">LISTA ALFABÉTICA</h2>
-            <ul id="listaAlfabetica" class="lista-caderno"></ul>
-        </section>
-    </main>
-
-    <footer id="footer">
-        <p>©2016-2026 JAAnerão</p>
-        <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 09/05/2026 | Versão 1.21</p>
-        
-        <div class="help-container">
-            <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
-            <div id="help-bubble">
-                Clicar no ícone bolo, indexa a página<br>
-                2 cliques na foto, vai para a lista<br>
-                1 clique nome da lista, vai ao registro<br>
-                seta azul ▼, vai no final da página<br>
-                seta azul ▲, vai no início da página<br>
-				ícone árvore 🌳 exibe genealogia<br>
-				ícone 📑 gera PDF da genealogia<br>
-				ícone (i) ⓘ exibe informações<br>
-				<br> 
-                ( DIGITAR NO CAMPO DE BUSCA )<br>
-				<br>
-                Exemplos de filtros e procura:<br>
-				janeiro = filtra pessoas de janeiro<br>
-				setemb = filtra pessoas de setembro<br>
-				2911 = filtra pessoas de 29/11<br>
-				/12/ = filtra pessoas do mês 12<br>
-				/03/1963 = filtra mês/ano 03/1963<br>
-				aries = filtra signos de áries<br>
-				vivo = filtra pessoas vivas<br>
-				falecido = filtra pessoas falecidas<br>
-				ou digite o nome para procurar<br>
-            </div>
-            <br>
-            <a href="manut.html">
-                <img src="manut.png" class="help-icon" alt="Manutenção" title="Acessar Manutenção">
-            </a>
         </div>
+    </div>
+
+    <div id="cards">
+        <p style="text-align: center; width: 100%; color: #64748b; font-size: 16px;">Carregando dados...</p>
+    </div>
+
+    <div class="alphabetical-list">
+        <h2>LISTA ALFABÉTICA</h2>
+        <div id="alphabetical-content"></div>
+    </div>
+
+    <footer>
+        <p>© 2026 Anerão - Todos os direitos reservados | <a href="https://amarildo1963.github.io/jaa/" target="_blank">Visite nosso site</a></p>
     </footer>
 
-<script> 
+    <script> 
 const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
 const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 let pessoas = [];
@@ -772,36 +803,7 @@ function gerarPDF(id) {
             .dados { text-align: left; margin-top: 20px; }
             .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
             p { margin: 5px 0; }
-        
-@media (max-width: 768px){
-    body{
-        padding:14px;
-        padding-bottom:90px;
-    }
-
-    header.header-container{
-        flex-direction:column;
-        text-align:center;
-        border-radius:22px;
-    }
-
-    h1{
-        font-size:25px;
-    }
-
-    .registro-card{
-        width:100%;
-        max-width:340px;
-    }
-
-    .family-bubble{
-        width:100%;
-        left:0;
-        transform:none;
-    }
-}
-
-</style>
+        </style>
     </head>
     <body>
         <header class="cabecalho-container">
@@ -864,5 +866,6 @@ function filtrarSigno(signo){
 
 carregarDados();
 </script>
+
 </body>
 </html>
