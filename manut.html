@@ -676,6 +676,7 @@ background-attachment: fixed;
                         <div class="form-group">
                             <label>Informações Adicionais</label>
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                                <input id="info" type="hidden" value="|||||"/>
                                 <input id="info01" placeholder="Info 01" type="text"/>
                                 <input id="info02" placeholder="Info 02" type="text"/>
                                 <input id="info03" placeholder="Info 03" type="text"/>
@@ -924,6 +925,7 @@ background-attachment: fixed;
         document.getElementById('avos').value = arrayToString(record.avos);
         document.getElementById('bisavos').value = arrayToString(record.bisavos);
         document.getElementById('trisavos').value = arrayToString(record.trisavos);
+        if(document.getElementById('info')) document.getElementById('info').value = record.info || "|||||";
         for (let i = 1; i <= 10; i++) {
             const field = document.getElementById(`info0${i}`);
             if (field) field.value = record[`info0${i}`] || record[`info${i}`] || '';
@@ -989,6 +991,8 @@ background-attachment: fixed;
             avos: parseArrayField(document.getElementById('avos').value),
             bisavos: parseArrayField(document.getElementById('bisavos').value),
             trisavos: parseArrayField(document.getElementById('trisavos').value),
+            info: "|||||",
+            info: "|||||",
             info01: document.getElementById('info01').value.trim(),
             info02: document.getElementById('info02').value.trim(),
             info03: document.getElementById('info03').value.trim(),
@@ -1034,6 +1038,8 @@ background-attachment: fixed;
             avos: parseArrayField(document.getElementById('avos').value),
             bisavos: parseArrayField(document.getElementById('bisavos').value),
             trisavos: parseArrayField(document.getElementById('trisavos').value),
+            info: "|||||",
+            info: "|||||",
             info01: document.getElementById('info01').value.trim(),
             info02: document.getElementById('info02').value.trim(),
             info03: document.getElementById('info03').value.trim(),
