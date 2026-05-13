@@ -296,6 +296,159 @@ html{
     background:#edf2f7;
 }
 
+
+/* ===== REPAGINAÇÃO PREMIUM ===== */
+
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(59,130,246,.10), transparent 25%),
+        radial-gradient(circle at 85% 10%, rgba(37,99,235,.08), transparent 20%),
+        radial-gradient(circle at 50% 90%, rgba(96,165,250,.10), transparent 30%);
+    pointer-events:none;
+    z-index:-1;
+}
+
+.registro-card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:26px;
+    padding:1px;
+    background:linear-gradient(145deg, rgba(59,130,246,.35), rgba(255,255,255,.05));
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+            mask-composite:exclude;
+    pointer-events:none;
+}
+
+.registro-card .img-container{
+    position:relative;
+}
+
+.registro-card .img-container::after{
+    content:'';
+    position:absolute;
+    inset:-6px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#3b82f6,#60a5fa,#2563eb);
+    z-index:-1;
+    filter:blur(10px);
+    opacity:.28;
+}
+
+.nome{
+    text-shadow:0 1px 0 rgba(255,255,255,.8);
+}
+
+.mes-titulo{
+    position:relative;
+}
+
+.mes-titulo::after{
+    content:'';
+    display:block;
+    width:120px;
+    height:4px;
+    border-radius:999px;
+    margin:10px auto 0;
+    background:linear-gradient(90deg,#2563eb,#60a5fa);
+}
+
+.controls,
+.filtros-rapidos{
+    backdrop-filter:blur(10px);
+}
+
+#searchInput{
+    background-image:linear-gradient(135deg, rgba(255,255,255,.96), rgba(239,246,255,.96));
+}
+
+.stats{
+    color:#1d4ed8;
+    border:1px solid rgba(147,197,253,.35);
+}
+
+.lista-item{
+    background:linear-gradient(135deg,#ffffff,#f8fbff);
+}
+
+.lista-item:hover{
+    transform:translateY(-4px) scale(1.01);
+}
+
+footer p{
+    margin:6px 0;
+}
+
+.help-icon,
+.img-filtro-familia,
+.img-topo{
+    filter:drop-shadow(0 4px 10px rgba(37,99,235,.18));
+}
+
+.icon-action-card{
+    border:1px solid rgba(219,234,254,.9);
+}
+
+.family-bubble{
+    animation:fadeFamily .25s ease;
+}
+
+@keyframes fadeFamily{
+    from{
+        opacity:0;
+        transform:translateX(-50%) translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(-50%) translateY(0);
+    }
+}
+
+#birthday-overlay .overlay-content{
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.15);
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+
+.scroll-top,
+.scroll-bottom{
+    width:54px;
+    height:54px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:rgba(255,255,255,.95);
+    box-shadow:0 10px 25px rgba(37,99,235,.22);
+}
+
+@media (max-width:768px){
+    .scroll-top,
+    .scroll-bottom{
+        width:48px;
+        height:48px;
+        font-size:28px;
+    }
+
+    .mes-titulo{
+        font-size:24px;
+    }
+
+    .controls{
+        gap:14px;
+    }
+
+    .filtros-rapidos{
+        gap:10px;
+    }
+}
+
 </style>
 </head>
 <body>     
@@ -320,14 +473,14 @@ html{
 
     
 <div style="max-width:980px;margin:0 auto 18px;padding:12px 20px;border-radius:18px;background:linear-gradient(135deg,#1d4ed8,#2563eb);color:white;text-align:center;font-weight:700;letter-spacing:.5px;box-shadow:0 12px 28px rgba(37,99,235,.25);">
-    SISTEMA GENEALÓGICO • FAMÍLIA ANERÃO 
+    ✨ SISTEMA GENEALÓGICO • FAMÍLIA ANERÃO ✨ 
 </div>
 
 <header class="header-container">
         <a href="index.html">
             <img src="aniver.png" alt="Ícone Aniversário" class="img-topo">
         </a>
-        <h1>ANIVERSARIANTES</h1>
+        <div><div style="font-size:12px;font-weight:700;color:#64748b;letter-spacing:2px;">FAMÍLIA ANERÃO</div><h1>ANIVERSARIANTES</h1></div>
     </header>
 
     <main>
