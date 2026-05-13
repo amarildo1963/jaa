@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8"/>
+	<meta name="author" content="José Amarildo Anerão">
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Painel de Manutenção de Aniversariantes - Família Anerão</title>
     <style>
@@ -520,7 +521,7 @@ background-attachment: fixed;
         <div class="header">
             <h1>
                 <img alt="Manutenção" onerror="this.style.display='none'" src="manut.png"/>
-                Painel de Manutenção de Aniversariantes
+                -Painel de Manutenção de Aniversariantes-
             </h1>
             <div class="stats">
                 <div class="stat-box">
@@ -707,7 +708,7 @@ background-attachment: fixed;
                             🔄 Limpar
                         </button>
                         <button class="btn btn-primary" onclick="exportData()" type="button">
-                            💾 Exportar dados.json
+                            💾 Exportar dados_novos.json
                         </button>
                     </div>
                 </form>
@@ -1069,6 +1070,9 @@ background-attachment: fixed;
     }
 
     function exportData() {
+        const confirmar = confirm('Deseja realmente gravar o novo arquivo como dados_novos.json na raiz da hospedagem?');
+        if (!confirmar) return;
+
         const sorted = [...records].sort((a, b) => {
             const da = parseDate(a.nascimento);
             const db = parseDate(b.nascimento);
@@ -1077,13 +1081,34 @@ background-attachment: fixed;
             if (da.day !== db.day) return da.day - db.day;
             return da.year - db.year;
         });
-        const blob = new Blob([JSON.stringify(sorted, null, 2)], {type: 'application/json'});
+
+        const jsonData = JSON.stringify(sorted, null, 2);
+
+        const blob = new Blob([jsonData], {type: 'application/json'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'dados.json';
+        a.download = 'dados_novos.json';
         a.click();
         URL.revokeObjectURL(url);
+
+        fetch('dados_novos.json', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonData
+        })
+        .then(response => {
+            if (response.ok) {
+                showMessage('formMessage', 'Arquivo dados_novos.json exportado e enviado para a raiz da hospedagem!', 'success');
+            } else {
+                showMessage('formMessage', 'Arquivo exportado localmente. A hospedagem não permitiu gravação automática na raiz.', 'error');
+            }
+        })
+        .catch(() => {
+            showMessage('formMessage', 'Arquivo exportado localmente. Servidor não suporta gravação automática direta na raiz.', 'error');
+        });
     }
 
     function parseDate(s) {
