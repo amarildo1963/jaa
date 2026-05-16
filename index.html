@@ -296,6 +296,44 @@ html{
     background:#edf2f7;
 }
 
+
+/* FILTRO DINÂMICO INTELIGENTE ESTILO EXCEL */
+.excel-filter-panel{
+    max-width:980px;
+    margin:16px auto;
+    background:rgba(255,255,255,0.96);
+    border-radius:22px;
+    padding:18px;
+    box-shadow:0 10px 28px rgba(15,23,42,0.08);
+    border:1px solid #dbeafe;
+}
+.excel-filter-title{
+    font-size:15px;
+    font-weight:800;
+    color:#1d4ed8;
+    margin-bottom:14px;
+    letter-spacing:.5px;
+}
+.excel-filter-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+}
+.excel-filter-grid select{
+    width:100%;
+    padding:12px 14px;
+    border-radius:14px;
+    border:1px solid #cbd5e1;
+    background:#fff;
+    font-size:14px;
+    outline:none;
+    transition:all .2s ease;
+}
+.excel-filter-grid select:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,0.12);
+}
+
 </style>
 </head>
 <body>     
@@ -360,6 +398,29 @@ html{
             </div>
 
             <div class="stats" id="stats">Carregando dados...</div>
+            <div class="excel-filter-panel">
+                <div class="excel-filter-title">FILTRO DINÂMICO INTELIGENTE • ESTILO PLANILHA EXCEL</div>
+                <div class="excel-filter-grid">
+                    <select id="filtroMes">
+                        <option value="">Filtrar por mês</option>
+                    </select>
+
+                    <select id="filtroFamilia">
+                        <option value="">Filtrar por família</option>
+                    </select>
+
+                    <select id="filtroStatus">
+                        <option value="">Filtrar por status</option>
+                        <option value="vivo">Vivos</option>
+                        <option value="falecido">Falecidos</option>
+                    </select>
+
+                    <select id="filtroSignoExcel">
+                        <option value="">Filtrar por signo</option>
+                    </select>
+                </div>
+            </div>
+
         </section>
 
         <section id="conteudo" aria-label="Lista de aniversariantes por mês"></section>
@@ -373,7 +434,7 @@ html{
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 09/05/2026 | Versão 1.21</p>
+        <p>16/05/2026 | Versão 1.22</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -489,6 +550,7 @@ async function carregarDados() {
         mostrarApresentacao(); 
         findProximo();
         render();
+        popularFiltrosExcel();
     } catch (error) {
         document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
         console.error("Erro:", error);
@@ -572,6 +634,70 @@ function filtrarFamiliaAnerao() {
     render("ANERAO");
     scrollToTop();
 }
+
+
+function popularFiltrosExcel(){
+    const mesesSelect = document.getElementById('filtroMes');
+    const familiaSelect = document.getElementById('filtroFamilia');
+    const signoSelect = document.getElementById('filtroSignoExcel');
+
+    mesesNomes.forEach(mes=>{
+        const op = document.createElement('option');
+        op.value = mes;
+        op.textContent = mes.charAt(0).toUpperCase() + mes.slice(1);
+        mesesSelect.appendChild(op);
+    });
+
+    const familias = [...new Set(
+        pessoas.map(p => (p.familia || '').trim())
+        .filter(f => f !== '')
+    )].sort();
+
+    familias.forEach(familia=>{
+        const op = document.createElement('option');
+        op.value = familia;
+        op.textContent = familia;
+        familiaSelect.appendChild(op);
+    });
+
+    const signos = [...new Set(
+        pessoas.map(p => p.signo.replace(/[♈-♓✨]/g,'').trim())
+    )].sort();
+
+    signos.forEach(signo=>{
+        if(!signo) return;
+        const op = document.createElement('option');
+        op.value = signo;
+        op.textContent = signo;
+        signoSelect.appendChild(op);
+    });
+}
+
+function aplicarFiltroExcel(){
+    const texto = document.getElementById('searchInput').value.toLowerCase();
+    const mes = document.getElementById('filtroMes').value.toLowerCase();
+    const familia = document.getElementById('filtroFamilia').value.toLowerCase();
+    const status = document.getElementById('filtroStatus').value.toLowerCase();
+    const signo = document.getElementById('filtroSignoExcel').value.toLowerCase();
+
+    const filtros = [texto, mes, familia, status, signo]
+        .filter(v => v && v.trim() !== '')
+        .join(' ');
+
+    render(filtros);
+}
+
+document.addEventListener('change', function(e){
+    if(
+        e.target.id === 'filtroMes' ||
+        e.target.id === 'filtroFamilia' ||
+        e.target.id === 'filtroStatus' ||
+        e.target.id === 'filtroSignoExcel'
+    ){
+        aplicarFiltroExcel();
+    }
+});
+
 
 function render(filtro = "") {
     const container = document.getElementById('conteudo');
@@ -721,6 +847,10 @@ document.getElementById('searchInput').addEventListener('input', function(e) {
 
 function limparBusca() {
     document.getElementById('searchInput').value = "";
+    document.getElementById('filtroMes').value = "";
+    document.getElementById('filtroFamilia').value = "";
+    document.getElementById('filtroStatus').value = "";
+    document.getElementById('filtroSignoExcel').value = "";
     render();
 }
 
@@ -825,6 +955,44 @@ function gerarPDF(id) {
         left:0;
         transform:none;
     }
+}
+
+
+/* FILTRO DINÂMICO INTELIGENTE ESTILO EXCEL */
+.excel-filter-panel{
+    max-width:980px;
+    margin:16px auto;
+    background:rgba(255,255,255,0.96);
+    border-radius:22px;
+    padding:18px;
+    box-shadow:0 10px 28px rgba(15,23,42,0.08);
+    border:1px solid #dbeafe;
+}
+.excel-filter-title{
+    font-size:15px;
+    font-weight:800;
+    color:#1d4ed8;
+    margin-bottom:14px;
+    letter-spacing:.5px;
+}
+.excel-filter-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+}
+.excel-filter-grid select{
+    width:100%;
+    padding:12px 14px;
+    border-radius:14px;
+    border:1px solid #cbd5e1;
+    background:#fff;
+    font-size:14px;
+    outline:none;
+    transition:all .2s ease;
+}
+.excel-filter-grid select:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,0.12);
 }
 
 </style>
