@@ -296,39 +296,6 @@ html{
     background:#edf2f7;
 }
 
-
-        .filtro-dinamico-box{
-            display:flex;
-            flex-wrap:wrap;
-            gap:10px;
-            justify-content:center;
-            align-items:center;
-            margin:18px auto;
-            max-width:980px;
-            padding:14px;
-            border-radius:18px;
-            background:rgba(255,255,255,0.92);
-            box-shadow:0 8px 22px rgba(0,0,0,0.08);
-        }
-
-        .filtro-dinamico-box select,
-        .filtro-dinamico-box button{
-            padding:11px 15px;
-            border-radius:12px;
-            border:1px solid #dbeafe;
-            font-size:14px;
-            font-weight:600;
-            background:white;
-            cursor:pointer;
-            transition:all .2s ease;
-        }
-
-        .filtro-dinamico-box button:hover,
-        .filtro-dinamico-box select:hover{
-            transform:translateY(-2px);
-            box-shadow:0 8px 18px rgba(59,130,246,.18);
-        }
-
 </style>
 </head>
 <body>     
@@ -392,45 +359,6 @@ html{
                 <button class="btn-limpar-icone" onclick="limparBusca()" title="Limpar">🆑</button>
             </div>
 
-            
-            <div class="filtro-dinamico-box">
-                <select id="filtroFamilia">
-                    <option value="">Todas as famílias</option>
-                </select>
-
-                <select id="filtroSexo">
-                    <option value="">Todos os sexos</option>
-                    <option value="M">Masculino</option>
-                    <option value="F">Feminino</option>
-                </select>
-
-                <select id="filtroStatus">
-                    <option value="">Todos os status</option>
-                    <option value="vivo">Vivos</option>
-                    <option value="falecido">Falecidos</option>
-                </select>
-
-                <select id="filtroMes">
-                    <option value="">Todos os meses</option>
-                    <option value="01">Janeiro</option>
-                    <option value="02">Fevereiro</option>
-                    <option value="03">Março</option>
-                    <option value="04">Abril</option>
-                    <option value="05">Maio</option>
-                    <option value="06">Junho</option>
-                    <option value="07">Julho</option>
-                    <option value="08">Agosto</option>
-                    <option value="09">Setembro</option>
-                    <option value="10">Outubro</option>
-                    <option value="11">Novembro</option>
-                    <option value="12">Dezembro</option>
-                </select>
-
-                <button onclick="exportarExcelFiltrado()">⬇️ Excel Filtrado</button>
-                <button onclick="exportarExcelTotal()">⬇️ Excel Total</button>
-            </div>
-
-
             <div class="stats" id="stats">Carregando dados...</div>
         </section>
 
@@ -445,7 +373,7 @@ html{
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 16/05/2026 | Versão 1.22</p>
+        <p>Atualizado: 09/05/2026 | Versão 1.21</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -480,94 +408,6 @@ html{
     </footer>
 
 <script> 
-
-function preencherFiltrosDinamicos(){
-    const familias = [...new Set(pessoas.map(p => (p.familia || '').trim()).filter(Boolean))].sort();
-
-    const selectFamilia = document.getElementById('filtroFamilia');
-
-    familias.forEach(familia => {
-        const option = document.createElement('option');
-        option.value = familia;
-        option.textContent = familia;
-        selectFamilia.appendChild(option);
-    });
-
-    ['filtroFamilia','filtroSexo','filtroStatus','filtroMes'].forEach(id => {
-        document.getElementById(id).addEventListener('change', aplicarFiltroDinamico);
-    });
-}
-
-function aplicarFiltroDinamico(){
-    const familia = document.getElementById('filtroFamilia').value.toLowerCase();
-    const sexo = document.getElementById('filtroSexo').value;
-    const status = document.getElementById('filtroStatus').value;
-    const mes = document.getElementById('filtroMes').value;
-
-    document.querySelectorAll('.registro-card').forEach(card => {
-        const nome = (card.dataset.nome || '').toLowerCase();
-        const cardFamilia = (card.dataset.familia || '').toLowerCase();
-        const cardSexo = card.dataset.sexo || '';
-        const falecimento = card.dataset.falecimento || '';
-        const nascimento = card.dataset.nascimento || '';
-
-        const statusAtual = falecimento ? 'falecido' : 'vivo';
-        const mesAtual = nascimento.split('/')[1] || '';
-
-        const mostrar =
-            (!familia || cardFamilia.includes(familia)) &&
-            (!sexo || cardSexo === sexo) &&
-            (!status || statusAtual === status) &&
-            (!mes || mesAtual === mes);
-
-        card.style.display = mostrar ? '' : 'none';
-    });
-
-    atualizarStatsFiltro();
-}
-
-function atualizarStatsFiltro(){
-    const total = document.querySelectorAll('.registro-card').length;
-    const visiveis = [...document.querySelectorAll('.registro-card')].filter(c => c.style.display !== 'none').length;
-
-    document.getElementById('stats').innerHTML = `Exibindo <b>${visiveis}</b> de <b>${total}</b> registros`;
-}
-
-function obterDadosVisiveis(){
-    return pessoas.filter(pessoa => {
-        const card = document.querySelector(`[data-id="${pessoa.id}"]`);
-        return card && card.style.display !== 'none';
-    });
-}
-
-function exportarExcel(dados, nomeArquivo){
-    const exportacao = dados.map(p => ({
-        ID: p.id,
-        Nome: p.nome,
-        Sexo: p.sexo,
-        Familia: p.familia,
-        Nascimento: p.nascimento,
-        Falecimento: p.falecimento || '',
-        Pai: p.pai || '',
-        Mae: p.mae || '',
-        Conjuge: p.conjuge || ''
-    }));
-
-    const worksheet = XLSX.utils.json_to_sheet(exportacao);
-    const workbook = XLSX.utils.book_new();
-
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Dados');
-    XLSX.writeFile(workbook, nomeArquivo);
-}
-
-function exportarExcelFiltrado(){
-    exportarExcel(obterDadosVisiveis(), 'dados_filtrados.xlsx');
-}
-
-function exportarExcelTotal(){
-    exportarExcel(pessoas, 'dados_totais.xlsx');
-}
-
 const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
 const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 let pessoas = [];
@@ -764,12 +604,6 @@ function render(filtro = "") {
                 const card = document.createElement('article');
                 card.className = 'registro-card';
                 card.id = p.id;
-                card.dataset.id = p.id;
-                card.dataset.nome = p.nome || '';
-                card.dataset.familia = p.familia || '';
-                card.dataset.sexo = p.sexo || '';
-                card.dataset.falecimento = p.falecimento || '';
-                card.dataset.nascimento = p.nascimento || '';
                 const isToday = p.diaMes === hojeDM;
                 const isJesus = p.nome.includes("NATAL DO MENINO JESUS 25/12") || (p.nascimento === "25/12");
                 
@@ -993,39 +827,6 @@ function gerarPDF(id) {
     }
 }
 
-
-        .filtro-dinamico-box{
-            display:flex;
-            flex-wrap:wrap;
-            gap:10px;
-            justify-content:center;
-            align-items:center;
-            margin:18px auto;
-            max-width:980px;
-            padding:14px;
-            border-radius:18px;
-            background:rgba(255,255,255,0.92);
-            box-shadow:0 8px 22px rgba(0,0,0,0.08);
-        }
-
-        .filtro-dinamico-box select,
-        .filtro-dinamico-box button{
-            padding:11px 15px;
-            border-radius:12px;
-            border:1px solid #dbeafe;
-            font-size:14px;
-            font-weight:600;
-            background:white;
-            cursor:pointer;
-            transition:all .2s ease;
-        }
-
-        .filtro-dinamico-box button:hover,
-        .filtro-dinamico-box select:hover{
-            transform:translateY(-2px);
-            box-shadow:0 8px 18px rgba(59,130,246,.18);
-        }
-
 </style>
     </head>
     <body>
@@ -1064,8 +865,7 @@ function gerarPDF(id) {
             <p><strong>Data de emissão:</strong> ${dataAtual}</p>
             <p><strong>Assinado por:</strong> José Amarildo Anerão - https://amarildo1963.github.io/jaa/</p>
         </footer>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-</body>
+    </body>
     </html>`;
 
     const win = window.open('', '', 'width=800,height=800');
@@ -1090,6 +890,5 @@ function filtrarSigno(signo){
 
 carregarDados();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </body>
 </html>
