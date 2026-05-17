@@ -101,6 +101,20 @@
         border-radius:16px;
         background:rgba(255,255,255,0.90);
         box-shadow:0 4px 14px rgba(0,0,0,0.06);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    .img-excel {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        transition: transform 0.2s;
+        vertical-align: middle;
+    }
+    .img-excel:hover {
+        transform: scale(1.15);
     }
         
         /* CARDS E GRID */
@@ -359,7 +373,10 @@ html{
                 <button class="btn-limpar-icone" onclick="limparBusca()" title="Limpar">🆑</button>
             </div>
 
-            <div class="stats" id="stats">Carregando dados...</div>
+            <div class="stats">
+                <span id="stats">Carregando dados...</span>
+                <img src="excel.png" class="img-excel" onclick="exportarParaExcel()" alt="Exportar para Excel" title="Exportar para Excel">
+            </div>
         </section>
 
         <section id="conteudo" aria-label="Lista de aniversariantes por mês"></section>
@@ -373,7 +390,7 @@ html{
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 09/05/2026 | Versão 1.21</p>
+        <p>Atualizado: 17/05/2026 | Versão 1.22</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -386,6 +403,7 @@ html{
 				ícone árvore 🌳 exibe genealogia<br>
 				ícone 📑 gera PDF da genealogia<br>
 				ícone (i) ⓘ exibe informações<br>
+                ícone Excel 📊 exporta dados para planilha<br>
 				<br> 
                 ( DIGITAR NO CAMPO DE BUSCA )<br>
 				<br>
@@ -407,6 +425,9 @@ html{
         </div>
     </footer>
 
+<!-- Adiciona biblioteca SheetJS (XLSX) de forma segura para processar e exportar a planilha no cliente -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <script> 
 const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
 const mesesNomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
@@ -416,7 +437,7 @@ let proximoId = "";
 function toggleHelp() {
     const bubble = document.getElementById('help-bubble');
     bubble.style.display = 'block';
-    setTimeout(() => { bubble.style.display = 'none'; }, 8000);
+    setTimeout(() => { bubble.style.display = 'none'; }, 5000);
 }
 
 const scrollToTop = () => {
@@ -872,6 +893,57 @@ function gerarPDF(id) {
     win.document.write(conteudo);
     win.document.close();
     setTimeout(() => { win.print(); }, 1000);
+}
+
+function exportarParaExcel() {
+    if (!pessoas || pessoas.length === 0) {
+        alert("Nenhum dado carregado para exportar!");
+        return;
+    }
+
+    // Mapeamento limpo e estruturado dos dados para a planilha Excel
+    const dadosPlanilha = pessoas.map(p => {
+        const idadeCalculada = calcularIdade(p.dNasc, p.dFalec);
+        return {
+            "ID": p.id ? p.id.toUpperCase() : "",
+            "Nome": p.nome ? p.nome.toUpperCase() : "",
+            "Família": p.familia ? p.familia.toUpperCase() : "",
+            "Nascimento": p.nascimento || "",
+            "Falecimento": p.falecimento || "",
+            "Situação": p.dFalec ? "FALECIDO" : "VIVO",
+            "Idade (Anos)": idadeCalculada.anos,
+            "Dias Vividos": idadeCalculada.dias,
+            "Signo": p.signo ? p.signo.split(" ")[1].toUpperCase() : "",
+            "Pai": p.pai ? p.pai.toUpperCase() : "",
+            "Mãe": p.mae ? p.mae.toUpperCase() : "",
+            "Cônjuge": p.conjuge ? p.conjuge.toUpperCase() : "",
+            "Filhos": p.filhos ? p.filhos.join(", ").toUpperCase() : "",
+            "Netos": p.netos ? p.netos.join(", ").toUpperCase() : "",
+            "Bisnetos": p.bisnetos ? p.bisnetos.join(", ").toUpperCase() : "",
+            "Irmãos": p.irmaos ? p.irmaos.join(", ").toUpperCase() : ""
+        };
+    });
+
+    // Criação da planilha utilizando SheetJS (XLSX)
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(dadosPlanilha);
+
+    // Ajusta automaticamente a largura das colunas para uma visualização ideal e profissional
+    const objectMaxWidth = [];
+    const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+    rows.forEach((row) => {
+        row.forEach((cell, colIndex) => {
+            const cellLength = cell ? cell.toString().length : 10;
+            if (!objectMaxWidth[colIndex] || objectMaxWidth[colIndex] < cellLength) {
+                objectMaxWidth[colIndex] = cellLength;
+            }
+        });
+    });
+    ws['!cols'] = objectMaxWidth.map(w => ({ w: w + 3 }));
+
+    // Insere e baixa o arquivo Excel finalizado no navegador do usuário
+    XLSX.utils.book_append_sheet(wb, ws, "Família Anerão");
+    XLSX.writeFile(wb, "familia_anerao.xlsx");
 }
 
 
