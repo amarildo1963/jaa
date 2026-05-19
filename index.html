@@ -92,28 +92,31 @@
             border-color:#3b82f6;
             box-shadow:0 0 0 4px rgba(59,130,246,0.15);
         }
+        
+        /* ESTILIZAÇÃO DO BLOCO DE ESTATÍSTICAS */
         .stats {
-            text-align:center;
-            margin:18px auto 8px; /* Ajustado a margem inferior para aproximar do ícone */
-            font-weight:700;
-            max-width:340px;
-            padding:10px 18px;
-            border-radius:16px;
-            background:rgba(255,255,255,0.90);
-            box-shadow:0 4px 14px rgba(0,0,0,0.06);
+            text-align: left;
+            margin: 18px auto;
+            font-weight: 700;
+            max-width: 340px;
+            padding: 12px 20px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.90);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
+            justify-content: space-between;
+            gap: 15px;
         }
-        .excel-container {
+        .stats-textos {
             display: flex;
-            justify-content: center;
-            margin-bottom: 18px;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 14px;
         }
         .img-excel {
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             cursor: pointer;
             transition: transform 0.2s;
         }
@@ -209,7 +212,7 @@
         .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
         
         .nome { color:#1d4ed8; font-weight:800; font-size:19px; margin-bottom:10px; display:block; letter-spacing:.3px; }
-        .info-nasc { color: green; font-weight: bold; }
+        .info-nasc">★ { color: green; font-weight: bold; }
         .info-falec { color: #b8860b; font-weight: bold; }
         .info-idade-viva { color: green; font-weight: bold; }
         .info-idade-morta { color: #b8860b; font-weight: bold; }
@@ -375,10 +378,10 @@
             </div>
 
             <div class="stats">
-                <span id="stats">Carregando dados...</span>
-            </div>
-            
-            <div class="excel-container">
+                <div class="stats-textos">
+                    <span id="total-registros">Total de Registros: Carregando...</span>
+                    <span id="registros-filtrados">Registros Filtrados: Carregando...</span>
+                </div>
                 <img src="excel.png" class="img-excel" onclick="exportarParaExcel()" alt="Exportar para Excel" title="Exportar para Excel">
             </div>
         </section>
@@ -394,7 +397,7 @@
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 19/05/2026 | Versão 1.25</p>
+        <p>Atualizado: 19/05/2026 | Versão 2.00</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -493,7 +496,7 @@ async function carregarDados() {
         const response = await fetch('dados.json');
         const data = await response.json();
         
-        pessoas = data.map((p, index) => {
+        pessas = data.map((p, index) => {
             const dNasc = parsingDatas(p.nascimento);
             const dFalec = parsingDatas(p.falecimento);
             let signo = ["✨", "Divino"];
@@ -502,7 +505,7 @@ async function carregarDados() {
             }
             return {
                 ...p,
-                idOriginal: p.id, // Guarda o ID alfanumérico original do dados.json se houver
+                idOriginal: p.id,
                 id: 'p' + index,
                 dNasc, dFalec, 
                 signo: signo[0] + " " + signo[1],
@@ -515,7 +518,7 @@ async function carregarDados() {
         findProximo();
         render();
     } catch (error) {
-        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
+        document.getElementById('total-registros').innerText = "Erro ao carregar dados.";
         console.error("Erro:", error);
     }
 }
@@ -722,7 +725,9 @@ function render(filtro = "") {
         listaUl.appendChild(li);
     });
 
-    document.getElementById('stats').innerText = `Registros: ${pessoas.length} / Filtrados: ${count}`;
+    // ATUALIZAÇÃO DOS DOIS NOVOS CAMPOS SEPARADOS
+    document.getElementById('total-registros').innerText = `Total de Registros: ${pessoas.length}`;
+    document.getElementById('registros-filtrados').innerText = `Registros Filtrados: ${count}`;
 }
 
 function destacar(texto, termo) {
@@ -769,7 +774,7 @@ const findProximo = () => {
 };
 
 function gerarPDF(id) {
-    const p = personas = pessoas.find(x => x.id === id);
+    const p = pessoas.find(x => x.id === id);
     if (!p) return;
     const dataAtual = new Date().toLocaleDateString('pt-BR');
 
