@@ -92,33 +92,26 @@
             border-color:#3b82f6;
             box-shadow:0 0 0 4px rgba(59,130,246,0.15);
         }
-        
-        /* ESTILIZAÇÃO DO BLOCO DE ESTATÍSTICAS */
         .stats {
-            text-align: left;
-            margin: 18px auto;
-            font-weight: 700;
-            max-width: 340px;
-            padding: 12px 20px;
-            border-radius: 16px;
-            background: rgba(255,255,255,0.90);
-            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+            text-align:center;
+            margin:18px auto;
+            font-weight:700;
+            max-width:340px;
+            padding:10px 18px;
+            border-radius:16px;
+            background:rgba(255,255,255,0.90);
+            box-shadow:0 4px 14px rgba(0,0,0,0.06);
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-        }
-        .stats-textos {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            font-size: 14px;
+            justify-content: center;
+            gap: 8px;
         }
         .img-excel {
-            width: 32px;
-            height: 32px;
+            width: 24px;
+            height: 24px;
             cursor: pointer;
             transition: transform 0.2s;
+            vertical-align: middle;
         }
         .img-excel:hover {
             transform: scale(1.15);
@@ -212,7 +205,7 @@
         .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
         
         .nome { color:#1d4ed8; font-weight:800; font-size:19px; margin-bottom:10px; display:block; letter-spacing:.3px; }
-        .info-nasc">★ { color: green; font-weight: bold; }
+        .info-nasc { color: green; font-weight: bold; }
         .info-falec { color: #b8860b; font-weight: bold; }
         .info-idade-viva { color: green; font-weight: bold; }
         .info-idade-morta { color: #b8860b; font-weight: bold; }
@@ -378,10 +371,7 @@
             </div>
 
             <div class="stats">
-                <div class="stats-textos">
-                    <span id="total-registros">Total de Registros: Carregando...</span>
-                    <span id="registros-filtrados">Registros Filtrados: Carregando...</span>
-                </div>
+                <span id="stats">Carregando dados...</span>
                 <img src="excel.png" class="img-excel" onclick="exportarParaExcel()" alt="Exportar para Excel" title="Exportar para Excel">
             </div>
         </section>
@@ -397,7 +387,7 @@
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 19/05/2026 | Versão 2.00</p>
+        <p>Atualizado: 17/05/2026 | Versão 1.25</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -496,7 +486,7 @@ async function carregarDados() {
         const response = await fetch('dados.json');
         const data = await response.json();
         
-        pessas = data.map((p, index) => {
+        pessoas = data.map((p, index) => {
             const dNasc = parsingDatas(p.nascimento);
             const dFalec = parsingDatas(p.falecimento);
             let signo = ["✨", "Divino"];
@@ -505,7 +495,7 @@ async function carregarDados() {
             }
             return {
                 ...p,
-                idOriginal: p.id,
+                idOriginal: p.id, // Guarda o ID alfanumérico original do dados.json se houver
                 id: 'p' + index,
                 dNasc, dFalec, 
                 signo: signo[0] + " " + signo[1],
@@ -518,7 +508,7 @@ async function carregarDados() {
         findProximo();
         render();
     } catch (error) {
-        document.getElementById('total-registros').innerText = "Erro ao carregar dados.";
+        document.getElementById('stats').innerText = "Erro ao carregar dados. Verifique o arquivo dados.json.";
         console.error("Erro:", error);
     }
 }
@@ -725,9 +715,7 @@ function render(filtro = "") {
         listaUl.appendChild(li);
     });
 
-    // ATUALIZAÇÃO DOS DOIS NOVOS CAMPOS SEPARADOS
-    document.getElementById('total-registros').innerText = `Total de Registros: ${pessoas.length}`;
-    document.getElementById('registros-filtrados').innerText = `Registros Filtrados: ${count}`;
+    document.getElementById('stats').innerText = `Registros: ${pessoas.length} / Filtrados: ${count}`;
 }
 
 function destacar(texto, termo) {
@@ -828,6 +816,34 @@ function gerarPDF(id) {
             .dados { text-align: left; margin-top: 20px; }
             .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
             p { margin: 5px 0; }
+        
+            @media (max-width: 768px){
+                body{
+                    padding:14px;
+                    padding-bottom:90px;
+                }
+
+                header.header-container{
+                    flex-direction:column;
+                    text-align:center;
+                    border-radius:22px;
+                }
+
+                h1{
+                    font-size:25px;
+                }
+
+                .registro-card{
+                    width:100%;
+                    max-width:340px;
+                }
+
+                .family-bubble{
+                    width:100%;
+                    left:0;
+                    transform:none;
+                }
+            }
         </style>
     </head>
     <body>
@@ -881,6 +897,7 @@ function exportarParaExcel() {
         return;
     }
 
+    // Auxiliar para tratar arrays de parentesco e strings vazias/padrões
     const formatarCampo = (valor) => {
         if (!valor) return "";
         if (Array.isArray(valor)) return valor.join(", ").toUpperCase();
@@ -891,6 +908,7 @@ function exportarParaExcel() {
         return String(valor).toUpperCase();
     };
 
+    // Mapeamento de TODOS os 35 campos requisitados na ordem correta
     const dadosPlanilha = pessoas.map(p => {
         return {
             "id": p.idOriginal ? String(p.idOriginal).toUpperCase() : "",
@@ -930,9 +948,11 @@ function exportarParaExcel() {
         };
     });
 
+    // Criação do livro do Excel utilizando SheetJS
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(dadosPlanilha);
 
+    // Ajusta automaticamente a largura de cada uma das 35 colunas de maneira responsiva
     const objectMaxWidth = [];
     const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
     rows.forEach((row) => {
@@ -945,6 +965,7 @@ function exportarParaExcel() {
     });
     ws['!cols'] = objectMaxWidth.map(w => ({ w: w + 3 }));
 
+    // Insere e inicializa o download da planilha no navegador do usuário
     XLSX.utils.book_append_sheet(wb, ws, "Família Anerão");
     XLSX.writeFile(wb, "familia-anerao.xlsx");
 }
