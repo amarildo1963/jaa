@@ -387,7 +387,7 @@
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 20/05/2026 | Versão 2.00</p>
+        <p>Atualizado: 19/05/2026 | Versão 2.00</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -422,8 +422,7 @@
         </div>
     </footer>
 
-<link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
-<script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <script> 
 const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
@@ -883,8 +882,7 @@ function gerarPDF(id) {
             <p><strong>Data de emissão:</strong> ${dataAtual}</p>
             <p><strong>Assinado por:</strong> José Amarildo Anerão - https://amarildo1963.github.io/jaa/</p>
         </footer>
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.js"></script>
-</body>
+    </body>
     </html>`;
 
     const win = window.open('', '', 'width=800,height=800');
@@ -893,13 +891,13 @@ function gerarPDF(id) {
     setTimeout(() => { win.print(); }, 1000);
 }
 
-
-async function exportarParaExcel() {
+function exportarParaExcel() {
     if (!pessoas || pessoas.length === 0) {
         alert("Nenhum dado carregado para exportar!");
         return;
     }
 
+    // Auxiliar para tratar arrays de parentesco e strings vazias/padrões
     const formatarCampo = (valor) => {
         if (!valor) return "";
         if (Array.isArray(valor)) return valor.join(", ").toUpperCase();
@@ -910,103 +908,67 @@ async function exportarParaExcel() {
         return String(valor).toUpperCase();
     };
 
-    const dadosPlanilha = pessoas.map(p => ({
-        id: p.idOriginal ? String(p.idOriginal).toUpperCase() : "",
-        data_inclusao: p.data_inclusao || "",
-        nome: formatarCampo(p.nome),
-        sexo: formatarCampo(p.sexo),
-        familia: formatarCampo(p.familia),
-        nascimento: p.nascimento || "",
-        falecimento: p.falecimento || "",
-        imagem: p.imagem || "",
-        pai: formatarCampo(p.pai),
-        mae: formatarCampo(p.mae),
-        conjuge: formatarCampo(p.conjuge),
-        filhos: formatarCampo(p.filhos),
-        netos: formatarCampo(p.netos),
-        bisnetos: formatarCampo(p.bisnetos),
-        trinetos: formatarCampo(p.trinetos),
-        tetranetos: formatarCampo(p.tetranetos),
-        irmaos: formatarCampo(p.irmaos),
-        tios: formatarCampo(p.tios),
-        sobrinhos: formatarCampo(p.sobrinhos),
-        primos: formatarCampo(p.primos),
-        avos: formatarCampo(p.avos),
-        bisavos: formatarCampo(p.bisavos),
-        trisavos: formatarCampo(p.trisavos),
-        info: formatarCampo(p.info),
-        info01: formatarCampo(p.info01),
-        info02: formatarCampo(p.info02),
-        info03: formatarCampo(p.info03),
-        info04: formatarCampo(p.info04),
-        info05: formatarCampo(p.info05),
-        info06: formatarCampo(p.info06),
-        info07: formatarCampo(p.info07),
-        info08: formatarCampo(p.info08),
-        info09: formatarCampo(p.info09),
-        info10: formatarCampo(p.info10)
-    }));
+    // Mapeamento de TODOS os 35 campos requisitados na ordem correta
+    const dadosPlanilha = pessoas.map(p => {
+        return {
+            "id": p.idOriginal ? String(p.idOriginal).toUpperCase() : "",
+            "data_inclusao": p.data_inclusao || "",
+            "nome": formatarCampo(p.nome),
+            "sexo": formatarCampo(p.sexo),
+            "familia": formatarCampo(p.familia),
+            "nascimento": p.nascimento || "",
+            "falecimento": p.falecimento || "",
+            "imagem": p.imagem || "",
+            "pai": formatarCampo(p.pai),
+            "mae": formatarCampo(p.mae),
+            "conjuge": formatarCampo(p.conjuge),
+            "filhos": formatarCampo(p.filhos),
+            "netos": formatarCampo(p.netos),
+            "bisnetos": formatarCampo(p.bisnetos),
+            "trinetos": formatarCampo(p.trinetos),
+            "tetranetos": formatarCampo(p.tetranetos),
+            "irmaos": formatarCampo(p.irmaos),
+            "tios": formatarCampo(p.tios),
+            "sobrinhos": formatarCampo(p.sobrinhos),
+            "primos": formatarCampo(p.primos),
+            "avos": formatarCampo(p.avos),
+            "bisavos": formatarCampo(p.bisavos),
+            "trisavos": formatarCampo(p.trisavos),
+            "info": formatarCampo(p.info),
+            "info01": formatarCampo(p.info01),
+            "info02": formatarCampo(p.info02),
+            "info03": formatarCampo(p.info03),
+            "info04": formatarCampo(p.info04),
+            "info05": formatarCampo(p.info05),
+            "info06": formatarCampo(p.info06),
+            "info07": formatarCampo(p.info07),
+            "info08": formatarCampo(p.info08),
+            "info09": formatarCampo(p.info09),
+            "info10": formatarCampo(p.info10)
+        };
+    });
 
-    try {
-        const pyodide = await loadPyodide();
+    // Criação do livro do Excel utilizando SheetJS
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(dadosPlanilha);
 
-        await pyodide.loadPackage(["micropip"]);
+    // Ajusta automaticamente a largura de cada uma das 35 colunas de maneira responsiva
+    const objectMaxWidth = [];
+    const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+    rows.forEach((row) => {
+        row.forEach((cell, colIndex) => {
+            const cellLength = cell ? cell.toString().length : 10;
+            if (!objectMaxWidth[colIndex] || objectMaxWidth[colIndex] < cellLength) {
+                objectMaxWidth[colIndex] = cellLength;
+            }
+        });
+    });
+    ws['!cols'] = objectMaxWidth.map(w => ({ w: w + 3 }));
 
-        const pythonCode = `
-from pyodide.http import pyfetch
-import io, json, base64
-from openpyxl import Workbook
-from openpyxl.styles import Font, PatternFill
-from openpyxl.utils import get_column_letter
-
-dados = json.loads(dados_json)
-
-wb = Workbook()
-ws = wb.active
-ws.title = "Família Anerão"
-
-headers = list(dados[0].keys()) if dados else []
-
-for col, header in enumerate(headers, start=1):
-    cell = ws.cell(row=1, column=col, value=header.upper())
-    cell.font = Font(bold=True, color="FFFFFF")
-    cell.fill = PatternFill(start_color="1D4ED8", end_color="1D4ED8", fill_type="solid")
-
-for row_idx, item in enumerate(dados, start=2):
-    for col_idx, header in enumerate(headers, start=1):
-        ws.cell(row=row_idx, column=col_idx, value=str(item.get(header, "")))
-
-for column_cells in ws.columns:
-    length = max(len(str(cell.value or "")) for cell in column_cells)
-    ws.column_dimensions[get_column_letter(column_cells[0].column)].width = min(length + 4, 60)
-
-arquivo = io.BytesIO()
-wb.save(arquivo)
-arquivo.seek(0)
-
-resultado = base64.b64encode(arquivo.read()).decode("utf-8")
-`;
-
-        pyodide.globals.set("dados_json", JSON.stringify(dadosPlanilha));
-        await pyodide.runPythonAsync(pythonCode);
-
-        const base64xlsx = pyodide.globals.get("resultado");
-        const link = document.createElement("a");
-
-        link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64xlsx;
-        link.download = "familia-anerao.xlsx";
-
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        alert("Planilha Excel gerada com Python com sucesso!");
-    } catch (erro) {
-        console.error(erro);
-        alert("Erro ao gerar planilha Excel com Python.");
-    }
+    // Insere e inicializa o download da planilha no navegador do usuário
+    XLSX.utils.book_append_sheet(wb, ws, "Família Anerão");
+    XLSX.writeFile(wb, "familia-anerao.xlsx");
 }
-
 
 function aplicarFiltro(valor){
     const input=document.getElementById('searchInput');
@@ -1023,6 +985,5 @@ function filtrarSigno(signo){
 
 carregarDados();
 </script>
-<script src="https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.js"></script>
 </body>
 </html>
