@@ -387,7 +387,7 @@
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 19/05/2026 | Versão 2.00</p>
+        <p>Atualizado: 20/05/2026 | Versão 2.00</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -421,8 +421,6 @@
             </a>
         </div>
     </footer>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <script> 
 const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
@@ -495,7 +493,7 @@ async function carregarDados() {
             }
             return {
                 ...p,
-                idOriginal: p.id, // Guarda o ID alfanumérico original do dados.json se houver
+                idOriginal: p.id, 
                 id: 'p' + index,
                 dNasc, dFalec, 
                 signo: signo[0] + " " + signo[1],
@@ -715,7 +713,7 @@ function render(filtro = "") {
         listaUl.appendChild(li);
     });
 
-	document.getElementById('stats').innerText = `Total de  Registros: ${pessoas.length}\nRegistros Filtrados: ${count}`;
+	document.getElementById('stats').innerText = `Total de Registros: ${pessoas.length}\nRegistros Filtrados: ${count}`;
 }
 
 function destacar(texto, termo) {
@@ -816,34 +814,6 @@ function gerarPDF(id) {
             .dados { text-align: left; margin-top: 20px; }
             .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
             p { margin: 5px 0; }
-        
-            @media (max-width: 768px){
-                body{
-                    padding:14px;
-                    padding-bottom:90px;
-                }
-
-                header.header-container{
-                    flex-direction:column;
-                    text-align:center;
-                    border-radius:22px;
-                }
-
-                h1{
-                    font-size:25px;
-                }
-
-                .registro-card{
-                    width:100%;
-                    max-width:340px;
-                }
-
-                .family-bubble{
-                    width:100%;
-                    left:0;
-                    transform:none;
-                }
-            }
         </style>
     </head>
     <body>
@@ -891,13 +861,12 @@ function gerarPDF(id) {
     setTimeout(() => { win.print(); }, 1000);
 }
 
-function exportarParaExcel() {
+async function exportarParaExcel() {
     if (!pessoas || pessoas.length === 0) {
         alert("Nenhum dado carregado para exportar!");
         return;
     }
 
-    // Auxiliar para tratar arrays de parentesco e strings vazias/padrões
     const formatarCampo = (valor) => {
         if (!valor) return "";
         if (Array.isArray(valor)) return valor.join(", ").toUpperCase();
@@ -908,7 +877,6 @@ function exportarParaExcel() {
         return String(valor).toUpperCase();
     };
 
-    // Mapeamento de TODOS os 35 campos requisitados na ordem correta
     const dadosPlanilha = pessoas.map(p => {
         return {
             "id": p.idOriginal ? String(p.idOriginal).toUpperCase() : "",
@@ -948,26 +916,30 @@ function exportarParaExcel() {
         };
     });
 
-    // Criação do livro do Excel utilizando SheetJS
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(dadosPlanilha);
-
-    // Ajusta automaticamente a largura de cada uma das 35 colunas de maneira responsiva
-    const objectMaxWidth = [];
-    const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
-    rows.forEach((row) => {
-        row.forEach((cell, colIndex) => {
-            const cellLength = cell ? cell.toString().length : 10;
-            if (!objectMaxWidth[colIndex] || objectMaxWidth[colIndex] < cellLength) {
-                objectMaxWidth[colIndex] = cellLength;
-            }
+    try {
+        // Altere a URL abaixo caso o seu servidor Python rode em outra porta/endereço
+        const response = await fetch('http://127.0.0.1:5000/exportar-excel', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dadosPlanilha)
         });
-    });
-    ws['!cols'] = objectMaxWidth.map(w => ({ w: w + 3 }));
 
-    // Insere e inicializa o download da planilha no navegador do usuário
-    XLSX.utils.book_append_sheet(wb, ws, "Família Anerão");
-    XLSX.writeFile(wb, "familia-anerao.xlsx");
+        if (!response.ok) throw new Error("Erro na resposta do servidor Python.");
+
+        // Recebe o arquivo blob e dispara o download automático no navegador
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "familia-anerao.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error("Erro ao conectar com o script Python:", error);
+        alert("Não foi possível gerar a planilha pelo Python. Certifique-se de que o backend local está rodando.");
+    }
 }
 
 function aplicarFiltro(valor){
