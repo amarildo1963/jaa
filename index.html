@@ -387,7 +387,7 @@
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 19/05/2026 | Versão 2.00</p>
+        <p>Atualizado: 20/05/2026 | Versão 2.00</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -897,7 +897,6 @@ function exportarParaExcel() {
         return;
     }
 
-    // Auxiliar para tratar arrays de parentesco e strings vazias/padrões
     const formatarCampo = (valor) => {
         if (!valor) return "";
         if (Array.isArray(valor)) return valor.join(", ").toUpperCase();
@@ -908,54 +907,106 @@ function exportarParaExcel() {
         return String(valor).toUpperCase();
     };
 
-    // Mapeamento de TODOS os 35 campos requisitados na ordem correta
-    const dadosPlanilha = pessoas.map(p => {
-        return {
-            "id": p.idOriginal ? String(p.idOriginal).toUpperCase() : "",
-            "data_inclusao": p.data_inclusao || "",
-            "nome": formatarCampo(p.nome),
-            "sexo": formatarCampo(p.sexo),
-            "familia": formatarCampo(p.familia),
-            "nascimento": p.nascimento || "",
-            "falecimento": p.falecimento || "",
-            "imagem": p.imagem || "",
-            "pai": formatarCampo(p.pai),
-            "mae": formatarCampo(p.mae),
-            "conjuge": formatarCampo(p.conjuge),
-            "filhos": formatarCampo(p.filhos),
-            "netos": formatarCampo(p.netos),
-            "bisnetos": formatarCampo(p.bisnetos),
-            "trinetos": formatarCampo(p.trinetos),
-            "tetranetos": formatarCampo(p.tetranetos),
-            "irmaos": formatarCampo(p.irmaos),
-            "tios": formatarCampo(p.tios),
-            "sobrinhos": formatarCampo(p.sobrinhos),
-            "primos": formatarCampo(p.primos),
-            "avos": formatarCampo(p.avos),
-            "bisavos": formatarCampo(p.bisavos),
-            "trisavos": formatarCampo(p.trisavos),
-            "info": formatarCampo(p.info),
-            "info01": formatarCampo(p.info01),
-            "info02": formatarCampo(p.info02),
-            "info03": formatarCampo(p.info03),
-            "info04": formatarCampo(p.info04),
-            "info05": formatarCampo(p.info05),
-            "info06": formatarCampo(p.info06),
-            "info07": formatarCampo(p.info07),
-            "info08": formatarCampo(p.info08),
-            "info09": formatarCampo(p.info09),
-            "info10": formatarCampo(p.info10)
-        };
+    // Lista ordenada dos cabeçalhos requisitados
+    const headers = [
+        "id", "data_inclusao", "nome", "sexo", "familia", "nascimento", "falecimento", "imagem",
+        "pai", "mae", "conjuge", "filhos", "netos", "bisnetos", "trinetos", "tetranetos", "irmaos",
+        "tios", "sobrinhos", "primos", "avos", "bisavos", "trisavos", "info", "info01", "info02",
+        "info03", "info04", "info05", "info06", "info07", "info08", "info09", "info10"
+    ];
+
+    // Cria a matriz de dados (Array de Arrays) iniciando pela linha de títulos
+    const matrixDados = [headers.map(h => h.toUpperCase())];
+
+    pessoas.forEach(p => {
+        matrixDados.push([
+            p.idOriginal ? String(p.idOriginal).toUpperCase() : "",
+            p.data_inclusao || "",
+            formatarCampo(p.nome),
+            formatarCampo(p.sexo),
+            formatarCampo(p.familia),
+            p.nascimento || "",
+            p.falecimento || "",
+            p.imagem || "",
+            formatarCampo(p.pai),
+            formatarCampo(p.mae),
+            formatarCampo(p.conjuge),
+            formatarCampo(p.filhos),
+            formatarCampo(p.netos),
+            formatarCampo(p.bisnetos),
+            formatarCampo(p.trinetos),
+            formatarCampo(p.tetranetos),
+            formatarCampo(p.irmaos),
+            formatarCampo(p.tios),
+            formatarCampo(p.sobrinhos),
+            formatarCampo(p.primos),
+            formatarCampo(p.avos),
+            formatarCampo(p.bisavos),
+            formatarCampo(p.trisavos),
+            formatarCampo(p.info),
+            formatarCampo(p.info01),
+            formatarCampo(p.info02),
+            formatarCampo(p.info03),
+            formatarCampo(p.info04),
+            formatarCampo(p.info05),
+            formatarCampo(p.info06),
+            formatarCampo(p.info07),
+            formatarCampo(p.info08),
+            formatarCampo(p.info09),
+            formatarCampo(p.info10)
+        ]);
     });
 
-    // Criação do livro do Excel utilizando SheetJS
     const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(dadosPlanilha);
+    // Converte a matriz direta para evitar perda de formatação de propriedades nas células
+    const ws = XLSX.utils.aoa_to_sheet(matrixDados);
 
-    // Ajusta automaticamente a largura de cada uma das 35 colunas de maneira responsiva
+    // Habilita os filtros nativos do Excel na primeira linha para todas as colunas preenchidas
+    const totalLinhas = matrixDados.length;
+    const totalColunas = headers.length;
+    ws['!autofilter'] = { ref: `A1:${XLSX.utils.encode_col(totalColunas - 1)}${totalLinhas}` };
+
+    // Aplicação das cores estruturais da tabela (Layout Zebrado)
+    // Cores em formato ARGB Hexadecimal: Cabeçalho Azul Escuro (#1F497D), Linhas Claras (#F2F5F9) e Branco (#FFFFFF)
+    for (let r = 0; r < totalLinhas; r++) {
+        for (let c = 0; c < totalColunas; c++) {
+            const cellAddress = XLSX.utils.encode_cell({ r: r, c: c });
+            if (!ws[cellAddress]) continue;
+
+            // Inicializa o objeto de estilo se não existir
+            if (!ws[cellAddress].s) ws[cellAddress].s = {};
+            
+            // Estilização das bordas padrões finas
+            ws[cellAddress].s.border = {
+                top: { style: "thin", color: { rgb: "D9D9D9" } },
+                bottom: { style: "thin", color: { rgb: "D9D9D9" } },
+                left: { style: "thin", color: { rgb: "D9D9D9" } },
+                right: { style: "thin", color: { rgb: "D9D9D9" } }
+            };
+
+            if (r === 0) {
+                // Estilo da Linha de Cabeçalho
+                ws[cellAddress].s.fill = { fgColor: { rgb: "1F497D" } };
+                ws[cellAddress].s.font = { name: "Arial", size: 11, bold: true, color: { rgb: "FFFFFF" } };
+                ws[cellAddress].s.alignment = { vertical: "center", horizontal: "center" };
+            } else {
+                // Estilo das Linhas de Dados (Zebrado Alternado)
+                const corFundo = (r % 2 === 0) ? "F2F5F9" : "FFFFFF";
+                ws[cellAddress].s.fill = { fgColor: { rgb: corFundo } };
+                ws[cellAddress].s.font = { name: "Arial", size: 10, color: { rgb: "000000" } };
+                ws[cellAddress].s.alignment = { vertical: "center", horizontal: "left" };
+                
+                // Centraliza colunas curtas/padronizadas para melhor estética (ID, Sexo, Datas)
+                if (c === 0 || c === 1 || c === 3 || c === 5 || c === 6) {
+                    ws[cellAddress].s.alignment.horizontal = "center";
+                }
+            }
+        }
+    }
+
+    // Dimensionamento inteligente e responsivo das larguras das colunas
     const objectMaxWidth = [];
-    const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
-    rows.forEach((row) => {
+    matrixDados.forEach((row) => {
         row.forEach((cell, colIndex) => {
             const cellLength = cell ? cell.toString().length : 10;
             if (!objectMaxWidth[colIndex] || objectMaxWidth[colIndex] < cellLength) {
@@ -963,9 +1014,8 @@ function exportarParaExcel() {
             }
         });
     });
-    ws['!cols'] = objectMaxWidth.map(w => ({ w: w + 3 }));
+    ws['!cols'] = objectMaxWidth.map(w => ({ w: Math.min(Math.max(w + 4, 12), 40) })); // Limita entre 12 e 40 para não esticar demais
 
-    // Insere e inicializa o download da planilha no navegador do usuário
     XLSX.utils.book_append_sheet(wb, ws, "Família Anerão");
     XLSX.writeFile(wb, "familia-anerao.xlsx");
 }
