@@ -4,8 +4,14 @@ import pandas as pd
 import io
 
 app = Flask(__name__)
-# Habilita o CORS para permitir que o seu index.html acesse a API local sem bloqueios
-CORS(app)
+
+# Configura o CORS para aceitar requisições tanto do seu site oficial no GitHub Pages 
+# quanto de testes locais (caso abra o index.html direto no navegador)
+CORS(app, origins=[
+    "https://amarildo1963.github.io",
+    "http://127.0.0.1:5500",  # Comum se usar a extensão Live Server do VS Code
+    "http://localhost:5500"
+])
 
 @app.route('/exportar-excel', methods=['POST'])
 def exportar_excel():
