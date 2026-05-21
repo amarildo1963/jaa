@@ -76,7 +76,7 @@
         }
         
         /* CONTROLES */
-        .controls { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
+        .controls { max-width: 800px; margin: 0 open auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
         input[type="text"] {
             padding:14px 18px;
             width:min(100%, 420px);
@@ -495,7 +495,7 @@ async function carregarDados() {
             }
             return {
                 ...p,
-                idOriginal: p.id, // Guarda o ID alfanumérico original do dados.json se houver
+                idOriginal: p.id, 
                 id: 'p' + index,
                 dNasc, dFalec, 
                 signo: signo[0] + " " + signo[1],
@@ -520,7 +520,7 @@ function mostrarApresentacao() {
     const listFalecidos = document.getElementById('list-falecidos');
     const secFalecidos = document.getElementById('section-falecidos');
     
-    const futuros = personas = pessoas.filter(p => {
+    const futuros = pessoas.filter(p => {
         if (p.nome.includes("NATAL DO MENINO JESUS 25/12")) return false;
         const bdayEsteAno = new Date(hoje.getFullYear(), p.dNasc.getMonth(), p.dNasc.getDate());
         const diff = (bdayEsteAno - hoje) / (1000 * 60 * 60 * 24);
@@ -715,7 +715,7 @@ function render(filtro = "") {
         listaUl.appendChild(li);
     });
 
-	document.getElementById('stats').innerText = `Total de  Registros: ${pessoas.length}\nRegistros Filtrados: ${count}`;
+	document.getElementById('stats').innerText = `Total de Registros: ${pessoas.length}\nRegistros Filtrados: ${count}`;
 }
 
 function destacar(texto, termo) {
@@ -790,7 +790,7 @@ function gerarPDF(id) {
     const detalhesNasc = getDetalhesData(p.nascimento);
     const detalhesFalec = getDetalhesData(p.falecimento);
 	const dNasc = parsingDatas(p.nascimento);
-    const dFalec = parsingDatas(p.falecimento);
+    const dFalec = p.falecimento ? parsingDatas(p.falecimento) : null;
     const idade = calcularIdade(dNasc, dFalec);
 
     const criarLinha = (label, valor, extra = '') => {
@@ -816,34 +816,6 @@ function gerarPDF(id) {
             .dados { text-align: left; margin-top: 20px; }
             .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
             p { margin: 5px 0; }
-        
-            @media (max-width: 768px){
-                body{
-                    padding:14px;
-                    padding-bottom:90px;
-                }
-
-                header.header-container{
-                    flex-direction:column;
-                    text-align:center;
-                    border-radius:22px;
-                }
-
-                h1{
-                    font-size:25px;
-                }
-
-                .registro-card{
-                    width:100%;
-                    max-width:340px;
-                }
-
-                .family-bubble{
-                    width:100%;
-                    left:0;
-                    transform:none;
-                }
-            }
         </style>
     </head>
     <body>
