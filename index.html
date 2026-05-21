@@ -372,7 +372,9 @@
 
             <div class="stats">
                 <span id="stats">Carregando dados...</span>
-                <img src="excel.png" class="img-excel" onclick="exportarParaExcel()" alt="Exportar para Excel" title="Exportar para Excel">
+                <a href="planilha_familia_anerao.html">
+                    <img src="excel.png" class="img-excel" alt="Exportar para Excel" title="Exportar para Excel">
+                </a>
             </div>
         </section>
 
@@ -387,7 +389,7 @@
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 19/05/2026 | Versão 2.00</p>
+        <p>Atualizado: 21/05/2026 | Versão 2.00</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -400,7 +402,7 @@
 				ícone árvore 🌳 exibe genealogia<br>
 				ícone 📑 gera PDF da genealogia<br>
 				ícone (i) ⓘ exibe informações<br>
-                ícone Excel 📊 exporta dados para planilha<br>
+                ícone Excel 📊 abre página para baixar planilha<br>
 				<br> 
                 ( DIGITAR NO CAMPO DE BUSCA )<br>
 				<br>
@@ -421,8 +423,6 @@
             </a>
         </div>
     </footer>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <script> 
 const BASE_URL = "https://amarildo1963.github.io/jaa/fotos/";
@@ -520,7 +520,7 @@ function mostrarApresentacao() {
     const listFalecidos = document.getElementById('list-falecidos');
     const secFalecidos = document.getElementById('section-falecidos');
     
-    const futuros = pessoas.filter(p => {
+    const futuros = personas = pessoas.filter(p => {
         if (p.nome.includes("NATAL DO MENINO JESUS 25/12")) return false;
         const bdayEsteAno = new Date(hoje.getFullYear(), p.dNasc.getMonth(), p.dNasc.getDate());
         const diff = (bdayEsteAno - hoje) / (1000 * 60 * 60 * 24);
@@ -889,85 +889,6 @@ function gerarPDF(id) {
     win.document.write(conteudo);
     win.document.close();
     setTimeout(() => { win.print(); }, 1000);
-}
-
-function exportarParaExcel() {
-    if (!pessoas || pessoas.length === 0) {
-        alert("Nenhum dado carregado para exportar!");
-        return;
-    }
-
-    // Auxiliar para tratar arrays de parentesco e strings vazias/padrões
-    const formatarCampo = (valor) => {
-        if (!valor) return "";
-        if (Array.isArray(valor)) return valor.join(", ").toUpperCase();
-        if (typeof valor === "string") {
-            const v = valor.trim();
-            return (v === "|||||") ? "" : v.toUpperCase();
-        }
-        return String(valor).toUpperCase();
-    };
-
-    // Mapeamento de TODOS os 35 campos requisitados na ordem correta
-    const dadosPlanilha = pessoas.map(p => {
-        return {
-            "id": p.idOriginal ? String(p.idOriginal).toUpperCase() : "",
-            "data_inclusao": p.data_inclusao || "",
-            "nome": formatarCampo(p.nome),
-            "sexo": formatarCampo(p.sexo),
-            "familia": formatarCampo(p.familia),
-            "nascimento": p.nascimento || "",
-            "falecimento": p.falecimento || "",
-            "imagem": p.imagem || "",
-            "pai": formatarCampo(p.pai),
-            "mae": formatarCampo(p.mae),
-            "conjuge": formatarCampo(p.conjuge),
-            "filhos": formatarCampo(p.filhos),
-            "netos": formatarCampo(p.netos),
-            "bisnetos": formatarCampo(p.bisnetos),
-            "trinetos": formatarCampo(p.trinetos),
-            "tetranetos": formatarCampo(p.tetranetos),
-            "irmaos": formatarCampo(p.irmaos),
-            "tios": formatarCampo(p.tios),
-            "sobrinhos": formatarCampo(p.sobrinhos),
-            "primos": formatarCampo(p.primos),
-            "avos": formatarCampo(p.avos),
-            "bisavos": formatarCampo(p.bisavos),
-            "trisavos": formatarCampo(p.trisavos),
-            "info": formatarCampo(p.info),
-            "info01": formatarCampo(p.info01),
-            "info02": formatarCampo(p.info02),
-            "info03": formatarCampo(p.info03),
-            "info04": formatarCampo(p.info04),
-            "info05": formatarCampo(p.info05),
-            "info06": formatarCampo(p.info06),
-            "info07": formatarCampo(p.info07),
-            "info08": formatarCampo(p.info08),
-            "info09": formatarCampo(p.info09),
-            "info10": formatarCampo(p.info10)
-        };
-    });
-
-    // Criação do livro do Excel utilizando SheetJS
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(dadosPlanilha);
-
-    // Ajusta automaticamente a largura de cada uma das 35 colunas de maneira responsiva
-    const objectMaxWidth = [];
-    const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
-    rows.forEach((row) => {
-        row.forEach((cell, colIndex) => {
-            const cellLength = cell ? cell.toString().length : 10;
-            if (!objectMaxWidth[colIndex] || objectMaxWidth[colIndex] < cellLength) {
-                objectMaxWidth[colIndex] = cellLength;
-            }
-        });
-    });
-    ws['!cols'] = objectMaxWidth.map(w => ({ w: w + 3 }));
-
-    // Insere e inicializa o download da planilha no navegador do usuário
-    XLSX.utils.book_append_sheet(wb, ws, "Família Anerão");
-    XLSX.writeFile(wb, "familia-anerao.xlsx");
 }
 
 function aplicarFiltro(valor){
