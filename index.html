@@ -317,6 +317,84 @@
         ::-webkit-scrollbar-track{
             background:#edf2f7;
         }
+    
+        .calendar-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95%;
+            max-width: 700px;
+            background: rgba(255,255,255,0.98);
+            border-radius: 24px;
+            padding: 20px;
+            z-index: 99999;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+            backdrop-filter: blur(10px);
+        }
+
+        .calendar-header {
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            color: #1d4ed8;
+            margin-bottom: 20px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .calendar-day-name,
+        .calendar-day {
+            text-align: center;
+            padding: 12px 6px;
+            border-radius: 12px;
+            font-size: 13px;
+        }
+
+        .calendar-day-name {
+            background: #1d4ed8;
+            color: white;
+            font-weight: bold;
+        }
+
+        .calendar-day {
+            background: #f3f4f6;
+            cursor: pointer;
+            transition: all .2s ease;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-weight: bold;
+        }
+
+        .calendar-day:hover {
+            background: #2563eb;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .calendar-empty {
+            background: transparent;
+        }
+
+        .calendar-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 16px;
+            background: #eff6ff;
+            border: 1px solid #93c5fd;
+            color: #1e3a8a;
+            font-weight: bold;
+            min-height: 50px;
+        }
+
     </style>
 </head>
 <body>     
@@ -384,6 +462,7 @@
                 <a href="planilha_familia_anerao.html">
                     <img src="excel.png" class="img-excel" alt="Exportar para Excel" title="Exportar para Excel">
                 </a>
+                <img src="calend.png" id="calendarIcon" class="img-excel" alt="Calendário" title="Calendário">
             </div>
         </section>
 
@@ -398,7 +477,7 @@
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 22/05/2026 | Versão 2.00</p>
+        <p>Atualizado: 26/05/2026 | Versão 2.50</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -825,7 +904,85 @@ function gerarPDF(id) {
             .dados { text-align: left; margin-top: 20px; }
             .assinatura { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; text-align: left; }
             p { margin: 5px 0; }
-        </style>
+        
+        .calendar-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95%;
+            max-width: 700px;
+            background: rgba(255,255,255,0.98);
+            border-radius: 24px;
+            padding: 20px;
+            z-index: 99999;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+            backdrop-filter: blur(10px);
+        }
+
+        .calendar-header {
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            color: #1d4ed8;
+            margin-bottom: 20px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .calendar-day-name,
+        .calendar-day {
+            text-align: center;
+            padding: 12px 6px;
+            border-radius: 12px;
+            font-size: 13px;
+        }
+
+        .calendar-day-name {
+            background: #1d4ed8;
+            color: white;
+            font-weight: bold;
+        }
+
+        .calendar-day {
+            background: #f3f4f6;
+            cursor: pointer;
+            transition: all .2s ease;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-weight: bold;
+        }
+
+        .calendar-day:hover {
+            background: #2563eb;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .calendar-empty {
+            background: transparent;
+        }
+
+        .calendar-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 16px;
+            background: #eff6ff;
+            border: 1px solid #93c5fd;
+            color: #1e3a8a;
+            font-weight: bold;
+            min-height: 50px;
+        }
+
+    </style>
     </head>
     <body>
         <header class="cabecalho-container">
@@ -863,7 +1020,16 @@ function gerarPDF(id) {
             <p><strong>Data de emissão:</strong> ${dataAtual}</p>
             <p><strong>Assinado por:</strong> José Amarildo Anerão - https://amarildo1963.github.io/jaa/</p>
         </footer>
-    </body>
+    
+    <div id="calendarModal" class="calendar-modal">
+        <div class="calendar-header" id="calendarTitle"></div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+        <div class="calendar-result" id="calendarResult">
+            Clique em um dia para ver os aniversariantes.
+        </div>
+    </div>
+
+</body>
     </html>`;
 
     const win = window.open('', '', 'width=800,height=800');
@@ -885,7 +1051,112 @@ function filtrarSigno(signo){
     scrollToTop();
 }
 
+
+let calendarTapCount = 0;
+let calendarTapTimer = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const calendarIcon = document.getElementById('calendarIcon');
+
+    if (calendarIcon) {
+        calendarIcon.addEventListener('click', () => {
+            calendarTapCount++;
+
+            clearTimeout(calendarTapTimer);
+
+            calendarTapTimer = setTimeout(() => {
+                if (calendarTapCount >= 3) {
+                    abrirCalendarioAtual();
+                }
+                calendarTapCount = 0;
+            }, 700);
+        });
+    }
+});
+
+function abrirCalendarioAtual() {
+    const modal = document.getElementById('calendarModal');
+    const grid = document.getElementById('calendarGrid');
+    const title = document.getElementById('calendarTitle');
+    const result = document.getElementById('calendarResult');
+
+    grid.innerHTML = '';
+    result.innerHTML = 'Clique em um dia para ver os aniversariantes.';
+
+    const hoje = new Date();
+    const ano = hoje.getFullYear();
+    const mes = hoje.getMonth();
+
+    const nomesMeses = [
+        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    ];
+
+    title.innerHTML = `📅 ${nomesMeses[mes]} ${ano}`;
+
+    const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    diasSemana.forEach(nome => {
+        const el = document.createElement('div');
+        el.className = 'calendar-day-name';
+        el.innerText = nome;
+        grid.appendChild(el);
+    });
+
+    const primeiroDia = new Date(ano, mes, 1).getDay();
+    const totalDias = new Date(ano, mes + 1, 0).getDate();
+
+    for (let i = 0; i < primeiroDia; i++) {
+        const vazio = document.createElement('div');
+        vazio.className = 'calendar-empty';
+        grid.appendChild(vazio);
+    }
+
+    for (let dia = 1; dia <= totalDias; dia++) {
+        const dayEl = document.createElement('div');
+        dayEl.className = 'calendar-day';
+        dayEl.innerHTML = `<div>${dia}</div>`;
+
+        dayEl.onclick = () => {
+            const diaBusca = String(dia).padStart(2, '0');
+            const mesBusca = String(mes + 1).padStart(2, '0');
+
+            const encontrados = pessoas.filter(p => {
+                if (!p.nascimento) return false;
+                return p.nascimento.startsWith(`${diaBusca}/${mesBusca}`);
+            });
+
+            if (encontrados.length === 0) {
+                result.innerHTML = `Nenhum aniversariante em ${diaBusca}/${mesBusca}.`;
+            } else {
+                result.innerHTML = `<b>${diaBusca}/${mesBusca}</b><br><br>` +
+                    encontrados.map(p => {
+                        const status = p.dFalec ? '🕯️' : '🎂';
+                        return `${status} ${p.nome}`;
+                    }).join('<br>');
+            }
+        };
+
+        grid.appendChild(dayEl);
+    }
+
+    modal.style.display = 'block';
+
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 10000);
+}
+
+
 carregarDados();
 </script>
+
+    <div id="calendarModal" class="calendar-modal">
+        <div class="calendar-header" id="calendarTitle"></div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+        <div class="calendar-result" id="calendarResult">
+            Clique em um dia para ver os aniversariantes.
+        </div>
+    </div>
+
 </body>
 </html>
