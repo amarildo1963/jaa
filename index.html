@@ -214,7 +214,6 @@
         .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
         
         .nome { color:#1d4ed8; font-weight:800; font-size:19px; margin-bottom:10px; display:block; letter-spacing:.3px; }
-        .info-nasc">★ {destacar(p.nascimento, termo)} {diaSemNasc}</div>
         .info-falec { color: #b8860b; font-weight: bold; }
         .info-idade-viva { color: green; font-weight: bold; }
         .info-idade-morta { color: #b8860b; font-weight: bold; }
@@ -291,12 +290,34 @@
             overflow-y: auto;
         }
 
+        .calendar-header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
         .calendar-header {
-            text-align: center;
             font-size: 20px;
             font-weight: bold;
             color: #1d4ed8;
-            margin-bottom: 15px;
+        }
+
+        .calendar-btn {
+            background: #1d4ed8;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .calendar-btn:hover {
+            background: #2563eb;
+            transform: scale(1.05);
         }
 
         .calendar-grid {
@@ -517,7 +538,7 @@
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 26/05/2026 | Versão 2.01</p>
+        <p>Atualizado: 26/05/2026 | Versão 2.05</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -554,7 +575,11 @@
     </footer>
 
     <div id="calendarModal" class="calendar-modal">
-        <div class="calendar-header" id="calendarTitle"></div>
+        <div class="calendar-header-container">
+            <button class="calendar-btn" onclick="mudarMesCalendario(-1)" title="Mês Anterior">◀</button>
+            <div class="calendar-header" id="calendarTitle"></div>
+            <button class="calendar-btn" onclick="mudarMesCalendario(1)" title="Próximo Mês">▶</button>
+        </div>
         <div class="calendar-grid" id="calendarGrid"></div>
         <div class="calendar-result" id="calendarResult">
             Clique em um dia para ver os aniversariantes.
@@ -1014,6 +1039,10 @@ function filtrarSigno(signo){
 }
 
 
+// VARIÁVEIS DE CONTROLE DO CALENDÁRIO ATIVO
+let calendarAnoAtual = new Date().getFullYear();
+let calendarMesAtual = new Date().getMonth();
+
 let calendarTapCount = 0;
 let calendarTapTimer = null;
 
@@ -1030,18 +1059,21 @@ document.addEventListener('DOMContentLoaded', () => {
             clearTimeout(calendarTapTimer);
             calendarTapTimer = setTimeout(() => {
                 if (calendarTapCount >= 3) {
-                    abrirCalendarioAtual();
+                    // Reinicia para o mês e ano corrente do sistema toda vez que for aberto do zero
+                    const hoje = new Date();
+                    calendarAnoAtual = hoje.getFullYear();
+                    calendarMesAtual = hoje.getMonth();
+                    gerarCalendario(calendarAnoAtual, calendarMesAtual);
                 }
                 calendarTapCount = 0;
             }, 700);
         });
     }
 
-    // NOVA FUNÇÃO: Fecha a modal apenas com 3 cliques/toques rápidos sobre ela
     if (calendarModal) {
         calendarModal.addEventListener('click', (e) => {
-            // Evita disparar se clicar em um dia específico para ver os nomes
-            if (e.target.closest('.calendar-day')) return;
+            // Se clicar nos dias ou nos botões de navegação, ignora o fechamento
+            if (e.target.closest('.calendar-day') || e.target.closest('.calendar-btn')) return;
 
             modalClickCount++;
             clearTimeout(modalClickTimer);
@@ -1055,7 +1087,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function abrirCalendarioAtual() {
+// FUNÇÃO PARA AVANÇAR OU RETROCEDER OS MESES
+function mudarMesCalendario(direcao) {
+    calendarMesAtual += direcao;
+    
+    if (calendarMesAtual < 0) {
+        calendarMesAtual = 11;
+        calendarAnoAtual--;
+    } else if (calendarMesAtual > 11) {
+        calendarMesAtual = 0;
+        calendarAnoAtual++;
+    }
+    
+    gerarCalendario(calendarAnoAtual, calendarMesAtual);
+}
+
+// RENDERIZADOR DINÂMICO DOS DIAS E ANIVERSARIANTES
+function gerarCalendario(ano, mes) {
     const modal = document.getElementById('calendarModal');
     const grid = document.getElementById('calendarGrid');
     const title = document.getElementById('calendarTitle');
@@ -1063,10 +1111,6 @@ function abrirCalendarioAtual() {
 
     grid.innerHTML = '';
     result.innerHTML = 'Clique em um dia para ver os aniversariantes.<br><small style="color:gray;">(Toque 3 vezes na área branca para fechar)</small>';
-
-    const hoje = new Date();
-    const ano = hoje.getFullYear();
-    const mes = hoje.getMonth();
 
     const nomesMeses = [
         'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -1103,17 +1147,15 @@ function abrirCalendarioAtual() {
         // Busca se existem aniversariantes neste dia específico
         const encontrados = pessoas.filter(p => {
             if (!p.nascimento) return false;
-            // Ignora a string fictícia do Menino Jesus se necessário, ou mantém
             return p.nascimento.startsWith(`${diaBusca}/${mesBusca}`);
         });
 
-        // ADIÇÃO DO CÍRCULO VERMELHO: Se houver alguém na lista, adiciona a classe css
         if (encontrados.length > 0) {
             dayEl.classList.add('has-birthday');
         }
 
         dayEl.onclick = (e) => {
-            e.stopPropagation(); // Evita que clique no dia conte para os 3 cliques de fechar a modal
+            e.stopPropagation(); 
             if (encontrados.length === 0) {
                 result.innerHTML = `Nenhum aniversariante em ${diaBusca}/${mesBusca}.`;
             } else {
@@ -1129,7 +1171,6 @@ function abrirCalendarioAtual() {
     }
 
     modal.style.display = 'block';
-    // O setTimeout de 10000ms foi inteiramente REMOVIDO daqui conforme solicitado.
 }
 
 carregarDados();
