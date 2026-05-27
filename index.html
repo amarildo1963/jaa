@@ -526,7 +526,6 @@
                 <a href="planilha_familia_anerao.html">
                     <img src="excel.png" class="img-excel" alt="Exportar para Excel" title="Exportar para Excel">
                 </a>
-                <img src="calend.png" id="calendarIcon" class="img-excel" alt="Calendário" title="Calendário">
             </div>
         </section>
 
@@ -541,7 +540,7 @@
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 27/05/2026 | Versão 2.10</p>
+        <p>Atualizado: 27/05/2026 | Versão 2.50</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -1053,7 +1052,6 @@ let modalClickCount = 0;
 let modalClickTimer = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    const calendarIcon = document.getElementById('calendarIcon');
     const calendarIconTop = document.getElementById('calendarIconTop');
     const calendarModal = document.getElementById('calendarModal');
 
@@ -1070,10 +1068,6 @@ document.addEventListener('DOMContentLoaded', () => {
             calendarTapCount = 0;
         }, 700);
     };
-
-    if (calendarIcon) {
-        calendarIcon.addEventListener('click', abrirCalendarioTriploClique);
-    }
 
     if (calendarIconTop) {
         calendarIconTop.addEventListener('click', abrirCalendarioTriploClique);
