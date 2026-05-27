@@ -540,7 +540,7 @@
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 27/05/2026 | Versão 2.50</p>
+        <p>Atualizado: 27/05/2026 | Versão 2.51</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -1059,7 +1059,7 @@ document.addEventListener('DOMContentLoaded', () => {
         calendarTapCount++;
         clearTimeout(calendarTapTimer);
         calendarTapTimer = setTimeout(() => {
-            if (calendarTapCount >= 3) {
+            if (calendarTapCount >= 1) {
                 const hoje = new Date();
                 calendarAnoAtual = hoje.getFullYear();
                 calendarMesAtual = hoje.getMonth();
@@ -1081,7 +1081,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modalClickCount++;
             clearTimeout(modalClickTimer);
             modalClickTimer = setTimeout(() => {
-                if (modalClickCount >= 3) {
+                if (modalClickCount >= 1) {
                     calendarModal.style.display = 'none';
                 }
                 modalClickCount = 0;
@@ -1113,7 +1113,7 @@ function gerarCalendario(ano, mes) {
     const result = document.getElementById('calendarResult');
 
     grid.innerHTML = '';
-    result.innerHTML = 'Clique em um dia para ver os aniversariantes.<br><small style="color:gray;">(Toque 3 vezes na área branca para fechar)</small>';
+    result.innerHTML = 'Clique em um dia para ver os aniversariantes.<br><small style="color:gray;">(Toque na área branca para fechar)</small>';
 
     const nomesMeses = [
         'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
