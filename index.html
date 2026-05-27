@@ -483,9 +483,12 @@
     </div>
 
     <header class="header-container">
-        <a href="index.html">
-            <img src="aniver.png" alt="Ícone Aniversário" class="img-topo">
-        </a>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="index.html">
+                <img src="aniver.png" alt="Ícone Aniversário" class="img-topo">
+            </a>
+            <img src="calend.png" id="calendarIconTop" alt="Calendário" class="img-topo" title="Calendário">
+        </div>
         <h1>ANIVERSARIANTES</h1>
     </header>
 
@@ -538,7 +541,7 @@
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 26/05/2026 | Versão 2.06</p>
+        <p>Atualizado: 27/05/2026 | Versão 2.10</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -1051,23 +1054,29 @@ let modalClickTimer = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     const calendarIcon = document.getElementById('calendarIcon');
+    const calendarIconTop = document.getElementById('calendarIconTop');
     const calendarModal = document.getElementById('calendarModal');
 
+    const abrirCalendarioTriploClique = () => {
+        calendarTapCount++;
+        clearTimeout(calendarTapTimer);
+        calendarTapTimer = setTimeout(() => {
+            if (calendarTapCount >= 3) {
+                const hoje = new Date();
+                calendarAnoAtual = hoje.getFullYear();
+                calendarMesAtual = hoje.getMonth();
+                gerarCalendario(calendarAnoAtual, calendarMesAtual);
+            }
+            calendarTapCount = 0;
+        }, 700);
+    };
+
     if (calendarIcon) {
-        calendarIcon.addEventListener('click', () => {
-            calendarTapCount++;
-            clearTimeout(calendarTapTimer);
-            calendarTapTimer = setTimeout(() => {
-                if (calendarTapCount >= 3) {
-                    // Reinicia para o mês e ano corrente do sistema toda vez que for aberto do zero
-                    const hoje = new Date();
-                    calendarAnoAtual = hoje.getFullYear();
-                    calendarMesAtual = hoje.getMonth();
-                    gerarCalendario(calendarAnoAtual, calendarMesAtual);
-                }
-                calendarTapCount = 0;
-            }, 700);
-        });
+        calendarIcon.addEventListener('click', abrirCalendarioTriploClique);
+    }
+
+    if (calendarIconTop) {
+        calendarIconTop.addEventListener('click', abrirCalendarioTriploClique);
     }
 
     if (calendarModal) {
