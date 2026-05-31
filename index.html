@@ -374,6 +374,21 @@
             pointer-events: none;
         }
 
+        /* Dia atual - círculo verde maior que o círculo vermelho */
+        .calendar-day.current-day::before {
+            content: '';
+            position: absolute;
+            width: 34px;
+            height: 34px;
+            border: 3px solid #00aa00;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+
         .calendar-empty {
             background: transparent;
         }
@@ -433,6 +448,11 @@
             .calendar-day.has-birthday::after {
                 width: 22px;
                 height: 22px;
+            }
+
+            .calendar-day.current-day::before {
+                width: 30px;
+                height: 30px;
             }
             .calendar-day-name {
                 font-size: 10px;
@@ -541,7 +561,7 @@
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 27/05/2026 | Versão 2.51</p>
+        <p>Atualizado: 31/05/2026 | Versão 2.52</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -1143,6 +1163,16 @@ function gerarCalendario(ano, mes) {
     for (let dia = 1; dia <= totalDias; dia++) {
         const dayEl = document.createElement('div');
         dayEl.className = 'calendar-day';
+
+        const hoje = new Date();
+        if (
+            dia === hoje.getDate() &&
+            mes === hoje.getMonth() &&
+            ano === hoje.getFullYear()
+        ) {
+            dayEl.classList.add('current-day');
+        }
+
         dayEl.innerHTML = `<div>${dia}</div>`;
 
         const diaBusca = String(dia).padStart(2, '0');
