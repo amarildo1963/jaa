@@ -77,8 +77,7 @@
             z-index: 999999;
             background: rgba(255,255,255,0.95);
             border-radius: 8px;
-            padding: 1px; /* Reduzido de 6px para 1px para tirar a borda interna */
-            display: block; /* Remove o respiro/linha fantasma inferior da tag img */
+            padding: 6px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.25);
         }
 
@@ -732,7 +731,7 @@ function mostrarApresentacao() {
     const listFalecidos = document.getElementById('list-falecidos');
     const secFalecidos = document.getElementById('section-falecidos');
     
-    const futuros = personas.filter(p => {
+    const futuros = pessoas.filter(p => {
         if (p.nome.includes("NATAL DO MENINO JESUS 25/12")) return false;
         const bdayEsteAno = new Date(hoje.getFullYear(), p.dNasc.getMonth(), p.dNasc.getDate());
         const diff = (bdayEsteAno - hoje) / (1000 * 60 * 60 * 24);
