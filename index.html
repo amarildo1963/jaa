@@ -68,6 +68,7 @@
         .img-topo:hover { transform: scale(1.1); }
 
         #calendarIconTop {
+            animation: calendFloat 3s ease-in-out infinite;
             position: fixed;
             top: 15px;
             right: 15px;
@@ -83,6 +84,13 @@
         #calendarIconTop:hover {
             transform: scale(1.15);
         }
+
+        @keyframes calendFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+
         h1 {
             color:#1d4ed8;
             font-size:32px;
@@ -579,7 +587,7 @@
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 31/05/2026 | Versão 2.54</p>
+        <p>Atualizado: 31/05/2026 | Versão 2.55</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
