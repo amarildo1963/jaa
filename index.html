@@ -3,505 +3,399 @@
 <head>
     <meta charset="UTF-8">
     <meta name="author" content="José Amarildo Anerão">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0b4f9c">
+    <meta name="color-scheme" content="light">
+    <meta name="description" content="Aniversariantes e genealogia da Família Anerão">
     <title>Aniversariantes - Anerão</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
+<link rel="icon" type="image/png" href="https://amarildo1963.github.io/jaa/fotos/favicon.png">
     <style>
-        /* ESTILIZAÇÃO DO OVERLAY DE ABERTURA */
-        #birthday-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-        }
-        .overlay-content {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            max-width: 600px;
-        }
-        .overlay-title { font-size: 14px; color: #4da6ff; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; }
-        .overlay-list { font-size: 11px; margin-bottom: 20px; list-style: none; padding: 0; }
-        .overlay-item { margin-bottom: 4px; }
-        .overlay-deceased-title { font-size: 14px; color: #ffcc00; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; }
+:root{
+  --blue:#0b4f9c;
+  --blue-2:#1769c2;
+  --blue-3:#eaf3ff;
+  --green:#087f46;
+  --gold:#a87500;
+  --text:#162235;
+  --muted:#64748b;
+  --surface:rgba(255,255,255,.94);
+  --surface-strong:#fff;
+  --line:#dbe5f0;
+  --shadow:0 10px 28px rgba(15,35,60,.08);
+  --shadow-lg:0 18px 45px rgba(15,35,60,.13);
+  --radius:20px;
+  --fast:150ms cubic-bezier(.2,.7,.2,1);
+}
+*,
+*::before,
+*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{
+  margin:0;
+  min-height:100vh;
+  padding:18px 16px 100px;
+  color:var(--text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(900px 420px at 50% -100px,rgba(23,105,194,.16),transparent 65%),
+    linear-gradient(180deg,#f7faff 0%,#edf3f9 100%);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img{max-width:100%;display:block}
+button,input,select{font:inherit}
+button,a,img{touch-action:manipulation}
+::selection{background:#1769c2;color:#fff}
+::-webkit-scrollbar{width:9px}
+::-webkit-scrollbar-track{background:#e9eff6}
+::-webkit-scrollbar-thumb{background:linear-gradient(#3b82d0,#0b4f9c);border-radius:99px}
 
-        /* ESTILIZAÇÃO GLOBAL E LAYOUT */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
-        body {
-            background:
-                radial-gradient(circle at top left, rgba(59,130,246,0.12), transparent 25%),
-                radial-gradient(circle at top right, rgba(37,99,235,0.10), transparent 20%),
-                linear-gradient(135deg, #f4f7fb 0%, #e9eef5 100%);
-            background-attachment: fixed;
-            padding: 20px;
-            padding-bottom: 100px;
-            color: #1f2937;
-        }
-        
-        /* CABEÇALHO */
-        header.header-container {
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            gap:18px;
-            margin:0 auto 24px;
-            padding:18px 24px;
-            max-width:980px;
-            border-radius:26px;
-            background:rgba(255,255,255,0.82);
-            backdrop-filter: blur(14px);
-            box-shadow:0 10px 35px rgba(15,23,42,0.08);
-            border:1px solid rgba(255,255,255,0.6);
-        }
-        .img-topo { width: 50px; height: auto; cursor: pointer; transition: transform 0.2s; }
-        .img-topo:hover { transform: scale(1.1); }
+/* abertura */
+#birthday-overlay{
+  position:fixed;inset:0;z-index:99999;
+  display:flex;align-items:center;justify-content:center;
+  padding:18px;
+  background:rgba(8,20,35,.72);
+  backdrop-filter:blur(8px);
+}
+.overlay-content{
+  width:min(620px,94vw);
+  max-height:82vh;
+  overflow:auto;
+  padding:24px;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:24px;
+  color:#fff;
+  background:linear-gradient(145deg,rgba(18,39,66,.96),rgba(8,27,49,.94));
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
+}
+.overlay-title,.overlay-deceased-title{
+  font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px
+}
+.overlay-title{color:#73b7ff}.overlay-deceased-title{color:#ffd66b}
+.overlay-list{margin:0 0 18px;padding:0;list-style:none;font-size:13px}
+.overlay-item{padding:5px 0;border-bottom:1px solid rgba(255,255,255,.08)}
 
-        #calendarIconTop {
-            animation: calendFloat 3s ease-in-out infinite;
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            width: 60px;
-            height: auto;
-            z-index: 999999;
-            background: rgba(255,255,255,0.95);
-            border-radius: 8px;
-            padding: 6px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-        }
+/* topo */
+body>div[style*="SISTEMA GENEALÓGICO"]{
+  max-width:1100px!important;
+  margin:0 auto 12px!important;
+  border-radius:14px!important;
+  padding:10px 16px!important;
+  background:linear-gradient(100deg,#083b76,#1264bd)!important;
+  box-shadow:0 8px 24px rgba(11,79,156,.18)!important;
+  font-size:12px;
+}
+.header-container{
+  width:min(1100px,100%);
+  margin:0 auto 18px;
+  min-height:78px;
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  padding:14px 20px;
+  border:1px solid rgba(255,255,255,.8);
+  border-radius:22px;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+.img-topo{width:48px;height:48px;object-fit:contain;transition:transform var(--fast)}
+.img-topo:hover{transform:scale(1.06)}
+h1{
+  margin:0;
+  color:var(--blue);
+  font-size:clamp(24px,4vw,34px);
+  line-height:1.05;
+  font-weight:850;
+  letter-spacing:.04em;
+}
 
-        #calendarIconTop:hover {
-            transform: scale(1.15);
-        }
+/* calendário flutuante */
+#calendarIconTop{
+  position:fixed;top:max(12px,env(safe-area-inset-top));right:12px;z-index:10000;
+  width:52px;height:52px;padding:7px;object-fit:contain;
+  border:1px solid rgba(255,255,255,.8);border-radius:15px;
+  background:rgba(255,255,255,.96);
+  box-shadow:0 10px 26px rgba(0,0,0,.18);
+  cursor:pointer;
+  animation:calendFloat 4s ease-in-out infinite;
+}
+@keyframes calendFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
-        @keyframes calendFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
+/* busca e filtros */
+.search-area{width:min(1100px,100%);margin:auto}
+.controls{display:flex;justify-content:center;margin:0 auto 10px}
+#searchInput{
+  width:min(720px,100%);
+  min-height:50px;
+  padding:13px 20px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  outline:none;
+  text-align:center;
+  color:var(--text);
+  background:#fff;
+  box-shadow:0 6px 18px rgba(15,35,60,.06);
+  transition:border-color var(--fast),box-shadow var(--fast);
+}
+#searchInput::placeholder{color:#8a99ab}
+#searchInput:focus{border-color:#4a93df;box-shadow:0 0 0 4px rgba(23,105,194,.12)}
+.filtros-rapidos{
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
+  gap:8px;margin:0 auto 12px
+}
+.filtros-rapidos button,.filtros-rapidos select,.btn-limpar-icone{
+  min-height:40px;padding:8px 15px;
+  border:1px solid var(--line);border-radius:999px;
+  color:#27415e;background:#fff;cursor:pointer;
+  font-size:13px;font-weight:750;
+  box-shadow:0 4px 12px rgba(15,35,60,.05);
+  transition:transform var(--fast),background var(--fast),color var(--fast),box-shadow var(--fast);
+}
+.filtros-rapidos button:hover,.filtros-rapidos select:hover,.btn-limpar-icone:hover{
+  transform:translateY(-1px);background:var(--blue);color:#fff;box-shadow:0 8px 18px rgba(11,79,156,.18)
+}
+.img-filtro-familia{
+  width:42px;height:42px;object-fit:contain;cursor:pointer;
+  border-radius:12px;transition:transform var(--fast),filter var(--fast)
+}
+.img-filtro-familia:hover{transform:scale(1.06);filter:drop-shadow(0 5px 8px rgba(11,79,156,.2))}
+.stats{
+  width:fit-content;max-width:100%;margin:12px auto 20px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:9px 14px;border:1px solid var(--line);border-radius:14px;
+  background:rgba(255,255,255,.92);box-shadow:0 5px 16px rgba(15,35,60,.05);
+  font-size:13px;font-weight:800;white-space:pre-line
+}
+.img-excel{width:31px;height:31px;cursor:pointer;transition:transform var(--fast)}
+.img-excel:hover{transform:scale(1.08)}
 
+/* conteúdo */
+.mes-titulo{
+  margin:36px 0 16px;
+  color:var(--blue);
+  text-align:center;
+  font-size:clamp(22px,3vw,29px);
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.grid-container{
+  width:min(1120px,100%);
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,290px));
+  justify-content:center;
+  gap:16px;
+}
+.mes-titulo + .grid-container{
+  content-visibility:auto;
+  contain:layout style paint;
+  contain-intrinsic-size:600px;
+}
+.registro-card{
+  position:relative;
+  min-width:0;
+  padding:18px 14px 16px;
+  text-align:center;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  overflow:visible;
+  isolation:isolate;
+  transition:transform var(--fast),box-shadow var(--fast),border-color var(--fast);
+}
+.registro-card:hover{
+  transform:translateY(-4px);
+  border-color:#a9c8e8;
+  box-shadow:var(--shadow-lg)
+}
+.photo-wrapper{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  min-height:132px;margin-bottom:8px
+}
+.img-container{width:122px;height:122px;cursor:pointer}
+.img-pessoa{
+  width:100%;height:100%;object-fit:cover;
+  border:4px solid #fff;border-radius:50%;
+  box-shadow:0 10px 25px rgba(15,35,60,.17)
+}
+.card-actions-left{position:absolute;left:4px;top:0;z-index:30;display:flex;flex-direction:column;gap:5px}
+.card-actions-right{position:absolute;right:4px;top:0;z-index:30}
+.icon-action-card{
+  width:36px;height:36px;padding:6px;object-fit:contain;
+  border:1px solid var(--line);border-radius:11px;
+  background:rgba(255,255,255,.97);
+  box-shadow:0 5px 13px rgba(15,35,60,.10);
+  cursor:pointer;
+  transition:transform var(--fast),box-shadow var(--fast)
+}
+.icon-action-card:hover{transform:scale(1.06);box-shadow:0 8px 18px rgba(15,35,60,.16)}
+.icon-genealogia{width:55px;height:55px}
+.icon-luto{position:absolute!important;width:17px;height:17px;object-fit:contain;margin:0}
+.nome{
+  display:block;margin:5px 0 8px;
+  color:var(--blue);font-size:18px;font-weight:900;line-height:1.2
+}
+.info-nasc{color:var(--green);font-weight:800}
+.info-falec,.info-idade-morta{color:var(--gold);font-weight:800}
+.info-idade-viva{color:var(--green);font-weight:850}
+.highlight{background:#ffe66d;color:#111;border-radius:3px;padding:0 2px}
+.bday-msg{margin-top:7px;color:#d40000;font-size:.88rem;font-weight:900;animation:blink-red 1s infinite}
+@keyframes blink-red{50%{opacity:.35}}
+.pulse-active{animation:pulse-img 1s linear 10}
+@keyframes pulse-img{50%{opacity:.45;transform:scale(.98)}}
+.highlight-target{animation:target-blink .5s ease-in-out 10}
+@keyframes target-blink{50%{background:#fff1a8}}
 
-        h1 {
-            color:#1d4ed8;
-            font-size:32px;
-            margin-bottom:0;
-            font-weight:800;
-            letter-spacing:1px;
-            text-shadow:0 1px 0 rgba(255,255,255,.8);
-        }
-        
-        /* CONTROLES */
-        .controls { 
-            max-width: 800px; 
-            margin: 0 auto 20px auto; 
-            display: flex; 
-            gap: 10px; 
-            flex-wrap: wrap; 
-            justify-content: center; 
-            align-items: center; 
-        }
-        input[type="text"] {
-            padding:14px 18px;
-            width:min(100%, 420px);
-            border-radius:18px;
-            border:1px solid #d1d5db;
-            background:rgba(255,255,255,0.95);
-            box-shadow:0 6px 16px rgba(0,0,0,0.05);
-            font-size:15px;
-            transition:all .25s ease;
-            outline:none;
-            text-align: center;
-        }
-        input[type="text"]:focus{
-            border-color:#3b82f6;
-            box-shadow:0 0 0 4px rgba(59,130,246,0.15);
-        }
-        .stats {
-            text-align:center;
-            margin:18px auto;
-            font-weight:700;
-            max-width:340px;
-            padding:10px 18px;
-            border-radius:16px;
-            background:rgba(255,255,255,0.90);
-            box-shadow:0 4px 14px rgba(0,0,0,0.06);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .img-excel {
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
-            transition: transform 0.2s;
-            vertical-align: middle;
-        }
-        .img-excel:hover {
-            transform: scale(1.15);
-        }
-        
-        /* CARDS E GRID */
-        .mes-titulo {
-            color:#1e40af;
-            font-weight:800;
-            font-size:30px;
-            text-align:center;
-            margin:42px 0 24px;
-            text-transform:uppercase;
-            letter-spacing:2px;
-        }
-        .grid-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-        .registro-card {
-            background:rgba(255,255,255,0.92);
-            border:1px solid rgba(226,232,240,0.95);
-            border-radius:26px;
-            padding:18px;
-            width:290px;
-            text-align:center;
-            position:relative;
-            overflow:visible;
-            transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
-            box-shadow:0 12px 30px rgba(15,23,42,0.08);
-            backdrop-filter: blur(12px);
-        }
-        .registro-card:hover {
-            transform:translateY(-6px) scale(1.01);
-            box-shadow:0 20px 42px rgba(15,23,42,0.14);
-            border-color:#93c5fd;
-            background:rgba(255,255,255,0.98);
-        }
-        
-        /* ELEMENTOS DO CARD */
-        .photo-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; position: relative; }
-        .img-container { position: relative; width: 120px; height: 120px; cursor: pointer; }
-        .img-pessoa {
-            width:100%;
-            height:100%;
-            object-fit:cover;
-            border-radius:50%;
-            border:4px solid #fff;
-            box-shadow:0 12px 26px rgba(0,0,0,0.18);
-        }
-        
-        .card-actions-left { display: flex; flex-direction: column; gap: 5px; position: absolute; left: 10px; top: 10px; z-index: 10; }
-        .card-actions-right { position: absolute; right: 10px; top: 10px; z-index: 10; }
-        .icon-action-card {
-            width:38px;
-            height:38px;
-            cursor:pointer;
-            transition:all .2s ease;
-            background:rgba(255,255,255,0.95);
-            border-radius:12px;
-            padding:6px;
-            box-shadow:0 6px 16px rgba(0,0,0,0.10);
-        }
-        .icon-action-card:hover {
-            opacity:1;
-            transform:scale(1.08);
-        }
-        .icon-genealogia { width: 60px; height: 60px; }
-        .icon-luto { width: 15px; height: auto; margin-left: 2px; }
-        
-        /* BALÕES DE INFORMAÇÃO */
-        .info-bubble, .family-bubble { display: none; position: absolute; top: 130px; left: 50%; transform: translateX(-50%); width: 95%; border-radius: 8px; padding: 10px; z-index: 20; text-align: left; font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .info-bubble { background-color: #ffffe0; border: 1px solid black; color: black; font-weight: bold; }
-        
-        .family-bubble { background-color: rgba(240, 247, 255, 0.98); border: 2px solid #3b82f6; color: #1e3a8a; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 108%; max-height: 520px; overflow-y: auto; z-index: 999; padding: 14px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.35); }
-        .family-tree-content { text-align: left; }
-        .family-tree-content b { color: #2563eb; display: block; margin-top: 8px; border-bottom: 1px solid #dbeafe; }
-        .family-tree-content span { display: block; padding-left: 10px; font-style: italic; color: #4b5563; line-height: 1.5; }
-        
-        /* AJUDA E MANUTENÇÃO */
-        .help-container { position: relative; display: inline-block; margin-top: 10px; text-align: center; }
-        .help-icon { width: 30px; height: 30px; cursor: pointer; vertical-align: middle; margin-bottom: 5px; }
-        #help-bubble { display: none; position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); width: 250px; background-color: white; border: 1px solid black; border-radius: 10px; padding: 10px; z-index: 100; text-align: left; font-size: 12px; color: blue; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+/* balões */
+.info-bubble,.family-bubble{
+  display:none;position:absolute;z-index:1000;
+  left:50%;transform:translateX(-50%);
+  text-align:left;font-size:12px;line-height:1.45;
+  border-radius:15px;padding:13px;
+  box-shadow:0 16px 38px rgba(0,0,0,.22)
+}
+.info-bubble{
+  top:128px;width:94%;
+  color:#18220f;background:#fffbe0;border:1px solid #d7c75d
+}
+.family-bubble{
+  top:-10px;width:108%;max-height:500px;overflow:auto;
+  color:#17385d;background:#f5f9ff;border:2px solid #4d93dc
+}
+.family-tree-content b{display:block;margin-top:8px;padding-bottom:3px;color:var(--blue);border-bottom:1px solid #dbe8f7}
+.family-tree-content span{display:block;padding-left:8px;color:#52667b;font-style:italic;line-height:1.5}
 
-        /* ANIMAÇÕES */
-        @keyframes pulse-img { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        .pulse-active { animation: pulse-img 1s linear 10; }
-        @keyframes target-blink { 0%, 100% { background-color: rgba(224, 224, 224, 0.9); } 50% { background-color: yellow; } }
-        .highlight-target { animation: target-blink 0.5s ease-in-out 10; }
-        @keyframes blink-red { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
-        .bday-msg { color: red; font-weight: bold; animation: blink-red 0.8s infinite; margin-top: 5px; font-size: 0.9em; }
-        @keyframes blink-blue { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
-        .scroll-top { position: fixed; bottom: 20px; right: 20px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
-        .scroll-bottom { position: fixed; bottom: 20px; right: 70px; font-size: 40px; color: blue; text-decoration: none; animation: blink-blue 1s infinite; cursor: pointer; z-index: 100; }
-        
-        .nome { color:#1d4ed8; font-weight:800; font-size:19px; margin-bottom:10px; display:block; letter-spacing:.3px; }
-        .info-falec { color: #b8860b; font-weight: bold; }
-        .info-idade-viva { color: #008000; font-weight: bold; }
-        .info-nasc { color: #008000; font-weight: bold; }
-        .info-idade-morta { color: #b8860b; font-weight: bold; }
-        .highlight { background-color: yellow; }
-        
-        #lista-alfabetica-container {
-            max-width:950px;
-            margin:60px auto;
-            padding:28px;
-            background:rgba(255,255,255,0.90);
-            border-radius:28px;
-            backdrop-filter: blur(12px);
-            box-shadow:0 14px 36px rgba(0,0,0,0.08);
-        }
-        .titulo-lista { color: #1e3a8a; margin-bottom: 20px; font-size: 22px; font-weight: 700; border-left: 5px solid #3b82f6; padding-left: 10px; }
-        .lista-caderno { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
-        .lista-item { background: #ffffff; border-radius: 8px; padding: 8px 10px; transition: all 0.2s ease; border: 1px solid #e5e7eb; }
-        .lista-item:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-color: #3b82f6; }
-        .lista-link { text-decoration: none; color: #111827; font-weight: 500; display: flex; align-items: center; gap: 10px; }
-        .lista-link:hover { color: #2563eb; }
-        .micro-foto { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
-        
-        footer {
-            text-align:center;
-            margin-top:60px;
-            font-size:14px;
-            border-top:1px solid rgba(203,213,225,0.7);
-            padding-top:28px;
-            background:rgba(255,255,255,0.80);
-            padding-bottom:28px;
-            border-radius:28px 28px 0 0;
-            backdrop-filter: blur(12px);
-        }
-    
-        .filtros-rapidos { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:15px; align-items: center; }
-        .filtros-rapidos button, .filtros-rapidos select {
-            padding:10px 16px;
-            border-radius:999px;
-            border:1px solid #dbeafe;
-            background:rgba(255,255,255,0.95);
-            cursor:pointer;
-            font-size:13px;
-            font-weight:600;
-            height:40px;
-            transition:all .25s ease;
-            box-shadow:0 4px 12px rgba(0,0,0,0.05);
-        }
-        .filtros-rapidos button:hover, .filtros-rapidos select:hover {
-            background:#3b82f6;
-            color:white;
-            transform:translateY(-2px);
-            box-shadow:0 10px 18px rgba(59,130,246,.20);
-        }
-        .img-filtro-familia { width: 40px; height: 40px; cursor: pointer; transition: transform 0.2s; }
-        .img-filtro-familia:hover { transform: scale(1.1); }
-        .btn-limpar-icone { padding: 8px 12px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 20px; font-size: 18px; height: 36px; display: flex; align-items: center; justify-content: center; }
-    
-        /* CALENDÁRIO RESPONSIVO E ATUALIZADO */
-        .calendar-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 95%;
-            max-width: 500px;
-            max-height: 90vh;
-            background: rgba(255,255,255,0.98);
-            border-radius: 24px;
-            padding: 15px;
-            z-index: 99999;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-            backdrop-filter: blur(10px);
-            overflow-y: auto;
-        }
+/* lista */
+#lista-alfabetica-container{
+  width:min(1100px,100%);margin:48px auto 0;padding:22px;
+  border:1px solid var(--line);border-radius:22px;
+  background:var(--surface);box-shadow:var(--shadow)
+}
+.titulo-lista{
+  margin:0 0 16px;padding-left:12px;
+  color:var(--blue);font-size:21px;font-weight:900;
+  border-left:4px solid #2f83d4
+}
+.lista-caderno{
+  list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px
+}
+.lista-item{
+  min-width:0;border:1px solid #e2eaf3;border-radius:12px;
+  background:#fff;transition:transform var(--fast),box-shadow var(--fast),border-color var(--fast)
+}
+.lista-item:hover{transform:translateY(-1px);border-color:#9fc5e8;box-shadow:0 7px 16px rgba(15,35,60,.08)}
+.lista-link{
+  display:flex;align-items:center;gap:9px;padding:7px 9px;
+  color:#20334a;text-decoration:none;font-size:13px;font-weight:700
+}
+.lista-link:hover{color:var(--blue)}
+.micro-foto{width:35px;height:35px;flex:0 0 35px;object-fit:cover;border:2px solid #7eadd8;border-radius:50%}
 
-        .calendar-header-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
+/* ajuda/rodapé */
+footer{
+  width:min(1100px,100%);margin:48px auto 0;padding:24px 16px;
+  text-align:center;font-size:13px;color:#5d6f82;
+  border-top:1px solid var(--line);border-radius:20px 20px 0 0;
+  background:rgba(255,255,255,.75)
+}
+.help-container{position:relative;display:inline-block;margin-top:10px}
+.help-icon{width:32px;height:32px;display:inline-block;object-fit:contain;cursor:pointer;transition:transform var(--fast)}
+.help-icon:hover{transform:scale(1.07)}
+#help-bubble{
+  display:none;position:absolute;bottom:48px;left:50%;transform:translateX(-50%);
+  width:min(330px,90vw);max-height:65vh;overflow:auto;padding:14px;
+  text-align:left;font-size:12px;line-height:1.5;font-weight:700;color:#24466a;
+  background:#fff;border:1px solid #bfd3e7;border-radius:16px;
+  box-shadow:0 18px 40px rgba(15,35,60,.2);z-index:2000
+}
 
-        .calendar-header {
-            font-size: 20px;
-            font-weight: bold;
-            color: #1d4ed8;
-        }
+/* navegação */
+.scroll-top,.scroll-bottom{
+  position:fixed;bottom:max(18px,env(safe-area-inset-bottom));z-index:1500;
+  width:42px;height:42px;display:grid;place-items:center;
+  border:1px solid #bcd1e6;border-radius:50%;
+  color:#fff;background:#0b4f9c;text-decoration:none;
+  font-size:20px;font-weight:900;box-shadow:0 9px 20px rgba(11,79,156,.25);
+  opacity:.88;transition:transform var(--fast),opacity var(--fast)
+}
+.scroll-top{right:16px}.scroll-bottom{right:66px}
+.scroll-top:hover,.scroll-bottom:hover{transform:translateY(-2px);opacity:1}
 
-        .calendar-btn {
-            background: #1d4ed8;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-            transition: all 0.2s ease;
-        }
+/* calendário */
+.calendar-modal{
+  display:none;position:fixed;z-index:99998;
+  inset:50% auto auto 50%;transform:translate(-50%,-50%);
+  width:min(500px,94vw);max-height:88vh;overflow:auto;
+  padding:16px;border:1px solid #c9d9e9;border-radius:22px;
+  background:rgba(255,255,255,.98);
+  box-shadow:0 28px 80px rgba(0,0,0,.3)
+}
+.calendar-header-container{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.calendar-header{color:var(--blue);font-size:19px;font-weight:900}
+.calendar-btn{
+  width:40px;height:40px;border:0;border-radius:12px;
+  color:#fff;background:var(--blue);cursor:pointer;font-weight:900;
+  transition:transform var(--fast),background var(--fast)
+}
+.calendar-btn:hover{transform:scale(1.04);background:var(--blue-2)}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.calendar-day-name,.calendar-day{
+  min-height:44px;display:flex;align-items:center;justify-content:center;
+  border-radius:10px;text-align:center;font-size:12px
+}
+.calendar-day-name{min-height:32px;color:#fff;background:var(--blue);font-weight:900}
+.calendar-day{
+  position:relative;background:#f1f5f9;color:#26394e;cursor:pointer;font-weight:800;
+  transition:transform var(--fast),background var(--fast)
+}
+.calendar-day:hover{transform:scale(1.03);background:#dcecff}
+.calendar-day.has-birthday::after{
+  content:"";position:absolute;width:27px;height:27px;
+  border:2px solid #e00000;border-radius:50%;pointer-events:none
+}
+.calendar-day.current-day::before{
+  content:"";position:absolute;width:36px;height:36px;
+  border:3px solid #00a43a;border-radius:50%;pointer-events:none
+}
+.calendar-empty{background:transparent}
+.calendar-result{
+  margin-top:12px;min-height:50px;padding:12px;
+  border:1px solid #b7d5f2;border-radius:14px;
+  color:#1f4770;background:#edf6ff;font-size:13px;font-weight:750;text-align:center
+}
+.calendar-result a{color:var(--blue)!important}
 
-        .calendar-btn:hover {
-            background: #2563eb;
-            transform: scale(1.05);
-        }
+/* acessibilidade/performance */
+@media (hover:none){.registro-card:hover{transform:none}.filtros-rapidos button:hover,.filtros-rapidos select:hover{transform:none}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
+@media (max-width:700px){
+  body{padding:12px 10px 88px}
+  #calendarIconTop{width:46px;height:46px;right:9px}
+  .header-container{min-height:70px;padding:12px 14px;border-radius:18px}
+  .img-topo{width:42px;height:42px}
+  h1{font-size:23px}
+  .grid-container{grid-template-columns:repeat(auto-fit,minmax(min(100%,285px),1fr));gap:12px}
+  .registro-card{width:100%;max-width:340px;margin:auto}
+  .mes-titulo{margin-top:28px}
+  .filtros-rapidos{gap:6px}
+  .filtros-rapidos button,.filtros-rapidos select{padding:7px 11px;font-size:12px}
+  #lista-alfabetica-container{padding:16px;margin-top:34px}
+  .lista-caderno{grid-template-columns:1fr}
+  .calendar-modal{padding:11px}
+  .calendar-day{min-height:40px;font-size:11px}
+  .calendar-day.has-birthday::after{width:23px;height:23px}
+  .calendar-day.current-day::before{width:31px;height:31px}
+}
+@media (max-width:380px){
+  .scroll-bottom{right:60px}
+  .scroll-top{right:10px}
+  .grid-container{grid-template-columns:1fr}
+}
 
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
-        }
-
-        .calendar-day-name,
-        .calendar-day {
-            text-align: center;
-            padding: 8px 2px;
-            border-radius: 10px;
-            font-size: 12px;
-        }
-
-        .calendar-day-name {
-            background: #1d4ed8;
-            color: white;
-            font-weight: bold;
-        }
-
-        .calendar-day {
-            background: #f3f4f6;
-            cursor: pointer;
-            transition: all .2s ease;
-            min-height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            font-weight: bold;
-            position: relative;
-        }
-
-        .calendar-day:hover {
-            background: #2563eb;
-            color: white;
-            transform: scale(1.05);
-        }
-
-        /* Estilo do Círculo Vermelho para dias com aniversariantes */
-        .calendar-day.has-birthday::after {
-            content: '';
-            position: absolute;
-            width: 26px;
-            height: 26px;
-            border: 2px solid red;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-        }
-
-        /* Dia atual - círculo verde maior que o círculo vermelho */
-        .calendar-day.current-day::before {
-            content: '';
-            position: absolute;
-            width: 34px;
-            height: 34px;
-            border: 3px solid #00aa00;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-        }
-
-
-        .calendar-empty {
-            background: transparent;
-        }
-
-        .calendar-result {
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 16px;
-            background: #eff6ff;
-            border: 1px solid #93c5fd;
-            color: #1e3a8a;
-            font-weight: bold;
-            font-size: 13px;
-            min-height: 50px;
-            text-align: center;
-        }
-
-        @media (max-width: 768px){
-            body{
-                padding:14px;
-                padding-bottom:90px;
-            }
-
-            header.header-container{
-                flex-direction:column;
-                text-align:center;
-                border-radius:22px;
-            }
-
-            h1{
-                font-size:25px;
-            }
-
-            .registro-card{
-                width:100%;
-                max-width:340px;
-            }
-
-            .family-bubble{
-                width:100%;
-                left:0;
-                transform:none;
-            }
-
-            /* Ajustes finos do calendário para celular */
-            .calendar-modal {
-                width: 95%;
-                padding: 10px;
-            }
-            .calendar-header {
-                font-size: 18px;
-            }
-            .calendar-day {
-                min-height: 42px;
-                font-size: 11px;
-            }
-            .calendar-day.has-birthday::after {
-                width: 22px;
-                height: 22px;
-            }
-
-            .calendar-day.current-day::before {
-                width: 30px;
-                height: 30px;
-            }
-            .calendar-day-name {
-                font-size: 10px;
-                padding: 6px 1px;
-            }
-        }
-
-        html{
-            scroll-behavior:smooth;
-        }
-        ::selection{
-            background:#2563eb;
-            color:#fff;
-        }
-        ::-webkit-scrollbar{
-            width:10px;
-        }
-        ::-webkit-scrollbar-thumb{
-            background:linear-gradient(180deg,#3b82f6,#1d4ed8);
-            border-radius:20px;
-        }
-        ::-webkit-scrollbar-track{
-            background:#edf2f7;
-        }
     </style>
 </head>
 <body>
@@ -587,7 +481,7 @@
     <footer id="footer" role="contentinfo">
         <p>©2016-2026 JAAnerão</p>
         <p>jaanerao@hotmail.com</p>
-        <p>Atualizado: 31/05/2026 | Versão 2.55</p>
+        <p>Atualizado: 01/10/2026 | Versão 3.00 • Interface moderna e otimizada</p>
         
         <div class="help-container">
             <img src="help.png" class="help-icon" onclick="toggleHelp()" alt="Ajuda">
@@ -714,7 +608,13 @@ async function carregarDados() {
                 diaMes: dNasc.getDate().toString().padStart(2,'0') + (dNasc.getMonth()+1).toString().padStart(2,'0')
             };
         });
-        
+
+        // Índice de busca: normalizado uma única vez para filtros instantâneos.
+        pessoas.forEach(p => {
+            p._busca = `${p.nome || ''} ${p.nascimento || ''} ${p.falecimento || ''} ${p.dFalec ? 'falecido' : 'vivo'} ${p.signo || ''} ${mesesNomes[p.mesNum] || ''} ${p.familia || ''}`
+                .toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        });
+
         mostrarApresentacao(); 
         findProximo();
         render();
@@ -817,9 +717,7 @@ function render(filtro = "") {
         const filtrados = pessoas.filter(p => p.mesNum === idx).filter(p => {
             if (!termo) return true;
             const status = p.dFalec ? "falecido" : "vivo";
-            const buscaString = `${p.nome} ${p.nascimento} ${p.falecimento} ${status} ${p.signo} ${mesesNomes[p.mesNum]} ${p.familia || ''}`
-                .toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-            return buscaString.includes(termo);
+            return p._busca.includes(termo);
         });
 
         if (filtrados.length > 0) {
@@ -885,7 +783,7 @@ function render(filtro = "") {
 
                     <div class="photo-wrapper">
                         <div class="img-container" ondblclick="voltarParaLista()">
-                            <img loading="lazy" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}">
+                            <img loading="lazy" decoding="async" fetchpriority="low" src="${BASE_URL}${p.imagem}" class="img-pessoa ${p.id === proximoId ? 'pulse-active' : ''}" alt="${p.nome}">
                         </div>
                         <div id="info-${p.id}" class="info-bubble">${htmlInfos}</div>
                         <div id="family-${p.id}" class="family-bubble" onclick="this.style.display='none'">${htmlGen}</div>
@@ -931,7 +829,8 @@ function render(filtro = "") {
 
 function destacar(texto, termo) {
     if (!termo || !texto) return texto;
-    const regex = new RegExp(`(${termo})`, 'gi');
+    const seguro = termo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${seguro})`, 'gi');
     return texto.replace(regex, '<span class="highlight">$1</span>');
 }
 
@@ -945,7 +844,7 @@ document.getElementById('searchInput').addEventListener('input', function(e) {
             if (val.length === 8) e.target.value = val.slice(0,2) + "/" + val.slice(2,4) + "/" + val.slice(4,8);
         }
         render(e.target.value);
-    }, 250);
+    }, 90);
 });
 
 function limparBusca() {
