@@ -865,8 +865,12 @@
     "imagem": "amadeu_caldeira.jpg",
     "pai": "",
     "mae": "",
-    "conjuge": "LUCIA",
-    "filhos": [],
+    "conjuge": "LUCIA CALDEIRA",
+    "filhos": [
+      "Luzinete Marques Caldeira",
+      "Cristiane Caldeira",
+      "Marcela Caldeira"
+    ],
     "netos": [],
     "bisnetos": [],
     "trinetos": [],
